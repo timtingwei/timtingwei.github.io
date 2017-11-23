@@ -3,6 +3,39 @@
   
     
     <entry>
+      <title><![CDATA[添加git bash到右键菜单]]></title>
+      <url>/2017/11/23/add-git-bash-to-right-click-menu/</url>
+      <content type="html"><![CDATA[<h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><p>因为.git文件所在的目录如下：</p>
+<blockquote>
+<p>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</p>
+</blockquote>
+<p>当在bash中cd到该目录时：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</span><br><span class="line">bash: syntax error near unexpected token `(&apos;</span><br></pre></td></tr></table></figure></p>
+<p>试图通过右键进入bash</p>
+<h2 id="hack"><a href="#hack" class="headerlink" title="hack:"></a>hack:</h2><blockquote>
+<ol>
+<li>CMD中输入”regedit”</li>
+<li>切换到 HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\Background\shell</li>
+<li>右键点击 “shell” 选择 New &gt; Key. 将KEY命名为 “Bash”</li>
+<li>设置值为 “open in Bash” </li>
+<li>创建一个新的KEY命名为”command”. 设置值为git-bash.exe 路径.</li>
+</ol>
+</blockquote>
+<p>此时在文件夹中右键, 出现Open in bash选项.</p>
+<p>以上为通过注册表添加bash到右键的方法，但还是建议重装git</p>
+<hr>
+<p>reference:<br>[1]: <a href="https://www.zhihu.com/question/48091139" target="_blank" rel="noopener">https://www.zhihu.com/question/48091139</a> \@轩辕Rowboat的回答</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[hexo博客中文乱码]]></title>
       <url>/2017/11/23/hexo-random-symbol/</url>
       <content type="html"><![CDATA[<h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
