@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[添加git bash到右键菜单]]></title>
+      <url>/2017/11/23/add-git-bash-to-right-click-menu/</url>
+      <content type="html"><![CDATA[<h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><p>因为.git文件所在的目录如下：</p>
+<blockquote>
+<p>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</p>
+</blockquote>
+<p>当在bash中cd到该目录时：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</span><br><span class="line">bash: syntax error near unexpected token `(&apos;</span><br></pre></td></tr></table></figure></p>
+<p>试图通过右键进入bash</p>
+<h2 id="hack"><a href="#hack" class="headerlink" title="hack:"></a>hack:</h2><blockquote>
+<ol>
+<li>CMD中输入”regedit”</li>
+<li>切换到 HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\Background\shell</li>
+<li>右键点击 “shell” 选择 New &gt; Key. 将KEY命名为 “Bash”</li>
+<li>设置值为 “open in Bash” </li>
+<li>创建一个新的KEY命名为”command”. 设置值为git-bash.exe 路径.</li>
+</ol>
+</blockquote>
+<p>此时在文件夹中右键, 出现Open in bash选项.</p>
+<p>以上为通过注册表添加bash到右键的方法，但还是建议重装git</p>
+<hr>
+<p>reference:<br>[1]: <a href="https://www.zhihu.com/question/48091139" target="_blank" rel="noopener">https://www.zhihu.com/question/48091139</a> \@轩辕Rowboat的回答</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[hexo博客中文乱码]]></title>
+      <url>/2017/11/23/hexo-random-symbol/</url>
+      <content type="html"><![CDATA[<h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
+<p>此时<a href="http://localhost:4000/" target="_blank" rel="noopener">localhost</a>中出现如下中文乱码, 英文部分正常。</p>
+<blockquote>
+<p>��Ȼ���(depth buffer)</p>
+</blockquote>
+<p>此时_config.yml中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-Hans</span><br></pre></td></tr></table></figure>
+<h2 id="hack"><a href="#hack" class="headerlink" title="hack:"></a>hack:</h2><blockquote>
+<ol>
+<li>Notepad++打开出现中文的*.md, 此时右下角为ANSI格式.</li>
+<li>格式-&gt;转为UFT-8编码格式</li>
+<li>保存</li>
+<li>$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</li>
+</ol>
+</blockquote>
+<p>此时<a href="http://localhost:4000/" target="_blank" rel="noopener">localhost</a>中</p>
+<blockquote>
+<p>深度缓存(depth buffer)</p>
+</blockquote>
+<h2 id="issue-1"><a href="#issue-1" class="headerlink" title="issue++:"></a>issue++:</h2><blockquote>
+<ul>
+<li>批量转化post中的md文件</li>
+<li>自动生成UTF-8格式的md文件</li>
+</ul>
+</blockquote>
+<hr>
+<p>reference:<br>[1]: </p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> hexo </tag>
+            
+            <tag> UTF-8 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[DirectX9.0 notes 1.3 预备知识]]></title>
+      <url>/2017/11/22/d3d-preparation/</url>
+      <content type="html"><![CDATA[<h3 id="深度缓存-depth-buffer"><a href="#深度缓存-depth-buffer" class="headerlink" title="深度缓存(depth buffer)"></a>深度缓存(depth buffer)</h3><blockquote>
+<p>定义: 一个含有特定像素的深度信息而不含图像数据的表面。<br>  用于计算每个像素而定深度值并进行深度测试: 让处于同一位置的不同像素进行竞争，选出应写入该位置的像素。距离摄像机最近的像素获胜。<br>  深度缓存格式决定深度测试精度, 精度度 16位&lt;24位&lt;32位, 一般选择24位满足效果</p>
+<ul>
+<li>D3DFMT_D32         32位深度缓存</li>
+<li>D3DFMT_D23S8       24位深度缓存, 其中8位保留供模板缓存(stencil buffer)[1]使用</li>
+<li>D3DFMT_D24X8       24位深度缓存</li>
+<li>D3DFMT_D16         16位深度缓存</li>
+</ul>
+</blockquote>
+<h3 id="顶点运算-Vertex-Processing"><a href="#顶点运算-Vertex-Processing" class="headerlink" title="顶点运算(Vertex Processing)"></a>顶点运算(Vertex Processing)</h3><blockquote>
+<ul>
+<li>软件顶点运算(software vertex process)</li>
+<li>硬件顶点运算(harfware …)</li>
+</ul>
+</blockquote>
+<p>软件顶点运算 <strong> 总是会被支持 </strong> , 硬件只有得到图形卡的支持才可使用。</p>
+<p>优先考虑硬件顶点运算方式，理由：</p>
+<blockquote>
+<ol>
+<li>使用的硬件可能有加速功能</li>
+<li>可以不占用CPU， CPU可被解放出来进行其他运算</li>
+</ol>
+</blockquote>
+<h3 id="设备性能-Device-Capabilities"><a href="#设备性能-Device-Capabilities" class="headerlink" title="设备性能(Device Capabilities)"></a>设备性能(Device Capabilities)</h3><p>DeCaps 表示”Device Capabilities”<br>D3DCAP9::DevCaps的D3DDEVCAPS_HWTYRANSFORMANDLIGHT 可用来表示设备是否支持变换和光照的硬件计算。<br>多查阅D3DCAP9相关的SDK文档, 继续研究一下Directt3D所提供能够设备性能的完整列表。</p>
+<p>[1] : 18章论述</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> DirectX </tag>
+            
+            <tag> Games </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[My First Post]]></title>
+      <url>/2017/11/21/My-First-Post/</url>
+      <content type="html"><![CDATA[<p>In this post, I will focus on use of Markdown and hexo push.</p>
+<blockquote>
+<ol>
+<li>title level</li>
+<li>insert a link</li>
+<li>highlight the code</li>
+<li>three lists of point</li>
+<li>insert a note”[^code]”</li>
+<li>bold fonts</li>
+<li>reference</li>
+<li>edit a formula</li>
+<li>draw a flow picture</li>
+</ol>
+</blockquote>
+<p>reference website: <a href="https://www.zybuluo.com/mdeditor#fn:latex" target="_blank" rel="noopener">Cmd Markdown reader</a></p>
+<h2 id="1-Title-level"><a href="#1-Title-level" class="headerlink" title="1. Title level"></a>1. Title level</h2><h3 id="level-3-0"><a href="#level-3-0" class="headerlink" title="level 3-0"></a>level 3-0</h3><h4 id="level-4-0"><a href="#level-4-0" class="headerlink" title="level 4-0"></a>level 4-0</h4><h3 id="level-3-1"><a href="#level-3-1" class="headerlink" title="level 3-1"></a>level 3-1</h3><h4 id="level-4-1"><a href="#level-4-1" class="headerlink" title="level 4-1"></a>level 4-1</h4><h4 id="level-4-2"><a href="#level-4-2" class="headerlink" title="level 4-2"></a>level 4-2</h4><h2 id="2-Insert-a-link"><a href="#2-Insert-a-link" class="headerlink" title="2. Insert a link."></a>2. Insert a link.</h2><h3 id="Tim’s-Blog"><a href="#Tim’s-Blog" class="headerlink" title="Tim’s Blog"></a><a href="https://timtingwei.github.io/">Tim’s Blog</a></h3><h3 id="Tim’s-Blog-1"><a href="#Tim’s-Blog-1" class="headerlink" title="Tim’s Blog"></a><a href="https://timtingwei.github.io/">Tim’s Blog</a></h3><h2 id="3-Highlight-the-code"><a href="#3-Highlight-the-code" class="headerlink" title="3. Highlight the code"></a>3. Highlight the code</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@requires_authorization</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># A comment</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'hello world'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-three-lists-of-point"><a href="#4-three-lists-of-point" class="headerlink" title="4. three lists of point"></a>4. three lists of point</h2><h3 id="Bulleted-List"><a href="#Bulleted-List" class="headerlink" title="Bulleted List"></a>Bulleted List</h3><blockquote>
+<ul>
+<li>first line</li>
+<li>second line</li>
+<li>third line</li>
+</ul>
+</blockquote>
+<h3 id="Numbered-List"><a href="#Numbered-List" class="headerlink" title="Numbered List"></a>Numbered List</h3><blockquote>
+<ol>
+<li>first line</li>
+<li>second line</li>
+<li>third line</li>
+</ol>
+</blockquote>
+<h3 id="TODO-list"><a href="#TODO-list" class="headerlink" title="TODO list"></a>TODO list</h3><ul>
+<li style="list-style: none"><input type="checkbox"> first todo </li>
+<li style="list-style: none"><input type="checkbox"> second todo</li>
+<li style="list-style: none"><input type="checkbox" checked> third todo -&gt; Done</li>
+</ul>
+<h2 id="5-insert-a-note-code"><a href="#5-insert-a-note-code" class="headerlink" title="5. insert a note[^code]"></a>5. insert a note[^code]</h2><p>LaTex formula support [LaTex][^LaTex]<br>high light code [code][^code]<br>insert a web note <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">MathJax</a></p>
+<h2 id="6-bold-fonts"><a href="#6-bold-fonts" class="headerlink" title="6. bold fonts"></a>6. bold fonts</h2><p><strong> bold fonts </strong> by adding two asteriskes *  as prefix and suffix respectively</p>
+<h2 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7. Reference"></a>7. Reference</h2><blockquote>
+<p>You can insert a reference by “&gt;”,<br>and input enter to create a new line,<br>This is the end line. Until the next symbol occur.</p>
+</blockquote>
+<h2 id="8-edit-a-formula"><a href="#8-edit-a-formula" class="headerlink" title="8. edit a formula"></a>8. edit a formula</h2><p>$$E=mc^2$$    use $$</p>
+<h2 id="9-draw-a-flow-picture"><a href="#9-draw-a-flow-picture" class="headerlink" title="9.draw a flow picture"></a>9.draw a flow picture</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: Start</span><br><span class="line">op=&gt;operation: Your Opreation</span><br><span class="line">cond=&gt;condition: Yes or No?</span><br><span class="line">e=&gt;end</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure>
+<p>[^LaTex]: support <strong>LaTex</strong> edit and display, such as: $\sum_{i=1}^n a_i=0$, visit <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">MathJax</a> for more information.<br>[^code]: include Java, Python, JavaScript etc.</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> markdown </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>/2017/11/21/hello-world/</url>
+      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+  
+  
+</search>
