@@ -3,6 +3,25 @@
   
     
     <entry>
+      <title><![CDATA[Markdown删除线]]></title>
+      <url>/2017/12/22/markdown-delete-line/</url>
+      <content type="html"><![CDATA[<p>~~删除一句~~<br><del>删除一句</del></p>
+<p>~~删除<br>多行~~<br><del>删除<br>多行</del></p>
+<p>~~删除包含语法\[mituh’s notes\]\[timtingwei.github.io\]~~<br><del>删除包含语法[mituh’s notes][timtingwei.github.io]</del></p>
+<p>\====<br>不知道还有其他方法否？</p>
+<p>\====<br>refwebsite:<br><a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Markdown</a></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> markdown </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[在ubuntu14.04上建立OpenGL编译环境]]></title>
       <url>/2017/12/20/install-openGL-in-ubuntu14-04/</url>
       <content type="html"><![CDATA[<p>学习教程<a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">LearnOpenGL-CN</a>前先配置学习环境，对照后面编译时链接的函数库，</p>
