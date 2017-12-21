@@ -105,78 +105,34 @@ $ ./main.exec
 > 对于用GCC编译的Linux用户建议使用这个命令行选项-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi。没有正确链接相应的库会产生 undefined reference(未定义的引用) 这个错误。
 
 
-/\*
+~~\**安装glut\*\*~~
 
-**安装glut**
-
-```sh
+~~\`\`\`sh
 sudo apt-get install libglut-dev
-```
+\`\`\`~~
 
-沒有libglut-dev可以改用
-```sh
+~~沒有libglut-dev可以改用
+\`\`\`sh
 sudo apt-get install freeglut3-dev
-```
+\`\`\`~~
 
-設定編譯參數與編譯
-在這之前，我們需要一個測試範例，example.c 如下：
-```c
-#include <GL/glut.h>
+~~設定編譯參數與編譯
+在這之前，我們需要一個測試範例，example.c~~ [如下][2]：
 
-void init();
-void display();
+~~有了測試範例、基礎編譯環境與各個 OpenGL 相關的函式庫之後，我們所需要做的就是告訴編譯器我們有安裝 OpenGL 函式庫，編譯程式時要連結這些函式庫。~~
 
-int main(int argc, char* argv[2])
-{
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
-	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(300, 300);
-	
-	glutCreateWindow("OpenGL 3D View");
-	
-	init();
-	glutDisplayFunc(display);
-	
-	glutMainLoop();
-	return 0;
-}
+~~gcc example.c -o example.out -lGL -lGLU -lglut
+因為我們安裝了 OpenGL Utility Toolkit ，它是建立在 OpenGL Utilities 與 OpenGL Library 之上，因此我們可以簡單連結 OpenGL Utility Toolkit 的函式庫就可以達到我們的目地了。下面的編譯參數跟上面的是同樣效果：~~
 
-void init()
-{
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(-5, 5, -5, 5, 5, 15);
-	glMatrixMode(GL_MODELVIEW);
-	gluLookAt(0, 0, 10, 0, 0, 0, 0, 1, 0);
-}
+~~gcc example.c -o example.out -lglut
+下面簡單說明一下所使用的 gcc 參數~~
 
-void display()
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-		
-	glColor3f(1.0, 0, 0);
-	glutWireTeapot(3);
-	
-	glFlush();
-}
-```
-有了測試範例、基礎編譯環境與各個 OpenGL 相關的函式庫之後，我們所需要做的就是告訴編譯器我們有安裝 OpenGL 函式庫，編譯程式時要連結這些函式庫。
+~~-l<Library>  告訴 gcc 去連結指定 Library
+-o<file>     指定執行檔的輸出名字~~
 
-gcc example.c -o example.out -lGL -lGLU -lglut
-因為我們安裝了 OpenGL Utility Toolkit ，它是建立在 OpenGL Utilities 與 OpenGL Library 之上，因此我們可以簡單連結 OpenGL Utility Toolkit 的函式庫就可以達到我們的目地了。下面的編譯參數跟上面的是同樣效果：
-
-gcc example.c -o example.out -lglut
-下面簡單說明一下所使用的 gcc 參數
-
--l<Library>  告訴 gcc 去連結指定 Library
--o<file>     指定執行檔的輸出名字
-
-執行
-接下來我們就可以來看看我們的結果，如果看到右圖，代表成功了!
-
-./example.out
-*/
+~~執行
+接下來我們就可以來看看我們的結果，如果看到右圖，代表成功了!~
+./example.out~~
 
 
 **编译和链接GLEW**
