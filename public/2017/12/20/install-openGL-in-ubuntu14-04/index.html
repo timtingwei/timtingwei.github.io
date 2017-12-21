@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="hexo,UTF-8," />
+  <meta name="keywords" content="OpenGL," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="issue:1$ hexo g &amp;amp;&amp;amp; hexo s 此时localhost中出现如下中文乱码, 英文部分正常。  ��Ȼ���(depth buffer)  此时_config.yml中: 1language: zh-Hans hack:  Notepad++打开出现中文的*.md, 此">
-<meta name="keywords" content="hexo,UTF-8">
+<meta name="description" content="学习教程LearnOpenGL-CN前先配置学习环境，对照后面编译时链接的函数库， 1$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -">
+<meta name="keywords" content="OpenGL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo博客中文乱码">
-<meta property="og:url" content="https://timtingwei.github.io/2017/11/23/hexo-random-symbol/index.html">
+<meta property="og:title" content="在ubuntu14.04上建立OpenGL编译环境">
+<meta property="og:url" content="https://timtingwei.github.io/2017/12/20/install-openGL-in-ubuntu14-04/index.html">
 <meta property="og:site_name" content="mituh&#39;s notes">
-<meta property="og:description" content="issue:1$ hexo g &amp;amp;&amp;amp; hexo s 此时localhost中出现如下中文乱码, 英文部分正常。  ��Ȼ���(depth buffer)  此时_config.yml中: 1language: zh-Hans hack:  Notepad++打开出现中文的*.md, 此时右下角为ANSI格式. 格式-&amp;gt;转为UFT-8编码格式 保存 $ hexo clean">
+<meta property="og:description" content="学习教程LearnOpenGL-CN前先配置学习环境，对照后面编译时链接的函数库， 1$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor 需要：   GLEW GLFW/GLFW3*   参考:How">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-20T02:49:10.258Z">
+<meta property="og:updated_time" content="2017-12-21T16:33:11.019Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hexo博客中文乱码">
-<meta name="twitter:description" content="issue:1$ hexo g &amp;amp;&amp;amp; hexo s 此时localhost中出现如下中文乱码, 英文部分正常。  ��Ȼ���(depth buffer)  此时_config.yml中: 1language: zh-Hans hack:  Notepad++打开出现中文的*.md, 此时右下角为ANSI格式. 格式-&amp;gt;转为UFT-8编码格式 保存 $ hexo clean">
+<meta name="twitter:title" content="在ubuntu14.04上建立OpenGL编译环境">
+<meta name="twitter:description" content="学习教程LearnOpenGL-CN前先配置学习环境，对照后面编译时链接的函数库， 1$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor 需要：   GLEW GLFW/GLFW3*   参考:How">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://timtingwei.github.io/2017/11/23/hexo-random-symbol/"/>
+  <link rel="canonical" href="https://timtingwei.github.io/2017/12/20/install-openGL-in-ubuntu14-04/"/>
 
 
 
 
 
-  <title>hexo博客中文乱码 | mituh's notes</title>
+  <title>在ubuntu14.04上建立OpenGL编译环境 | mituh's notes</title>
   
 
 
@@ -279,7 +279,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/11/23/hexo-random-symbol/">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/20/install-openGL-in-ubuntu14-04/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="mituh">
@@ -296,7 +296,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">hexo博客中文乱码</h1>
+          <h1 class="post-title" itemprop="name headline">在ubuntu14.04上建立OpenGL编译环境</h1>
         
 
         <div class="post-meta">
@@ -308,8 +308,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T09:52:42+08:00">
-                2017-11-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T13:58:49+08:00">
+                2017-12-20
               </time>
             
 
@@ -346,33 +346,57 @@
       
 
       
-        <h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
-<p>此时<a href="http://localhost:4000/" target="_blank" rel="noopener">localhost</a>中出现如下中文乱码, 英文部分正常。</p>
+        <p>学习教程<a href="[https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/]">LearnOpenGL-CN</a>前先配置学习环境，对照后面编译时链接的函数库，</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br></pre></td></tr></table></figure>
+<p>需要：</p>
 <blockquote>
-<p>��Ȼ���(depth buffer)</p>
-</blockquote>
-<p>此时_config.yml中:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-Hans</span><br></pre></td></tr></table></figure>
-<h2 id="hack"><a href="#hack" class="headerlink" title="hack:"></a>hack:</h2><blockquote>
-<ol>
-<li>Notepad++打开出现中文的*.md, 此时右下角为ANSI格式.</li>
-<li>格式-&gt;转为UFT-8编码格式</li>
-<li>保存</li>
-<li>$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</li>
-</ol>
-</blockquote>
-<p>此时<a href="http://localhost:4000/" target="_blank" rel="noopener">localhost</a>中</p>
-<blockquote>
-<p>深度缓存(depth buffer)</p>
-</blockquote>
-<h2 id="issue-1"><a href="#issue-1" class="headerlink" title="issue++:"></a>issue++:</h2><blockquote>
 <ul>
-<li>批量转化post中的md文件</li>
-<li>自动生成UTF-8格式的md文件</li>
+<li>GLEW</li>
+<li>GLFW/GLFW3<br>*</li>
 </ul>
 </blockquote>
-<hr>
-<p>reference:<br>[1]: </p>
+<p>参考:<a href="[https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment]">Howto_Install_OpenGL_Development_Environment</a></p>
+<p><strong>建立基本编译环境</strong><br>首先不可或缺的，就是編譯器與基本的函式庫，如果系統沒有安裝的話，請依照下面的方式安裝：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install build-essential</span><br></pre></td></tr></table></figure></p>
+<p><strong>安裝OpenGL Library</strong><br>接下來要把我們會用到的 Library 裝上去，首先安裝 OpenGL Library<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgl1-mesa-dev</span><br></pre></td></tr></table></figure></p>
+<p><strong>安裝OpenGL Utilities</strong><br>OpenGL Utilities 是一組建構於 OpenGL Library 之上的工具組，提供許多很方便的函式，使 OpenGL 更強大且更容易使用。 接下來我們安裝OpenGL Utilities<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libglu1-mesa-dev</span><br></pre></td></tr></table></figure></p>
+<p><strong>安裝GLFW/GLFW3</strong><br>GLFW是一个专门针对OpenGL的C语言库，它提供了一些渲染物体所需的最低限度的接口。它允许用户创建OpenGL上下文，定义窗口参数以及处理用户输入，这正是我们需要的。</p>
+<p>参考网站<a href="[https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project]">How to build &amp; install GLFW 3 and use it in a Linux project</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install cmake</span><br><span class="line"></span><br><span class="line">$ cmake -G <span class="string">"Unix Makefiles"</span></span><br><span class="line"></span><br><span class="line">$ sudo apt-get build-dep glfw</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree</span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br><span class="line"></span><br><span class="line">Install the project...</span><br><span class="line">-- Install configuration: <span class="string">""</span></span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3native.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Config.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3ConfigVersion.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets-noconfig.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/pkgconfig/glfw3.pc</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/libglfw3.a</span><br></pre></td></tr></table></figure>
+<p><strong>从<a href="[http://www.glfw.org/docs/3.0/quick.html]">测试源码网站</a>复制案例代码测试</strong><br>该案例中#include <glfw glfw3.h=""></glfw></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ g++ -std=c++11 -c main.cpp</span><br><span class="line"></span><br><span class="line">$ ./main.o</span><br><span class="line">bash: ./main.o: cannot execute binary file: Exec format error  &amp;lt;==执行main.o提示不是二进制可执行文件</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi</span><br><span class="line">/usr/bin/ld: //usr/<span class="built_in">local</span>/lib/libglfw3.a(vulkan.c.o): undefined reference to symbol <span class="string">'dlclose@@GLIBC_2.2.5'</span></span><br><span class="line">//lib/x86_64-linux-gnu/libdl.so.2: error adding symbols: DSO missing from <span class="built_in">command</span> line</span><br><span class="line">collect2: error: ld returned 1 <span class="built_in">exit</span> status</span><br></pre></td></tr></table></figure>
+<p>You may also need to add the linker options -ldl -lXinerama -lXcursor to get it to work correctly if you are getting undefined references to <strong>dlclose</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line"></span><br><span class="line">$ ./main.exec</span><br></pre></td></tr></table></figure>
+<p>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></p>
+<p>执行:</p>
+<p>$ ./main.exec</p>
+<blockquote>
+<p> 编译和链接GLEW</p>
+<p>对于用GCC编译的Linux用户建议使用这个命令行选项-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi。没有正确链接相应的库会产生 undefined reference(未定义的引用) 这个错误。</p>
+</blockquote>
+<p>/*</p>
+<p><strong>安装glut</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libglut-dev</span><br></pre></td></tr></table></figure>
+<p>沒有libglut-dev可以改用<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install freeglut3-dev</span><br></pre></td></tr></table></figure></p>
+<p>設定編譯參數與編譯<br>在這之前，我們需要一個測試範例，example.c 如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;GL/glut.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glutInit(&amp;argc, argv);</span><br><span class="line">	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);</span><br><span class="line">	glutInitWindowPosition(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">	glutInitWindowSize(<span class="number">300</span>, <span class="number">300</span>);</span><br><span class="line">	</span><br><span class="line">	glutCreateWindow(<span class="string">"OpenGL 3D View"</span>);</span><br><span class="line">	</span><br><span class="line">	init();</span><br><span class="line">	glutDisplayFunc(display);</span><br><span class="line">	</span><br><span class="line">	glutMainLoop();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClearColor(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>);</span><br><span class="line">	glMatrixMode(GL_PROJECTION);</span><br><span class="line">	glOrtho(<span class="number">-5</span>, <span class="number">5</span>, <span class="number">-5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">15</span>);</span><br><span class="line">	glMatrixMode(GL_MODELVIEW);</span><br><span class="line">	gluLookAt(<span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	glClear(GL_COLOR_BUFFER_BIT);</span><br><span class="line">		</span><br><span class="line">	glColor3f(<span class="number">1.0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">	glutWireTeapot(<span class="number">3</span>);</span><br><span class="line">	</span><br><span class="line">	glFlush();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>有了測試範例、基礎編譯環境與各個 OpenGL 相關的函式庫之後，我們所需要做的就是告訴編譯器我們有安裝 OpenGL 函式庫，編譯程式時要連結這些函式庫。</p>
+<p>gcc example.c -o example.out -lGL -lGLU -lglut<br>因為我們安裝了 OpenGL Utility Toolkit ，它是建立在 OpenGL Utilities 與 OpenGL Library 之上，因此我們可以簡單連結 OpenGL Utility Toolkit 的函式庫就可以達到我們的目地了。下面的編譯參數跟上面的是同樣效果：</p>
+<p>gcc example.c -o example.out -lglut<br>下面簡單說明一下所使用的 gcc 參數</p>
+<p>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></p>
+<p>執行<br>接下來我們就可以來看看我們的結果，如果看到右圖，代表成功了!</p>
+<p>./example.out<br>*/</p>
+<p><strong>编译和链接GLEW</strong></p>
+<p>对于用GCC编译的Linux用户建议使用这个命令行选项-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi。没有正确链接相应的库会产生 undefined reference(未定义的引用) 这个错误。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get build-dep glew</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
+<p>==========</p>
+<p><strong>测试教程中的案例代码</strong></p>
+<p>复制 [代码hello_window.cpp][<a href="https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp" target="_blank" rel="noopener">https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp</a>]<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line">$ ls</span><br><span class="line">a.out  hello_window.cpp</span><br><span class="line">$ ./a.out</span><br><span class="line">Starting GLFW context, OpenGL 3.3</span><br></pre></td></tr></table></figure></p>
+<p>看到初始化窗口，代表成功。</p>
+<p><strong>编译后窗口透明问题</strong><br>虽然窗口初始化成功, 但不知道我的窗口为什么是透明的, 难道是ubuntu的原因吗？<br>Render部分再加入两行代码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glClearColor(<span class="number">0.2f</span>, <span class="number">0.3f</span>, <span class="number">0.3f</span>, <span class="number">1.0f</span>);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT);</span><br></pre></td></tr></table></figure></p>
+<p><strong>编译后libGLEW.so.2.1: No such file or directory 问题</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">..</span><br><span class="line">$ ./a.out</span><br><span class="line">./a.out: error <span class="keyword">while</span> loading shared libraries: libGLEW.so.2.1: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
+<p>查询<a href="[https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew]">stackoverflow libGLEW相关问题</a><br>得到libGLEW在lib64下, 于是便创建软link<br>$ sudo ln -s /usr/lib64/libGLEW.so.2.1 /usr/lib/libGLEW.so.2.1</p>
+<p>==========</p>
+<p>refwebsite:<br><a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/</a><br><a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment</a><br><a href="https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project" target="_blank" rel="noopener">https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project</a><br><a href="http://www.glfw.org/docs/3.0/quick.html" target="_blank" rel="noopener">http://www.glfw.org/docs/3.0/quick.html</a><br><a href="https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew" target="_blank" rel="noopener">https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew</a></p>
 
       
     </div>
@@ -390,9 +414,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
-          
-            <a href="/tags/UTF-8/" rel="tag"># UTF-8</a>
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
           
         </div>
       
@@ -405,8 +427,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/22/d3d-preparation/" rel="next" title="DirectX9.0 notes 1.3 预备知识">
-                <i class="fa fa-chevron-left"></i> DirectX9.0 notes 1.3 预备知识
+              <a href="/2017/12/20/hexo-in-different-computers/" rel="next" title="在不同机器上配置部署hexo">
+                <i class="fa fa-chevron-left"></i> 在不同机器上配置部署hexo
               </a>
             
           </div>
@@ -414,10 +436,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/23/add-git-bash-to-right-click-menu/" rel="prev" title="添加git bash到右键菜单">
-                添加git bash到右键菜单 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -469,17 +487,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -553,22 +562,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#issue"><span class="nav-number">1.</span> <span class="nav-text">issue:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hack"><span class="nav-number">2.</span> <span class="nav-text">hack:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#issue-1"><span class="nav-number">3.</span> <span class="nav-text">issue++:</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
