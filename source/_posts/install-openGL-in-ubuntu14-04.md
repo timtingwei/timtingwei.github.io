@@ -14,7 +14,12 @@ $ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXr
 需要：
 > * GLEW
 > * GLFW/GLFW3
-> *
+> * libgl1-mesa
+> * libglu1-mesa
+
+`ps: 不是完全明白这里链接库的对应关系`
+
+==========
 
 参考:[Howto_Install_OpenGL_Development_Environment][2]
 
@@ -32,13 +37,19 @@ sudo apt-get install libgl1-mesa-dev
 
 **安裝OpenGL Utilities**
 OpenGL Utilities 是一組建構於 OpenGL Library 之上的工具組，提供許多很方便的函式，使 OpenGL 更強大且更容易使用。 接下來我們安裝OpenGL Utilities
+
+> 在Linux下你需要链接libGL.so库文件，这需要添加-lGL到你的链接器设置中。如果找不到这个库你可能需要安装Mesa，NVidia或AMD的开发包，
+
 ```sh
 sudo apt-get install libglu1-mesa-dev
 ```
 **安裝GLFW/GLFW3**
 GLFW是一个专门针对OpenGL的C语言库，它提供了一些渲染物体所需的最低限度的接口。它允许用户创建OpenGL上下文，定义窗口参数以及处理用户输入，这正是我们需要的。
 
+GLFW可以从它官方网站的[下载页][6]上获取。
+
 参考网站[How to build & install GLFW 3 and use it in a Linux project][3]
+解压后,
 
 ```sh
 $ sudo apt-get install cmake
@@ -99,10 +110,6 @@ $ ./main.exec
 执行:
 
 $ ./main.exec
-
->  编译和链接GLEW
-
-> 对于用GCC编译的Linux用户建议使用这个命令行选项-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi。没有正确链接相应的库会产生 undefined reference(未定义的引用) 这个错误。
 
 
 ~~\**安装glut\*\*~~
@@ -191,9 +198,11 @@ https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Envi
 https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project
 http://www.glfw.org/docs/3.0/quick.html
 https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew
+http://www.glfw.org/download.html
 
 [1]:https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/
 [2]:https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment
 [3]:https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project
 [4]:http://www.glfw.org/docs/3.0/quick.html
 [5]:https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew
+[6]:http://www.glfw.org/download.html
