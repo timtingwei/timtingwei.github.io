@@ -126,7 +126,7 @@ sudo apt-get install freeglut3-dev
 void init();
 void display();
 
-int main(int argc, char* argv[])
+int main(int argc, char* argv[2])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
@@ -236,8 +236,8 @@ https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use
 http://www.glfw.org/docs/3.0/quick.html
 https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew
 
-[1]:[https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/]
-[2]:[https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment]
-[3]:[https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project]
-[4]:[http://www.glfw.org/docs/3.0/quick.html]
-[5]:[https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew]
+[1]:https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/
+[2]:https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment
+[3]:https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project
+[4]:http://www.glfw.org/docs/3.0/quick.html
+[5]:https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew
