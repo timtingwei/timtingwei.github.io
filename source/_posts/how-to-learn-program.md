@@ -1,19 +1,21 @@
 ---
 title: (转载)谈编程语言
 date: 2017-12-24 13:26:19
-tags: program, learn
+tags: 
+- program
+- learn 
 ---
 
 **文章目录**
-[(转载)Bruce Eckel：编程生涯](#(转载)Bruce-Eckel：编程生涯)
-[(转载)Peter Norvig：十年学会编程](#(转载)Peter-Norvig：十年学会编程)
+[Bruce Eckel：编程生涯](#Bruce-Eckel：编程生涯)
+[Peter Norvig：十年学会编程](#Peter-Norvig：十年学会编程)
 
 
-转载自[编程随想 - program think][https://program-think.blogspot.com/2012/05/weekly-share-5.html]关于编程的心态定位，实践方法经典， 对我有所启发的两篇。
+转载自[编程随想 - program think](https://program-think.blogspot.com/2012/05/weekly-share-5.html)关于编程的心态定位，实践方法经典， 对我有所启发的两篇。
 
 ----
 
-# (转载)Bruce Eckel：编程生涯
+# Bruce Eckel：编程生涯
 
 作者 Bruce Eckel 是编程界的大牛，著有大名鼎鼎的《Thinking in C++》和《Thinking in Java》。
 本文是他对程序员（尤其是新手）的忠告。
@@ -70,7 +72,7 @@ http://www.artima.com/weblogs/viewpost.jsp?thread=259358
 ------
 
 
-# (转载)Peter Norvig：十年学会编程
+# Peter Norvig：十年学会编程
 
 作者 Peter Norvig 是计算机科学家，Google 的研究总监。
 在本文中，Peter Norvig会告诉你：为什么急功近利地学习软件开发技术是没效果滴？

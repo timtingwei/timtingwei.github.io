@@ -1,5 +1,5 @@
 ---
-title: My First Post
+title: Markdown语法整理(不定期更新)
 date: 2017-11-21 13:31:03
 tags: "markdown"
 categories: 
@@ -18,6 +18,7 @@ In this post, I will focus on use of Markdown and hexo push.
 > 7. reference
 > 8. edit a formula
 > 9. draw a flow picture
+> * [补充](#补充)
 
 reference website: [Cmd Markdown reader](https://www.zybuluo.com/mdeditor#fn:latex)
 
@@ -118,6 +119,18 @@ cond(no)->op
 [1]: http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference
 [2]: https://timtingwei.github.io/
 
+------
+
+# 补充
+
+> * [实现页面内跳转](#实现页面内跳转)
+
+20171224之后补充但未作整理。本来可以将每个语法分成多个博客离散列出，但后来出于对博客页面和知识索引的考虑，还是放在一个post内，也许将来会又变动，但是先不提前优化。
+
+## 实现页面内跳转
+
+`[create an anchor](#anchors-in-markdown)`
 
 
+refwebsite:[Anchors in Markdown](https://gist.github.com/asabaylus/3071099)
 
