@@ -11,7 +11,7 @@ tags:
 [Peter Norvig：十年学会编程](#Peter-Norvig：十年学会编程)
 
 
-转载自[编程随想 - program think](https://program-think.blogspot.com/2012/05/weekly-share-5.html)关于编程的心态定位，实践方法经典， 对我有所启发的两篇。
+转载自[编程随想 - program think](https://program-think.blogspot.com/2012/05/weekly-share-5.html)整理的， 关于编程的心态定位和实践方法的文章，比较经典， 对我有所启发的两篇。
 
 ----
 
