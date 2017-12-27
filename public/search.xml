@@ -664,12 +664,37 @@
 <hr>
 <h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><blockquote>
 <ul>
+<li><a href="#背景色灰">背景色灰</a></li>
 <li><a href="#实现页面内跳转">实现页面内跳转</a></li>
+<li><a href="#删除线">删除线</a></li>
+<li><a href="#插入图片">插入图片</a></li>
+<li><a href="#标记文本颜色">标记文本颜色</a><br>20171224之后补充但未作整理。本来可以将每个语法分成多个博客离散列出，但后来出于对博客页面和知识索引的考虑，还是放在一个post内，也许将来会又变动，但是先不提前优化。</li>
 </ul>
 </blockquote>
-<p>20171224之后补充但未作整理。本来可以将每个语法分成多个博客离散列出，但后来出于对博客页面和知识索引的考虑，还是放在一个post内，也许将来会又变动，但是先不提前优化。</p>
+<h2 id="背景色灰"><a href="#背景色灰" class="headerlink" title="背景色灰"></a>背景色灰</h2><p>`gray background`</p>
+<p><code>gray background</code></p>
+<p>背景灰可以代替 反斜杠 \,去完成注释。这个很好用。原理估计和代码块差不多吧。</p>
 <h2 id="实现页面内跳转"><a href="#实现页面内跳转" class="headerlink" title="实现页面内跳转"></a>实现页面内跳转</h2><p><code>[create an anchor](#anchors-in-markdown)</code></p>
-<p>refwebsite:<a href="https://gist.github.com/asabaylus/3071099" target="_blank" rel="noopener">Anchors in Markdown</a></p>
+<p><a href="#anchors-in-markdown">create an anchor</a></p>
+<p>\===========<br>refwebsite:</p>
+<p><a href="https://gist.github.com/asabaylus/3071099" target="_blank" rel="noopener">Anchors in Markdown</a></p>
+<h3 id="anchors-in-markdown"><a href="#anchors-in-markdown" class="headerlink" title="anchors in markdown"></a>anchors in markdown</h3><pre><code>skip into this title
+</code></pre><h2 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h2><p><code>~~删除一句~~</code><br><del>删除一句</del></p>
+<p><code>~~删除</code><br><code>多行~~</code><br><del>删除<br>多行</del></p>
+<p><code>~~删除包含语法[mituh’s notes][timtingwei.github.io]~~</code><br><del>删除包含语法[mituh’s notes][timtingwei.github.io]</del></p>
+<p>====<br>不知道还有其他方法否？</p>
+<p>\==========<br>refwebsite:</p>
+<p><a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Markdown</a></p>
+<h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><p><code>![Logo](/images/logo.png)</code><br><img src="/images/logo.png" alt="Logo"></p>
+<p>\===========<br>refwebsite:</p>
+<p>hexo图片的其他用法：<a href="https://hexo.io/zh-cn/docs/asset-folders.html" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/asset-folders.html</a><br><a href="https://webapps.stackexchange.com/questions/29602/markdown-to-insert-and-display-an-image-on-github-repo" target="_blank" rel="noopener">https://webapps.stackexchange.com/questions/29602/markdown-to-insert-and-display-an-image-on-github-repo</a></p>
+<h2 id="标记文本颜色"><a href="#标记文本颜色" class="headerlink" title="标记文本颜色"></a>标记文本颜色</h2><p><code>&lt;span style=&quot;color:blue&quot;&gt;*This is Blue italic.*&lt;/span&gt;</code><br><span style="color:blue"><em>This is Blue italic.</em></span></p>
+<p><code>&lt;span style=&quot;color:red&quot;&gt;**This is Red Bold.**&lt;/span&gt;</code><br><span style="color:red"><strong>This is Red Bold.</strong></span></p>
+<p>相比之下,<br>italic 给人轻松的感觉，<br>blod有种警告意味。</p>
+<p>\===========<br>refwebsite:</p>
+<p><a href="https://stackoverflow.com/questions/35465557/how-to-apply-color-in-markdown" target="_blank" rel="noopener">https://stackoverflow.com/questions/35465557/how-to-apply-color-in-markdown</a></p>
+<h2 id="next-one"><a href="#next-one" class="headerlink" title="next one ?"></a>next one ?</h2><hr>
+<p>以上是我的个人笔记收录，markdown主要用来写笔记和写博客<br>其他有什么好玩的用法，欢迎指教。<br>timtingwei#hotmail.com</p>
 ]]></content>
       
         

@@ -123,14 +123,91 @@ cond(no)->op
 
 # 补充
 
+> * [背景色灰](#背景色灰)
 > * [实现页面内跳转](#实现页面内跳转)
-
+> * [删除线](#删除线)
+> * [插入图片](#插入图片)
+> * [标记文本颜色](#标记文本颜色)
 20171224之后补充但未作整理。本来可以将每个语法分成多个博客离散列出，但后来出于对博客页面和知识索引的考虑，还是放在一个post内，也许将来会又变动，但是先不提前优化。
+
+
+## 背景色灰
+\`gray background\`
+
+`gray background`
+
+背景灰可以代替 反斜杠 \\,去完成注释。这个很好用。原理估计和代码块差不多吧。
 
 ## 实现页面内跳转
 
 `[create an anchor](#anchors-in-markdown)`
 
+[create an anchor](#anchors-in-markdown)
 
-refwebsite:[Anchors in Markdown](https://gist.github.com/asabaylus/3071099)
+\===========
+refwebsite:
 
+[Anchors in Markdown](https://gist.github.com/asabaylus/3071099)
+
+
+### anchors in markdown
+	skip into this title
+
+
+## 删除线
+
+`~~删除一句~~`
+~~删除一句~~
+
+`~~删除`
+`多行~~`
+~~删除
+多行~~
+
+`~~删除包含语法[mituh’s notes][timtingwei.github.io]~~`
+~~删除包含语法\[mituh’s notes\]\[timtingwei.github.io\]~~
+
+====
+不知道还有其他方法否？
+
+\==========
+refwebsite:
+
+https://en.wikipedia.org/wiki/Markdown
+
+
+
+## 插入图片
+
+`![Logo](/images/logo.png)`
+![Logo](/images/logo.png)
+
+\===========
+refwebsite:
+
+hexo图片的其他用法：https://hexo.io/zh-cn/docs/asset-folders.html
+https://webapps.stackexchange.com/questions/29602/markdown-to-insert-and-display-an-image-on-github-repo
+
+## 标记文本颜色
+
+`<span style="color:blue">*This is Blue italic.*</span>`
+<span style="color:blue">*This is Blue italic.*</span>
+
+`<span style="color:red">**This is Red Bold.**</span>`
+<span style="color:red">**This is Red Bold.**</span>
+
+相比之下,
+italic 给人轻松的感觉，
+blod有种警告意味。
+
+\===========
+refwebsite:
+
+https://stackoverflow.com/questions/35465557/how-to-apply-color-in-markdown
+
+## next one ?
+
+---------------------------------------------------------------
+以上是我的个人笔记收录，markdown主要用来写笔记和写博客
+其他有什么好玩的用法，欢迎指教。
+timtingwei#hotmail.com
