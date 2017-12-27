@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OpenGL," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="mituh's notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="代码已托管在/timtingwei/LearnOpenGL 图形管线渲染哪几个阶段？顶点数据(Vertex data[])  -&amp;gt;  1, 顶点着色器(Vertex Shader) -&amp;gt;2, 形状(图元)装配(Shape Assembly) -&amp;gt;3, 几何着色器(Geometr">
+<meta name="keywords" content="OpenGL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="绘制三角形以及三个练习笔记">
+<meta property="og:url" content="https://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="代码已托管在/timtingwei/LearnOpenGL 图形管线渲染哪几个阶段？顶点数据(Vertex data[])  -&amp;gt;  1, 顶点着色器(Vertex Shader) -&amp;gt;2, 形状(图元)装配(Shape Assembly) -&amp;gt;3, 几何着色器(Geometry Shader) -&amp;gt;4, 光栅化(Rasterization) -&amp;gt;5, 片段着色器(F">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://timtingwei.github.io/images/vertex_attribute_pointer.png">
+<meta property="og:updated_time" content="2017-12-27T03:21:38.421Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="绘制三角形以及三个练习笔记">
+<meta name="twitter:description" content="代码已托管在/timtingwei/LearnOpenGL 图形管线渲染哪几个阶段？顶点数据(Vertex data[])  -&amp;gt;  1, 顶点着色器(Vertex Shader) -&amp;gt;2, 形状(图元)装配(Shape Assembly) -&amp;gt;3, 几何着色器(Geometry Shader) -&amp;gt;4, 光栅化(Rasterization) -&amp;gt;5, 片段着色器(F">
+<meta name="twitter:image" content="https://timtingwei.github.io/images/vertex_attribute_pointer.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/"/>
+
+
+
+
+
+  <title>绘制三角形以及三个练习笔记 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">绘制三角形以及三个练习笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T14:56:13+08:00">
+                2017-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>代码已托管在<a href="https://github.com/timtingwei/LearnOpenGL/tree/master/src/1.getting_started" target="_blank" rel="noopener">/timtingwei/LearnOpenGL</a></p>
+<h1 id="图形管线渲染哪几个阶段？"><a href="#图形管线渲染哪几个阶段？" class="headerlink" title="图形管线渲染哪几个阶段？"></a>图形管线渲染哪几个阶段？</h1><p>顶点数据(Vertex data[])  -&gt;</p>
+<blockquote>
+<p>1, <strong>顶点着色器</strong>(Vertex Shader) -&gt;<br>2, 形状(图元)装配(Shape Assembly) -&gt;<br>3, <strong>几何着色器</strong>(Geometry Shader) -&gt;<br>4, 光栅化(Rasterization) -&gt;<br>5, <strong>片段着色器</strong>(Fragment Shader) -&gt;<br>6, 测试与混合(Test And Blending)</p>
+</blockquote>
+<p>三个着色器可以自己定义。</p>
+<p><strong>顶点数据(Vertex data)：</strong></p>
+<blockquote>
+<ul>
+<li>Vertex是一个3D坐标的集合</li>
+<li>Vertex Data是用顶点属性(Vertex Attribute), 如位置Position, 颜色Color</li>
+</ul>
+</blockquote>
+<p><strong>顶点着色器(Vertex Shader)：</strong></p>
+<blockquote>
+<ul>
+<li>把3D坐标转换成另外一种3D坐标</li>
+<li>允许对Vertex Attribute做基本处理</li>
+</ul>
+</blockquote>
+<p><strong>片段着色器(Fragment Shader)：</strong></p>
+<blockquote>
+<ul>
+<li>计算一个像素最终的颜色</li>
+<li>着色器包含3D场景数据(光照，阴影，光的颜色)</li>
+</ul>
+</blockquote>
+<p><strong>Alpha测试和混合(Blending):</strong></p>
+<blockquote>
+<ul>
+<li>测试深度，反应前后。</li>
+<li>检查Alpha并混合，(同个片段着色器，渲染多个三角形时候的颜色可能不同)</li>
+</ul>
+</blockquote>
+<p>补充: 图元(Primitive):</p>
+<blockquote>
+<ul>
+<li>任何一个绘制指令的调用，都把图元传递给OpenGL。</li>
+<li>如GL_POINTS、GL_TRIANGLES、GL_LINE_STRIP。</li>
+</ul>
+</blockquote>
+<h1 id="绘制一个三角形"><a href="#绘制一个三角形" class="headerlink" title="绘制一个三角形"></a>绘制一个三角形</h1><h3 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h3><p>使用GLSL(OpenGL Shading Language)编写顶点着色器<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 330 core          <span class="comment">// 每个着色器起始于版本声明, core代表核心模式</span></span></span><br><span class="line"></span><br><span class="line">layout (location=<span class="number">0</span>) in vec3 aPos;      <span class="comment">// 设定输入变量的位置值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  gl_Position = vec4(aPos.x, aPos.y, aPos.z, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>为什么需要<strong>layout (location=0)</strong>设定位置值？</p>
+<blockquote>
+<ul>
+<li><strong>glVertexAttributPointer</strong>函数第一个参数指定配置顶点属性，而**layout (location=0) 定义了顶点某变量的position属性。</li>
+</ul>
+</blockquote>
+<p>相关内容in, out, uniform, type类型, 向量组合, main函数，会在下一节，<a href="https://timtingwei.github.io">着色器中</a>讲解</p>
+<h3 id="编译顶点着色器"><a href="#编译顶点着色器" class="headerlink" title="编译顶点着色器"></a>编译顶点着色器</h3><p>编写着色器源码后，</p>
+<blockquote>
+<p>1, 先创建着色器对象;<br>2, 再把源码附加到着色器对象上;<br>3, 编译并检查</p>
+</blockquote>
+<p>1, 创建顶点着色器对象<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> vertexShader;                         <span class="comment">// ID引用</span></span><br><span class="line">vertexShader = glCreateShader(GL_VERTEX_SHADER);   <span class="comment">// 传递着色器类型参数</span></span><br></pre></td></tr></table></figure></p>
+<p>2, 附源码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glShaderSource(vertexShader, <span class="number">1</span>, &amp;vertexShaderSource, <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure></p>
+<p><strong>glShaderSource</strong>函数的几个参数：</p>
+<blockquote>
+<p>0, 着色器对象<br>1, 传递的源码字符数量<br>2, 顶点着色器的真正源码<br>3, 先设置为NULL</p>
+</blockquote>
+<p>3, 编译<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">glCompileShader(vertexShader);</span><br><span class="line"><span class="comment">// 检查编译是否成功</span></span><br><span class="line"><span class="keyword">int</span> success;</span><br><span class="line"><span class="keyword">char</span> infoLog[<span class="number">512</span>];</span><br><span class="line">glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line"><span class="comment">// 如果不成功，用glGetShaderInfoLog获取信息, 存储再InfoLog中，打印</span></span><br><span class="line"><span class="keyword">if</span> &#123;!success&#125; &#123;</span><br><span class="line">  glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="片段着色器"><a href="#片段着色器" class="headerlink" title="片段着色器"></a>片段着色器</h3><p>同理顶点着色器，编写着色器源码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 330 core</span></span><br><span class="line"></span><br><span class="line">out vec4 FragColor;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  FragColor =  vec4(<span class="number">1.0f</span>, <span class="number">0.5f</span>, <span class="number">0.2f</span>, <span class="number">1.0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>片段着色器只有一个vec4作为out, 表示最终的输出颜色, 最后一个值是alpha量</p>
+<h3 id="编译片段着色器"><a href="#编译片段着色器" class="headerlink" title="编译片段着色器"></a>编译片段着色器</h3><p>1, 创建对象<br>2, 附加源码<br>3, 编译并检查</p>
+<p>自己重新写一遍, 并检查错误<br>1, 创建对象尝试<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> fragmentShader;</span><br><span class="line">glCreateShader(fragmentShader, GL_FRAGMENT_SHADER);   <span class="comment">// ERROR</span></span><br></pre></td></tr></table></figure></p>
+<p>1, <strong>改正</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> fragmentShader;</span><br><span class="line">glCreateShader(GL_FRAGMENT_SHADER);     <span class="comment">// DE<span class="doctag">BUG:</span>:不需要用着色器对象作为函数的参数，</span></span><br></pre></td></tr></table></figure></p>
+<p>查阅<a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateShader.xhtml" target="_blank" rel="noopener">khronos.org - glCreateShader</a></p>
+<blockquote>
+<ul>
+<li>Like buffer and texture objects, the name space for shader objects may be shared across a set of contexts, as long as the server sides of the contexts share the same address space. If the name space is shared across contexts, any attached objects and the data associated with those attached objects are shared as well.<br>会绑定上下文中的ID创建object, 而且同一ShaderType会被联系起来。</li>
+</ul>
+</blockquote>
+<p>2, 附源码尝试<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glShaderSource(<span class="number">1</span>, fragmentShader, fragmentSource, <span class="literal">NULL</span>)   <span class="comment">// ERROR</span></span><br></pre></td></tr></table></figure></p>
+<p>2, 改正<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glShaderSource(fragmentShader, <span class="number">1</span>, fragmentShaderSource, <span class="literal">NULL</span>);  <span class="comment">// DE<span class="doctag">BUG:</span>:交换参数位置</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<ol>
+<li>着色器对象</li>
+<li>传递源码字符的数量</li>
+</ol>
+</blockquote>
+<p>3, 尝试编译<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> success;    <span class="comment">// ERROR</span></span><br><span class="line">glCompileShader(GL_FRAGMENT_SHADER, fragmentShader, success); <span class="comment">// ERROR</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span>* infoLog[<span class="number">512</span>];                                <span class="comment">// ERROR</span></span><br><span class="line"><span class="keyword">if</span> (!success) &#123;</span><br><span class="line">  <span class="comment">// 失败把报错内容储存再infoLog中输出</span></span><br><span class="line">  glGetShaderinfoLog(fragmentShader, &amp;success, &amp;infoLog);   <span class="comment">// ERROR</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"COMPILE::ERROR::FRAGEMENT::SHADER"</span> </span><br><span class="line">            &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3, 改正<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">glCompileShader(fragmentShader);     <span class="comment">// DE<span class="doctag">BUG:</span>:只要着色器对象一个参数</span></span><br><span class="line"><span class="keyword">int</span> success;                         <span class="comment">// DE<span class="doctag">BUG:</span>: success是一个int类型</span></span><br><span class="line"><span class="keyword">char</span> infoLog[<span class="number">512</span>];                   <span class="comment">// DE<span class="doctag">BUG:</span>: char 并非 unsigned cha*</span></span><br><span class="line">glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &amp;success);   <span class="comment">// DE<span class="doctag">BUG:</span>:获取success在先，才能对success做判断</span></span><br><span class="line"><span class="keyword">if</span> (!success) &#123;</span><br><span class="line">  <span class="comment">// 失败输出</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="创建着色器程序"><a href="#创建着色器程序" class="headerlink" title="创建着色器程序"></a>创建着色器程序</h3><p>绘制图元时，使用的是glUseProgram(shaderProgram), 因此，先要创建着色器程序</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> shaderProgram;</span><br><span class="line">shaderProgram = glCreateProgram();</span><br></pre></td></tr></table></figure>
+<h3 id="链接着色器对象"><a href="#链接着色器对象" class="headerlink" title="链接着色器对象"></a>链接着色器对象</h3><p>两个着色器对象要链接。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glAttachShader(shaderProgram, vertexShader);</span><br><span class="line">glAttachShader(shaderProgram, fragmentShader);</span><br><span class="line">glLinkProgram(shaderProgram);</span><br></pre></td></tr></table></figure></p>
+<h3 id="编译着色程序"><a href="#编译着色程序" class="headerlink" title="编译着色程序"></a>编译着色程序</h3><p>与之前的着色器编译原理相同，只是调用函数和参数变量改变了。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">glGetProgramiv(shaderProgram, GL_LINK_STATUS, &amp;success);</span><br><span class="line"><span class="keyword">if</span> (!success) &#123;</span><br><span class="line">  glGetProgramInfoLog(shaderProgram, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PROGRAM::LINKING_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>之后可以glUseProgram函数，激活程序对象。激活后，着色器调用和渲染调用都会使用这个程序对象。</p>
+<h3 id="删除着色器"><a href="#删除着色器" class="headerlink" title="删除着色器"></a>删除着色器</h3><p>完成以上几步后不要忘记删除着色器<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glDeleteShader(vertexShader);</span><br><span class="line">glDeleteShader(fragmentShader);</span><br></pre></td></tr></table></figure></p>
+<h3 id="输入顶点以及索引"><a href="#输入顶点以及索引" class="headerlink" title="输入顶点以及索引"></a>输入顶点以及索引</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 顶点输入</span></span><br><span class="line">GLfloat vertices[] = &#123;</span><br><span class="line">  <span class="number">0.5f</span>,   <span class="number">0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右上角</span></span><br><span class="line">  <span class="number">0.5f</span>,  <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右下角</span></span><br><span class="line">  <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左下角</span></span><br><span class="line">  <span class="number">-0.5f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span>     <span class="comment">// 左上角</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>赋值array的时候, 不要忘记{};</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 顶点索引</span></span><br><span class="line">GLuint indices[] = &#123;</span><br><span class="line">  <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>                <span class="comment">// 第一个三角形</span></span><br><span class="line">  <span class="comment">// ...                 // 可根据vertices数组, 建立多组索引</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="创建和绑定顶点数组对象-VAO"><a href="#创建和绑定顶点数组对象-VAO" class="headerlink" title="创建和绑定顶点数组对象(VAO)"></a><strong>创建和绑定顶点数组对象(VAO)</strong></h3><p>VAO = Vertex Array Object</p>
+<p>功能:</p>
+<blockquote>
+<ul>
+<li>随后的顶点属性调用都会储存在这个VAO之中。</li>
+<li>使得在不同顶点数据和属性设置之间切换变得简单。</li>
+</ul>
+</blockquote>
+<p><strong>存储内容</strong>:</p>
+<blockquote>
+<ul>
+<li>glEnableVertexAttribArray和glDisableVertexAttribArray的调用。</li>
+<li>通过glVertexAttribPointer设置的顶点属性配置。</li>
+<li>通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。</li>
+</ul>
+</blockquote>
+<p>使用注意:</p>
+<blockquote>
+<ul>
+<li><strong>先VAO，再绑定和设置VBO, EBO 以及设置顶点属性指针</strong></li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GLuint VAO;</span><br><span class="line">glGenVertexArrays(<span class="number">1</span>, &amp;VAO);   <span class="comment">// 创建VAO对象</span></span><br><span class="line">glBindVertexArray(VAO);       <span class="comment">// 绑定顶点数组对象</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建和绑定顶点缓冲对象-VBO"><a href="#创建和绑定顶点缓冲对象-VBO" class="headerlink" title="创建和绑定顶点缓冲对象(VBO)"></a><strong>创建和绑定顶点缓冲对象(VBO)</strong></h3><p>OpenGL如何解释顶点数据的内存，并指定其如何发送给显卡。</p>
+<p>作用:</p>
+<blockquote>
+<ul>
+<li>通过VBO(Vertex Buffer Object)管理这个内存，它会在GPU内存中存储大量顶点。</li>
+<li>一次性发送大量数据到显卡上，而不是每个顶点发送一次。CPU发到显卡上速度慢，因此，一次发送多个比较好。而发送过去之后顶点着色器又能够立即访问。</li>
+</ul>
+</blockquote>
+<p><span style="color:blue"><em>我想这个过程应该是发生图形管线渲染的第一个阶段，是顶点数据和顶点着色器如何对接？就是依靠CPU发送到显卡上</em> </span><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GLuint VBO;</span><br><span class="line">glGenBuffer(<span class="number">1</span>, &amp;VBO);           <span class="comment">// 创建</span></span><br><span class="line"><span class="comment">// 把顶点数组复制到缓存中提供OpenGL使用</span></span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure></p>
+<h3 id="索引缓冲对象-EBO"><a href="#索引缓冲对象-EBO" class="headerlink" title="索引缓冲对象(EBO)"></a><strong>索引缓冲对象(EBO)</strong></h3><p>可以创建不同的索引数组，而使用同一个顶点数组。如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> indices[] = &#123; <span class="comment">// 注意索引从0开始! </span></span><br><span class="line">    <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="comment">// 第一个三角形</span></span><br><span class="line">    <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>  <span class="comment">// 第二个三角形</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GLuint EBO;</span><br><span class="line">glGenBuffer(<span class="number">1</span>, &amp;EBO);                <span class="comment">// 创建</span></span><br><span class="line"><span class="comment">// 把顶点索引复制到缓存中提供OpenGL使用</span></span><br><span class="line">glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);</span><br><span class="line">glBufferData(GL_ELEMENT_ARRAY_BUFFER, <span class="keyword">sizeof</span>(indices), indices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+<h3 id="设置顶点属性"><a href="#设置顶点属性" class="headerlink" title="设置顶点属性"></a><strong>设置顶点属性</strong></h3><p><img src="/images/vertex_attribute_pointer.png" alt="vertex_attribute_pointer">    </p>
+<p>// 顶点属性默认是禁用的，要用glEnableVertexAttribArray函数开启。</p>
+<p>输入的参数顶点属性的位置值。还记得之前的 <span style="color:red"><strong>layout (location=0) in vec3 xx</strong></span> 吗？ </p>
+<h3 id="绘制图元"><a href="#绘制图元" class="headerlink" title="绘制图元"></a>绘制图元</h3><p>glDrawArrays();</p>
+<blockquote>
+<ul>
+<li>使用当前绑定的顶点缓存对象进行绘制<br>glDrawElements()</li>
+<li>使用当前绑定的索引缓冲对象中的索引进行绘制</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的顶点缓存对象进行绘制</span></span><br><span class="line">glDrawArrays(GL\_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的索引缓冲对象中的索引进行绘制</span></span><br><span class="line">glDrawElements(GL_TRIANGLES, <span class="number">6</span>, GL\_UNSIGNED\_INT, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<hr>
+<p>1.<br>添加加更多顶点到数据中，使用glDrawArrays，尝试绘制两个彼此相连的三角形</p>
+<p>两种绘制方式的区别</p>
+<ol>
+<li>创建相同的两个三角形，但对它们的数据使用不同的VAO和VBO<br>// 放在同一个数组中，但需要各自绑定和各自绘制， 也可以匹配不同的顶点数组</li>
+</ol>
+<p>3.创建两个着色器程序，第二个程序使用一个不同的片段着色器，输出黄色；再次绘制这两个三角形，让其中一个输出为黄色</p>
+<p>// 放在同一个数组中，但需要各自绑定和各自绘制， 也可以匹配不同的顶点数组<br>// 注意：片段着色器不能放在数组里。<br>// 顶点着色器，片段着色器attach+link成program, 着色器需要创建，绑定源码，编译，检查编译四个步骤。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 片段着色器0</span></span><br><span class="line"><span class="keyword">const</span> GLchar* fragmentShaderSource0 = <span class="string">"#version 330 core\n"</span></span><br><span class="line">    <span class="string">"out vec4 color;\n"</span></span><br><span class="line">    <span class="string">"void main() &#123;\n"</span></span><br><span class="line">    <span class="string">"color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"</span>   <span class="comment">// orange</span></span><br><span class="line">    <span class="string">"&#125;\n\0"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片段着色器1</span></span><br><span class="line"><span class="keyword">const</span> GLchar* fragmentShaderSource1 = <span class="string">"#version 330 core\n"</span></span><br><span class="line">    <span class="string">"out vec4 color;\n"</span></span><br><span class="line">    <span class="string">"void main() &#123;\n"</span></span><br><span class="line">    <span class="string">"color = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"</span>   <span class="comment">// yellow</span></span><br><span class="line">    <span class="string">"&#125;\n\0"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建片段着色器</span></span><br><span class="line">  GLuint fragmentShaderOrange;</span><br><span class="line">  GLuint fragmentShaderYellow;</span><br><span class="line">  GLuint shaderProgramOrange;</span><br><span class="line">  GLuint shaderProgramYellow;</span><br><span class="line">  fragmentShaderOrange = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line">  fragmentShaderYellow = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line">  shaderProgramOrange = glCreateProgram();</span><br><span class="line">  shaderProgramYellow = glCreateProgram();</span><br><span class="line">  <span class="comment">// ===========编译第一个片段着色器===================</span></span><br><span class="line">  <span class="comment">// 源码附加到着色器对象上</span></span><br><span class="line">  glShaderSource(fragmentShaderOrange, <span class="number">1</span>, &amp;fragmentShaderSource0, <span class="literal">NULL</span>);</span><br><span class="line">  glCompileShader(fragmentShaderOrange);</span><br><span class="line">  <span class="comment">// 检测glComplieShader是否编译成功</span></span><br><span class="line">  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ===========编译第二个片段黄色着色器===================</span></span><br><span class="line">  <span class="comment">// 源码附加到着色器对象上</span></span><br><span class="line">  glShaderSource(fragmentShaderYellow, <span class="number">1</span>, &amp;fragmentShaderSource1, <span class="literal">NULL</span>);</span><br><span class="line">  glCompileShader(fragmentShaderYellow);</span><br><span class="line">  <span class="comment">// 检测glComplieShader是否编译成功</span></span><br><span class="line">  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 把两个着色器对象链接到用来渲染的两个着色程序中</span></span><br><span class="line">  glAttachShader(shaderProgramOrange, vertexShader);</span><br><span class="line">  <span class="comment">// =====连接第一个片段着色器=====</span></span><br><span class="line">  glAttachShader(shaderProgramOrange, fragmentShaderOrange);</span><br><span class="line">  glLinkProgram(shaderProgramOrange);</span><br><span class="line">  glGetProgramiv(shaderProgramOrange, GL_LINK_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetProgramInfoLog(shaderProgramOrange, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PROGRAM::LINKING_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// =====连接第二个片段着色器=====</span></span><br><span class="line">  glAttachShader(shaderProgramYellow, vertexShader);</span><br><span class="line">  glAttachShader(shaderProgramYellow, fragmentShaderYellow);</span><br><span class="line">  glLinkProgram(shaderProgramYellow);</span><br><span class="line">  glGetProgramiv(shaderProgramYellow, GL_LINK_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetProgramInfoLog(shaderProgramYellow, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PROGRAM::LINKING_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 删除着色器</span></span><br><span class="line">  glDeleteShader(vertexShader);</span><br><span class="line">  glDeleteShader(fragmentShaderOrange);</span><br><span class="line">  glDeleteShader(fragmentShaderYellow);</span><br></pre></td></tr></table></figure>
+<p>=======</p>
+<p>refwebsite:<br><a href="https://learnopengl-cn.github.io/01%20Getting%20started/04%20Hello%20Triangle/" target="_blank" rel="noopener">你好三角形 - learnopengl-CN</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/24/how-to-learn-program/" rel="next" title="(转载)谈编程语言">
+                <i class="fa fa-chevron-left"></i> (转载)谈编程语言
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/27/gitignore-invalid/" rel="prev" title="gitignore-invalid">
+                gitignore-invalid <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/timtingwei" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.douban.com/people/timtingwei/" target="_blank" title="douban">
+                    
+                      <i class="fa fa-fw fa-globe"></i>douban</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图形管线渲染哪几个阶段？"><span class="nav-number">1.</span> <span class="nav-text">图形管线渲染哪几个阶段？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绘制一个三角形"><span class="nav-number">2.</span> <span class="nav-text">绘制一个三角形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#顶点着色器"><span class="nav-number">2.0.1.</span> <span class="nav-text">顶点着色器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译顶点着色器"><span class="nav-number">2.0.2.</span> <span class="nav-text">编译顶点着色器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#片段着色器"><span class="nav-number">2.0.3.</span> <span class="nav-text">片段着色器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译片段着色器"><span class="nav-number">2.0.4.</span> <span class="nav-text">编译片段着色器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建着色器程序"><span class="nav-number">2.0.5.</span> <span class="nav-text">创建着色器程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链接着色器对象"><span class="nav-number">2.0.6.</span> <span class="nav-text">链接着色器对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译着色程序"><span class="nav-number">2.0.7.</span> <span class="nav-text">编译着色程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除着色器"><span class="nav-number">2.0.8.</span> <span class="nav-text">删除着色器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入顶点以及索引"><span class="nav-number">2.0.9.</span> <span class="nav-text">输入顶点以及索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建和绑定顶点数组对象-VAO"><span class="nav-number">2.0.10.</span> <span class="nav-text">创建和绑定顶点数组对象(VAO)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建和绑定顶点缓冲对象-VBO"><span class="nav-number">2.0.11.</span> <span class="nav-text">创建和绑定顶点缓冲对象(VBO)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#索引缓冲对象-EBO"><span class="nav-number">2.0.12.</span> <span class="nav-text">索引缓冲对象(EBO)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置顶点属性"><span class="nav-number">2.0.13.</span> <span class="nav-text">设置顶点属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制图元"><span class="nav-number">2.0.14.</span> <span class="nav-text">绘制图元</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
