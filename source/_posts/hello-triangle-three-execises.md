@@ -292,32 +292,83 @@ glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 ```
 
 
-
+	
 ### **设置顶点属性**
 	
 ![vertex_attribute_pointer](/images/vertex_attribute_pointer.png)	
 
-// 顶点属性默认是禁用的，要用glEnableVertexAttribArray函数开启。
+> * 位置数据被储存为32位(4字节)浮点值 => siezeof(flaot) = 4 types = 32bits
+> * 每个位置包含3个这样的值
+> * 没有空隙, 紧密排列。
+> * 数据中的第一个值再缓冲开始位置。
 
-输入的参数顶点属性的位置值。还记得之前的 <span style="color:red">**layout (location=0) in vec3 xx**</span> 吗？ 
+```cpp
+glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+glEnableVertexattribArray(0);    // 开启位置为0的顶点属性
+```
+
+**glVertexAttribPointer参数**
+> 1, 要配置的顶点属性的位置值。输入的参数顶点属性的位置值。还记得之前的 <span style="color:red">**layout (location=0) in vec3 xx**</span> 吗？ 
+> 2, 顶点属性的大小。 vec3 => 3个值组成
+> 3, 指定数据类型。 (GLSL中vec*都是由浮点数值组成的)
+> 4, 是否被标准化。 GL_TRUE代表是，所有数据(对有符号数据是-1)映射到0到1之间;
+> 5, 步长，这个参数的意思简单说就是从这个属性第二次出现的地方到整个数组0位置之间有多少字节。因为是紧密排列设置成0也可以，OpenGL自己会设置。
+> 6. 偏移量。位置数据在数组开头就设置成0
+
+
+顶点属性默认是禁用的，要用glEnableVertexAttribArray函数开启。
+输入的参数顶点属性的位置值。<span style="color:red">**layout (location=0) in vec3 xx**</span> 
+
 ### 绘制图元
 
+`在主循环内部绘制图元。`
 
+1, 激活程序对象
+2, 绑定缓存对象
+3, 绘制
+4, 解绑缓存对象
+
+**绘制两种方式：**
 glDrawArrays();
 > * 使用当前绑定的顶点缓存对象进行绘制
 glDrawElements()
 > * 使用当前绑定的索引缓冲对象中的索引进行绘制
 
+第一种，
 ```cpp
+// 激活程序对象
+glUseProgram(shaderProgram);
+// 绑定顶点数组对象
 glBindVertexArray(VAO);
 // 使用当前绑定的顶点缓存对象进行绘制
-glDrawArrays(GL\_TRIANGLES, 0, 3);
+glDrawArrays(GL_TRIANGLES, 0, 3);
+// 解绑缓存对象
+glBindVertArray(0);
+```
+第二种,
+```cpp
+// 激活程序对象
+glUseProgram(shaderProgram);
+// 绑定顶点数组对象 
 glBindVertexArray(VAO);
 // 使用当前绑定的索引缓冲对象中的索引进行绘制
-glDrawElements(GL_TRIANGLES, 6, GL\_UNSIGNED\_INT, 0);
+glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+// 解绑缓存对象
+glBindVertArray(0);
 ```
 
+<span style="color:blue">*VAO有种结合VBO+EBO的意思*</span>
+**再回顾一遍它的存储内容**:
+> * glEnableVertexAttribArray和glDisableVertexAttribArray的调用。
+> * 通过glVertexAttribPointer设置的顶点属性配置。
+> * 通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。
 
+`退出循环后删除对象，释放缓存`
+```cpp
+glDeleteVertexArray(1, &VAO);
+glDeleteBuffers(1, &VBO);
+glDeleteBuffers(1, &EBO);
+```
 
 -----
 

@@ -90,7 +90,7 @@
 <meta property="og:description" content="代码已托管在/timtingwei/LearnOpenGL 图形管线渲染哪几个阶段？顶点数据(Vertex data[])  -&amp;gt;  1, 顶点着色器(Vertex Shader) -&amp;gt;2, 形状(图元)装配(Shape Assembly) -&amp;gt;3, 几何着色器(Geometry Shader) -&amp;gt;4, 光栅化(Rasterization) -&amp;gt;5, 片段着色器(F">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://timtingwei.github.io/images/vertex_attribute_pointer.png">
-<meta property="og:updated_time" content="2017-12-27T03:21:38.421Z">
+<meta property="og:updated_time" content="2017-12-27T04:35:29.648Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="绘制三角形以及三个练习笔记">
 <meta name="twitter:description" content="代码已托管在/timtingwei/LearnOpenGL 图形管线渲染哪几个阶段？顶点数据(Vertex data[])  -&amp;gt;  1, 顶点着色器(Vertex Shader) -&amp;gt;2, 形状(图元)装配(Shape Assembly) -&amp;gt;3, 几何着色器(Geometry Shader) -&amp;gt;4, 光栅化(Rasterization) -&amp;gt;5, 片段着色器(F">
@@ -474,16 +474,43 @@
 <h3 id="索引缓冲对象-EBO"><a href="#索引缓冲对象-EBO" class="headerlink" title="索引缓冲对象(EBO)"></a><strong>索引缓冲对象(EBO)</strong></h3><p>可以创建不同的索引数组，而使用同一个顶点数组。如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> indices[] = &#123; <span class="comment">// 注意索引从0开始! </span></span><br><span class="line">    <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="comment">// 第一个三角形</span></span><br><span class="line">    <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>  <span class="comment">// 第二个三角形</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GLuint EBO;</span><br><span class="line">glGenBuffer(<span class="number">1</span>, &amp;EBO);                <span class="comment">// 创建</span></span><br><span class="line"><span class="comment">// 把顶点索引复制到缓存中提供OpenGL使用</span></span><br><span class="line">glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);</span><br><span class="line">glBufferData(GL_ELEMENT_ARRAY_BUFFER, <span class="keyword">sizeof</span>(indices), indices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
 <h3 id="设置顶点属性"><a href="#设置顶点属性" class="headerlink" title="设置顶点属性"></a><strong>设置顶点属性</strong></h3><p><img src="/images/vertex_attribute_pointer.png" alt="vertex_attribute_pointer">    </p>
-<p>// 顶点属性默认是禁用的，要用glEnableVertexAttribArray函数开启。</p>
-<p>输入的参数顶点属性的位置值。还记得之前的 <span style="color:red"><strong>layout (location=0) in vec3 xx</strong></span> 吗？ </p>
-<h3 id="绘制图元"><a href="#绘制图元" class="headerlink" title="绘制图元"></a>绘制图元</h3><p>glDrawArrays();</p>
+<blockquote>
+<ul>
+<li>位置数据被储存为32位(4字节)浮点值 =&gt; siezeof(flaot) = 4 types = 32bits</li>
+<li>每个位置包含3个这样的值</li>
+<li>没有空隙, 紧密排列。</li>
+<li>数据中的第一个值再缓冲开始位置。</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), (<span class="keyword">void</span>*)<span class="number">0</span>);</span><br><span class="line">glEnableVertexattribArray(<span class="number">0</span>);    <span class="comment">// 开启位置为0的顶点属性</span></span><br></pre></td></tr></table></figure>
+<p><strong>glVertexAttribPointer参数</strong></p>
+<blockquote>
+<p>1, 要配置的顶点属性的位置值。输入的参数顶点属性的位置值。还记得之前的 <span style="color:red"><strong>layout (location=0) in vec3 xx</strong></span> 吗？<br>2, 顶点属性的大小。 vec3 =&gt; 3个值组成<br>3, 指定数据类型。 (GLSL中vec*都是由浮点数值组成的)<br>4, 是否被标准化。 GL_TRUE代表是，所有数据(对有符号数据是-1)映射到0到1之间;<br>5, 步长，这个参数的意思简单说就是从这个属性第二次出现的地方到整个数组0位置之间有多少字节。因为是紧密排列设置成0也可以，OpenGL自己会设置。</p>
+<ol>
+<li>偏移量。位置数据在数组开头就设置成0</li>
+</ol>
+</blockquote>
+<p>顶点属性默认是禁用的，要用glEnableVertexAttribArray函数开启。<br>输入的参数顶点属性的位置值。<span style="color:red"><strong>layout (location=0) in vec3 xx</strong></span> </p>
+<h3 id="绘制图元"><a href="#绘制图元" class="headerlink" title="绘制图元"></a>绘制图元</h3><p><code>在主循环内部绘制图元。</code></p>
+<p>1, 激活程序对象<br>2, 绑定缓存对象<br>3, 绘制<br>4, 解绑缓存对象</p>
+<p><strong>绘制两种方式：</strong><br>glDrawArrays();</p>
 <blockquote>
 <ul>
 <li>使用当前绑定的顶点缓存对象进行绘制<br>glDrawElements()</li>
 <li>使用当前绑定的索引缓冲对象中的索引进行绘制</li>
 </ul>
 </blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的顶点缓存对象进行绘制</span></span><br><span class="line">glDrawArrays(GL\_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的索引缓冲对象中的索引进行绘制</span></span><br><span class="line">glDrawElements(GL_TRIANGLES, <span class="number">6</span>, GL\_UNSIGNED\_INT, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>第一种，<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 激活程序对象</span></span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line"><span class="comment">// 绑定顶点数组对象</span></span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的顶点缓存对象进行绘制</span></span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// 解绑缓存对象</span></span><br><span class="line">glBindVertArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<p>第二种,<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 激活程序对象</span></span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line"><span class="comment">// 绑定顶点数组对象 </span></span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的索引缓冲对象中的索引进行绘制</span></span><br><span class="line">glDrawElements(GL_TRIANGLES, <span class="number">6</span>, GL_UNSIGNED_INT, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// 解绑缓存对象</span></span><br><span class="line">glBindVertArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<p><span style="color:blue"><em>VAO有种结合VBO+EBO的意思</em></span><br><strong>再回顾一遍它的存储内容</strong>:</p>
+<blockquote>
+<ul>
+<li>glEnableVertexAttribArray和glDisableVertexAttribArray的调用。</li>
+<li>通过glVertexAttribPointer设置的顶点属性配置。</li>
+<li>通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。</li>
+</ul>
+</blockquote>
+<p><code>退出循环后删除对象，释放缓存</code><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glDeleteVertexArray(<span class="number">1</span>, &amp;VAO);</span><br><span class="line">glDeleteBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">glDeleteBuffers(<span class="number">1</span>, &amp;EBO);</span><br></pre></td></tr></table></figure></p>
 <hr>
 <p>1.<br>添加加更多顶点到数据中，使用glDrawArrays，尝试绘制两个彼此相连的三角形</p>
 <p>两种绘制方式的区别</p>
