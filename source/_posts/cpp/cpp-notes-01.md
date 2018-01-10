@@ -1,7 +1,7 @@
 ---
-title: C++笔记整理-01
+title: 持续性练习C++-01
 date: 2018-01-10 06:45:50
-tags:[C++, 位操作, new, delete, 运算符重载, 函数指针, 函数对象]
+tags: [C++, 位操作, new, delete, 运算符重载, 函数指针, 函数对象]
 ---
 
 接下来, 准备archive每天实际编程中遇到的C++问题，解决问题的过程， 以及得到的结果。以此来熟悉C++的各种特性。
@@ -94,7 +94,7 @@ T* Vector<T>::operator--(int i) {          // 重载后置--操作符
 
 对无序向量的遍历操作中, 统一对各个元素分别实施visit操作
 
-**函数指针**, 只读或者</span style="color:red">**局部性修改**</span>
+**函数指针**, 只读或者<span style="color:red">**局部性修改**</span>
 
 ```cpp
 template <typename T>
@@ -104,7 +104,7 @@ void Vector<T>::traverse(void (*visit)(T&))      // 函数指针
 ```
 
 
-**函数对象**, 可</span style="color:red">**全局性修改**</span>
+**函数对象**, 可<span style="color:red">**全局性修改**</span>
 
 ```cpp
 template <typename T> <template VST>
@@ -114,7 +114,7 @@ void Vector<T>::traverse(VST & visit) {        // 函数对象
 ```
 
 
-### </span style="color:red">**函数指针**</span>
+### <span style="color:red">**函数指针**</span>
 
 ```cpp
 int getLarger(const int& i1, const int& i2) {
@@ -230,7 +230,7 @@ F f2(int);           // Error:F是函数类型, 无法返回一个函数
 auto f1(int) -> int(*)(int*, int)
 ```
 
-### </span style="color:red">**函数对象**</span>
+### <span style="color:red">**函数对象**</span>
 
 #### 重载()
 说明这个对象, 他可以当作函数来使用。因此需要重载"()"
