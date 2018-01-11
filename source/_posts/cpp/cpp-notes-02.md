@@ -1,7 +1,7 @@
 ---
-title: 持续性练习C++-02
+title: C++ Zero To One 0.002
 date: 2018-01-10 13:01:23
-tags: [C++, 指针, 数组]
+tags: [C++, 指针, 数组, 常量成员函数, 模板]
 ---
 
 # 数组, 指针数组, 指向指针的指针的数组, ....
@@ -327,3 +327,88 @@ void print_arr_b(int*** ppArr) {
 对于简单的数组, 打印储存不同长度数组的数组, 需要更多的数据结构知识, 而且不同的算法还有好坏, 可见数据结构的重要性. 这部分的打印实现, 留作日后我数据结构解引用后的小试牛刀。
 ## **感想**
 即使从一个很小很简单的问题入手, 也能对自己有所提高, 计算机科学没有简单, 复杂是由简单构成的, 计算机科学承认复杂, 计算机科学尝试破译复杂。
+
+
+# 常量成员函数
+
+```cpp
+class MyClass {
+  int x = 0;
+ public:
+  int c = 5;
+  MyClass(int v) :x(v) {}
+  const int& get() const {return x;}   // 常量成员函数在是否为常量上可以重载
+  int& get() {return --x;}
+};
+```
+
+
+## 声明时引用符号总最靠近变量名
+## 为什么可以对a.get()赋值
+get()返回的是引用, 引用可作为左值, 且如果非常量引用的话,  该值可以被修改。
+
+## 在是否为成员函数上重载后如何匹配?
+成员函数在是否为常量函数上可以重载。如果对象实例化成const类型, 则匹配常量成员函数。
+
+## const int& get() const {return x;} 为什么返回类型需要const?
+常量函数返回数据成员, 编译器会将数据成员声明成const类型;
+
+## 什么是数据成员?
+MyClass类public中定义新成员测试是否为数据成员。
+
+```cpp
+//..
+int a = 5
+const int& get() const {return --a;}    // 错误：改变a的值, 
+```
+
+改变a的值无法通过编译, a为数据成员。
+
+在class中声明的, 无论是私有的还是公有的数据, 都是成员数据。如果在常量函数中返回, 会常量函数会被声明成const类型。
+
+
+
+# template基础用法
+
+## typename T 和 class T的区别
+在模板参数列表中, typename和class没有什么不同。 但每个参数类型前必须加上typename 或者 class
+
+`<<C++ Primer 5th>> P580 模板与泛型编程`
+
+## 特殊化模板 
+
+```cpp
+template <typename T>
+class mycontainer {
+  T element;
+ public:
+  mycontainer(const T e) : element(e) {}
+  T increase() {return ++element;}    // 递增element
+  T getElement() const {return element;}   // 返回element数据
+};
+```
+
+对char类型, 有特定的方法uppercase()大写化字母
+```cpp
+template <>
+class mycontainer<char> {
+  char element;
+ public:
+  mycontainer(const char e): element(e) {}
+  char increase() {return ++element;}    // 递增char
+  char getElement() const {return element;}   // 返回element数据
+  char uppercase() {
+    if (element <= 'z' && element >= 'a') {   // 是小写字母
+      element += 'A' - 'a'; return element;
+    }  // 返回元素
+    std::cout << "element " << element << "is not lower" << std::endl;
+    return element;
+  }
+};
+```
+
+格式如下
+```cpp
+ template <typename T> class mycontainer {...}
+ template <> class mycontainer<char> {...}
+ ```

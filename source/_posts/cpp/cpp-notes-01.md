@@ -1,12 +1,12 @@
 ---
-title: 持续性练习C++-01
+title: C++ Zero To One 0.001
 date: 2018-01-10 06:45:50
 tags: [C++, 位操作, new, delete, 运算符重载, 函数指针, 函数对象]
 ---
 
 接下来, 准备archive每天实际编程中遇到的C++问题，解决问题的过程， 以及得到的结果。以此来熟悉C++的各种特性。
 
-这样做或许会造成知识点散和广, 因此, 后续有必要有选择的，对某些特性进行深入剖析。先破破的来吧，以致于我不会从一个细节陷阱中出来，又陷入另一个。
+这样做或许会造成知识点离散, 因此, 后续有必要有选择的，对某些特性进行深入剖析。先破破的来吧，以致于我不会从一个细节陷阱中出来，又陷入另一个。
 
 
 ## 右移，左移
@@ -54,9 +54,21 @@ void copyFrom(T* tarr, int lo, int hi) {
   }
 ```
 
-为什么一定要为_elem分配空间?
+为什么一定要为_elem分配空间? 内存回收问题。 在C++ Primer中具体学习
 
 ## 同一if语句, 同一行中的后置递增
+```cpp
+void f() {
+  std::cout << "---- test in same if statement----" << std::endl;
+  int i = 1;
+  int arr[] = {0, 1, 2, 3, 4};
+  // 在同if, for, while中, 对某一变量i后置递增, i前后不变
+  if (equal(i++, arr[i])) std::cout << "equal\n"
+                                    << "now i = " << i << std::endl;
+}
+```
+同一if, for, while语句中, 后置递增返回当前值
+同一行, 不同语句, 当然会让值产生变化
 ## 重载后置++操作符号
 前置递增 operator++()
 后置递增, 以前置递增为基础 operator++(int i)
@@ -64,7 +76,7 @@ increment_and_decrement_operators.cpp
 
 递增运算符重载的返回类型:
 `为什么返回*_elem 而不是 *this??`
-递减运算符重载函数的返回类型, 的返回类型是int&
+递减运算符重载函数的返回类型是int&
 \*this的类型为Vector<int>, 而*_elem 的类型是int
 
 ```cpp
@@ -74,10 +86,6 @@ T& Vector<T>::operator--() {          // 重载前置--操作符
     _elem[i]--;                    // 对每个元素-1
   return *_elem;                    // 返回当前 *this or *_elem
 }
-
-// 为什么返回*_elem 而不是 *this??
-// 递减运算符重载函数的返回类型, 的返回类型是int&
-  //, *this的类型为Vector<int>, 而*_elem 的类型是int
 
 template <typename T>
 T* Vector<T>::operator--(int i) {          // 重载后置--操作符
@@ -90,7 +98,7 @@ T* Vector<T>::operator--(int i) {          // 重载后置--操作符
 `<<C++ Primer 5th>> P502, P421`
 
 
-## 函数指针 和 函数对象 未完成
+## 函数指针 和 函数对象
 
 对无序向量的遍历操作中, 统一对各个元素分别实施visit操作
 
@@ -291,7 +299,7 @@ void Vector<T>::traverse(VST visit) {
 ```
 
 ```cpp
-/*
+/* my error test
 template <typename T>
 void increase(Vector<T> V) {
   V.traverse(Increase(T& e));
