@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="动态规划Make it work  \Make it right - 递归Make it fast  - 迭代     – Kent Beck 动态规划: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式 123int fib(int n) &amp;#123;  return (2 &amp;gt; n)">
+<meta name="description" content="动态规划Make it work  \Make it right - 递归Make it fast  - 迭代     – Kent Beck 动态规划: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式 int fib(int n) &amp;#123;  return (2 &amp;gt; n) ? ">
 <meta name="keywords" content="数据结构,动态规划">
 <meta property="og:type" content="article">
 <meta property="og:title" content="邓俊辉&lt;&lt;数据结构&gt;&gt;-公开课-01-F">
 <meta property="og:url" content="https://timtingwei.github.io/2018/01/10/dsacpp/01-F/index.html">
 <meta property="og:site_name" content="mituh&#39;s notes">
-<meta property="og:description" content="动态规划Make it work  \Make it right - 递归Make it fast  - 迭代     – Kent Beck 动态规划: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式 123int fib(int n) &amp;#123;  return (2 &amp;gt; n) ? n : fib(n-1) + fib(n-2);&amp;#125; work, right, b">
+<meta property="og:description" content="动态规划Make it work  \Make it right - 递归Make it fast  - 迭代     – Kent Beck 动态规划: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式 int fib(int n) &amp;#123;  return (2 &amp;gt; n) ? n : fib(n-1) + fib(n-2);&amp;#125; work, right, but">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2018-01-11T08:05:03.523Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="邓俊辉&lt;&lt;数据结构&gt;&gt;-公开课-01-F">
-<meta name="twitter:description" content="动态规划Make it work  \Make it right - 递归Make it fast  - 迭代     – Kent Beck 动态规划: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式 123int fib(int n) &amp;#123;  return (2 &amp;gt; n) ? n : fib(n-1) + fib(n-2);&amp;#125; work, right, b">
+<meta name="twitter:description" content="动态规划Make it work  \Make it right - 递归Make it fast  - 迭代     – Kent Beck 动态规划: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式 int fib(int n) &amp;#123;  return (2 &amp;gt; n) ? n : fib(n-1) + fib(n-2);&amp;#125; work, right, but">
 
 
 
@@ -348,13 +348,13 @@
       
         <h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><p>Make it work  \<br>Make it right - 递归<br>Make it fast  - 迭代<br>     – Kent Beck</p>
 <p><code>动态规划</code>: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">2</span> &gt; n) ? n : fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">2</span> &gt; n) ? n : fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>work, right, but not fast.</p>
 <h1 id="封底估算"><a href="#封底估算" class="headerlink" title="封底估算"></a>封底估算</h1><p>$^36 = 2^25,  ==&gt; $^43 = 2^30 = (2^10)^3 = 10^9 flo = 1sec<br>$^5 = 10,     ==&gt; $^67 = 10^14 flo = 10^5 sec = 1 day</p>
 <h1 id="递归跟踪"><a href="#递归跟踪" class="headerlink" title="递归跟踪"></a>递归跟踪</h1><p>效率低的原因是递归实例被重复调用。</p>
-<p><code>解决方法A(记忆:memoization)</code><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_memoization</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> mem_lst[])</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 将已经计算的结果, 制成表备查</span></span><br><span class="line">  <span class="keyword">if</span> (is_exist(mem_lst[n])) &#123;</span><br><span class="line">    <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">2</span> &gt; n) &#123;mem_lst[n] = n;&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      mem_lst[n] = fib_memoization(n<span class="number">-1</span>, mem_lst) +</span><br><span class="line">          fib_memoization(n<span class="number">-2</span>, mem_lst);</span><br><span class="line">      <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>解决方法A(记忆:memoization)</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_memoization</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> mem_lst[])</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 将已经计算的结果, 制成表备查</span></span><br><span class="line">  <span class="keyword">if</span> (is_exist(mem_lst[n])) &#123;</span><br><span class="line">    <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">2</span> &gt; n) &#123;mem_lst[n] = n;&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      mem_lst[n] = fib_memoization(n<span class="number">-1</span>, mem_lst) +</span><br><span class="line">          fib_memoization(n<span class="number">-2</span>, mem_lst);</span><br><span class="line">      <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><code>解决方法B 动态规划</code><br>上楼梯。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_dynamic</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> f = <span class="number">0</span>, g = <span class="number">1</span>;          <span class="comment">// fib(0) = 0; fib(1) = 1;</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">0</span> &lt; n--) &#123;</span><br><span class="line">    g = g + f;</span><br><span class="line">    f = g - f;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> g;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_dynamic</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> f = <span class="number">0</span>, g = <span class="number">1</span>;          <span class="comment">// fib(0) = 0; fib(1) = 1;</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">0</span> &lt; n--) &#123;</span><br><span class="line">    g = g + f;</span><br><span class="line">    f = g - f;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> g;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>不太能理解, 先放着</p>
 <h1 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h1><p><code>子序列(Subsequence)</code>: 有序列中若干字符，按原相对次序构成</p>
 <p><code>最长公共子序列(Longest common subsequence)</code>，两个序列公共子序列的最长者</p>
@@ -483,7 +483,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

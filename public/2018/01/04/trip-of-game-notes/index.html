@@ -516,11 +516,11 @@
 <p>1, 定义常数<br>2, 代码生成<br>3, 内联代码<br>4, 对编译流程作出选择</p>
 </blockquote>
 <p>1, 定义常数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.1415926f;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> PI;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.1415926f;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> PI;</span><br></pre></td></tr></table></figure>
 <p>C++会选择inline函数+template定义常数，最终编译器会把它优化成一个常数，而没有对函数调用的消耗。</p>
-<p>经典的如：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> min(a, b) ((a&lt;b)?(a):(b))</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">const</span> T&amp; <span class="title">min</span><span class="params">(<span class="keyword">const</span> T &amp;a, <span class="keyword">const</span> T &amp;b)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a&lt;b ? a:b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经典的如：<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> min(a, b) ((a&lt;b)?(a):(b))</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">const</span> T&amp; <span class="title">min</span><span class="params">(<span class="keyword">const</span> T &amp;a, <span class="keyword">const</span> T &amp;b)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a&lt;b ? a:b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="9-3-2-const修饰以及类型转换"><a href="#9-3-2-const修饰以及类型转换" class="headerlink" title="9.3.2 const修饰以及类型转换"></a>9.3.2 const修饰以及类型转换</h3><h4 id="const修饰"><a href="#const修饰" class="headerlink" title="const修饰"></a>const修饰</h4><p>const chat<em> 而不是 C 的 char</em></p>
 <p>将函数参数写成const;<br>成员变量修饰成const, 只有在构造的时构建他们;<br>为成员函数增加一个const, 表达这个函数不会修改类的成员变量</p>
 <h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><p>C中几乎任何类型都可以任意转换，缘于C汇编的根。<br>C++用static_cast 以模板的语法表达看起来可以互相转换的类型互换</p>
@@ -779,7 +779,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

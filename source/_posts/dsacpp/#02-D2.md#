@@ -1,0 +1,130 @@
+---
+title: 邓俊辉<<数据结构>>-公开课-02-D2
+date: 2018-01-12 17:09:13
+tags:
+---
+```
+d2 有序向量: 二分查找
+
+	Vector::find(e, lo, hi);
+	Vector::search(e, lo, hi);
+
+	操作参数和接口语义类似。
+---------------------------------------------------------------------------------
+# 统一接口
+	>* ADT接口
+	======================== source code ==========================
+	// ADT接口
+	template <typename T>
+	Rank Vector<T>::search(T const& e, Rank lo, Rank hi) const {
+		std::srand(std::time(0));
+		return (std::rand() % 2) ?
+			binSearch(_elem, e, lo, hi)     // 二分查找算法
+			: fibSearch(_elem, e, lo, hi);  // fibonacci查找算法
+	}
+
+	template <typename T>
+	Rank Vector<T>::binSearch(T* elem, T const& e, Rank lo, Rank hi) const {
+		std::cout << "calling binSearch.... " << std::endl;
+		return lo;
+	}
+	
+	template <typename T>
+	Rank Vector<T>::fibSearch(T* elem, T const& e, Rank lo, Rank hi) const {
+		std::cout << "calling fibSearch... " << std::endl;
+		return lo;
+	}
+	================================================================
+	可以设计不同的算法, 根据数据的性质进算法的选择。
+---------------------------------------------------------------------------------
+# 语义约定
+
+	约点语义的好处就是, 能够更好的和其他代码配合。
+	>* 优点: 
+		维护自身 V.insert(1 + V.search(e), e)
+			即便是失败, 也给出插入新元素的位置。
+			若允许重复元素, 则每组也按照其插入的次序排序。
+	
+	>* 约点:
+		有序V[lo, hi), 不大于e的最后元素秩
+		-00 < e < V[lo], 返回 lo - 1 (左侧哨兵)
+		V[hi] < e < +00, 返回 hi - 1 (末元素, 右哨兵左邻)
+---------------------------------------------------------------------------------
+# 版本A: 原理
+
+	>* 减而治之
+		待查找区间分成三部分
+		S[lo, mi) <= S[mi] <= S(mi, hi)       // S[mi]轴点
+	
+	>* 三种比较情况
+		e < x: 左
+		x < e: 右
+		e = x: 命中             // 多个解?
+	
+	>* 二分(折半)策略
+		每经过至多两次比较, 或命中, 或将规模缩减一半
+
+# 版本A: 实现
+
+	>* 我的尝试
+		======= source code ======================================
+		// 二分查找: 版本A
+		/* my test code
+		template <typename T>
+		Rank Vector<T>::binSearch(T* elem, T const& e, Rank lo, Rank hi) const {
+			std::cout << "calling binSearch.... " << std::endl;
+			if (lo < hi) {   // 区间不存在, 没找到e
+				Rank mi = (lo + hi) >> 1;    // 中点秩
+				if (elem[mi] == e) return mi;     // 命中, 递归基
+				if (e < elem[mi]) {     // 在mid左侧
+					return (binSearch(elem, e, lo, mi));
+				} else { return binSearch(elem, e, mi + 1, hi);}
+			}
+			return -1;
+		}
+		*/
+		==========================================================
+		
+	>* 给出的版本
+		==================== source code ========================
+		template <typename T>
+		Rank Vector<T>::binSearch(T* elem, T const& e, Rank lo, Rank hi) const {
+			while (lo < hi) {    // 区间存在
+				Rank mi =  (lo + hi) >> 1;        // 取中点
+				if      (e < elem[mi]) hi = mi;      // 深入前半段查找
+				else if (elem[mi] < e) lo = mi + 1;  // 深入后半段查找
+				else                   return mi;    // 在mi命中
+			}
+		return -1;   // 查找失败
+		}
+		=========================================================
+		
+	>* 分析
+		1, 将递归变成while loop, 内部对hi, lo进行修改。
+		2, while循环通过hi, lo改变, 改变区间。
+		3, if...else 和 else...if什么差别？
+	
+	>* 技巧
+		善用 "<" 比较
+			因为数据结构画图理解时候, 都是从左向右, 小于号能直观的看出在哪个区间, 不容易出错。
+
+# 版本A: 实例与复杂度
+
+	>* S.search(8, 0, 7): 2 + 1 + 2 = 5, S[4]命中
+	>* S.search(3, 0, 7): 1 + 1 + 2 = 4, S[1]失败
+	
+	>* 线性递归 T(n) = T(n/2) + O(1) = O(logn), 大大由于顺序查找O(n)
+	递归跟踪: 轴点总取中点, 递归深度O(logn); 各个递归实例均 O(1)
+
+# 版本A：查找长度
+
+	>* 更为精细的评估算法性能:
+		考察关键码的比较次数, 查找长度(search length)
+	>* 成功与失败的最好, 最坏, 平均角度评估
+	>* 这个算法 = O(1.5logn)
+		向左节点 + 1, 向右节点 +2
+		n = 8
+		最好, 29/7 = 4+
+		最差, 36/8 = 4.5 = 1.5log28
+
+```

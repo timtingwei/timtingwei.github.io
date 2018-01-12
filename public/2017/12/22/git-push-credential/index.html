@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="使用.git-credentials保存验证1234$ cd$ touch .git-credentials$ emacs .git-credentialshttps://&amp;#123;timting***&amp;#125;:&amp;#123;********&amp;#125;@github.com 123">
+<meta name="description" content="使用.git-credentials保存验证$ cd$ touch .git-credentials$ emacs .git-credentialshttps://&amp;#123;timting***&amp;#125;:&amp;#123;********&amp;#125;@github.com $ cd ~/">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git Push免密码设置">
 <meta property="og:url" content="https://timtingwei.github.io/2017/12/22/git-push-credential/index.html">
 <meta property="og:site_name" content="mituh&#39;s notes">
-<meta property="og:description" content="使用.git-credentials保存验证1234$ cd$ touch .git-credentials$ emacs .git-credentialshttps://&amp;#123;timting***&amp;#125;:&amp;#123;********&amp;#125;@github.com 123$ cd ~/.emacs.d/$ git push -u origin masterUsername for">
+<meta property="og:description" content="使用.git-credentials保存验证$ cd$ touch .git-credentials$ emacs .git-credentialshttps://&amp;#123;timting***&amp;#125;:&amp;#123;********&amp;#125;@github.com $ cd ~/.emacs.d/$ git push -u origin masterUsername for &apos;https:">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-12-22T07:40:59.407Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git Push免密码设置">
-<meta name="twitter:description" content="使用.git-credentials保存验证1234$ cd$ touch .git-credentials$ emacs .git-credentialshttps://&amp;#123;timting***&amp;#125;:&amp;#123;********&amp;#125;@github.com 123$ cd ~/.emacs.d/$ git push -u origin masterUsername for">
+<meta name="twitter:description" content="使用.git-credentials保存验证$ cd$ touch .git-credentials$ emacs .git-credentialshttps://&amp;#123;timting***&amp;#125;:&amp;#123;********&amp;#125;@github.com $ cd ~/.emacs.d/$ git push -u origin masterUsername for &apos;https:">
 
 
 
@@ -346,21 +346,21 @@
       
 
       
-        <h2 id="使用-git-credentials保存验证"><a href="#使用-git-credentials保存验证" class="headerlink" title="使用.git-credentials保存验证"></a><strong>使用.git-credentials保存验证</strong></h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ touch .git-credentials</span><br><span class="line">$ emacs .git-credentials</span><br><span class="line">https://&#123;timting***&#125;:&#123;********&#125;@github.com</span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.emacs.d/</span><br><span class="line">$ git push -u origin master</span><br><span class="line">Username <span class="keyword">for</span> <span class="string">'https://github.com'</span>:   C-c C-c</span><br></pre></td></tr></table></figure>
+        <h2 id="使用-git-credentials保存验证"><a href="#使用-git-credentials保存验证" class="headerlink" title="使用.git-credentials保存验证"></a><strong>使用.git-credentials保存验证</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ touch .git-credentials</span><br><span class="line">$ emacs .git-credentials</span><br><span class="line">https://&#123;timting***&#125;:&#123;********&#125;@github.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.emacs.d/</span><br><span class="line">$ git push -u origin master</span><br><span class="line">Username <span class="keyword">for</span> <span class="string">'https://github.com'</span>:   C-c C-c</span><br></pre></td></tr></table></figure>
 <p><strong>去掉{}</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ emacs ~/.git-credentials</span><br><span class="line">https://timting***:********@github.com</span><br><span class="line">$ git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ cat ~/.gitconfig</span><br><span class="line">[user]</span><br><span class="line">	email = timtingwei@hotmail.com</span><br><span class="line">	name = timtingwei</span><br><span class="line">[credential]</span><br><span class="line">	helper = store</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ emacs ~/.git-credentials</span><br><span class="line">https://timting***:********@github.com</span><br><span class="line">$ git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ cat ~/.gitconfig</span><br><span class="line">[user]</span><br><span class="line">	email = timtingwei@hotmail.com</span><br><span class="line">	name = timtingwei</span><br><span class="line">[credential]</span><br><span class="line">	helper = store</span><br></pre></td></tr></table></figure>
 <p>现在push不再需要验证。</p>
 <p><strong>但我不希望用文件保存我的密码</strong></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ls -ld .git-credentials</span><br><span class="line">-rw------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ sudo chmod 200 .git-credentials</span><br><span class="line">[sudo] password <span class="keyword">for</span> tim: </span><br><span class="line">tim@htwt:~$ ls -ld .git-credentials</span><br><span class="line">--w------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ git config --global credential.helper store</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ls -ld .git-credentials</span><br><span class="line">-rw------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ sudo chmod 200 .git-credentials</span><br><span class="line">[sudo] password <span class="keyword">for</span> tim: </span><br><span class="line">tim@htwt:~$ ls -ld .git-credentials</span><br><span class="line">--w------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ git config --global credential.helper store</span><br></pre></td></tr></table></figure>
 <p>重启bash</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tim@htwt:~/.emacs.d$ git push origin master</span><br><span class="line">fatal: unable to open /home/tim/.git-credentials: Permission denied</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tim@htwt:~/.emacs.d$ git push origin master</span><br><span class="line">fatal: unable to open /home/tim/.git-credentials: Permission denied</span><br></pre></td></tr></table></figure>
 <p>=&gt; 修改权限的方法没用, 别人看不到, git也看不到。</p>
 <p>======</p>
-<h2 id="安全性存疑，因此改用设置cache"><a href="#安全性存疑，因此改用设置cache" class="headerlink" title="安全性存疑，因此改用设置cache"></a><strong>安全性存疑，因此改用设置cache</strong></h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm ~/.git-credentials</span><br></pre></td></tr></table></figure>
+<h2 id="安全性存疑，因此改用设置cache"><a href="#安全性存疑，因此改用设置cache" class="headerlink" title="安全性存疑，因此改用设置cache"></a><strong>安全性存疑，因此改用设置cache</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ rm ~/.git-credentials</span><br></pre></td></tr></table></figure>
 <p>通过设置git的cache的话可以让它记住密码之后自己设置一个cache有效时间 这样也一定程度保证了一些安全性。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global credential.helper cache</span><br><span class="line">\<span class="comment"># Set git to use the credential memory cache</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global credential.helper <span class="string">'cache --timeout=3600'</span></span><br><span class="line">\<span class="comment"># Set the cache to timeout after 1 hour (setting is in seconds)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper cache</span><br><span class="line">\<span class="comment"># Set git to use the credential memory cache</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper <span class="string">'cache --timeout=3600'</span></span><br><span class="line">\<span class="comment"># Set the cache to timeout after 1 hour (setting is in seconds)</span></span><br></pre></td></tr></table></figure>
 <p>======</p>
 <p>refwebsite:<br>[1], <a href="https://www.zhihu.com/question/31836445" target="_blank" rel="noopener">https://www.zhihu.com/question/31836445</a><br>[2], <a href="http://www.jianshu.com/p/f54053afecf2" target="_blank" rel="noopener">http://www.jianshu.com/p/f54053afecf2</a><br>[3], <a href="https://help.github.com/articles/caching-your-github-password-in-git/" target="_blank" rel="noopener">https://help.github.com/articles/caching-your-github-password-in-git/</a></p>
 
@@ -482,7 +482,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

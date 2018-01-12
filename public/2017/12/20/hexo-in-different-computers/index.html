@@ -354,23 +354,23 @@
 <li>利用git branch的特性，将静态和部署文件放在一个repo的两个branch中。<br>这里我选择了后者。</li>
 </ol>
 </blockquote>
-<p><strong>检查git：</strong><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git --version</span><br><span class="line"></span><br><span class="line">$ sudo apt-get install git-core</span><br></pre></td></tr></table></figure></p>
-<p><strong>安装npm(node package manager):</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line"></span><br><span class="line">$ sudo apt-get install npm</span><br></pre></td></tr></table></figure></p>
-<p><strong>安装node-legacy</strong><br><a href="https://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu" target="_blank" rel="noopener">装node-legacy原因</a><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install nodejs-legacy</span><br></pre></td></tr></table></figure></p>
-<p><strong>安装nvm</strong><br>nvm和npm一样是node的包的管理工具<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br></pre></td></tr></table></figure></p>
+<p><strong>检查git：</strong><br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git --version</span><br><span class="line"></span><br><span class="line">$ sudo apt-get install git-core</span><br></pre></td></tr></table></figure></p>
+<p><strong>安装npm(node package manager):</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line"></span><br><span class="line">$ sudo apt-get install npm</span><br></pre></td></tr></table></figure></p>
+<p><strong>安装node-legacy</strong><br><a href="https://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu" target="_blank" rel="noopener">装node-legacy原因</a><br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install nodejs-legacy</span><br></pre></td></tr></table></figure></p>
+<p><strong>安装nvm</strong><br>nvm和npm一样是node的包的管理工具<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br></pre></td></tr></table></figure></p>
 <p><strong>安装 Node.js</strong></p>
 <blockquote>
-<p>Node.js是一个能够在服务器端运行JavaScript的开放源代码、跨平台JavaScript运行环境。Node.js由Node.js基金会持有和维护，并与Linux基金会有合作关系。Node.js采用Google开发的V8运行代码，使用事件驱动、非阻塞和异步输入输出模型等技术来提高性能，可优化应用程序的传输量和规模。这些技术通常用于数据密集的事实应用程序。<br>visit <a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank" rel="noopener">node.js</a> for more information<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nvm install 4</span><br></pre></td></tr></table></figure></p>
+<p>Node.js是一个能够在服务器端运行JavaScript的开放源代码、跨平台JavaScript运行环境。Node.js由Node.js基金会持有和维护，并与Linux基金会有合作关系。Node.js采用Google开发的V8运行代码，使用事件驱动、非阻塞和异步输入输出模型等技术来提高性能，可优化应用程序的传输量和规模。这些技术通常用于数据密集的事实应用程序。<br>visit <a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank" rel="noopener">node.js</a> for more information<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ nvm install 4</span><br></pre></td></tr></table></figure></p>
 </blockquote>
-<p><strong>安装 hexo</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">$ npm install hexo -g</span><br></pre></td></tr></table></figure></p>
+<p><strong>安装 hexo</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">$ npm install hexo -g</span><br></pre></td></tr></table></figure></p>
 <p><strong>配置git</strong></p>
-<p>查看:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ls -al ~/.ssh</span><br><span class="line">ls: cannot access /home/tim/.ssh: No such file or directory</span><br></pre></td></tr></table></figure></p>
-<p>生成:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -b 4096 -C <span class="string">"timtingwei@hotmail.com"</span></span><br></pre></td></tr></table></figure></p>
-<p>确认:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-agent -s</span><br></pre></td></tr></table></figure></p>
-<p>添加:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-add ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure></p>
-<p>在github中添加SHH KEY<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ clip &lt; cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure></p>
+<p>查看:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ls -al ~/.ssh</span><br><span class="line">ls: cannot access /home/tim/.ssh: No such file or directory</span><br></pre></td></tr></table></figure></p>
+<p>生成:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -b 4096 -C <span class="string">"timtingwei@hotmail.com"</span></span><br></pre></td></tr></table></figure></p>
+<p>确认:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh-agent -s</span><br></pre></td></tr></table></figure></p>
+<p>添加:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh-add ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure></p>
+<p>在github中添加SHH KEY<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ clip &lt; cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure></p>
 <p>并在github setting中添加shh key</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi timtingwei! You<span class="string">'ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi timtingwei! You<span class="string">'ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
 <p><strong>利用git branch在不同机器上部署hexo</strong><br><a href="https://www.zhihu.com/question/21193762" target="_blank" rel="noopener">CrazyMilk的知乎回答</a></p>
 <blockquote>
 <ol>
@@ -385,10 +385,10 @@
 <li>日常改动:依次7,8.</li>
 </ol>
 </blockquote>
-<p>以上配置完成后, hexo s没反应<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br><span class="line">INFO  Start processing</span><br></pre></td></tr></table></figure></p>
-<p>hexo 3.0把服务器独立成个别模块，必须安装hexo-server才能使用。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-server --save</span><br><span class="line"></span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></p>
+<p>以上配置完成后, hexo s没反应<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br><span class="line">INFO  Start processing</span><br></pre></td></tr></table></figure></p>
+<p>hexo 3.0把服务器独立成个别模块，必须安装hexo-server才能使用。<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-server --save</span><br><span class="line"></span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></p>
 <p>安装后, 仍旧没有反应。</p>
-<p>考虑用<strong>静态模式</strong>, 服务器只处理public文件夹内的文件，而不处理文件变动。先要执行hexo generate<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line">$ hexo server -s</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure></p>
+<p>考虑用<strong>静态模式</strong>, 服务器只处理public文件夹内的文件，而不处理文件变动。先要执行hexo generate<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line">$ hexo server -s</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure></p>
 <p>refweb:<br><a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/Node.js</a><br><a href="http://www.jianshu.com/p/24cb74aeb0a3" target="_blank" rel="noopener">http://www.jianshu.com/p/24cb74aeb0a3</a><br><a href="https://www.zhihu.com/question/21193762" target="_blank" rel="noopener">https://www.zhihu.com/question/21193762</a><br><a href="https://hexo.io/zh-cn/docs/server.html" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/server.html</a><br><a href="https://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu" target="_blank" rel="noopener">https://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu</a></p>
 
       
@@ -500,7 +500,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
