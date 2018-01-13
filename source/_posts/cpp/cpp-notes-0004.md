@@ -201,4 +201,88 @@ tags: [C++]
 		3
 		45
 		============================================================
+-----------------------------------------------------------------------------------------------------
+# if...else 和 if...else if的区别
+	[cppd - if_else_elseif](https://github.com/timtingwei/dsacpp/blob/master/src/02/vector_ordered.cpp)
+	>* 问题
+		==================== source code ==========================
+		while (lo < hi) {    // 区间存在
+			Rank mi =  (lo + hi) >> 1;        // 取中点
+			if      (e < elem[mi]) hi = mi;      // 深入前半段查找
+			else if (elem[mi] < e) lo = mi + 1;  // 深入后半段查找
+			else                   return mi;    // 在mi命中
+		}
+		===========================================================
+		if, else...if 和 else是什么关系？
+		从结果上看, 二分查找, 在前半段找到至少比较1次, 后半段2次。
+	
+	>* if...else
+		====
+		int i = 6;
+		if (i == 5) {std::cout << "i = 5" << std::endl;
+		} else {
+			if (i > 5) {std::cout << "i > 5" << std::endl;
+			} else { std::cout << "i < 5" << std::endl;}
+		}
+		--------------------- ./a.out ---------------------------
+		i > 5
+		===
+	>* if...else if...else if
+		===
+		int i = 4;
+		if (i == 5) std::cout << "i = 5" << std::endl;
+		else if (i < 5) std::cout << "i < 5" << std::endl;
+		else if (i > 5) std::cout << "i > 5" << std::endl;
+		-----
+		i < 5
+		===
+	>* if
+		===
+		int i = 6;
+		if (i == 6) std::cout << "i = 6" << std::endl;
+		if (i != 7) std::cout << "i != 7" << std::endl;
+		----------------- ./a.out --------------------------
+		i =  6
+		i != 7
+		====================================================
+	>* 各自的作用域辨析
+		==================== source code ==========================
+		bool foo = false, bar = true, baz = true;
+		if (foo) {
+			// <- this block is only executed if 'foo' is true
+			std::cout << "if(foo)\n";
+		} else if (bar) {  // <- 'bar' is only checked if 'foo' is false
+			// <- this block only executed if 'foo' is false and 'bar' is true
+			std::cout << "else if(bar)\n";
+		} else {
+			// <- this block only executed if 'foo' and 'bar' are both false
+			std::cout << "else {}\n";
+		}
+		if (baz) {   // <- no 'else', so previous 'ifs' don't matter
+			// <- this block only executed if 'baz' is true.   foo/bar don't matter
+			std::cout << "if(baz)\n";
+		}
+		---------------------- ./a.out ----------------------------------
+		// else if(bar)
+		// if(baz)
+		==============================================================
+		我用的是Google cpplint的cpp书写方式, else要在两个反花括号之间。
+		这样更容易看到 if, else..if, else 是一个语句块, if又是单独的一个。
+	>* 总结
+		if(i < n), if...else(n < i), 这两个语句条件除了n = i互补。
+		如果有一个true, 则不会执行接下来的else; 
+		如果都为false, else执行, 条件相当于(n==i)为true.
+		
+		因此，对于二分查找来说, 
+		前半段找到只执行一次if, 后半段找到执行 if 和 if else两次比较, 还节省一次判等的操作。
+		
+		1, if...else if...else 可作三个并列关系的选择, 但运行时有先后顺序
+		2, if...else 多用 (cond)? expre1 : expre2; 代替
+		===== source code ======
+		int i = 4, count = 0;
+		(i == 4) ? count++
+			: i = 4;
+		========================
+		缺点是执行的语句只能为一个表达式且单行, 也不能return
+		3, if, if 语句多为两个condtions没有并列关系。
 ```
