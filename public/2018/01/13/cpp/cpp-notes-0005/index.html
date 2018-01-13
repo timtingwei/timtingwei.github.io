@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C++,const,常量指针,常量引用,protected,for," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="mituh's notes" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="1, protected能否被实例对象访问	&amp;gt;* 发现问题			重新实现Vector中, 要对ADT的access进行区别。		protected能否被实例对象访问?		protected能否被继承类访问?	&amp;gt;* 尝试		=================== source code ===">
+<meta name="keywords" content="C++,const,常量指针,常量引用,protected,for">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Zero To One 0.005">
+<meta property="og:url" content="https://timtingwei.github.io/2018/01/13/cpp/cpp-notes-0005/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="1, protected能否被实例对象访问	&amp;gt;* 发现问题			重新实现Vector中, 要对ADT的access进行区别。		protected能否被实例对象访问?		protected能否被继承类访问?	&amp;gt;* 尝试		=================== source code ===========================		class Base &amp;#123;		pri">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-13T15:18:14.818Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ Zero To One 0.005">
+<meta name="twitter:description" content="1, protected能否被实例对象访问	&amp;gt;* 发现问题			重新实现Vector中, 要对ADT的access进行区别。		protected能否被实例对象访问?		protected能否被继承类访问?	&amp;gt;* 尝试		=================== source code ===========================		class Base &amp;#123;		pri">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/01/13/cpp/cpp-notes-0005/"/>
+
+
+
+
+
+  <title>C++ Zero To One 0.005 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/13/cpp/cpp-notes-0005/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++ Zero To One 0.005</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T21:42:33+08:00">
+                2018-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1, protected能否被实例对象访问</span><br><span class="line"></span><br><span class="line">	&gt;* 发现问题	</span><br><span class="line">		重新实现Vector中, 要对ADT的access进行区别。</span><br><span class="line">		protected能否被实例对象访问?</span><br><span class="line">		protected能否被继承类访问?</span><br><span class="line">	&gt;* 尝试</span><br><span class="line">		=================== source code ===========================</span><br><span class="line">		class Base &#123;</span><br><span class="line">		private:</span><br><span class="line">			int i = 0;</span><br><span class="line">			void f_priv() &#123;std::cout &lt;&lt; &quot;calling f_priv() in private&quot; &lt;&lt; std::endl;&#125;</span><br><span class="line">		protected:</span><br><span class="line">			void f_prot() &#123;std::cout &lt;&lt; &quot;calling f_prot() in protected&quot; &lt;&lt; std::endl;&#125;</span><br><span class="line">		public:</span><br><span class="line">			void f() &#123;</span><br><span class="line">				std::cout &lt;&lt; &quot;calling f() in public&quot; &lt;&lt; std::endl;</span><br><span class="line">				f_prot();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">		class Derived : Base &#123;</span><br><span class="line">		public:</span><br><span class="line">			void call_f_prot() &#123;f_prot();&#125;</span><br><span class="line">			// void call_f_priv() &#123;f_priv();&#125;    // private不能被继承类直接访问</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">		int main() &#123;</span><br><span class="line">			Base b;</span><br><span class="line">			Derived d;</span><br><span class="line">			// b.f_prot();      // protected成员不能被实例对象直接访问</span><br><span class="line">			d.call_f_prot();    // 通过继承类的public成员, 访问基类的protected</span><br><span class="line">			// d.call_f_priv();</span><br><span class="line">			return 0;</span><br><span class="line">		&#125;</span><br><span class="line">		=============================================================</span><br><span class="line">		</span><br><span class="line">	&gt;* 特点</span><br><span class="line">		protected不会被实例访问, 会被继承类在类中进行访问。</span><br><span class="line">		</span><br><span class="line">		希望用户不能访问到protected中的成员, 但继承类能够访问到。</span><br><span class="line">		而private让用户和继承类都不能访问到, 只有友元能访问到。</span><br><span class="line">---------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">2, for循环语句的简单写法</span><br><span class="line">	</span><br><span class="line">	&gt;* 发现问题</span><br><span class="line">	for语句的三个表达式如何写?</span><br><span class="line">	Vector(int c = DEAFAULT_CAPACITY, int s = 0, T v = 0)</span><br><span class="line">	&#123;_elem = new T[_capacity = c];</span><br><span class="line">		for (_size = 0; _size &lt; s; _elem[size++] = v)&#125;     // 默认</span><br><span class="line">		</span><br><span class="line">	&gt;* 利用for的参数</span><br><span class="line">		for ( declaration-or-expression(optional) ; </span><br><span class="line">			declaration-or-expression(optional) ; </span><br><span class="line">			expression(optional) )</span><br><span class="line">		=================== source code ============================</span><br><span class="line">		const int s = 8;</span><br><span class="line">		int size = 0;</span><br><span class="line">		int elem[s] = &#123;&#125;;</span><br><span class="line">		/*</span><br><span class="line">		for (size = 0; size &lt; s; size++) &#123;</span><br><span class="line">			elem[size] = 2;</span><br><span class="line">		&#125;</span><br><span class="line">		*/</span><br><span class="line">		// 第三个参数, 递增size的同时, 给修改elem</span><br><span class="line">		for (size = 0; size &lt; s; elem[size++] = 2) &#123;&#125;</span><br><span class="line">		// 第三个参数, 修改i的同时, 打印elem[i]对应的元素</span><br><span class="line">		for (int i = 0; i &lt; size; std::cout &lt;&lt; elem[i++] &lt;&lt; std::endl) &#123;&#125;</span><br><span class="line">		============================================================</span><br><span class="line">	&gt;* 反思</span><br><span class="line">		某变量会让循环条件false, 且该变量又是语句中的某一要素时候，一举两得。</span><br><span class="line">----------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">3, T const&amp;, const T&amp;, T&amp; const, T const*, const T*, T* const 辨析</span><br><span class="line">	</span><br><span class="line">	&gt;* 发现问题</span><br><span class="line">		=================== source code ============================</span><br><span class="line">		Vector(T* const A, Rank lo, Rank hi)           // 数组区间复制</span><br><span class="line">		Vector(Vector&lt;T&gt; const&amp; V, Rank lo, Rank hi)   // 向量区间复制</span><br><span class="line">		============================================================</span><br><span class="line">		对上述代码中的 Vector&lt;T&gt; const&amp; V不理解, 为什么const&amp; 跟在type之后? 它是否表达常量引用?</span><br><span class="line"></span><br><span class="line">	&gt;* 常量引用</span><br><span class="line">		type const&amp;, type&amp; const之间是什么区别 ?</span><br><span class="line">		先回答: 没区别。 但偏向写成前者, 能直接看出这是一个引用类型, 且为常量引用.</span><br><span class="line">		</span><br><span class="line">		让测试代码跑跑。</span><br><span class="line">		=================== source code =============================</span><br><span class="line">		int f() &#123;</span><br><span class="line">		int a = 0, b = 1;</span><br><span class="line">		const int ca = 0, cb = 1;</span><br><span class="line">		</span><br><span class="line">		int&amp; ref_a = a;      // ref_a是整数a的引用类型</span><br><span class="line">		int* ptr_a = &amp;a;     // ptr_a是指向整数a的指针</span><br><span class="line">		const int* ptr_ca = &amp;ca;           // ptr_ca是指向常量整型的指针</span><br><span class="line">		const int* const cptr_ca = &amp;ca;    // cptr_ca是指向常量整型的常量指针</span><br><span class="line">		int const&amp; cref_a = a;             // cref_a是对整型的常量引用?</span><br><span class="line">		const int&amp; cref_a_1 = ca;          // cref_a_1是对整型常量引用?</span><br><span class="line">		// const int&amp; const cref_a_2 = ca;    // 对整型常量的常量引用?</span><br><span class="line">		// const int const&amp; cref_a_3 = ca;    // 还是这样? 对整型常量的常量引用?</span><br><span class="line">		// 引用不能duplicate const</span><br><span class="line">		f1(cref_a);       // 将cref_a传入f1(), cref_a类型为 int const&amp;匹配</span><br><span class="line">		// cref_a++;      // read-only    // 两者都是常量引用</span><br><span class="line">		// cref_a_1++;    // read-only</span><br><span class="line">		</span><br><span class="line">		// 引用指针</span><br><span class="line">		int* const&amp; cref_ptra = ptr_a;            // 对整型指针的常量引用</span><br><span class="line">		// int const&amp; cref_ptra_1 = ptr_a;        // 错误: 引用对象类型int*</span><br><span class="line">		const int* const&amp; cref_ptrca = ptr_ca;    // 对指向常量指针的常量引用</span><br><span class="line">		// int* const&amp; cref_ptrca_1 = ptr_ca;     // 错误: 引用对象类型const int*</span><br><span class="line">		const int* const&amp; cref_cptrca = cptr_ca;</span><br><span class="line">		</span><br><span class="line">		(*cref_ptra)+=1;          // cref_ptra整型指针的常量引用, 改变指向整型</span><br><span class="line">		// (*cref_cptrca)+=1;     // ERROR: 无法通过引用, 改变指向常量的常量指针指向的整数(常量)</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		void f1(int const&amp; ic) &#123;</span><br><span class="line">			std::cout &lt;&lt; &quot;calling f1()...\n&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		=============================================================</span><br><span class="line">		</span><br><span class="line">		常量引用的写法. 所引用的对象类型为type</span><br><span class="line">		(type) const&amp; ref_t;</span><br><span class="line">		// const&amp;写在右边是因为侧重于表明其常量指针</span><br><span class="line">		</span><br><span class="line">		另外, 这一type可以是int, const int, int*, const int*等等</span><br><span class="line">		</span><br><span class="line">	&gt;* 常量指针</span><br><span class="line">		===================== source code ===========================</span><br><span class="line">		int a = 0, b = 0, c = 0, d = 0;</span><br><span class="line">		int* p_a = &amp;a;                 // 指向int的指针</span><br><span class="line">		// 指针地址可变, 指向的a可变</span><br><span class="line">		(*p_a)++; p_a = &amp;b;</span><br><span class="line">		std::cout &lt;&lt; &quot;*p_a = &quot; &lt;&lt; *p_a &lt;&lt; &quot;, a = &quot; &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">		const int* p_b = &amp;b;          // 指向const int的指针</span><br><span class="line">		// 指针地址可变, 指向的元素转换成const不可变</span><br><span class="line">		// (*p_b)++;</span><br><span class="line">		p_b = &amp;c;</span><br><span class="line">		std::cout &lt;&lt; &quot;*p_b = &quot; &lt;&lt; *p_b &lt;&lt; &quot;, b = &quot; &lt;&lt; b &lt;&lt; std::endl;</span><br><span class="line">		int* const cp_c = &amp;c;          // 指向int的const指针</span><br><span class="line">		// 指针地址不可变, 指向的元素可以变</span><br><span class="line">		(*cp_c)++;</span><br><span class="line">		// cp_c = &amp;d;</span><br><span class="line">		std::cout &lt;&lt; &quot;*cp_c = &quot; &lt;&lt; *cp_c &lt;&lt; &quot;, c = &quot; &lt;&lt; c &lt;&lt; std::endl;</span><br><span class="line">		// int const* cp_c1 = &amp;c;         // 指向const int的指针, 仍采用上种方法</span><br><span class="line">		const int* const cp_cd = &amp;d;   // 指向const int的const指针</span><br><span class="line">		// 指针地址不可变, 指向值不可变</span><br><span class="line">		// (*cp_cd)++;</span><br><span class="line">		// cp_cd = &amp;a;</span><br><span class="line">		std::cout &lt;&lt; &quot;*cp_cd = &quot; &lt;&lt; *cp_cd &lt;&lt; &quot;, d = &quot; &lt;&lt; d &lt;&lt; std::endl;</span><br><span class="line">		------------------------ ./a.out ---------------------------</span><br><span class="line">		*p_a = 0, a = 1</span><br><span class="line">		*p_b = 0, b = 0</span><br><span class="line">		*cp_c = 1, c = 1</span><br><span class="line">		*cp_cd = 0, d = 0</span><br><span class="line">		============================================================</span><br><span class="line">		T*               = &amp;a;      // 指针</span><br><span class="line">		const T*         = &amp;ca;     // 指向常量的指针</span><br><span class="line">		T* const         = &amp;a;      // 常量指针, 指针地址不可变</span><br><span class="line">		const T* const   = &amp;ca;     // 指向常量的常量指针, 指向值和指针地址都不可变</span><br><span class="line">		</span><br><span class="line">	&gt;* const_cast&lt;type&gt;();</span><br><span class="line">		=======</span><br><span class="line">		int b = 0;</span><br><span class="line">		const int* p_b= &amp;b;</span><br><span class="line">		*(const_cast&lt;int*&gt;(p_b))+=1;   // 这种方式可以让b递增1</span><br><span class="line">		// (*p_b)++                    // const_cast只是一个临时操作</span><br><span class="line">		==========</span><br><span class="line">		一方面可以去掉const的性质, 另外一方面又是临时的, 可以确保安全。</span><br><span class="line">		我想这可能会用在, 绝大多数是const, 只有极少情况才会变的数据类型中。</span><br><span class="line">	</span><br><span class="line">	&gt;*  最初的辨析</span><br><span class="line">		T const&amp; : 引用, T类型的常量引用, 该引用不会被修改</span><br><span class="line">		const T&amp; : 同上, 只是不同写法。现在偏向用上面那种</span><br><span class="line">		T&amp; const : 非法 </span><br><span class="line">		T const* : 指针, 指向常量T的指针, const T*相同 </span><br><span class="line">		const T* : 指针, 指向常量T的指针, 我偏向用这种</span><br><span class="line">		T* const : 指针, 指向T的常量指针</span><br><span class="line">---------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+            <a href="/tags/const/" rel="tag"># const</a>
+          
+            <a href="/tags/常量指针/" rel="tag"># 常量指针</a>
+          
+            <a href="/tags/常量引用/" rel="tag"># 常量引用</a>
+          
+            <a href="/tags/protected/" rel="tag"># protected</a>
+          
+            <a href="/tags/for/" rel="tag"># for</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/13/movies/the-Truman-show-critic/" rel="next" title="楚门的世界, 写于观后和离前">
+                <i class="fa fa-chevron-left"></i> 楚门的世界, 写于观后和离前
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/timtingwei" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.douban.com/people/timtingwei/" target="_blank" title="douban">
+                    
+                      <i class="fa fa-fw fa-globe"></i>douban</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

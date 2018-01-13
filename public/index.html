@@ -275,6 +275,126 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/13/cpp/cpp-notes-0005/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/13/cpp/cpp-notes-0005/" itemprop="url">C++ Zero To One 0.005</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T21:42:33+08:00">
+                2018-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1, protected能否被实例对象访问</span><br><span class="line"></span><br><span class="line">	&gt;* 发现问题	</span><br><span class="line">		重新实现Vector中, 要对ADT的access进行区别。</span><br><span class="line">		protected能否被实例对象访问?</span><br><span class="line">		protected能否被继承类访问?</span><br><span class="line">	&gt;* 尝试</span><br><span class="line">		=================== source code ===========================</span><br><span class="line">		class Base &#123;</span><br><span class="line">		private:</span><br><span class="line">			int i = 0;</span><br><span class="line">			void f_priv() &#123;std::cout &lt;&lt; &quot;calling f_priv() in private&quot; &lt;&lt; std::endl;&#125;</span><br><span class="line">		protected:</span><br><span class="line">			void f_prot() &#123;std::cout &lt;&lt; &quot;calling f_prot() in protected&quot; &lt;&lt; std::endl;&#125;</span><br><span class="line">		public:</span><br><span class="line">			void f() &#123;</span><br><span class="line">				std::cout &lt;&lt; &quot;calling f() in public&quot; &lt;&lt; std::endl;</span><br><span class="line">				f_prot();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">		class Derived : Base &#123;</span><br><span class="line">		public:</span><br><span class="line">			void call_f_prot() &#123;f_prot();&#125;</span><br><span class="line">			// void call_f_priv() &#123;f_priv();&#125;    // private不能被继承类直接访问</span><br><span class="line">		&#125;;</span><br><span class="line">		</span><br><span class="line">		int main() &#123;</span><br><span class="line">			Base b;</span><br><span class="line">			Derived d;</span><br><span class="line">			// b.f_prot();      // protected成员不能被实例对象直接访问</span><br><span class="line">			d.call_f_prot();    // 通过继承类的public成员, 访问基类的protected</span><br><span class="line">			// d.call_f_priv();</span><br><span class="line">			return 0;</span><br><span class="line">		&#125;</span><br><span class="line">		=============================================================</span><br><span class="line">		</span><br><span class="line">	&gt;* 特点</span><br><span class="line">		protected不会被实例访问, 会被继承类在类中进行访问。</span><br><span class="line">		</span><br><span class="line">		希望用户不能访问到protected中的成员, 但继承类能够访问到。</span><br><span class="line">		而private让用户和继承类都不能访问到, 只有友元能访问到。</span><br><span class="line">---------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">2, for循环语句的简单写法</span><br><span class="line">	</span><br><span class="line">	&gt;* 发现问题</span><br><span class="line">	for语句的三个表达式如何写?</span><br><span class="line">	Vector(int c = DEAFAULT_CAPACITY, int s = 0, T v = 0)</span><br><span class="line">	&#123;_elem = new T[_capacity = c];</span><br><span class="line">		for (_size = 0; _size &lt; s; _elem[size++] = v)&#125;     // 默认</span><br><span class="line">		</span><br><span class="line">	&gt;* 利用for的参数</span><br><span class="line">		for ( declaration-or-expression(optional) ; </span><br><span class="line">			declaration-or-expression(optional) ; </span><br><span class="line">			expression(optional) )</span><br><span class="line">		=================== source code ============================</span><br><span class="line">		const int s = 8;</span><br><span class="line">		int size = 0;</span><br><span class="line">		int elem[s] = &#123;&#125;;</span><br><span class="line">		/*</span><br><span class="line">		for (size = 0; size &lt; s; size++) &#123;</span><br><span class="line">			elem[size] = 2;</span><br><span class="line">		&#125;</span><br><span class="line">		*/</span><br><span class="line">		// 第三个参数, 递增size的同时, 给修改elem</span><br><span class="line">		for (size = 0; size &lt; s; elem[size++] = 2) &#123;&#125;</span><br><span class="line">		// 第三个参数, 修改i的同时, 打印elem[i]对应的元素</span><br><span class="line">		for (int i = 0; i &lt; size; std::cout &lt;&lt; elem[i++] &lt;&lt; std::endl) &#123;&#125;</span><br><span class="line">		============================================================</span><br><span class="line">	&gt;* 反思</span><br><span class="line">		某变量会让循环条件false, 且该变量又是语句中的某一要素时候，一举两得。</span><br><span class="line">----------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">3, T const&amp;, const T&amp;, T&amp; const, T const*, const T*, T* const 辨析</span><br><span class="line">	</span><br><span class="line">	&gt;* 发现问题</span><br><span class="line">		=================== source code ============================</span><br><span class="line">		Vector(T* const A, Rank lo, Rank hi)           // 数组区间复制</span><br><span class="line">		Vector(Vector&lt;T&gt; const&amp; V, Rank lo, Rank hi)   // 向量区间复制</span><br><span class="line">		============================================================</span><br><span class="line">		对上述代码中的 Vector&lt;T&gt; const&amp; V不理解, 为什么const&amp; 跟在type之后? 它是否表达常量引用?</span><br><span class="line"></span><br><span class="line">	&gt;* 常量引用</span><br><span class="line">		type const&amp;, type&amp; const之间是什么区别 ?</span><br><span class="line">		先回答: 没区别。 但偏向写成前者, 能直接看出这是一个引用类型, 且为常量引用.</span><br><span class="line">		</span><br><span class="line">		让测试代码跑跑。</span><br><span class="line">		=================== source code =============================</span><br><span class="line">		int f() &#123;</span><br><span class="line">		int a = 0, b = 1;</span><br><span class="line">		const int ca = 0, cb = 1;</span><br><span class="line">		</span><br><span class="line">		int&amp; ref_a = a;      // ref_a是整数a的引用类型</span><br><span class="line">		int* ptr_a = &amp;a;     // ptr_a是指向整数a的指针</span><br><span class="line">		const int* ptr_ca = &amp;ca;           // ptr_ca是指向常量整型的指针</span><br><span class="line">		const int* const cptr_ca = &amp;ca;    // cptr_ca是指向常量整型的常量指针</span><br><span class="line">		int const&amp; cref_a = a;             // cref_a是对整型的常量引用?</span><br><span class="line">		const int&amp; cref_a_1 = ca;          // cref_a_1是对整型常量引用?</span><br><span class="line">		// const int&amp; const cref_a_2 = ca;    // 对整型常量的常量引用?</span><br><span class="line">		// const int const&amp; cref_a_3 = ca;    // 还是这样? 对整型常量的常量引用?</span><br><span class="line">		// 引用不能duplicate const</span><br><span class="line">		f1(cref_a);       // 将cref_a传入f1(), cref_a类型为 int const&amp;匹配</span><br><span class="line">		// cref_a++;      // read-only    // 两者都是常量引用</span><br><span class="line">		// cref_a_1++;    // read-only</span><br><span class="line">		</span><br><span class="line">		// 引用指针</span><br><span class="line">		int* const&amp; cref_ptra = ptr_a;            // 对整型指针的常量引用</span><br><span class="line">		// int const&amp; cref_ptra_1 = ptr_a;        // 错误: 引用对象类型int*</span><br><span class="line">		const int* const&amp; cref_ptrca = ptr_ca;    // 对指向常量指针的常量引用</span><br><span class="line">		// int* const&amp; cref_ptrca_1 = ptr_ca;     // 错误: 引用对象类型const int*</span><br><span class="line">		const int* const&amp; cref_cptrca = cptr_ca;</span><br><span class="line">		</span><br><span class="line">		(*cref_ptra)+=1;          // cref_ptra整型指针的常量引用, 改变指向整型</span><br><span class="line">		// (*cref_cptrca)+=1;     // ERROR: 无法通过引用, 改变指向常量的常量指针指向的整数(常量)</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		void f1(int const&amp; ic) &#123;</span><br><span class="line">			std::cout &lt;&lt; &quot;calling f1()...\n&quot;;</span><br><span class="line">		&#125;</span><br><span class="line">		=============================================================</span><br><span class="line">		</span><br><span class="line">		常量引用的写法. 所引用的对象类型为type</span><br><span class="line">		(type) const&amp; ref_t;</span><br><span class="line">		// const&amp;写在右边是因为侧重于表明其常量指针</span><br><span class="line">		</span><br><span class="line">		另外, 这一type可以是int, const int, int*, const int*等等</span><br><span class="line">		</span><br><span class="line">	&gt;* 常量指针</span><br><span class="line">		===================== source code ===========================</span><br><span class="line">		int a = 0, b = 0, c = 0, d = 0;</span><br><span class="line">		int* p_a = &amp;a;                 // 指向int的指针</span><br><span class="line">		// 指针地址可变, 指向的a可变</span><br><span class="line">		(*p_a)++; p_a = &amp;b;</span><br><span class="line">		std::cout &lt;&lt; &quot;*p_a = &quot; &lt;&lt; *p_a &lt;&lt; &quot;, a = &quot; &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">		const int* p_b = &amp;b;          // 指向const int的指针</span><br><span class="line">		// 指针地址可变, 指向的元素转换成const不可变</span><br><span class="line">		// (*p_b)++;</span><br><span class="line">		p_b = &amp;c;</span><br><span class="line">		std::cout &lt;&lt; &quot;*p_b = &quot; &lt;&lt; *p_b &lt;&lt; &quot;, b = &quot; &lt;&lt; b &lt;&lt; std::endl;</span><br><span class="line">		int* const cp_c = &amp;c;          // 指向int的const指针</span><br><span class="line">		// 指针地址不可变, 指向的元素可以变</span><br><span class="line">		(*cp_c)++;</span><br><span class="line">		// cp_c = &amp;d;</span><br><span class="line">		std::cout &lt;&lt; &quot;*cp_c = &quot; &lt;&lt; *cp_c &lt;&lt; &quot;, c = &quot; &lt;&lt; c &lt;&lt; std::endl;</span><br><span class="line">		// int const* cp_c1 = &amp;c;         // 指向const int的指针, 仍采用上种方法</span><br><span class="line">		const int* const cp_cd = &amp;d;   // 指向const int的const指针</span><br><span class="line">		// 指针地址不可变, 指向值不可变</span><br><span class="line">		// (*cp_cd)++;</span><br><span class="line">		// cp_cd = &amp;a;</span><br><span class="line">		std::cout &lt;&lt; &quot;*cp_cd = &quot; &lt;&lt; *cp_cd &lt;&lt; &quot;, d = &quot; &lt;&lt; d &lt;&lt; std::endl;</span><br><span class="line">		------------------------ ./a.out ---------------------------</span><br><span class="line">		*p_a = 0, a = 1</span><br><span class="line">		*p_b = 0, b = 0</span><br><span class="line">		*cp_c = 1, c = 1</span><br><span class="line">		*cp_cd = 0, d = 0</span><br><span class="line">		============================================================</span><br><span class="line">		T*               = &amp;a;      // 指针</span><br><span class="line">		const T*         = &amp;ca;     // 指向常量的指针</span><br><span class="line">		T* const         = &amp;a;      // 常量指针, 指针地址不可变</span><br><span class="line">		const T* const   = &amp;ca;     // 指向常量的常量指针, 指向值和指针地址都不可变</span><br><span class="line">		</span><br><span class="line">	&gt;* const_cast&lt;type&gt;();</span><br><span class="line">		=======</span><br><span class="line">		int b = 0;</span><br><span class="line">		const int* p_b= &amp;b;</span><br><span class="line">		*(const_cast&lt;int*&gt;(p_b))+=1;   // 这种方式可以让b递增1</span><br><span class="line">		// (*p_b)++                    // const_cast只是一个临时操作</span><br><span class="line">		==========</span><br><span class="line">		一方面可以去掉const的性质, 另外一方面又是临时的, 可以确保安全。</span><br><span class="line">		我想这可能会用在, 绝大多数是const, 只有极少情况才会变的数据类型中。</span><br><span class="line">	</span><br><span class="line">	&gt;*  最初的辨析</span><br><span class="line">		T const&amp; : 引用, T类型的常量引用, 该引用不会被修改</span><br><span class="line">		const T&amp; : 同上, 只是不同写法。现在偏向用上面那种</span><br><span class="line">		T&amp; const : 非法 </span><br><span class="line">		T const* : 指针, 指向常量T的指针, const T*相同 </span><br><span class="line">		const T* : 指针, 指向常量T的指针, 我偏向用这种</span><br><span class="line">		T* const : 指针, 指向T的常量指针</span><br><span class="line">---------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/13/movies/the-Truman-show-critic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -294,7 +414,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/13/movies/the-Truman-show-critic/" itemprop="url">楚门的世界, 写于观后和割舍之前</a></h1>
+                <a class="post-title-link" href="/2018/01/13/movies/the-Truman-show-critic/" itemprop="url">楚门的世界, 写于观后和离前</a></h1>
         
 
         <div class="post-meta">
@@ -1532,163 +1652,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/02-B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/10/dsacpp/02-B/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-B</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:09:07+08:00">
-                2018-01-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="可扩充向量"><a href="#可扩充向量" class="headerlink" title="可扩充向量"></a>可扩充向量</h1><h2 id="静态管理空间"><a href="#静态管理空间" class="headerlink" title="静态管理空间"></a>静态管理空间</h2><p>_capacity固定, 存在不足:</p>
-<blockquote>
-<p>1, 上溢(overflow）, _elem[]不足以存放元素<br>2, 下溢(underflow), _elem[]中元素寥寥无几<br>装填因子(load factor) = <em>size/ </em> capacity &lt;&lt; 50% 空间利用率低</p>
-</blockquote>
-<h1 id="动态管理空间"><a href="#动态管理空间" class="headerlink" title="动态管理空间"></a>动态管理空间</h1><p>蝉的哲学：每过一段时间，身体生长，以致于无法外壳容纳自己的身体，退去一层外壳，但之以容纳新的外壳。</p>
-<p>即将发生<strong>上溢</strong>，适当扩展容量</p>
-<h2 id="扩容算法实现"><a href="#扩容算法实现" class="headerlink" title="扩容算法实现"></a>扩容算法实现</h2><p>最终的扩容代码如下: </p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::expand() &#123;</span><br><span class="line">  <span class="keyword">if</span> (_size &lt; _capacity) <span class="keyword">return</span>;    <span class="comment">// 容量未到达不必扩容</span></span><br><span class="line">  _capacity = max(_capacity, DEAFAULT_CAPACITY);    <span class="comment">// 不小于最小容量</span></span><br><span class="line">  <span class="comment">// 存储旧元素, 新数组容量扩大</span></span><br><span class="line">  T* old_elem = _elem; _elem = <span class="keyword">new</span> T[_capacity &lt;&lt;= <span class="number">1</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) &#123;</span><br><span class="line">    _elem[i] = old_elem[i];   <span class="comment">// 复制原数组到新数组的对应位置</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">delete</span> [] old_elem;    <span class="comment">// 释放原数组的对应空间，归还系统</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>另外尝试两种出现BUG的代码：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::expand() &#123;</span></span><br><span class="line"><span class="comment">  if (_size == _capacity) &#123;   // 规模到达最大容量时</span></span><br><span class="line"><span class="comment">    // 创建一个容量更大的数组</span></span><br><span class="line"><span class="comment">    T* _new_elem = new T[_capacity *= 1.2];  // ERROR:没有delete又重新new了一个</span></span><br><span class="line"><span class="comment">    Rank _tmp_size = _size;</span></span><br><span class="line"><span class="comment">    _size = 0;</span></span><br><span class="line"><span class="comment">    // 复制原数组到新数组的对应位置</span></span><br><span class="line"><span class="comment">    copyFrom(this-&gt;_elem, 0, _tmp_size);</span></span><br><span class="line"><span class="comment">    // 释放原数组的对应空间，归还系统</span></span><br><span class="line"><span class="comment">    delete [] _elem;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 最终版本的expand()中, new一个数组储存旧元素, 下面new一个数组, 作为扩容数组</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::expand() &#123;</span></span><br><span class="line"><span class="comment">  if (_size &lt; _capacity) return;    // 容量未到达不必扩容</span></span><br><span class="line"><span class="comment">  _capacity = max(_capacity, DEAFAULT_CAPACITY);    // 不小于最小容量</span></span><br><span class="line"><span class="comment">  // 存储旧元素, 新数组容量扩大</span></span><br><span class="line"><span class="comment">  T* new_elem = new T[_capacity &lt;&lt;= 1];</span></span><br><span class="line"><span class="comment">  for (int i = 0; i &lt; _size; i++) &#123;</span></span><br><span class="line"><span class="comment">    new_elem[i] = _elem[i];   // 复制原数组到新数组的对应位置</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // ERROR:不能直接赋值, 需要copyFrom(), 这里对_elem的更新不直接, 先新后旧的原则</span></span><br><span class="line"><span class="comment">  _elem = new_elem;      // ERROR:当前数组元素更新为新数组元素, 可T类型还没有operator=()</span></span><br><span class="line"><span class="comment">  delete [] new_elem;    // 释放临时数组的对应空间，归还系统</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></p>
-<p>第二种错误代码分析：</p>
-<blockquote>
-<ul>
-<li>备份一份旧的, 把当前的刷成新的。</li>
-<li>创建一份新的, 把旧的拷贝过去， 在赋值给旧的。这种方法做了多余的操作。</li>
-</ul>
-</blockquote>
-<p>封装的好处</p>
-<blockquote>
-<ul>
-<li><code>得益于向量的封装, 尽管扩容之后数据区的物理地址有所改变, 却不致出现野指针</code>, 封装后，上述通过_elem统一的指示器标记起点.</li>
-</ul>
-</blockquote>
-<p>为何必须采用容量加倍</p>
-<blockquote>
-<ul>
-<li>递增式扩容</li>
-<li>加倍式扩容</li>
-</ul>
-</blockquote>
-<h1 id="递增式扩容"><a href="#递增式扩容" class="headerlink" title="递增式扩容"></a>递增式扩容</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">_elem = <span class="keyword">new</span>[T = _capacity + INCREMENT];     <span class="comment">// 追加固定大小量</span></span><br></pre></td></tr></table></figure>
-<p>每次扩容, 复制原向量的成本<br>I, 2I, 3I, … (m-1)I           // 算术级数</p>
-<p><span style="color:red"><strong>算术级数</strong></span>:从某个数开始, 以固定间隔为<br>单位, 不断的线性递增，总和成为算术级数。<strong>总和和末项成平方关系</strong></p>
-<p>总耗时 = I <em> (m-1) </em> m/2 = O(n^2), 每次O(n)</p>
-<h1 id="加倍式扩容"><a href="#加倍式扩容" class="headerlink" title="加倍式扩容"></a>加倍式扩容</h1><p>1, 2, 4, 8, 16…2^m 次扩容           // 几何级数<br>几何级数与末项等阶, O(n)</p>
-<p>总耗时O(n), 每次扩容分摊成本为O(1)</p>
-<p>空间上的牺牲, 在时间上获得巨大的收益。</p>
-<h1 id="分摊复杂度"><a href="#分摊复杂度" class="headerlink" title="分摊复杂度"></a>分摊复杂度</h1><h2 id="平均分析-vs-分摊分析"><a href="#平均分析-vs-分摊分析" class="headerlink" title="平均分析 vs 分摊分析"></a>平均分析 vs 分摊分析</h2><p><code>平均分析(average/ expected complexity)</code><br>独立事件, 割裂相关性<br>往往不能准确反应。</p>
-<p><code>分摊分析(amortized complexity)</code><br>连续的, 足够多的操作。<br>实际可行，整体考量。<br>更为真实反应。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1739,7 +1702,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1752,7 +1715,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
