@@ -55,6 +55,7 @@ tags:
 		
 		Table& Table::operator=(const Table& t) {
 			if (this != &t) {         // 防止自复制
+				delete[] p;
 				p = new Name[sz = t.sz];
 				for (int i = 0; i < sz; i++) {p[i] = t.p[i];}
 			}
