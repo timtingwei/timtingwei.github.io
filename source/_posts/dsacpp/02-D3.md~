@@ -1,0 +1,133 @@
+---
+title: 邓俊辉<<数据结构>>-公开课-02-D3
+date: 2018-01-20 09:33:42
+tags: 数据结构
+---
+
+```
+
+# 实现
+	>* 我的尝试, 定义fib类
+		====== source code ====
+		// ERROR:my test fib
+		// 定义fibonacci相关的类
+		class Fib {
+			int* _fib_lst; int _size;
+			public:
+			// 构造函数
+			explicit Fib(const int n) : _size(n) {
+				emptyFib(n);
+				fib(n-1, _fib_lst);
+			}
+			
+			// 将数列置空
+			void emptyFib(const int n) {
+				// 初始化0
+				for (int i = 0; i < n; i++) {
+				_fib_lst[i] = 0;
+				}
+			}
+			
+			// 生成fib数列
+			int fib(const int n, int* _fib_lst) {
+				if (_fib_lst[n] != 0) {
+					return _fib_lst[n];
+				} else {
+					if (n < 2) {_fib_lst[n] = n;} else {
+						_fib_lst[n] = fib(n-1, _fib_lst)  + fib(n-2, _fib_lst);
+						return _fib_lst[n];
+					}
+				}
+			}
+			// 获得数列中某一索引的值
+			int& get(const int& n) const {return _fib_lst[n];}
+			
+			int index(const int v) const {
+				// 获得某一值在fib数列对应的索引
+				for (int i = 0; i < _size; i++) {
+					if (v == _fib_lst[i]) return i;
+					if (v < _fib_lst[i]) return -1;    // 比当扫描值大还没找到, 返回失败
+				}
+				return -1;    // 在扫描过程中没找到, 返回失败
+			}
+			
+			// 打印数列
+			void printFib() const {
+				std::cout << "---- print fib series -----\n";
+				for (int i = 0; i < _size; i++) {
+					std::cout << i <<": _fib_lst[i]"
+						<< _fib_lst[i] << std::endl;
+			    }
+				std::cout << "_size = " << _size << std::endl;
+			}
+		};
+		==================================================
+
+	>* 根据课件的修改
+		=================== source code ==========================
+		// 定义fib相关的类
+		class Fib {
+			int _size;
+			
+			public:
+			explicit Fib(int n) : _size(n) {}
+			int createFib(int n) {
+				return (2 > n) ? n: createFib(n-1) + createFib(n-2);
+			}
+			
+			// 获得当前项
+			int get() {
+				int result = createFib(_size - 1);
+				return result;
+			}
+			
+			// 获得前一项
+			int prev() {
+				if (0 < _size - 1) {
+				int result = createFib(--_size - 1);
+				return result;
+				}
+				return -1;
+			}
+		};
+		===========================================================
+		
+		以及查找函数
+		======================== source code ========================
+		template <typename T>
+		Rank Vector<T>::fibSearch(T* elem, T const& e, Rank lo, Rank hi) const {
+			Fib fib(hi - lo);
+			while (lo < hi) {
+				while ((hi - lo) < fib.get()) fib.prev();
+				int priv = lo + fib.get() - 1;
+				if      (e < elem[priv]) hi = priv;
+				else if (elem[priv] < e) lo = priv + 1;
+				else                     return priv;
+			}
+		    return -1;
+		}
+		=============================================================
+		本质是选择轴点不同。
+	>* 改进fib类
+		用动态规划求解fib数列中的某一项
+		================= source code ==============================
+		int createFib(int n) {
+			int f = 0, g = 1;          // fib(0) = 0; fib(1) = 1;
+			if (n < 2) {int r = (n) ? g : f; return r;}
+			while (0 < n--) {
+				g = g + f;
+				f = g - f;
+			}
+			return g;
+		}
+		===========================================================
+-----------------------------------------------------------------------------------
+# 查找最优性
+	>* 通用策略: 
+		对任何A[0, n), 总是取得A[lambda*n]作为轴点, 0 <= lambda < 1
+		二分0.5, fibonacci对应lambda  = 0.6180339
+	>* 递推式和微积分求极值
+		这个...
+		
+
+```
