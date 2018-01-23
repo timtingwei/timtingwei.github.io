@@ -78,7 +78,7 @@ Residential building - 住宅
 不应该是这样的。一栋建筑(不能够长时间持续存在)。建筑被固定到(场地)上并且有助于激发(场地)的概念。然而，现如今我们觉得我们正是这样，我们仍然希望去寻找不同的特性在不同的场地中。如果我们去墨西哥，我们希望能看到能(向我们述说当地的一些事)，(比如文化)。当我们建造一座城市时，在某种程度上我们有责任去加入，并且(理解建筑在城市中的原因)，这是他们所增加的。我发现如果一位建筑师忽视了(历史)和文脉并宣称(他用于国际化风格)是他妈很不好的。而且完全没有合理的理由去解释这些（就他妈是扯蛋）。这就像(没有营养的烹饪)，你只是把所有不同种类的食物统统塞到搅拌机里，并把它作为(含有蛋白质的料理)（奶昔）。这些浪漫的概念对于不同的风格和方法是至关重要的，这对于人们来说意味着某些事情，并且当建筑能(走近你)（打动）的时候，这才是重要的特性。我们必须注意，不要创造一个（让人感到脱下裤子就给我看这个）平庸的产品和建筑。
 
 
-# 第一部分错误总结
+# Part1, 1, 2, 3, 4错误总结
 
 (art - meaningful)   **ERROR::creative piece**
 (stone thick wall - ???) 厚的石墙  **ERROR::masonry wide division**
@@ -92,4 +92,36 @@ it's the equivalent of having no variation in cuisine, 这就像没有变换的�
 
 --------------
 
+#  part2 5, 7总结
+
+# 5. 看图描述(15%)
+10句话组成，每句一分，两张图（平面，立面，透视），每张图2.5分
+
+Sou Fujimoto N HOUSE
+
+1, A home for two plus a dog.    // 两个人的家加上一只狗。
+2, The house itself is comprised of three shells of progressive size nested inside one another.    // 这座房子本身由三个累进大小的贝壳组成，它们相互嵌套在一起。
+3, The outermost shell covers the entire premises, creating a covered, semi-indoor garden.   // 最外层的外壳覆盖了整个房屋，形成了一个覆盖着的半室内花园。
+4, Second shell encloses a limited space inside the covered outdoor space.    // 第二外壳在覆盖的室外空间内封闭有限的空间。
+5, Third shell creates a smaller interior space. Residents build their life inside this gradation of domain.  // 第三层外壳创造了更小的内部空间。居民们在这片土地上建造他们的生活
+
+
+6, The situation plan is flexiable and seems flowing over the small ground.   // 方案平面灵活，像在场地上流动
+7, And this house fuses with the environment since there are green trees embed in it's shell.    // 与环境融合, 因为有树在其中.
+8, As an exam architecutre, N house propose an idea about the features of the future residence.  // 作为一个实验建筑, N house提出未来住宅的理念
+9, In the traditional residence design, architects prefer to separate of internal space and external space.   // 传统住宅设计, 倾向于分开外部和内部空间
+10, But it's special to N house, because Fujimoto remove the limitation between outdoor and indoor when he making this scheme, so that combine the internal space and external space.  // 但对于Nhouse是特殊的, Fujimoto在做方案的时候, 消除了室内外的界限, 以致于使得内部和外部结合起来。
+11, Three nested shells eventually mean infinite nesting because the whole world is made up of infinite nesting. And here are only three of them that are given barely visible shape. // 三层壳的嵌套最终以为着无限嵌套, 因为整个世界是由无限的嵌套组成的。因此这里只有给出了三个可见的形状。
+
+// 两个人的家加上一只狗。
+// 这座房子本身由三个累进大小的贝壳组成，它们相互嵌套在一起。
+// 最外层的外壳覆盖了整个房屋，形成了一个覆盖着的半室内花园。
+// 第二外壳在覆盖的室外空间内封闭有限的空间。
+// 第三层外壳创造了更小的内部空间。居民们在这片土地上建造他们的生活。
+// 方案平面灵活，像在场地上流动。
+// 与环境融合, 因为有树在其中。
+// 作为一个实验建筑, N house提出未来住宅的理念。
+// 传统住宅设计, 倾向于分开外部和内部空间。
+// 但对于Nhouse是特殊的, Fujimoto在做方案的时候, 消除了室内外的界限, 以致于使得内部和外部结合起来。
+// 三层壳的嵌套最终以为着无限嵌套, 因为整个世界是由无限的嵌套组成的。因此这里只有给出了三个可见的形状。
 
