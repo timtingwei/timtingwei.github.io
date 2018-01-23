@@ -125,3 +125,33 @@ Sou Fujimoto N HOUSE
 // 但对于Nhouse是特殊的, Fujimoto在做方案的时候, 消除了室内外的界限, 以致于使得内部和外部结合起来。
 // 三层壳的嵌套最终以为着无限嵌套, 因为整个世界是由无限的嵌套组成的。因此这里只有给出了三个可见的形状。
 
+
+ 
+# 6. 中译英(20%)
+给中文采访的文章，生态学的，绿色建筑；英文回答5个问题
+尽量多写。
+
+# 7. 描述(15%)
+家的平面或喜欢的建筑。
+10句话。每句1分。
+画两张图。1张图2.5分。
+
+
+Mention to my house in my homeland, it consists of four parts building. There are primary building, secondary buding, garden and garage respectively. If you guest my home, you will approach the entrance after a trail. In the north, the primary building is the living space for my family member,includes kitchen, dining room, bedroom, study room, etc. And the edge of primary building, it is a two-car garage. In the west, the secondary building build up with store room, sport room and living room, etc. In the center it's a gargen, the deciduous trees surrounded the garden. Since my father perfer to live close to the trees, I grew up in an environment of nature.
+
+Enter the primary building, the ground floor room is design for cooking and deal with three meals a day, it will be a party place when friends and relatives to visit. My parents living on the second floor at the master room, and I living on the third floor. There are a porch connects guest room and my room. This building also has a roof garden, not only act balcony, but also provide more space for free activities.
+
+
+客厅 living room
+主卧 master bedroom
+客卧 guest bedroom
+卫生间 bathroom
+阳台 balcony
+厨房 kitchen
+餐厅 dining room
+书房 study room
+天台 roof
+门廊 porch
+储物室 store room
+衣帽间 locker room
+一层平面 ground floor plan
