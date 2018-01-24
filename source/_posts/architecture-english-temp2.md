@@ -126,6 +126,34 @@ Sou Fujimoto N HOUSE
 // 三层壳的嵌套最终以为着无限嵌套, 因为整个世界是由无限的嵌套组成的。因此这里只有给出了三个可见的形状。
 
 
+## 自我批改
+A house for two plus a dog.
+The house itself ~comprises~ (is comprised of)three shells of progressive size nested inside one another.
+**RIGHT::The house itself is comprised of three shells of progressive size nested indside one another.**
+The outermost shell covers ~a prises~ (the entire premises) , creating a coverd, semi-indoor ~space~(garden).
+The second shell (encloses a) limited space (inside the covered outdoor space.) ~, outdoor~
+The third shell (creates a smaller interior space. Residents build their life inside this gradation of domain)
+
+The situation plan is flexiable, and seems flowing over the small ground.
+And the building fuses with environment since there are green trees embed in the shell.
+As an exam architecture, architect propose an idea about features of future ~????house.~ (residence)
+In traditional design prosess, architects perfer to seperate of interior space and external space.
+But (it's) special to N house, Fojimoto removed the ~line~ (limitation) between indoor and outdoor(when he making this scheme, so that combined the internal and external space).
+Three shells eventually (mean infinite nesting)~nested one another infinitely~. Because the world is (made up of) infinite (nesting).(And here are only three of them are given barely visible shape.)
+
+Three shells eventually mean infinite nesting because the world is made up of infinite nesting. And here are only three of them are given barely visible shape.
+
+
+The house for two plus a dog.
+The house itself is comprised of three shells of progressive size nested inside one another.
+The outermost shell covers ~a primese~(entire premises), creating a covered, semi-indoor garden.
+Second shells encloses a limited space insided the coverd outdoor space.
+Third shell ~create~(creates) a smaller interior (space). ~The ??~(Residents) build their life ~in~ (inside) this gradation of domain.
+
+The (nested) shells eventually mean infinite nesting because the world is made up of infinite nesting. And here are (only) three of them (that are )given (barely) ~visiable~(visible) shape
+
+
+
  
 # 6. 中译英(20%)
 给中文采访的文章，生态学的，绿色建筑；英文回答5个问题
