@@ -50,19 +50,19 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
 
 
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
@@ -73,8 +73,6 @@
 
 
 
-
-  <link rel="alternate" href="/atom.xml" title="mituh's notes" type="application/atom+xml" />
 
 
 
@@ -96,7 +94,7 @@
   var CONFIG = {
     root: '/',
     scheme: 'Muse',
-    version: '5.1.3',
+    version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
@@ -182,7 +180,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
           </a>
@@ -190,63 +188,19 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
             归档
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
-            
-            搜索
-          </a>
-        </li>
       
     </ul>
   
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
   
 </nav>
 
@@ -261,6 +215,260 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/20/append-path-on-mac/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/20/append-path-on-mac/" itemprop="url">Mac添加PATH环境变量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T01:15:47+08:00">
+                2018-06-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>用常规方法安装好npm之后,<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line">bash: npm: commmand not found</span><br></pre></td></tr></table></figure></p>
+<p>以为是没有安装后，换用brewhome<a href="参考 - brewhome官网">https://brew.sh/index_zh-cn.html</a>进行安装<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ brew --version</span><br></pre></td></tr></table></figure></p>
+<p>依旧 command not found</p>
+<p>注意到，warning:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">==&gt; Cleaning up /Library/Caches/Homebrew...</span><br><span class="line">==&gt; Migrating /Library/Caches/Homebrew to /Users/htwt/Library/Caches/Homebrew...</span><br><span class="line">==&gt; Deleting /Library/Caches/Homebrew...</span><br><span class="line">Already up-to-date.</span><br><span class="line">Warning: /usr/<span class="built_in">local</span>/bin is not <span class="keyword">in</span> your PATH.</span><br><span class="line">==&gt; Installation successful!</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ echo $PATH</span><br><span class="line">/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure>
+<p>需要手动添加一个PATH<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/bin:<span class="variable">$PATH</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure></p>
+<p>现在npm, brew都可以直接用了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/20/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/20/hello-world/" itemprop="url">Hello World</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T00:15:03+08:00">
+                2018-06-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1359,246 +1567,6 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/13/movies/the-Truman-show-critic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/13/movies/the-Truman-show-critic/" itemprop="url">楚门的世界, 写于观后和离前</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-13T11:29:45+08:00">
-                2018-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">凌晨睡不着看了一部电影叫&lt;&lt;看楚门的世界&gt;&gt;。</span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">1, 疑惑</span><br><span class="line">	1) 戏中戏外的时间不同步</span><br><span class="line">		戏内的楚门经历挫折, 徘徊折磨的这段时间大概有一个星期之多。而TV前的观众身处环境无太多变化。</span><br><span class="line">		是否意味着，在这样一个世界时间也是可以改变的可能。</span><br><span class="line">		大刘在三体中， 对宇宙历史时间的描述, 地球人出现了几次冬眠后被唤醒, 却被告知时间减少。</span><br><span class="line">		在危机纪年, 世界变化很大, 中国成为超级大国。这就好像不难解释时间消失的问题....</span><br><span class="line">	2) 关于梦醒</span><br><span class="line">		长大生活在导演下, 歪书架, 红旗下, 以及梦的那些人, </span><br><span class="line">		梦何时醒? 梦醒需要多久? 梦醒的痛苦？</span><br><span class="line"></span><br><span class="line">------------------------------------------------------------------------------------------</span><br><span class="line">2, 观点</span><br><span class="line">	1) 戏里戏外都在被安慰</span><br><span class="line">		戏里的楚门被creator安排在一个normal的世界里生活。</span><br><span class="line">		有趣的是, creator认为现世是肮脏病态的, 楚门生活的Seahaven应该是世界应该有的样子。</span><br><span class="line">		而给了楚门Fiji梦的女孩却认为，正常的人不应该是囚犯、演员。</span><br><span class="line">		他们都想用自己认为的方式安慰戏中的楚门。</span><br><span class="line">		</span><br><span class="line">		戏外在Fan Club聚众，昏沉同性恋夫妇, 洗澡油腻中年男人, 说出真相期待真爱的女主, 小镇警察, 导演以及制片人，</span><br><span class="line">		通过秀来排解对现实的不满，不需要过多思考就安慰。</span><br><span class="line">		创造, 沉迷, 打破, 遵守。屏幕前的我何尝不是呢？</span><br><span class="line"></span><br><span class="line">	2) 构成生活看似真实性的一些元素</span><br><span class="line">		说早安的幸福一家人。养了一条狗倒垃圾的邻居。打招呼的双胞胎路人。办公室的同事。</span><br><span class="line">		交通, island boat, bus, car。给你插广告, 想要小孩的妻子。给你插广告, 拎着啤酒, 扯着道理，回忆往昔的朋友。</span><br><span class="line">		独自吹风的海滩月光。童年回忆。母亲翻出的老旧照片。恋人的吻和留下的外套。工作日早晨的忙碌。</span><br><span class="line">		神的安排。</span><br><span class="line"></span><br><span class="line">	3) 二十世纪末的美国科技和科幻能力</span><br><span class="line">		98年的片子以电视为主要媒介, 还出现电幕, 摄像头等设备。</span><br><span class="line">		制片场中，用大型计算机, 内部交流用的设备，乌托邦主义者的形象，以及内部的装饰比较科幻, 让人不由想到1984中的监控场景。</span><br><span class="line">		楚门的生活中汽车, 个人计算机, 不需接线员的电话, 录音机等都已经出现。</span><br><span class="line">		当时都是不错的技术, 我感叹技术革新之快, 和当下环境中那些对技术的浮躁和推崇, 还有有些怀旧, 人到底需要多少的资源和科技呢?</span><br><span class="line"></span><br><span class="line">	4) 如果对现有的生活不再眷恋</span><br><span class="line">		除草。漂泊。割舍。接受。</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/12/dsacpp/02-D2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/12/dsacpp/02-D2/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-D2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T17:09:13+08:00">
-                2018-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">d2 有序向量: 二分查找</span><br><span class="line"></span><br><span class="line">	Vector::find(e, lo, hi);</span><br><span class="line">	Vector::search(e, lo, hi);</span><br><span class="line"></span><br><span class="line">	操作参数和接口语义类似。</span><br><span class="line">---------------------------------------------------------------------------------</span><br><span class="line"># 统一接口</span><br><span class="line">	&gt;* ADT接口</span><br><span class="line">	======================== source code ==========================</span><br><span class="line">	// ADT接口</span><br><span class="line">	template &lt;typename T&gt;</span><br><span class="line">	Rank Vector&lt;T&gt;::search(T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">		std::srand(std::time(0));</span><br><span class="line">		return (std::rand() % 2) ?</span><br><span class="line">			binSearch(_elem, e, lo, hi)     // 二分查找算法</span><br><span class="line">			: fibSearch(_elem, e, lo, hi);  // fibonacci查找算法</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	template &lt;typename T&gt;</span><br><span class="line">	Rank Vector&lt;T&gt;::binSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">		std::cout &lt;&lt; &quot;calling binSearch.... &quot; &lt;&lt; std::endl;</span><br><span class="line">		return lo;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	template &lt;typename T&gt;</span><br><span class="line">	Rank Vector&lt;T&gt;::fibSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">		std::cout &lt;&lt; &quot;calling fibSearch... &quot; &lt;&lt; std::endl;</span><br><span class="line">		return lo;</span><br><span class="line">	&#125;</span><br><span class="line">	================================================================</span><br><span class="line">	可以设计不同的算法, 根据数据的性质进算法的选择。</span><br><span class="line">---------------------------------------------------------------------------------</span><br><span class="line"># 语义约定</span><br><span class="line"></span><br><span class="line">	约点语义的好处就是, 能够更好的和其他代码配合。</span><br><span class="line">	&gt;* 优点: </span><br><span class="line">		维护自身 V.insert(1 + V.search(e), e)</span><br><span class="line">			即便是失败, 也给出插入新元素的位置。</span><br><span class="line">			若允许重复元素, 则每组也按照其插入的次序排序。</span><br><span class="line">	</span><br><span class="line">	&gt;* 约点:</span><br><span class="line">		有序V[lo, hi), 不大于e的最后元素秩</span><br><span class="line">		-00 &lt; e &lt; V[lo], 返回 lo - 1 (左侧哨兵)</span><br><span class="line">		V[hi] &lt; e &lt; +00, 返回 hi - 1 (末元素, 右哨兵左邻)</span><br><span class="line">---------------------------------------------------------------------------------</span><br><span class="line"># 版本A: 原理</span><br><span class="line"></span><br><span class="line">	&gt;* 减而治之</span><br><span class="line">		待查找区间分成三部分</span><br><span class="line">		S[lo, mi) &lt;= S[mi] &lt;= S(mi, hi)       // S[mi]轴点</span><br><span class="line">	</span><br><span class="line">	&gt;* 三种比较情况</span><br><span class="line">		e &lt; x: 左</span><br><span class="line">		x &lt; e: 右</span><br><span class="line">		e = x: 命中             // 多个解?</span><br><span class="line">	</span><br><span class="line">	&gt;* 二分(折半)策略</span><br><span class="line">		每经过至多两次比较, 或命中, 或将规模缩减一半</span><br><span class="line">----------------------------------------------------------------------------------</span><br><span class="line"># 版本A: 实现</span><br><span class="line"></span><br><span class="line">	&gt;* 我的尝试</span><br><span class="line">		======= source code ======================================</span><br><span class="line">		// 二分查找: 版本A</span><br><span class="line">		/* my test code</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		Rank Vector&lt;T&gt;::binSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">			std::cout &lt;&lt; &quot;calling binSearch.... &quot; &lt;&lt; std::endl;</span><br><span class="line">			if (lo &lt; hi) &#123;   // 区间不存在, 没找到e</span><br><span class="line">				Rank mi = (lo + hi) &gt;&gt; 1;    // 中点秩</span><br><span class="line">				if (elem[mi] == e) return mi;     // 命中, 递归基</span><br><span class="line">				if (e &lt; elem[mi]) &#123;     // 在mid左侧</span><br><span class="line">					return (binSearch(elem, e, lo, mi));</span><br><span class="line">				&#125; else &#123; return binSearch(elem, e, mi + 1, hi);&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			return -1;</span><br><span class="line">		&#125;</span><br><span class="line">		*/</span><br><span class="line">		==========================================================</span><br><span class="line">		</span><br><span class="line">	&gt;* 给出的版本</span><br><span class="line">		==================== source code ========================</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		Rank Vector&lt;T&gt;::binSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">			while (lo &lt; hi) &#123;    // 区间存在</span><br><span class="line">				Rank mi =  (lo + hi) &gt;&gt; 1;        // 取中点</span><br><span class="line">				if      (e &lt; elem[mi]) hi = mi;      // 深入前半段查找</span><br><span class="line">				else if (elem[mi] &lt; e) lo = mi + 1;  // 深入后半段查找</span><br><span class="line">				else                   return mi;    // 在mi命中</span><br><span class="line">			&#125;</span><br><span class="line">		return -1;   // 查找失败</span><br><span class="line">		&#125;</span><br><span class="line">		=========================================================</span><br><span class="line">		</span><br><span class="line">	&gt;* 分析</span><br><span class="line">		1, 将递归变成while loop, 内部对hi, lo进行修改。</span><br><span class="line">		2, while循环通过hi, lo改变, 改变区间。</span><br><span class="line">		3, if...else 和 else...if什么差别？</span><br><span class="line">	</span><br><span class="line">	&gt;* 技巧</span><br><span class="line">		善用 &quot;&lt;&quot; 比较</span><br><span class="line">			因为数据结构画图理解时候, 都是从左向右, 小于号能直观的看出在哪个区间, 不容易出错。</span><br><span class="line">-----------------------------------------------------------------------------------------</span><br><span class="line"># 版本A: 实例与复杂度</span><br><span class="line"></span><br><span class="line">	&gt;* S.search(8, 0, 7): 2 + 1 + 2 = 5, S[4]命中</span><br><span class="line">	&gt;* S.search(3, 0, 7): 1 + 1 + 2 = 4, S[1]失败</span><br><span class="line">	</span><br><span class="line">	&gt;* 线性递归 T(n) = T(n/2) + O(1) = O(logn), 大大由于顺序查找O(n)</span><br><span class="line">	递归跟踪: 轴点总取中点, 递归深度O(logn); 各个递归实例均 O(1)</span><br><span class="line">--------------------------------------------------------------------------------------</span><br><span class="line"># 版本A：查找长度</span><br><span class="line"></span><br><span class="line">	&gt;* 更为精细的评估算法性能:</span><br><span class="line">		考察关键码的比较次数, 查找长度(search length)</span><br><span class="line">	&gt;* 成功与失败的最好, 最坏, 平均角度评估</span><br><span class="line">	&gt;* 这个算法 = O(1.5logn)</span><br><span class="line">		向左节点 + 1, 向右节点 +2</span><br><span class="line">		n = 8</span><br><span class="line">		最好, 29/7 = 4+</span><br><span class="line">		最差, 36/8 = 4.5 = 1.5log28</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1647,9 +1615,9 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives">
+                <a href="/archives/">
               
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">40</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1662,7 +1630,7 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1671,31 +1639,8 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
           </nav>
 
           
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
 
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/timtingwei" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="https://www.douban.com/people/timtingwei/" target="_blank" title="douban">
-                    
-                      <i class="fa fa-fw fa-globe"></i>douban</a>
-                </span>
-              
-            
-          </div>
+          
 
           
           
@@ -1722,7 +1667,7 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -1740,7 +1685,7 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
 
 
 
@@ -1831,21 +1776,21 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
 
 
 
   
-  
-
   
 
   
 
+  
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
 
 
 
@@ -1883,323 +1828,6 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
 
 
   
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
 
 
 
