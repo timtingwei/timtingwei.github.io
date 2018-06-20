@@ -1932,7 +1932,7 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
 <li>创建master和hexo两个分支，hexo用于存放静态文件, master用于部署;</li>
 <li>repo setting 中设置hexo为默认分支;</li>
 <li>git clone git@github.com:timtingwei/timtingwei.github.io.git 拷贝repo;</li>
-<li>npm install hexo、hexo init、npm install 和 npm install hexo-deployer-git（此时当前分支应显示为hexo）;如果在不同机器上不需要hexo init;</li>
+<li>npm install hexo、hexo init、npm install 和 npm install hexo-deployer-git –save（此时当前分支应显示为hexo）;如果在不同机器上不需要hexo init;</li>
 <li>修改_config.yml的deploy::branch参数为master;</li>
 <li>依次执行 git add., git commit -m “…”, git push origin hexo 提交相关文件;</li>
 <li>执行hexo g -d 生成并部署到github上</li>
