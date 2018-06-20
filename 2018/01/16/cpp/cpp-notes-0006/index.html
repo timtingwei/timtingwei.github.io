@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1, 局部变量的销毁顺序	================= source code ===============================	void f(int i) &amp;#123;		Table aa(1);		Table bb(2);		if (i &amp;gt; 0) &amp;#123;			">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++ Zero To One 0.006">
+<meta property="og:url" content="https://timtingwei.github.io/2018/01/16/cpp/cpp-notes-0006/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="1, 局部变量的销毁顺序	================= source code ===============================	void f(int i) &amp;#123;		Table aa(1);		Table bb(2);		if (i &amp;gt; 0) &amp;#123;			Table cc(3);		&amp;#125;		Table dd(4);	&amp;#125;	----------">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-19T16:15:03.920Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++ Zero To One 0.006">
+<meta name="twitter:description" content="1, 局部变量的销毁顺序	================= source code ===============================	void f(int i) &amp;#123;		Table aa(1);		Table bb(2);		if (i &amp;gt; 0) &amp;#123;			Table cc(3);		&amp;#125;		Table dd(4);	&amp;#125;	----------">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/01/16/cpp/cpp-notes-0006/"/>
+
+
+
+
+
+  <title>C++ Zero To One 0.006 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/16/cpp/cpp-notes-0006/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C++ Zero To One 0.006</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T22:30:14+08:00">
+                2018-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1, 局部变量的销毁顺序</span><br><span class="line">	================= source code ===============================</span><br><span class="line">	void f(int i) &#123;</span><br><span class="line">		Table aa(1);</span><br><span class="line">		Table bb(2);</span><br><span class="line">		if (i &gt; 0) &#123;</span><br><span class="line">			Table cc(3);</span><br><span class="line">		&#125;</span><br><span class="line">		Table dd(4);</span><br><span class="line">	&#125;</span><br><span class="line">	-------------- ./a.out ----------------</span><br><span class="line">	in Table() sz = 1</span><br><span class="line">	in Table() sz = 2</span><br><span class="line">	in Table() sz = 3</span><br><span class="line">	in ~Table() sz = 3        // cc在if退出时析构, 在dd构造之前</span><br><span class="line">	in Table() sz = 4</span><br><span class="line">	in ~Table() sz = 4        // a, b, c构造; c, b, a析构</span><br><span class="line">	in ~Table() sz = 2</span><br><span class="line">	in ~Table() sz = 1</span><br><span class="line">	=============================================================</span><br><span class="line">-------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">2, 构造函数复制</span><br><span class="line"></span><br><span class="line">	&gt;* 直接复制</span><br><span class="line">		======= source code ========</span><br><span class="line">		void h() &#123;</span><br><span class="line">			Table t1;</span><br><span class="line">			// Table t2 = t1;    // ERROR: 复制初始化</span><br><span class="line">			Table t3;</span><br><span class="line">			</span><br><span class="line">			// t3 = t2;          // ERROR: 复制赋值</span><br><span class="line">		&#125;</span><br><span class="line">		==============================</span><br><span class="line">		</span><br><span class="line">		t1所创建而分配的数组, 将同时分配给t1, t2, t3, 被删除3次。</span><br><span class="line">		所导致结果是无意义的</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	&gt;* 清楚定义复制构造函数</span><br><span class="line">		================ source code =======================</span><br><span class="line">		Table::Table(const Table&amp; t) &#123;</span><br><span class="line">			p = new Name[sz = t.sz];</span><br><span class="line">			for (int i = 0; i &lt; sz; i++) &#123;</span><br><span class="line">				p[i] = t.p[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		Table&amp; Table::operator=(const Table&amp; t) &#123;</span><br><span class="line">			if (this != &amp;t) &#123;         // 防止自复制</span><br><span class="line">				delete[] p;</span><br><span class="line">				p = new Name[sz = t.sz];</span><br><span class="line">				for (int i = 0; i &lt; sz; i++) &#123;p[i] = t.p[i];&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			return *this;</span><br><span class="line">		&#125;</span><br><span class="line">		void f() &#123;</span><br><span class="line">			Table t1(2);</span><br><span class="line">			Table t2 = t1;</span><br><span class="line">			Table t3(t1);</span><br><span class="line">		&#125;</span><br><span class="line">		----------- ./a.out --------------------</span><br><span class="line">		in Table() sz = 2</span><br><span class="line">		in ~Table() sz = 2</span><br><span class="line">		in ~Table() sz = 2</span><br><span class="line">		in ~Table() sz = 2</span><br><span class="line">		===================================================</span><br><span class="line">	</span><br><span class="line">	&gt;* 原因</span><br><span class="line">		在复制构造函数中, 对之前未初始化的储存区域初始化, 而不会造成储存丢失的情况。这在C++中用new和delete我不清楚在C和其他语言中如何做到, delete有何劣势等等。</span><br><span class="line">		</span><br><span class="line">		而复制赋值符要对结构本身有些优化, 如： 防止自赋值, 删除那些老元素, 初始化, 复制那些新元素, 通常每个非静态成员都必须复制, 可以通过异常去报告复制中的出错。</span><br><span class="line">----------------------------------------------------------------------------------------</span><br><span class="line">		</span><br><span class="line">3, 类和数组的关系</span><br><span class="line">	&gt;* 发现问题</span><br><span class="line">		为什么能对指针类型使用索引?</span><br><span class="line">	</span><br><span class="line">	&gt;* 测试</span><br><span class="line">		========= source code =====================</span><br><span class="line">		class Name &#123;</span><br><span class="line">			const char* s;</span><br><span class="line">		&#125;;</span><br><span class="line">	</span><br><span class="line">		void test_array() &#123;</span><br><span class="line">			Name* t;</span><br><span class="line">			t[0];          // t是指针也是数组</span><br><span class="line">			</span><br><span class="line">			int i = 5;</span><br><span class="line">			int* ptr_i = &amp;i;</span><br><span class="line">			int r = ptr_i[0];     // ptr_i是指针也是数组</span><br><span class="line">			std::cout &lt;&lt; &quot;r = &quot; &lt;&lt; r &lt;&lt; std::endl;    // prints r = 5</span><br><span class="line">		&#125;</span><br><span class="line">		=========================================</span><br><span class="line">		</span><br><span class="line">	&gt;* 某一类型的指针, 也同样是指向某一类型的数组。</span><br><span class="line">		到现在为止, 可以把指针理解成一个表。 比如 int i, j, k; 三个整型。如何用一个变量将他们表示? </span><br><span class="line">		========= source code ===========</span><br><span class="line">		int a = 2, b = 3, c = 4;</span><br><span class="line">		int table_v[] = &#123;a, b, c&#125;;</span><br><span class="line">		std::cout &lt;&lt; *table_v &lt;&lt; std::endl;</span><br><span class="line">		-------./a.out---------------------</span><br><span class="line">		2</span><br><span class="line">		=================================</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/15/essay/about-rest/" rel="next" title="关于休息">
+                <i class="fa fa-chevron-left"></i> 关于休息
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/18/temp-history/" rel="prev" title="中建史考试笔记">
+                中建史考试笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
