@@ -39,3 +39,30 @@ $ echo $PATH
 ```
 
 现在npm, brew都可以直接用了
+
+另外一种方法是修改 ~/.bash_profile文件
+
+```
+# export local bin
+export PATH=/usr/local/bin:$PATH
+```
+
+接着, 
+$ source ~/.bash_profile
+
+但接着又出现了新的问题, 每次重启emacs, 重启terminal之后, 都需要 source ~/.bash_profile
+
+解决方法如下:
+1, 搞清楚用的是哪个shell,
+$ echo $SHELL
+/bin/bash
+
+2, zsh对应~/.zshrc, bash对应~/.bashrc, 
+添加入source ~/.bash_profile
+
+这样的话， 在每次打开shell时候都能自动加载了
+
+-----
+ref:
+[1]:[https://www.cnblogs.com/caowei/p/mac-path_2013-08-26.html]
+[2]:[https://blog.csdn.net/science_lee/article/details/79214127]
