@@ -2176,6 +2176,110 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
         
     </entry>
     
+    <entry>
+      <title><![CDATA[Markdown语法整理(不定期更新)]]></title>
+      <url>/2017/11/21/my-markdown/</url>
+      <content type="html"><![CDATA[<p>In this post, I will focus on use of Markdown and hexo push.</p>
+<blockquote>
+<ol>
+<li>title level</li>
+<li>insert a link</li>
+<li>highlight the code</li>
+<li>three lists of point</li>
+<li>insert a note”[^code]”</li>
+<li>bold fonts</li>
+<li>reference</li>
+<li>edit a formula</li>
+<li>draw a flow picture</li>
+</ol>
+<ul>
+<li><a href="#补充">补充</a></li>
+</ul>
+</blockquote>
+<p>reference website: <a href="https://www.zybuluo.com/mdeditor#fn:latex" target="_blank" rel="noopener">Cmd Markdown reader</a></p>
+<h2 id="1-Title-level"><a href="#1-Title-level" class="headerlink" title="1. Title level"></a>1. Title level</h2><h3 id="level-3-0"><a href="#level-3-0" class="headerlink" title="level 3-0"></a>level 3-0</h3><h4 id="level-4-0"><a href="#level-4-0" class="headerlink" title="level 4-0"></a>level 4-0</h4><h3 id="level-3-1"><a href="#level-3-1" class="headerlink" title="level 3-1"></a>level 3-1</h3><h4 id="level-4-1"><a href="#level-4-1" class="headerlink" title="level 4-1"></a>level 4-1</h4><h4 id="level-4-2"><a href="#level-4-2" class="headerlink" title="level 4-2"></a>level 4-2</h4><h2 id="2-Insert-a-link"><a href="#2-Insert-a-link" class="headerlink" title="2. Insert a link."></a>2. Insert a link.</h2><h3 id="Tim’s-Blog"><a href="#Tim’s-Blog" class="headerlink" title="Tim’s Blog"></a><a href="https://timtingwei.github.io/">Tim’s Blog</a></h3><h3 id="Tim’s-Blog-1"><a href="#Tim’s-Blog-1" class="headerlink" title="Tim’s Blog"></a><a href="https://timtingwei.github.io/">Tim’s Blog</a></h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">### [Tim&apos;s Blog](https://timtingwei.github.io/)</span><br><span class="line">### [Tim&apos;s Blog][2]</span><br></pre></td></tr></table></figure>
+<h2 id="3-Highlight-the-code"><a href="#3-Highlight-the-code" class="headerlink" title="3. Highlight the code"></a>3. Highlight the code</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@requires_authorization</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># A comment</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'hello world'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-three-lists-of-point"><a href="#4-three-lists-of-point" class="headerlink" title="4. three lists of point"></a>4. three lists of point</h2><h3 id="Bulleted-List"><a href="#Bulleted-List" class="headerlink" title="Bulleted List"></a>Bulleted List</h3><blockquote>
+<ul>
+<li>first line</li>
+<li>second line</li>
+<li>third line</li>
+</ul>
+</blockquote>
+<h3 id="Numbered-List"><a href="#Numbered-List" class="headerlink" title="Numbered List"></a>Numbered List</h3><blockquote>
+<ol>
+<li>first line</li>
+<li>second line</li>
+<li>third line</li>
+</ol>
+</blockquote>
+<h3 id="TODO-list"><a href="#TODO-list" class="headerlink" title="TODO list"></a>TODO list</h3><ul>
+<li style="list-style: none"><input type="checkbox"> first todo </li>
+<li style="list-style: none"><input type="checkbox"> second todo</li>
+<li style="list-style: none"><input type="checkbox" checked> third todo -&gt; Done</li>
+</ul>
+<h2 id="5-insert-a-note-code"><a href="#5-insert-a-note-code" class="headerlink" title="5. insert a note[^code]"></a>5. insert a note[^code]</h2><p>LaTex formula support [LaTex][^LaTex]<br>high light code [code][^code]<br>insert a web note <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">MathJax</a></p>
+<h2 id="6-bold-fonts"><a href="#6-bold-fonts" class="headerlink" title="6. bold fonts"></a>6. bold fonts</h2><p><strong> bold fonts </strong> by adding two asteriskes *  as prefix and suffix respectively</p>
+<h2 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7. Reference"></a>7. Reference</h2><blockquote>
+<p>You can insert a reference by “&gt;”,<br>and input enter to create a new line,<br>This is the end line. Until the next symbol occur.</p>
+</blockquote>
+<h2 id="8-edit-a-formula"><a href="#8-edit-a-formula" class="headerlink" title="8. edit a formula"></a>8. edit a formula</h2><p>$$E=mc^2$$    use $$</p>
+<h2 id="9-draw-a-flow-picture"><a href="#9-draw-a-flow-picture" class="headerlink" title="9.draw a flow picture"></a>9.draw a flow picture</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">st=&gt;start: Start</span><br><span class="line">op=&gt;operation: Your Opreation</span><br><span class="line">cond=&gt;condition: Yes or No?</span><br><span class="line">e=&gt;end</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure>
+<p>[^LaTex]: support <strong>LaTex</strong> edit and display, such as: $\sum_{i=1}^n a_i=0$, visit <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">MathJax</a> for more information.<br>[^code]: include Java, Python, JavaScript etc.</p>
+<hr>
+<h1 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h1><blockquote>
+<ul>
+<li><a href="#背景色灰">背景色灰</a></li>
+<li><a href="#实现页面内跳转">实现页面内跳转</a></li>
+<li><a href="#删除线">删除线</a></li>
+<li><a href="#插入图片">插入图片</a></li>
+<li><a href="#标记文本颜色">标记文本颜色</a><br>20171224之后补充但未作整理。本来可以将每个语法分成多个博客离散列出，但后来出于对博客页面和知识索引的考虑，还是放在一个post内，也许将来会又变动，但是先不提前优化。</li>
+</ul>
+</blockquote>
+<h2 id="背景色灰"><a href="#背景色灰" class="headerlink" title="背景色灰"></a>背景色灰</h2><p>`gray background`</p>
+<p><code>gray background</code></p>
+<p>背景灰可以代替 反斜杠 \,去完成注释。这个很好用。原理估计和代码块差不多吧。</p>
+<h2 id="实现页面内跳转"><a href="#实现页面内跳转" class="headerlink" title="实现页面内跳转"></a>实现页面内跳转</h2><p><code>[create an anchor](#anchors-in-markdown)</code></p>
+<p><a href="#anchors-in-markdown">create an anchor</a></p>
+<p>\===========<br>refwebsite:</p>
+<p><a href="https://gist.github.com/asabaylus/3071099" target="_blank" rel="noopener">Anchors in Markdown</a></p>
+<h3 id="anchors-in-markdown"><a href="#anchors-in-markdown" class="headerlink" title="anchors in markdown"></a>anchors in markdown</h3><pre><code>skip into this title
+</code></pre><h2 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h2><p><code>~~删除一句~~</code><br><del>删除一句</del></p>
+<p><code>~~删除</code><br><code>多行~~</code><br><del>删除<br>多行</del></p>
+<p><code>~~删除包含语法[mituh’s notes][timtingwei.github.io]~~</code><br><del>删除包含语法[mituh’s notes][timtingwei.github.io]</del></p>
+<p>====<br>不知道还有其他方法否？</p>
+<p>\==========<br>refwebsite:</p>
+<p><a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Markdown</a></p>
+<h2 id="插入图片"><a href="#插入图片" class="headerlink" title="插入图片"></a>插入图片</h2><p><code>![Logo](/images/logo.png)</code><br><img src="/images/logo.png" alt="Logo"></p>
+<p>\===========<br>refwebsite:</p>
+<p>hexo图片的其他用法：<a href="https://hexo.io/zh-cn/docs/asset-folders.html" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/asset-folders.html</a><br><a href="https://webapps.stackexchange.com/questions/29602/markdown-to-insert-and-display-an-image-on-github-repo" target="_blank" rel="noopener">https://webapps.stackexchange.com/questions/29602/markdown-to-insert-and-display-an-image-on-github-repo</a></p>
+<h2 id="标记文本颜色"><a href="#标记文本颜色" class="headerlink" title="标记文本颜色"></a>标记文本颜色</h2><p><code>&lt;span style=&quot;color:blue&quot;&gt;*This is Blue italic.*&lt;/span&gt;</code><br><span style="color:blue"><em>This is Blue italic.</em></span></p>
+<p><code>&lt;span style=&quot;color:red&quot;&gt;**This is Red Bold.**&lt;/span&gt;</code><br><span style="color:red"><strong>This is Red Bold.</strong></span></p>
+<p>相比之下,<br>italic 给人轻松的感觉，<br>blod有种警告意味。</p>
+<p>\===========<br>refwebsite:</p>
+<p><a href="https://stackoverflow.com/questions/35465557/how-to-apply-color-in-markdown" target="_blank" rel="noopener">https://stackoverflow.com/questions/35465557/how-to-apply-color-in-markdown</a></p>
+<h2 id="换行"><a href="#换行" class="headerlink" title="换行"></a>换行</h2><p>段落前后是空行<br>段落内插入<code>&lt;br&gt;</code>换行</p>
+<p>test1<br>test2</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">test1</span><br><span class="line">test2</span><br></pre></td></tr></table></figure>
+<p>test1</p>
+<p>test2</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">test1</span><br><span class="line"></span><br><span class="line">test2</span><br></pre></td></tr></table></figure>
+<p>test1<br><br>test2<br><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">test1&lt;br&gt;</span><br><span class="line">test2&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
+<p>\====<br>ref:<br><a href="http://xianbai.me/learn-md/article/syntax/paragraphs-and-line-breaks.html" target="_blank" rel="noopener">http://xianbai.me/learn-md/article/syntax/paragraphs-and-line-breaks.html</a></p>
+<h2 id="next-one"><a href="#next-one" class="headerlink" title="next one ?"></a>next one ?</h2><hr>
+<p>以上是我的个人笔记收录，markdown主要用来写笔记和写博客<br>其他有什么好玩的用法，欢迎指教。<br>timtingwei@gmail.com</p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> markdown </tag>
+            
+        </tags>
+        
+    </entry>
+    
   
   
 </search>
