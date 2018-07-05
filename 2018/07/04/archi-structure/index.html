@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="名次解释画图解释大题(3选1):  耶鲁大学冰球馆 杜鲁斯机场 代代木体育馆 透视, 剖面, 标注(作者, 结构名称, 主要尺度关系)  名词解释 4 * 5 简图(并绘出顶部受均布垂直荷载的弯矩示意图)框架刚架桁架排架屋架 1, 刚架(用力学简图附加说明):梁柱之间刚性连接的结构, 适合于单层的体育馆 2, 筒中筒 ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="建筑结构选型">
+<meta property="og:url" content="https://timtingwei.github.io/2018/07/04/archi-structure/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="名次解释画图解释大题(3选1):  耶鲁大学冰球馆 杜鲁斯机场 代代木体育馆 透视, 剖面, 标注(作者, 结构名称, 主要尺度关系)  名词解释 4 * 5 简图(并绘出顶部受均布垂直荷载的弯矩示意图)框架刚架桁架排架屋架 1, 刚架(用力学简图附加说明):梁柱之间刚性连接的结构, 适合于单层的体育馆 2, 筒中筒 必考 p135在高层建筑中, 可把电梯间, 楼梯间以及设备井道的墙布置成钢筋混凝">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://timtingwei.github.io/images/gang-jia.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/tong-zhong-tong.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/kuangjia-hexintong.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/qi-ya-shi-bo-mo-jie-gou.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/qi-chen-shi-bo-mo-jie-gou.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/kuang-zhi-jian-li-qiang.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/heng-jia.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/ceng-jia.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/gang-jia.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/gong-lagan.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/gong-kuangjia.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/gong-goujian.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/gong-jichu.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/newyork.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/xiersi.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/qiao-ti-jie-gou.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/yelu-pers.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/yelu-section.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/dulesi-plan.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/dulesi-pers.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/dulesi-section.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/daidaimu-plan.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/daidaimu-pers.jpg">
+<meta property="og:image" content="https://timtingwei.github.io/images/daidaimu-section.jpg">
+<meta property="og:updated_time" content="2018-07-05T06:27:35.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="建筑结构选型">
+<meta name="twitter:description" content="名次解释画图解释大题(3选1):  耶鲁大学冰球馆 杜鲁斯机场 代代木体育馆 透视, 剖面, 标注(作者, 结构名称, 主要尺度关系)  名词解释 4 * 5 简图(并绘出顶部受均布垂直荷载的弯矩示意图)框架刚架桁架排架屋架 1, 刚架(用力学简图附加说明):梁柱之间刚性连接的结构, 适合于单层的体育馆 2, 筒中筒 必考 p135在高层建筑中, 可把电梯间, 楼梯间以及设备井道的墙布置成钢筋混凝">
+<meta name="twitter:image" content="https://timtingwei.github.io/images/gang-jia.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/07/04/archi-structure/"/>
+
+
+
+
+
+  <title>建筑结构选型 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/04/archi-structure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">建筑结构选型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T20:37:57+08:00">
+                2018-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>名次解释<br>画图解释<br>大题(3选1):</p>
+<ul>
+<li>耶鲁大学冰球馆</li>
+<li>杜鲁斯机场</li>
+<li>代代木体育馆</li>
+<li>透视, 剖面, 标注(作者, 结构名称, 主要尺度关系)</li>
+</ul>
+<h1 id="名词解释-4-5-简图"><a href="#名词解释-4-5-简图" class="headerlink" title="名词解释 4 * 5 简图"></a>名词解释 4 * 5 简图</h1><p>(并绘出顶部受均布垂直荷载的弯矩示意图)<br>框架<br>刚架<br>桁架<br>排架<br>屋架</p>
+<h2 id="1-刚架-用力学简图附加说明"><a href="#1-刚架-用力学简图附加说明" class="headerlink" title="1, 刚架(用力学简图附加说明):"></a>1, 刚架(用力学简图附加说明):</h2><p>梁柱之间刚性连接的结构, 适合于单层的体育馆<br><img src="/images/gang-jia.jpg" alt=""></p>
+<h2 id="2-筒中筒-必考-p135"><a href="#2-筒中筒-必考-p135" class="headerlink" title="2, 筒中筒 必考 p135"></a>2, 筒中筒 必考 p135</h2><p>在高层建筑中, 可把电梯间, 楼梯间以及设备井道的墙布置成钢筋混凝土墙, 它既可承受竖向荷载, 又可承受水平力作用。<br>在高层建筑中, 可充分利用建筑物圆周的景观和采光。<br>楼.电梯等服务性用房常位于房屋的中部, 因此由钢筋混凝土组成的楼, 电梯间便成了核心筒(实腹内筒), 外侧的密集的柱子形成空腹外筒<br><img src="/images/tong-zhong-tong.jpg" alt=""></p>
+<h2 id="3-框架核心筒结构"><a href="#3-框架核心筒结构" class="headerlink" title="3, 框架核心筒结构:"></a>3, 框架核心筒结构:</h2><p>筒中筒结构外部柱距较为密集, 常常不能满足建筑设计要求, 有时建筑柱子布距离要满足柱距在4~5m或更大,<br>周边柱不形成筒的工作状态, 筒相当于空间框架的作用, 这种结构称为框架核心筒结构<br><img src="/images/kuangjia-hexintong.jpg" alt=""></p>
+<h2 id="框筒-框架核心筒-结构与套筒-筒中筒-比较-141511"><a href="#框筒-框架核心筒-结构与套筒-筒中筒-比较-141511" class="headerlink" title="*, 框筒(框架核心筒)结构与套筒(筒中筒)比较 141511"></a>*, 框筒(框架核心筒)结构与套筒(筒中筒)比较 141511</h2><ul>
+<li>框筒结构柱距8.4m以上       50m * 50m 6根柱子</li>
+<li>套筒结构住距3m以内         50m * 50m 12以上</li>
+<li>框架核心筒比套筒柱子少 </li>
+</ul>
+<h2 id="框筒-框架-筒-区别"><a href="#框筒-框架-筒-区别" class="headerlink" title="*, 框筒 框架+筒 区别"></a>*, 框筒 框架+筒 区别</h2><p>框架-核心筒是结构体系中心一个筒结构，外围是框架<br>就是框架和筒体成的结构<br>框筒一般指是用比较密的柱子，配合深梁或者支撑构成筒体，不管有多少柱子都还是筒，<br>框架核心筒里面的筒即可以是实腹的墙体构成的筒，也可以是这个框筒。</p>
+<h2 id="4-气压式薄膜结构-气胀式"><a href="#4-气压式薄膜结构-气胀式" class="headerlink" title="4, 气压式薄膜结构(气胀式)"></a>4, 气压式薄膜结构(气胀式)</h2><p>也称为气胀式薄膜结构, 在若干充气肋 和 充气被 的密闭空间中保持空气压力, 直接落地承重或者搁置在结构构件上承重<br><img src="/images/qi-ya-shi-bo-mo-jie-gou.jpg" alt=""></p>
+<p>气承式, 不断的向壳体内鼓风, 在较高的室内气压作用下使其自行撑起, 以承受自重和外荷载的结构.<br><img src="/images/qi-chen-shi-bo-mo-jie-gou.jpg" alt=""></p>
+<h2 id="5-剪力墙结构"><a href="#5-剪力墙结构" class="headerlink" title="5, 剪力墙结构"></a>5, 剪力墙结构</h2><p>一般在高层建筑中, 将建筑物外墙和永久性内隔墙布置成钢筋混凝土结构, 既能承受竖向荷载, 又能承受水平力</p>
+<h2 id="6-框支剪力墙-p13"><a href="#6-框支剪力墙-p13" class="headerlink" title="6, 框支剪力墙 p13-"></a>6, 框支剪力墙 p13-</h2><p>在沿街住宅和商户中, 在底层需要大空间的公共建筑中, 将部分底层剪力墙改成框架柱, 以满足使用要求, 但不利于抗震<br><img src="/images/kuang-zhi-jian-li-qiang.jpg" alt=""></p>
+<p>yc:</p>
+<h2 id="8-桁架"><a href="#8-桁架" class="headerlink" title="8, 桁架:"></a>8, 桁架:</h2><p>由杆件通过<code>焊接, 铆接 或 螺栓连接</code> 而成的支撑横梁结构, 杆件主要承受<code>拉力和压力</code>, 可充分发挥材料的作用, 减轻结构自重;<br>材料: 钢, 木 和 混凝土<br>图: <img src="/images/heng-jia.jpg" alt=""></p>
+<h2 id="9-屋架"><a href="#9-屋架" class="headerlink" title="9, 屋架:"></a>9, 屋架:</h2><p>屋面的结构承重桁架, 由上弦杆和腹杆组成。<br>材料: 钢, 木, 栓<br>式样: 三角形, 梯形, 弧形<br>图: <img src="/images/ceng-jia.jpg" alt=""></p>
+<h2 id="刚架"><a href="#刚架" class="headerlink" title="刚架:"></a>刚架:</h2><p>梁柱之间刚性连接的结构, 适合于单层的体育馆<br><img src="/images/gang-jia.jpg" alt=""></p>
+<h2 id="排架"><a href="#排架" class="headerlink" title="排架:"></a>排架:</h2><p>梁柱之间为铰接的单层结构</p>
+<h2 id="框架"><a href="#框架" class="headerlink" title="框架:"></a>框架:</h2><p>多层多跨的钢架结构</p>
+<h2 id="拱"><a href="#拱" class="headerlink" title="拱:"></a>拱:</h2><p>是主要受轴向力为主的结构形式, 形状为弧形<br>结构特点:<br>1, 拱是一种 推力结构, 在竖向的荷载下产生水平推力<br>2, 拱是一种无矩结构, 通过合理拱轴 可以使杆件无弯矩<br>3, 拱可以充分利用材料抗压强度, 断面小, 跨度大</p>
+<p>拱的支座处理:<br>1, 水平推力直接由拉杆承担<br><img src="/images/gong-lagan.jpg" alt=""></p>
+<p>2, 由框架承受<br><img src="/images/gong-kuangjia.jpg" alt=""></p>
+<p>3, 刚性水平构件承受推力<br><img src="/images/gong-goujian.jpg" alt=""></p>
+<p>4, 由基础承受<br><img src="/images/gong-jichu.jpg" alt=""></p>
+<h1 id="画图解释-5-10"><a href="#画图解释-5-10" class="headerlink" title="画图解释 5 * 10"></a>画图解释 5 * 10</h1><p>必考: 纽约世贸大厦平面 63m</p>
+<ul>
+<li>变长为63m</li>
+<li>平面为方 </li>
+<li>结构形式采用套筒, 实腹外筒和空腹内筒</li>
+<li>上层柱子间距13m, 下层柱柱子采用并柱, 间距大</li>
+<li>网状的轻桁架和主桁架支持地板。桁架相错互相连结。它们与外墙的拱间以及与核心的钢柱焊在一起。</li>
+<li>地板与外墙的拱间通过粘弹阻尼器连在一起，这样来使得建筑内的人不会感觉到震动。<br><img src="/images/newyork.jpg" alt=""></li>
+</ul>
+<p>必考: 西尔斯大厦平面</p>
+<ul>
+<li>平面为方 </li>
+<li>采用空腹组合筒, 9个筒高低错落</li>
+<li>边长为68.7m, 由9个22.9米见方的正方形组成。</li>
+<li>地上18层，地下一层，框剪结构，采用挤密桩<br><img src="/images/xiersi.jpg" alt=""></li>
+</ul>
+<h1 id="壳体结构-分别由母线和旋转轴形成的椭圆壳-双曲壳和锥形壳-轴测图"><a href="#壳体结构-分别由母线和旋转轴形成的椭圆壳-双曲壳和锥形壳-轴测图" class="headerlink" title="壳体结构: 分别由母线和旋转轴形成的椭圆壳, 双曲壳和锥形壳 轴测图"></a>壳体结构: 分别由母线和旋转轴形成的椭圆壳, 双曲壳和锥形壳 轴测图</h1><p><img src="/images/qiao-ti-jie-gou.jpg" alt=""></p>
+<p>双层双曲</p>
+<p>绘制高层建筑垂直桁架结构体系的结构示意图</p>
+<p>绘制3例悬挂结构体系的高层建筑立面示意</p>
+<h1 id="大题-30"><a href="#大题-30" class="headerlink" title="大题 30"></a>大题 30</h1><p>3选1必考</p>
+<h2 id="耶鲁大学冰球馆"><a href="#耶鲁大学冰球馆" class="headerlink" title="耶鲁大学冰球馆"></a>耶鲁大学冰球馆</h2><p>建筑师： 美国建筑师, 美国 沙里宁 以及日期<br>主要结构: 悬索结构, 钢索挂在正中一道拱形脊梁和圈梁之上, 场内可容纳3000名观众, 冰球馆的外形像一只古怪的海龟似的结构<br>效果图, 剖面图 <code>画图?????????????????????????????????????????????</code><br><img src="/images/yelu-pers.jpg" alt=""><br><img src="/images/yelu-section.jpg" alt=""></p>
+<h2 id="杜勒斯机场"><a href="#杜勒斯机场" class="headerlink" title="杜勒斯机场"></a>杜勒斯机场</h2><p>建筑师: 沙里宁<br>主要结构: 悬索结构<br>候机楼有两层楼巨型钢筋混凝土柱墩, 一排稍高, 一排稍低, 在相对的柱墩子上张挂着40多的钢索, 刚墩上铺屋面板, 钢索中部下垂, 形成自然的凹面曲线屋顶, 柱墩向外倾斜, 屋面向上翘起。具有动势, 很有气派。<br>尺度关系: 矩形平面, 长182.5m, 45.6m</p>
+<p>平面(简图), 剖面, 透视 <code>画图?????????????????????????????????????????????</code><br><img src="/images/dulesi-plan.jpg" alt=""><br><img src="/images/dulesi-pers.jpg" alt=""><br><img src="/images/dulesi-section.jpg" alt=""></p>
+<h2 id="代代木体育馆"><a href="#代代木体育馆" class="headerlink" title="代代木体育馆"></a>代代木体育馆</h2><p>建筑师: 丹下健三</p>
+<p>平面(示意), 透视+剖面 <code>画图?????????????????????????????????????????????</code><br><img src="/images/daidaimu-plan.jpg" alt=""><br><img src="/images/daidaimu-pers.jpg" alt=""><br><img src="/images/daidaimu-section.jpg" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/26/archi-equiptment/" rel="next" title="建筑设备复习">
+                <i class="fa fa-chevron-left"></i> 建筑设备复习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#名词解释-4-5-简图"><span class="nav-number">1.</span> <span class="nav-text">名词解释 4 * 5 简图</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-刚架-用力学简图附加说明"><span class="nav-number">1.1.</span> <span class="nav-text">1, 刚架(用力学简图附加说明):</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-筒中筒-必考-p135"><span class="nav-number">1.2.</span> <span class="nav-text">2, 筒中筒 必考 p135</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-框架核心筒结构"><span class="nav-number">1.3.</span> <span class="nav-text">3, 框架核心筒结构:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框筒-框架核心筒-结构与套筒-筒中筒-比较-141511"><span class="nav-number">1.4.</span> <span class="nav-text">*, 框筒(框架核心筒)结构与套筒(筒中筒)比较 141511</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框筒-框架-筒-区别"><span class="nav-number">1.5.</span> <span class="nav-text">*, 框筒 框架+筒 区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-气压式薄膜结构-气胀式"><span class="nav-number">1.6.</span> <span class="nav-text">4, 气压式薄膜结构(气胀式)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-剪力墙结构"><span class="nav-number">1.7.</span> <span class="nav-text">5, 剪力墙结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-框支剪力墙-p13"><span class="nav-number">1.8.</span> <span class="nav-text">6, 框支剪力墙 p13-</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-桁架"><span class="nav-number">1.9.</span> <span class="nav-text">8, 桁架:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-屋架"><span class="nav-number">1.10.</span> <span class="nav-text">9, 屋架:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#刚架"><span class="nav-number">1.11.</span> <span class="nav-text">刚架:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排架"><span class="nav-number">1.12.</span> <span class="nav-text">排架:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#框架"><span class="nav-number">1.13.</span> <span class="nav-text">框架:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拱"><span class="nav-number">1.14.</span> <span class="nav-text">拱:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#画图解释-5-10"><span class="nav-number">2.</span> <span class="nav-text">画图解释 5 * 10</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#壳体结构-分别由母线和旋转轴形成的椭圆壳-双曲壳和锥形壳-轴测图"><span class="nav-number">3.</span> <span class="nav-text">壳体结构: 分别由母线和旋转轴形成的椭圆壳, 双曲壳和锥形壳 轴测图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#大题-30"><span class="nav-number">4.</span> <span class="nav-text">大题 30</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#耶鲁大学冰球馆"><span class="nav-number">4.1.</span> <span class="nav-text">耶鲁大学冰球馆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#杜勒斯机场"><span class="nav-number">4.2.</span> <span class="nav-text">杜勒斯机场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代代木体育馆"><span class="nav-number">4.3.</span> <span class="nav-text">代代木体育馆</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
