@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="shell," />
+  <meta name="keywords" content="git," />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="用常规方法安装好npm之后,$ npm --versionbash: npm: commmand not found 以为是没有安装后，换用brewhomehttps://brew.sh/index_zh-cn.html进行安装$ brew --version 依旧 command not found 注意到，warn">
-<meta name="keywords" content="shell">
+<meta name="description" content="最近和学长HankDaly共同contribute一个项目。涉及到三个操作:1, HankDaly从我的github上获取代码2, HankDaly修改代码并提交给我3, 我对代码进行审核合并到项目中 1, HankDaly从我的github上获取代码(从项目维护者那获取代码)a, 在github上fork项目, ti">
+<meta name="keywords" content="git">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac添加PATH环境变量">
-<meta property="og:url" content="https://timtingwei.github.io/2018/06/20/append-path-on-mac/index.html">
+<meta property="og:title" content="Git Request 提交, 合并">
+<meta property="og:url" content="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/index.html">
 <meta property="og:site_name" content="mituh&#39;s notes">
-<meta property="og:description" content="用常规方法安装好npm之后,$ npm --versionbash: npm: commmand not found 以为是没有安装后，换用brewhomehttps://brew.sh/index_zh-cn.html进行安装$ brew --version 依旧 command not found 注意到，warning:==&amp;gt; Cleaning up /Library/Caches/H">
+<meta property="og:description" content="最近和学长HankDaly共同contribute一个项目。涉及到三个操作:1, HankDaly从我的github上获取代码2, HankDaly修改代码并提交给我3, 我对代码进行审核合并到项目中 1, HankDaly从我的github上获取代码(从项目维护者那获取代码)a, 在github上fork项目, timtingwei/cppd  =&amp;gt; HankDaly/cppdb, Han">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T16:59:36.733Z">
+<meta property="og:image" content="https://timtingwei.github.io/images/pull-request-new-requset.png">
+<meta property="og:updated_time" content="2018-07-07T16:00:46.926Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac添加PATH环境变量">
-<meta name="twitter:description" content="用常规方法安装好npm之后,$ npm --versionbash: npm: commmand not found 以为是没有安装后，换用brewhomehttps://brew.sh/index_zh-cn.html进行安装$ brew --version 依旧 command not found 注意到，warning:==&amp;gt; Cleaning up /Library/Caches/H">
+<meta name="twitter:title" content="Git Request 提交, 合并">
+<meta name="twitter:description" content="最近和学长HankDaly共同contribute一个项目。涉及到三个操作:1, HankDaly从我的github上获取代码2, HankDaly修改代码并提交给我3, 我对代码进行审核合并到项目中 1, HankDaly从我的github上获取代码(从项目维护者那获取代码)a, 在github上fork项目, timtingwei/cppd  =&amp;gt; HankDaly/cppdb, Han">
+<meta name="twitter:image" content="https://timtingwei.github.io/images/pull-request-new-requset.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://timtingwei.github.io/2018/06/20/append-path-on-mac/"/>
+  <link rel="canonical" href="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/"/>
 
 
 
 
 
-  <title>Mac添加PATH环境变量 | mituh's notes</title>
+  <title>Git Request 提交, 合并 | mituh's notes</title>
   
 
 
@@ -233,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/20/append-path-on-mac/">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="mituh">
@@ -250,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mac添加PATH环境变量</h1>
+          <h1 class="post-title" itemprop="name headline">Git Request 提交, 合并</h1>
         
 
         <div class="post-meta">
@@ -262,8 +264,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T01:15:47+08:00">
-                2018-06-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T14:35:29+08:00">
+                2018-07-06
               </time>
             
 
@@ -300,22 +302,23 @@
       
 
       
-        <p>用常规方法安装好npm之后,<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line">bash: npm: commmand not found</span><br></pre></td></tr></table></figure></p>
-<p>以为是没有安装后，换用brewhome<a href="参考 - brewhome官网">https://brew.sh/index_zh-cn.html</a>进行安装<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ brew --version</span><br></pre></td></tr></table></figure></p>
-<p>依旧 command not found</p>
-<p>注意到，warning:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">==&gt; Cleaning up /Library/Caches/Homebrew...</span><br><span class="line">==&gt; Migrating /Library/Caches/Homebrew to /Users/htwt/Library/Caches/Homebrew...</span><br><span class="line">==&gt; Deleting /Library/Caches/Homebrew...</span><br><span class="line">Already up-to-date.</span><br><span class="line">Warning: /usr/<span class="built_in">local</span>/bin is not <span class="keyword">in</span> your PATH.</span><br><span class="line">==&gt; Installation successful!</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ echo $PATH</span><br><span class="line">/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure>
-<p>需要手动添加一个PATH<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/bin:<span class="variable">$PATH</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure></p>
-<p>现在npm, brew都可以直接用了</p>
-<p>另外一种方法是修改 ~/.bash_profile文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># export local bin</span><br><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>接着,<br>$ source ~/.bash_profile</p>
-<p>但接着又出现了新的问题, 每次重启emacs, 重启terminal之后, 都需要 source ~/.bash_profile</p>
-<p>解决方法如下:<br>1, 搞清楚用的是哪个shell,<br>$ echo $SHELL<br>/bin/bash</p>
-<p>2, zsh对应~/.zshrc, bash对应~/.bashrc,<br>添加入source ~/.bash_profile</p>
-<p>这样的话， 在每次打开shell时候都能自动加载了</p>
-<hr>
-<p>ref:</p>
+        <p>最近和学长<a href="https://github.com/HankDaly" target="_blank" rel="noopener">HankDaly</a>共同contribute一个项目。<br>涉及到三个操作:<br>1, HankDaly从我的github上获取代码<br>2, HankDaly修改代码并提交给我<br>3, 我对代码进行审核合并到项目中</p>
+<h2 id="1-HankDaly从我的github上获取代码-从项目维护者那获取代码"><a href="#1-HankDaly从我的github上获取代码-从项目维护者那获取代码" class="headerlink" title="1, HankDaly从我的github上获取代码(从项目维护者那获取代码)"></a>1, HankDaly从我的github上获取代码(从项目维护者那获取代码)</h2><p>a, 在github上fork项目, timtingwei/cppd  =&gt; HankDaly/cppd<br>b, HankDaly, clone自己的项目到本地<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-HankDaly修改代码并提交给我"><a href="#2-HankDaly修改代码并提交给我" class="headerlink" title="2, HankDaly修改代码并提交给我"></a>2, HankDaly修改代码并提交给我</h2><p>a, 完成修改后, git push origin master 上传本地当前分支代码到远程master分支<br>b, 打开github, 在自己远程仓库的项目中, 找到pull request, 新建一个pull request<br>c, 选择自己要request的分支, 和base分支, 当前默认都为master<br><img src="/images/pull-request-new-requset.png" alt="我拿自己fork HankDaly/test 做的实验"><br>d, 创建这次pull request</p>
+<h2 id="3-我对代码进行审核合并到项目中"><a href="#3-我对代码进行审核合并到项目中" class="headerlink" title="3, 我对代码进行审核合并到项目中"></a>3, 我对代码进行审核合并到项目中</h2><p>在没有冲突的情况下可以直接在github上合并。<br>在冲突情况下必须手动pull下来, diff后修改矛盾, 再merge, pull request会自动消失。</p>
+<p>这里主要做的事情是, 手动在另外一个branch中, 审阅request上来的代码, 再与master合并</p>
+<p>这里我前面在pull的时候, 总没有git checkout -b hank-master</p>
+<p>我所推测的步骤应该是:</p>
+<p>a, 切换到一个专门用于审阅request的分支<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout -b hank-master</span><br></pre></td></tr></table></figure></p>
+<p>b, 在当前分支下, 拉下来学长的push<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git pull https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
+<p>没有conflict的话可以直接pull下来。</p>
+<p>如果这里有confilict<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONFLICT</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
+<p>手动将confilict改完, 就是保存一份没有冲突的</p>
+<p>c, 提交对代码的改动<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"merge hank's code"</span></span><br></pre></td></tr></table></figure></p>
+<p>d, 切换到master分支合并代码<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge hank-master</span><br></pre></td></tr></table></figure></p>
+<p>e, 提交到远程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>什么时候会出现conflict?<br>我改动的同时, request也改动了相同的代码。</p>
 
       
     </div>
@@ -333,7 +336,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/shell/" rel="tag"># shell</a>
+            <a href="/tags/git/" rel="tag"># git</a>
           
         </div>
       
@@ -346,8 +349,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/20/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/07/04/archi-structure/" rel="next" title="建筑结构选型">
+                <i class="fa fa-chevron-left"></i> 建筑结构选型
               </a>
             
           </div>
@@ -355,10 +358,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/25/archi-materials/" rel="prev" title="建筑材料复习">
-                建筑材料复习 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -410,8 +409,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -462,6 +470,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-HankDaly从我的github上获取代码-从项目维护者那获取代码"><span class="nav-number">1.</span> <span class="nav-text">1, HankDaly从我的github上获取代码(从项目维护者那获取代码)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HankDaly修改代码并提交给我"><span class="nav-number">2.</span> <span class="nav-text">2, HankDaly修改代码并提交给我</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-我对代码进行审核合并到项目中"><span class="nav-number">3.</span> <span class="nav-text">3, 我对代码进行审核合并到项目中</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
