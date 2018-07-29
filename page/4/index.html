@@ -229,6 +229,149 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-B/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-B</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:07:54+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>功能：<br>算法:<br>规范：图灵机复位h的原因。 =&gt; 在软件中叫做接口</p>
+<p>RAM: Random Access Machine<br>共同之处：无限的空间。<br>寄存器：</p>
+<blockquote>
+<ul>
+<li>常数赋值给RAM             </li>
+<li>RAM之间直接赋值 R[i] &lt; R[j]</li>
+<li>RAM之间间接赋值 R[i] &lt;- R[R[j]]</li>
+<li>RAM+-</li>
+<li>判断0跳转      IF R[i] = 0 GOTO l</li>
+<li>判断正跳转             &gt; 0</li>
+<li>跳转</li>
+<li>停止           STOP</li>
+</ul>
+</blockquote>
+<p>概括:<br>对计算工具抽象后的简化。<br>独立于环境和平台，可评判效率。</p>
+<blockquote>
+<ul>
+<li>将执行时间，转化为操作次数。T(n) = 算法为求求解规模为n问题的，所需执行次数</li>
+<li><h1 id="这个次数是清晰的，可度量的。"><a href="#这个次数是清晰的，可度量的。" class="headerlink" title="这个次数是清晰的，可度量的。"></a>这个次数是清晰的，可度量的。</h1></li>
+</ul>
+</blockquote>
+<p>RAM实例:Floor<br>向下取整除法, 0 &lt;= c, 0 &lt; d<br>c%d = max {x | d<em>c &lt;= c}<br>    = max {x | d</em>x &lt; 1+c}</p>
+<h2 id="R-0-c-1-R-1-d"><a href="#R-0-c-1-R-1-d" class="headerlink" title="R[0] = c+1, R[1] = d"></a>R[0] = c+1, R[1] = d</h2><p>0, R[0] &lt;- c                 // int c = c;<br>1, R[1] &lt;- d                 // int d = d;<br>2, R[2] &lt;- 0                 // int x = 0;<br>3, R[3] &lt;- 1                 // int a = 1;<br>4, R[0] &lt;- R[0] + R[2]       // c++<br>6, R[0] &lt;- R[0] - R[1]       // c-=d<br>7, R[2] &lt;- R[2] + R[3]       // x++<br>8, IF R[0] &gt; 0 GOTO 4        // if c &gt; 0 goto 4<br>9, R[0] &lt;- R[2] - R[3]       // else x– and;<br>9, STOP                      // return R[0] = x</p>
+<p>src:</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/04/trip-of-game-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2015,179 +2158,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/20/install-openGL-in-ubuntu14-04/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/20/install-openGL-in-ubuntu14-04/" itemprop="url">在ubuntu14.04上建立OpenGL编译环境</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T13:58:49+08:00">
-                2017-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>学习教程<a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">LearnOpenGL-CN</a>前先配置学习环境，对照后面编译时链接的函数库，</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br></pre></td></tr></table></figure>
-<p>需要：</p>
-<blockquote>
-<ul>
-<li>GLEW</li>
-<li>GLFW/GLFW3</li>
-<li>libgl1-mesa</li>
-<li>libglu1-mesa</li>
-</ul>
-</blockquote>
-<p><code>ps: 不是完全明白这里链接库的对应关系</code></p>
-<p>==========</p>
-<p>参考:<a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">Howto_Install_OpenGL_Development_Environment</a></p>
-<p><strong>建立基本编译环境</strong><br>首先不可或缺的，就是編譯器與基本的函式庫，如果系統沒有安裝的話，請依照下面的方式安裝：<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install build-essential</span><br></pre></td></tr></table></figure></p>
-<p><strong>安裝OpenGL Library</strong><br>接下來要把我們會用到的 Library 裝上去，首先安裝 OpenGL Library<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libgl1-mesa-dev</span><br></pre></td></tr></table></figure></p>
-<p><strong>安裝OpenGL Utilities</strong><br>OpenGL Utilities 是一組建構於 OpenGL Library 之上的工具組，提供許多很方便的函式，使 OpenGL 更強大且更容易使用。 接下來我們安裝OpenGL Utilities</p>
-<blockquote>
-<p>在Linux下你需要链接libGL.so库文件，这需要添加-lGL到你的链接器设置中。如果找不到这个库你可能需要安装Mesa，NVidia或AMD的开发包，</p>
-</blockquote>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libglu1-mesa-dev</span><br></pre></td></tr></table></figure>
-<p><strong>安裝GLFW/GLFW3</strong><br>GLFW是一个专门针对OpenGL的C语言库，它提供了一些渲染物体所需的最低限度的接口。它允许用户创建OpenGL上下文，定义窗口参数以及处理用户输入，这正是我们需要的。</p>
-<p>GLFW可以从它官方网站的<a href="http://www.glfw.org/download.html" target="_blank" rel="noopener">下载页</a>上获取。</p>
-<p>参考网站<a href="https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project" target="_blank" rel="noopener">How to build &amp; install GLFW 3 and use it in a Linux project</a><br>解压后,</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install cmake</span><br><span class="line"></span><br><span class="line">$ cmake -G <span class="string">"Unix Makefiles"</span></span><br><span class="line"></span><br><span class="line">$ sudo apt-get build-dep glfw</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree</span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br><span class="line"></span><br><span class="line">Install the project...</span><br><span class="line">-- Install configuration: <span class="string">""</span></span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3native.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Config.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3ConfigVersion.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets-noconfig.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/pkgconfig/glfw3.pc</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/libglfw3.a</span><br></pre></td></tr></table></figure>
-<p><strong>从<a href="http://www.glfw.org/docs/3.0/quick.html" target="_blank" rel="noopener">测试源码网站</a>复制案例代码测试</strong><br>该案例中#include <glfw glfw3.h=""></glfw></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 -c main.cpp</span><br><span class="line"></span><br><span class="line">$ ./main.o</span><br><span class="line">bash: ./main.o: cannot execute binary file: Exec format error  &amp;lt;==执行main.o提示不是二进制可执行文件</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi</span><br><span class="line">/usr/bin/ld: //usr/<span class="built_in">local</span>/lib/libglfw3.a(vulkan.c.o): undefined reference to symbol <span class="string">'dlclose@@GLIBC_2.2.5'</span></span><br><span class="line">//lib/x86_64-linux-gnu/libdl.so.2: error adding symbols: DSO missing from <span class="built_in">command</span> line</span><br><span class="line">collect2: error: ld returned 1 <span class="built_in">exit</span> status</span><br></pre></td></tr></table></figure>
-<p>You may also need to add the linker options -ldl -lXinerama -lXcursor to get it to work correctly if you are getting undefined references to <strong>dlclose</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line"></span><br><span class="line">$ ./main.exec</span><br></pre></td></tr></table></figure>
-<p>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></p>
-<p>执行:</p>
-<p>$ ./main.exec</p>
-<p><del>*<em>安装glut\</em>*</del></p>
-<p><del>```sh<br>sudo apt-get install libglut-dev<br>```</del></p>
-<p><del>沒有libglut-dev可以改用<br>```sh<br>sudo apt-get install freeglut3-dev<br>```</del></p>
-<p><del>設定編譯參數與編譯<br>在這之前，我們需要一個測試範例，example.c</del> <a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">如下</a>：</p>
-<p><del>有了測試範例、基礎編譯環境與各個 OpenGL 相關的函式庫之後，我們所需要做的就是告訴編譯器我們有安裝 OpenGL 函式庫，編譯程式時要連結這些函式庫。</del></p>
-<p><del>gcc example.c -o example.out -lGL -lGLU -lglut<br>因為我們安裝了 OpenGL Utility Toolkit ，它是建立在 OpenGL Utilities 與 OpenGL Library 之上，因此我們可以簡單連結 OpenGL Utility Toolkit 的函式庫就可以達到我們的目地了。下面的編譯參數跟上面的是同樣效果：</del></p>
-<p><del>gcc example.c -o example.out -lglut<br>下面簡單說明一下所使用的 gcc 參數</del></p>
-<p><del>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></del></p>
-<p><del>執行<br>接下來我們就可以來看看我們的結果，如果看到右圖，代表成功了!~<br>./example.out</del></p>
-<p><strong>编译和链接GLEW</strong></p>
-<p>对于用GCC编译的Linux用户建议使用这个命令行选项-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi。没有正确链接相应的库会产生 undefined reference(未定义的引用) 这个错误。</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get build-dep glew</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
-<p>==========</p>
-<p><strong>测试教程中的案例代码</strong></p>
-<p>复制 [代码hello_window.cpp][<a href="https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp" target="_blank" rel="noopener">https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp</a>]<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line">$ ls</span><br><span class="line">a.out  hello_window.cpp</span><br><span class="line">$ ./a.out</span><br><span class="line">Starting GLFW context, OpenGL 3.3</span><br></pre></td></tr></table></figure></p>
-<p>看到初始化窗口，代表成功。</p>
-<p><strong>编译后窗口透明问题</strong><br>虽然窗口初始化成功, 但不知道我的窗口为什么是透明的, 难道是ubuntu的原因吗？<br>Render部分再加入两行代码<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glClearColor(<span class="number">0.2f</span>, <span class="number">0.3f</span>, <span class="number">0.3f</span>, <span class="number">1.0f</span>);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT);</span><br></pre></td></tr></table></figure></p>
-<p><strong>编译后libGLEW.so.2.1: No such file or directory 问题</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">..</span><br><span class="line">$ ./a.out</span><br><span class="line">./a.out: error <span class="keyword">while</span> loading shared libraries: libGLEW.so.2.1: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
-<p>查询<a href="https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew" target="_blank" rel="noopener">stackoverflow libGLEW相关问题</a><br>得到libGLEW在lib64下, 于是便创建软link<br>$ sudo ln -s /usr/lib64/libGLEW.so.2.1 /usr/lib/libGLEW.so.2.1</p>
-<p>==========</p>
-<p>refwebsite:<br><a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/</a><br><a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment</a><br><a href="https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project" target="_blank" rel="noopener">https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project</a><br><a href="http://www.glfw.org/docs/3.0/quick.html" target="_blank" rel="noopener">http://www.glfw.org/docs/3.0/quick.html</a><br><a href="https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew" target="_blank" rel="noopener">https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew</a><br><a href="http://www.glfw.org/download.html" target="_blank" rel="noopener">http://www.glfw.org/download.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2238,7 +2208,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2251,7 +2221,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

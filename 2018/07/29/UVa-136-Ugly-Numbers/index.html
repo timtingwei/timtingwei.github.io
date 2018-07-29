@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="DirectX,Games," />
+  <meta name="keywords" content="UVa, 优先队列," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="深度缓存(depth buffer) 定义: 一个含有特定像素的深度信息而不含图像数据的表面。  用于计算每个像素而定深度值并进行深度测试: 让处于同一位置的不同像素进行竞争，选出应写入该位置的像素。距离摄像机最近的像素获胜。  深度缓存格式决定深度测试精度, 精度度 16位&amp;lt;24位&amp;lt;32位">
-<meta name="keywords" content="DirectX,Games">
+<meta name="description" content="Problem丑数是指不能被2, 3, 5以外的其他素数整除的数。把丑数从小到大排列起来, 结果如下:1,2,3,4,5,6,8,9,10,12,15,...求第1500个丑数。 Sample Input:There is no input to this program. Sample Output:The 1500">
+<meta name="keywords" content="UVa, 优先队列">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DirectX9.0 notes 1.3 预备知识">
-<meta property="og:url" content="https://timtingwei.github.io/2017/11/22/d3d-preparation/index.html">
+<meta property="og:title" content="UVa 136-Ugly Numbers">
+<meta property="og:url" content="https://timtingwei.github.io/2018/07/29/UVa-136-Ugly-Numbers/index.html">
 <meta property="og:site_name" content="mituh&#39;s notes">
-<meta property="og:description" content="深度缓存(depth buffer) 定义: 一个含有特定像素的深度信息而不含图像数据的表面。  用于计算每个像素而定深度值并进行深度测试: 让处于同一位置的不同像素进行竞争，选出应写入该位置的像素。距离摄像机最近的像素获胜。  深度缓存格式决定深度测试精度, 精度度 16位&amp;lt;24位&amp;lt;32位, 一般选择24位满足效果  D3DFMT_D32         32位深度缓存 D3DFMT">
+<meta property="og:description" content="Problem丑数是指不能被2, 3, 5以外的其他素数整除的数。把丑数从小到大排列起来, 结果如下:1,2,3,4,5,6,8,9,10,12,15,...求第1500个丑数。 Sample Input:There is no input to this program. Sample Output:The 1500’th ugly number is . Solution思路:  1, 按照我">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-19T16:15:03.921Z">
+<meta property="og:updated_time" content="2018-07-29T10:21:52.347Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DirectX9.0 notes 1.3 预备知识">
-<meta name="twitter:description" content="深度缓存(depth buffer) 定义: 一个含有特定像素的深度信息而不含图像数据的表面。  用于计算每个像素而定深度值并进行深度测试: 让处于同一位置的不同像素进行竞争，选出应写入该位置的像素。距离摄像机最近的像素获胜。  深度缓存格式决定深度测试精度, 精度度 16位&amp;lt;24位&amp;lt;32位, 一般选择24位满足效果  D3DFMT_D32         32位深度缓存 D3DFMT">
+<meta name="twitter:title" content="UVa 136-Ugly Numbers">
+<meta name="twitter:description" content="Problem丑数是指不能被2, 3, 5以外的其他素数整除的数。把丑数从小到大排列起来, 结果如下:1,2,3,4,5,6,8,9,10,12,15,...求第1500个丑数。 Sample Input:There is no input to this program. Sample Output:The 1500’th ugly number is . Solution思路:  1, 按照我">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://timtingwei.github.io/2017/11/22/d3d-preparation/"/>
+  <link rel="canonical" href="https://timtingwei.github.io/2018/07/29/UVa-136-Ugly-Numbers/"/>
 
 
 
 
 
-  <title>DirectX9.0 notes 1.3 预备知识 | mituh's notes</title>
+  <title>UVa 136-Ugly Numbers | mituh's notes</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/11/22/d3d-preparation/">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/29/UVa-136-Ugly-Numbers/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="mituh">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">DirectX9.0 notes 1.3 预备知识</h1>
+          <h1 class="post-title" itemprop="name headline">UVa 136-Ugly Numbers</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T21:55:41+08:00">
-                2017-11-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T17:50:01+08:00">
+                2018-07-29
               </time>
             
 
@@ -300,31 +300,15 @@
       
 
       
-        <h3 id="深度缓存-depth-buffer"><a href="#深度缓存-depth-buffer" class="headerlink" title="深度缓存(depth buffer)"></a>深度缓存(depth buffer)</h3><blockquote>
-<p>定义: 一个含有特定像素的深度信息而不含图像数据的表面。<br>  用于计算每个像素而定深度值并进行深度测试: 让处于同一位置的不同像素进行竞争，选出应写入该位置的像素。距离摄像机最近的像素获胜。<br>  深度缓存格式决定深度测试精度, 精度度 16位&lt;24位&lt;32位, 一般选择24位满足效果</p>
-<ul>
-<li>D3DFMT_D32         32位深度缓存</li>
-<li>D3DFMT_D23S8       24位深度缓存, 其中8位保留供模板缓存(stencil buffer)[1]使用</li>
-<li>D3DFMT_D24X8       24位深度缓存</li>
-<li>D3DFMT_D16         16位深度缓存</li>
-</ul>
-</blockquote>
-<h3 id="顶点运算-Vertex-Processing"><a href="#顶点运算-Vertex-Processing" class="headerlink" title="顶点运算(Vertex Processing)"></a>顶点运算(Vertex Processing)</h3><blockquote>
-<ul>
-<li>软件顶点运算(software vertex process)</li>
-<li>硬件顶点运算(harfware …)</li>
-</ul>
-</blockquote>
-<p>软件顶点运算 <strong> 总是会被支持 </strong> , 硬件只有得到图形卡的支持才可使用。</p>
-<p>优先考虑硬件顶点运算方式，理由：</p>
-<blockquote>
-<ol>
-<li>使用的硬件可能有加速功能</li>
-<li>可以不占用CPU， CPU可被解放出来进行其他运算</li>
-</ol>
-</blockquote>
-<h3 id="设备性能-Device-Capabilities"><a href="#设备性能-Device-Capabilities" class="headerlink" title="设备性能(Device Capabilities)"></a>设备性能(Device Capabilities)</h3><p>DeCaps 表示”Device Capabilities”<br>D3DCAP9::DevCaps的D3DDEVCAPS_HWTYRANSFORMANDLIGHT 可用来表示设备是否支持变换和光照的硬件计算。<br>多查阅D3DCAP9相关的SDK文档, 继续研究一下Directt3D所提供能够设备性能的完整列表。</p>
-<p>[1] : 18章论述</p>
+        <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>丑数是指不能被2, 3, 5以外的其他素数整除的数。把丑数从小到大排列起来, 结果如下:<br><code>1,2,3,4,5,6,8,9,10,12,15,...</code><br>求第1500个丑数。</p>
+<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h2><p>There is no input to this program.</p>
+<h2 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output:"></a>Sample Output:</h2><p>The 1500’th ugly number is <number>.</number></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>思路:<br>  1, 按照我原先的思路, 首先想到, 把除235以外的1500个素数给计算出来, 再从5开始判断是否会被其中的某个数整除, <code>1500*1500*1500(n^3);</code><br>  2, 使用优先队列, 用已有的丑数, 生成新的丑数;<br>  已经有丑数x, 计算2x, 3x, 5x, (他们一定不能被除了235外的其他素数整除, 如果能整除, 其他素数就不是素数 )<br>  用优先队列dq存放已生成的丑数, 队首是最小数,<br>  生成新的丑数后队首出dq栈, 判断生成数是否已经在之前出现过(使用set)<br>  没出现过的加入ugly_set, push入dq栈队尾<br>  入完ugly_set栈, 检测数量是不是到了1500   // 这里存在bug1</p>
+<p>bug1: 检测ugly_set数量是1500存在bug, 因为有的丑数还没有去生成新丑数时, 丑数数量已经足够, 但实际上, 这些还没生成的丑数中, 存在比已经生成丑数更小的丑数, 因此直接让他生成1500次, 1500次的pq队首代表第1500个丑数.<br>bug2: The 1500’th ugly number is -1735655424. 需要定义LL</p>
+<p>skill1: priority_queue<int, vector<int="">, cmp&gt; pq来定义优先队列, cmp用结构体重载()来实现<br>skill2: set是一个自带排序的数据结构<br>skill3: 对于set类型的s, s.count(a), 可以判断集合s中是否存在元素a<br>skill4: long long写起来麻烦, 可以 <code>typedef long long LL;</code>定义简写的长整型</int,></p>
+<p><span style="color:red"><strong><br>归纳:<br>新的丑数用旧的数生成, 把旧的丑数, 放在优先队列里, 数越小权重越高.<br>不是用set来计数, 而是用pq出队列的次数来计数ugly number的数量, set只是用来判断生成数是否之前出现过.
+</strong></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;     // priority_queue定义在头文件queue中</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="comment">// #include &lt;algorithm&gt;</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> LL a, <span class="keyword">const</span> LL b)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b;   <span class="comment">// a&gt;b, a的优先级比b小, 返回true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span>&lt;LL&gt; ugly;</span><br><span class="line"><span class="comment">// priority_queue&lt;LL&gt; pq;   // priority_queue&lt;LL&gt; pq; 这样定义数越大优先级越高</span></span><br><span class="line">priority_queue&lt;LL, <span class="built_in">vector</span>&lt;LL&gt;, cmp &gt; pq;</span><br><span class="line"><span class="comment">// priority_queue&lt;LL, vector&lt;LL&gt;, greater&lt;LL&gt; &gt; pq;   // 等价</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> multi[<span class="number">3</span>] = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n = <span class="number">1500</span>;</span><br><span class="line">  pq.push(<span class="number">1</span>); ugly.insert(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; ; i++) &#123;</span><br><span class="line">    LL x = pq.top(); pq.pop();</span><br><span class="line">    <span class="keyword">if</span> (i == n) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"The 1500'th ugly number is %lld.\n"</span>, x);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++) &#123;</span><br><span class="line">      LL x2 = x * multi[j];</span><br><span class="line">      <span class="keyword">if</span> (!ugly.count(x2)) &#123; pq.push(x2); ugly.insert(x2);&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 对set进行排序(set已经排序好了, 不需要重排)</span></span><br><span class="line">  <span class="comment">// set&lt;int&gt;::iterator it = ugly.end();</span></span><br><span class="line">  <span class="comment">// printf("The 1500'th ugly number is %d.\n", *(--it));  // 不是用set来计数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -342,9 +326,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/DirectX/" rel="tag"># DirectX</a>
-          
-            <a href="/tags/Games/" rel="tag"># Games</a>
+            <a href="/tags/UVa-优先队列/" rel="tag"># UVa, 优先队列</a>
           
         </div>
       
@@ -357,8 +339,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/21/my-markdown/" rel="next" title="Markdown语法整理(不定期更新)">
-                <i class="fa fa-chevron-left"></i> Markdown语法整理(不定期更新)
+              <a href="/2018/07/06/git-request-commit-and-merge/" rel="next" title="Git Request 提交, 合并">
+                <i class="fa fa-chevron-left"></i> Git Request 提交, 合并
               </a>
             
           </div>
@@ -366,10 +348,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/23/hexo-random-symbol/" rel="prev" title="hexo博客中文乱码">
-                hexo博客中文乱码 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -492,7 +470,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#深度缓存-depth-buffer"><span class="nav-number">1.</span> <span class="nav-text">深度缓存(depth buffer)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顶点运算-Vertex-Processing"><span class="nav-number">2.</span> <span class="nav-text">顶点运算(Vertex Processing)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设备性能-Device-Capabilities"><span class="nav-number">3.</span> <span class="nav-text">设备性能(Device Capabilities)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem"><span class="nav-number">1.</span> <span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Input"><span class="nav-number">2.</span> <span class="nav-text">Sample Input:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Output"><span class="nav-number">3.</span> <span class="nav-text">Sample Output:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">4.</span> <span class="nav-text">Solution</span></a></li></ol></div>
             
 
           </div>

@@ -229,6 +229,126 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/21/dsacpp/02-D4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/21/dsacpp/02-D4/" itemprop="url">02-D4</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T14:05:05+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(d4) 有序向量: 二分查找(改进)</span><br><span class="line">-----------------------------</span><br><span class="line"></span><br><span class="line"># 版本B, 改进思路:</span><br><span class="line">	&gt;* 左右转向成本平衡：</span><br><span class="line">		无论向左还是向右进行一次比较。</span><br><span class="line">	</span><br><span class="line">	&gt;* 轴点mi为中点, 每查找深入一层, 问题规模缩减一半</span><br><span class="line">		1, e &lt;  x: e若存在则在左侧子区间S[lo, mi), 可递归深入</span><br><span class="line">		2, x &lt;= e: e若存在则在右侧子区间S[mi, hi), 可递归深入</span><br><span class="line">		只有当hi - lo = 1时, 判断元素是否命中。</span><br><span class="line">		</span><br><span class="line"># 实现:</span><br><span class="line">	&gt;* 我的尝试</span><br><span class="line">		=========================  source code =======================</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		Rank Vector&lt;T&gt;::binBlcSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">			// 二分平衡查找算法</span><br><span class="line">			while (1 &lt; hi - lo) &#123;</span><br><span class="line">				int mi = (lo + hi) &gt;&gt; 1;          // 轴点为中点</span><br><span class="line">				if (e &lt; elem[mi]) hi = mi;        // 深入左区间</span><br><span class="line">				else if (elem[mi] &lt;= e) lo = mi;  // 深入右区间</span><br><span class="line">			&#125;</span><br><span class="line">			// hi - lo == 1, 判断当前元素是否命中</span><br><span class="line">			if (e == elem[lo]) return lo;</span><br><span class="line">			else               return -1;</span><br><span class="line">		&#125;</span><br><span class="line">		===========================================================</span><br><span class="line">		思路上无问题, 但代码可以简化。</span><br><span class="line">		</span><br><span class="line">	&gt;* 更为简洁的写法</span><br><span class="line">		=====</span><br><span class="line">	    template &lt;typename T&gt;</span><br><span class="line">		Rank Vector&lt;T&gt;::binBlcSearch(T* elem, const T&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">			while (1 &lt; hi - lo) &#123;</span><br><span class="line">			int mi = (lo + hi) &gt;&gt; 1;               // 轴点为中点</span><br><span class="line">			(e &lt; elem[mi]) ? hi = mi : lo = mi;    // 在哪个区间上深入</span><br><span class="line">			&#125;    // 退出循环时, 区间长度1, elem[lo]为有效元素</span><br><span class="line">			return (e == elem[lo])? lo: -1;</span><br><span class="line">		&#125;        // 相对于binSearch A版本, 最好(坏)情况下更坏(好)</span><br><span class="line">		====</span><br><span class="line">		</span><br><span class="line">		1, 两种情况if...else 用以下代替</span><br><span class="line">			(cond)? expr1 : expr2;</span><br><span class="line">		2, 在其中使用返回语句</span><br><span class="line">			(cond) ? return expr1 : return expr2;    // ERROR!!</span><br><span class="line">			return (cond) ? expr1 : expr2;           // Right!!</span><br><span class="line">----------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># 语义约定</span><br><span class="line">	&gt;* 为什么要语义约定?</span><br><span class="line">		便于其他高阶操作的调用。</span><br><span class="line">		v.insert(1 + search(e, lo, hi), e);</span><br><span class="line">			：在找到元素索引的下个索引处插入。</span><br><span class="line">	</span><br><span class="line">	&gt;* 思路</span><br><span class="line">		1, 有多个元素匹配时, 返回最大秩(不大于e的最后一个元素秩)</span><br><span class="line">		2, 未匹配元素时, 返回小于e的最大者秩(含哨兵[lo - 1])</span><br><span class="line">	</span><br><span class="line">	&gt;* 实现, 版本C</span><br><span class="line">		&gt;* 我的尝试</span><br><span class="line">		将原来的 return (e == elem[lo]) ? lo : -1; 改为:</span><br><span class="line">		============= source code ============================</span><br><span class="line">		if (e == elem[lo]) &#123;  // 存在匹配</span><br><span class="line">			while (elem[lo+1] == elem[lo]) lo++;  // 返回最大秩</span><br><span class="line">			return lo;</span><br><span class="line">		&#125; else &#123;  // 无匹配</span><br><span class="line">			return (e &lt; elem[lo]) ? lo - 1 : lo;  // 返回小于e的最大者秩</span><br><span class="line">		&#125;</span><br><span class="line">		=======================================================</span><br><span class="line">		一次while循环找到最大匹配的索引, 一次判断确定不匹配时返回秩</span><br><span class="line">		</span><br><span class="line">		&gt;* 更优解</span><br><span class="line">		==================== source code ===========================</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		Rank Vector&lt;T&gt;::binBlcSearch(T* elem, const T&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">			while (lo &lt; hi) &#123;  // 区间缩短至0</span><br><span class="line">				int mi = (lo + hi) &gt;&gt; 1;                   // 轴点为中点</span><br><span class="line">				(e &lt; elem[mi]) ? hi = mi : lo = mi + 1;    // [lo, mi), (mi, hi)</span><br><span class="line">			&#125;    // 退出循环时, 区间长度0, A[lo = hi]为大于e的最小元素</span><br><span class="line">			return --lo;    // 故lo-1 为不大于e的最大秩</span><br><span class="line">		&#125;      // 相对于binSearch A版本, 最好(坏)情况下更坏(好)</span><br><span class="line">		=============================================================</span><br><span class="line">	</span><br><span class="line">	&gt;* 更优解实现分析</span><br><span class="line">		&gt;* 差别</span><br><span class="line">			1, 循环结束区间宽度0, 而非1</span><br><span class="line">			2, 转入右侧子向量时, 左边界取作mi + 1而非mi, elem[mi]看似遗漏?</span><br><span class="line">			3, 无论成功与否, 返回秩序严格符合定义的语义接口。</span><br><span class="line">			4, 和我的实现比起来, 无需多余的while和if判断</span><br><span class="line">----------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># 版本C, 正确性:</span><br><span class="line">	&gt;* 不变性:</span><br><span class="line">		A[0, lo) &lt;= e &lt; A[hi, n)          // A[hi] 总是大于e的最小者</span><br><span class="line">	&gt;* 初始</span><br><span class="line">		lo = 0且hi = n, A[0, lo) = A[hi, n) = 空集, 自然成立</span><br><span class="line">	&gt;* 数学归纳两种情况,</span><br><span class="line">		这两种情况不是很清楚。以后可以回过头来看看。</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/20/dsacpp/02-D3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1389,158 +1509,6 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/11/cpp/cpp-notes-0003/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/11/cpp/cpp-notes-0003/" itemprop="url">C++ Zero To One 0.003</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T16:06:51+08:00">
-                2018-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="重载函数什么时候用virtual"><a href="#重载函数什么时候用virtual" class="headerlink" title="重载函数什么时候用virtual?"></a>重载函数什么时候用virtual?</h1><p>源码: <a href="https://github.com/timtingwei/cppd/blob/master/tmp/overload_function.cpp" target="_blank" rel="noopener">source code - load_funtion.cpp</a></p>
-<h2 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(VST visit)</span></span>;</span><br><span class="line"><span class="comment">// template &lt;typename VST&gt; virtual void traverse(VST visit, T* e);</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(VST visit, T* e)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>为什么这里不需要virtual??</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 单个T类型元素加1的类</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T &amp;e)</span> </span>&#123;e++;&#125;    <span class="comment">// Increase&lt;T&gt;()实现函数功能  </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>为什么这里又需要virtual??</p>
-<h2 id="概念偏差"><a href="#概念偏差" class="headerlink" title="概念偏差"></a>概念偏差</h2><p>virtual 和我原先理解的重载函数不太相同。也就是vitual和重载函数不是同一个概念。</p>
-<p><strong>vitual为虚函数</strong>：基类的引用或者指针调用一个虚成员函数时会执行动态绑定。 </p>
-<p><strong>重载函数</strong>：同一作用域内的几个函数名字相同但形参列表不同。</p>
-<h2 id="使用与不使用virtual"><a href="#使用与不使用virtual" class="headerlink" title="使用与不使用virtual"></a>使用与不使用virtual</h2><p>解释一下 virtual 和 override 搭配, 继承类中可对基类的虚函数重载<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span>    <span class="comment">// 声明virtual后, 可被继承类override重载</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Base\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base &#123;   <span class="comment">// 'override'可写可不写</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> override </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Derived\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Base\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base &#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Derived\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><code>关键问题: 上述两者什么差别????</code></p>
-<p>运行测试一下:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注释是使用virtual结果</span></span><br><span class="line">  Base b;</span><br><span class="line">  Derived d;</span><br><span class="line"></span><br><span class="line">  Base&amp; br = b;      <span class="comment">// refer b, br的类型是Base&amp;</span></span><br><span class="line">  Base&amp; dr = d;      <span class="comment">// dr类型也是Base&amp;</span></span><br><span class="line">  br.print();        <span class="comment">// Base</span></span><br><span class="line">  dr.print();        <span class="comment">// Derived</span></span><br><span class="line"></span><br><span class="line">  Base* pb = &amp;b;     <span class="comment">// pointer to b, Base*</span></span><br><span class="line">  Base* pd = &amp;d;     <span class="comment">// Base* as well</span></span><br><span class="line"></span><br><span class="line">  pb-&gt;print();       <span class="comment">// Base</span></span><br><span class="line">  pd-&gt;print();       <span class="comment">// Derived</span></span><br><span class="line"></span><br><span class="line">  b.Base::print();   <span class="comment">// Base</span></span><br><span class="line">  d.Base::print();   <span class="comment">// Base</span></span><br></pre></td></tr></table></figure></p>
-<p>使用vitual的运行结果:</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Base</span><br><span class="line">Derived</span><br><span class="line">Base</span><br><span class="line">Derived</span><br><span class="line">Base</span><br><span class="line">Base</span><br></pre></td></tr></table></figure>
-<p>不使用虚方法的运行结果:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br></pre></td></tr></table></figure></p>
-<p>virtual版本, 基类的引用或者指针会在调用一个虚函数时候, 动态绑定对应的函数。</p>
-<h2 id="解决最初问题"><a href="#解决最初问题" class="headerlink" title="解决最初问题"></a>解决最初问题</h2><h3 id="为什么traverse函数不需要virtual"><a href="#为什么traverse函数不需要virtual" class="headerlink" title="为什么traverse函数不需要virtual"></a>为什么traverse函数不需要virtual</h3><p>traverse函数，属于在同一作用域，形参列表不同的函数。重载的概念是函数重载的概念，并不是继承类之间的虚函数override概念。</p>
-<h3 id="为什么函数对象需要virtual重载操作符函数"><a href="#为什么函数对象需要virtual重载操作符函数" class="headerlink" title="为什么函数对象需要virtual重载操作符函数?"></a>为什么函数对象需要virtual重载操作符函数?</h3><p>定义继承类Increase_two, override在基类中被声明成virtual的类, 实现元素加2<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 函数对象用virtual声明operator()()</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase</span> &#123;</span></span><br><span class="line">  <span class="comment">// 重载()后, 对象可充当函数的功能</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span>* e)</span> </span>&#123;(*e)++;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase_two</span> :</span> Increase &#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span>* e)</span> override </span>&#123;(*e)+= <span class="number">2</span>;&#125;    <span class="comment">// 元素+2;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>测试函数, 以及prints结果如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f_increase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Increase a;</span><br><span class="line">  Increase_two b;</span><br><span class="line"></span><br><span class="line">  Increase&amp; ra = a;</span><br><span class="line">  Increase&amp; rb = b;     <span class="comment">// rb的类型为 Increase&amp;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> e = <span class="number">5</span>; <span class="keyword">int</span>* pe = &amp;e;</span><br><span class="line">  ra.<span class="keyword">operator</span>()(pe);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"e = "</span> &lt;&lt; e &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;    <span class="comment">// prints "e = 6"</span></span><br><span class="line">  <span class="keyword">int</span> e2 = <span class="number">5</span>; <span class="keyword">int</span>* pe2 = &amp;e2;</span><br><span class="line">  rb.<span class="keyword">operator</span>()(pe2);   <span class="comment">// 调用基类的引用时, 动态绑定到Increase_two中的方法</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"e2 = "</span> &lt;&lt; e2 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;  <span class="comment">// prints "e2 = 7"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>对重载操作符声明virtual, 可以让继承类对他的重载操作符行为进行重载。当调用基类的引用或者指针时候, 在编译阶段就能绑定到继承类对应的重载函数版本。</p>
-<h1 id="静态成员声明定义使用"><a href="#静态成员声明定义使用" class="headerlink" title="静态成员声明定义使用"></a>静态成员声明定义使用</h1><p>源码: <a href="https://github.com/timtingwei/cppd/blob/master/tmp/static.cpp" target="_blank" rel="noopener">source code - static.cpp</a></p>
-<h2 id="静态成员的特点"><a href="#静态成员的特点" class="headerlink" title="静态成员的特点"></a>静态成员的特点</h2><p>静态数据成员不属于任何类的一个对象。</p>
-<p>类似于全局变量, 存在于任何的函数定义之外, 一直存在于整个程序的生命周期</p>
-<h2 id="类内static成员如何声明定义"><a href="#类内static成员如何声明定义" class="headerlink" title="类内static成员如何声明定义?"></a>类内static成员如何声明定义?</h2><blockquote>
-<ul>
-<li>在类内部声明, 外部通过类名作用域访问定义<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyStatic</span></span></span><br><span class="line"><span class="class"><span class="title">public</span>:</span></span><br><span class="line"> <span class="keyword">static</span> <span class="keyword">int</span> i_stc;   <span class="comment">// 类内部声明</span></span><br><span class="line"> <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> MyStatic::i_stc = <span class="number">0</span>;     <span class="comment">// 类外部定义, 注意需要声明成员的类型</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</blockquote>
-<p>也可以通过静态成员函数和一般的成员函数对它进行修改, 此时静态成员函数可通过类名访问。</p>
-<h2 id="在不同实例中被多次调用改变后的情况"><a href="#在不同实例中被多次调用改变后的情况" class="headerlink" title="在不同实例中被多次调用改变后的情况?"></a>在不同实例中被多次调用改变后的情况?</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void MyStatic::increment() &#123;++i_stc;&#125;</span><br><span class="line"></span><br><span class="line">void f() &#123;</span><br><span class="line">  MyStatic c0;</span><br><span class="line">  c0.increment();</span><br><span class="line">  std::cout &lt;&lt; &quot;c0 = &quot; &lt;&lt; c0.i_stc &lt;&lt; std::endl;</span><br><span class="line">  MyStatic c1;</span><br><span class="line">  c1.increment();</span><br><span class="line">  std::cout &lt;&lt; &quot;c1 = &quot; &lt;&lt; c1.i_stc &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void f1() &#123;</span><br><span class="line">  MyStatic c2;</span><br><span class="line">  c2.increment();</span><br><span class="line">  std::cout &lt;&lt; &quot;c2 = &quot; &lt;&lt; c2.i_stc &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">c0 = 1</span><br><span class="line">c1 = 2</span><br><span class="line">c2 = 3</span><br></pre></td></tr></table></figure>
-<p>静态数据成员类似于全局变量, 无论在何处, 每调用一次修改静态成员的函数, 数据相应的改变, 且不会随着作用域的离开而销毁。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1591,7 +1559,7 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1604,7 +1572,7 @@ b, 华拱：向外悬挑的短臂梁，是斗拱的主干部分；斗：拱与�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
