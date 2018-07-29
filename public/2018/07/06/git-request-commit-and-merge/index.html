@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近和学长HankDaly共同contribute一个项目。涉及到三个操作:1, HankDaly从我的github上获取代码2, HankDaly修改代码并提交给我3, 我对代码进行审核合并到项目中 1, HankDaly从我的github上获取代码(从项目维护者那获取代码)a, 在github上fork项目, ti">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git Request 提交, 合并">
+<meta property="og:url" content="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="最近和学长HankDaly共同contribute一个项目。涉及到三个操作:1, HankDaly从我的github上获取代码2, HankDaly修改代码并提交给我3, 我对代码进行审核合并到项目中 1, HankDaly从我的github上获取代码(从项目维护者那获取代码)a, 在github上fork项目, timtingwei/cppd  =&amp;gt; HankDaly/cppdb, Han">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://timtingwei.github.io/images/pull-request-new-requset.png">
+<meta property="og:updated_time" content="2018-07-07T16:00:46.926Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git Request 提交, 合并">
+<meta name="twitter:description" content="最近和学长HankDaly共同contribute一个项目。涉及到三个操作:1, HankDaly从我的github上获取代码2, HankDaly修改代码并提交给我3, 我对代码进行审核合并到项目中 1, HankDaly从我的github上获取代码(从项目维护者那获取代码)a, 在github上fork项目, timtingwei/cppd  =&amp;gt; HankDaly/cppdb, Han">
+<meta name="twitter:image" content="https://timtingwei.github.io/images/pull-request-new-requset.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/"/>
+
+
+
+
+
+  <title>Git Request 提交, 合并 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git Request 提交, 合并</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T14:35:29+08:00">
+                2018-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近和学长<a href="https://github.com/HankDaly" target="_blank" rel="noopener">HankDaly</a>共同contribute一个项目。<br>涉及到三个操作:<br>1, HankDaly从我的github上获取代码<br>2, HankDaly修改代码并提交给我<br>3, 我对代码进行审核合并到项目中</p>
+<h2 id="1-HankDaly从我的github上获取代码-从项目维护者那获取代码"><a href="#1-HankDaly从我的github上获取代码-从项目维护者那获取代码" class="headerlink" title="1, HankDaly从我的github上获取代码(从项目维护者那获取代码)"></a>1, HankDaly从我的github上获取代码(从项目维护者那获取代码)</h2><p>a, 在github上fork项目, timtingwei/cppd  =&gt; HankDaly/cppd<br>b, HankDaly, clone自己的项目到本地<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-HankDaly修改代码并提交给我"><a href="#2-HankDaly修改代码并提交给我" class="headerlink" title="2, HankDaly修改代码并提交给我"></a>2, HankDaly修改代码并提交给我</h2><p>a, 完成修改后, git push origin master 上传本地当前分支代码到远程master分支<br>b, 打开github, 在自己远程仓库的项目中, 找到pull request, 新建一个pull request<br>c, 选择自己要request的分支, 和base分支, 当前默认都为master<br><img src="/images/pull-request-new-requset.png" alt="我拿自己fork HankDaly/test 做的实验"><br>d, 创建这次pull request</p>
+<h2 id="3-我对代码进行审核合并到项目中"><a href="#3-我对代码进行审核合并到项目中" class="headerlink" title="3, 我对代码进行审核合并到项目中"></a>3, 我对代码进行审核合并到项目中</h2><p>在没有冲突的情况下可以直接在github上合并。<br>在冲突情况下必须手动pull下来, diff后修改矛盾, 再merge, pull request会自动消失。</p>
+<p>这里主要做的事情是, 手动在另外一个branch中, 审阅request上来的代码, 再与master合并</p>
+<p>这里我前面在pull的时候, 总没有git checkout -b hank-master</p>
+<p>我所推测的步骤应该是:</p>
+<p>a, 切换到一个专门用于审阅request的分支<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout -b hank-master</span><br></pre></td></tr></table></figure></p>
+<p>b, 在当前分支下, 拉下来学长的push<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git pull https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
+<p>没有conflict的话可以直接pull下来。</p>
+<p>如果这里有confilict<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONFLICT</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
+<p>手动将confilict改完, 就是保存一份没有冲突的</p>
+<p>c, 提交对代码的改动<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"merge hank's code"</span></span><br></pre></td></tr></table></figure></p>
+<p>d, 切换到master分支合并代码<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge hank-master</span><br></pre></td></tr></table></figure></p>
+<p>e, 提交到远程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>什么时候会出现conflict?<br>我改动的同时, request也改动了相同的代码。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/04/archi-structure/" rel="next" title="建筑结构选型">
+                <i class="fa fa-chevron-left"></i> 建筑结构选型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/29/UVa-136-Ugly-Numbers/" rel="prev" title="UVa 136-Ugly Numbers">
+                UVa 136-Ugly Numbers <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-HankDaly从我的github上获取代码-从项目维护者那获取代码"><span class="nav-number">1.</span> <span class="nav-text">1, HankDaly从我的github上获取代码(从项目维护者那获取代码)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HankDaly修改代码并提交给我"><span class="nav-number">2.</span> <span class="nav-text">2, HankDaly修改代码并提交给我</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-我对代码进行审核合并到项目中"><span class="nav-number">3.</span> <span class="nav-text">3, 我对代码进行审核合并到项目中</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
