@@ -7,9 +7,9 @@ tags:
 ## 我的安排
 水题->数据结构->专项
 
-算法竞赛入门经典 07.12
+一, 算法竞赛入门经典 07.12
 
-《数据结构》严蔚敏, 理解+实现, 07.30
+二, 《数据结构》严蔚敏, 理解+实现, 07.30
 每一种结构都找题刷,leetcode(列的比较清晰), 程序员面试经典(可以换个角度思考)
 > * 1.基础
 二叉树相关（层次遍历、求深度、求两个节点距离、翻转二叉树、前中后序遍历）
@@ -28,11 +28,11 @@ tags:
 
 理解: 可视化数据结构帮助理解:https://visualgo.net/en
 
-<<algorithm-4th>> 08.06
+三, 《algorithm-4th》 08.06
 网课, 课后作业,https://www.coursera.org/learn/algorithms-part1/home/welcome
 小橙书后的作业, 只做网上列出部分 https://algs4.cs.princeton.edu/home/
 
-配合刷题, 穿插
+四, 配合刷题
 程序员面试金典, 配合牛客网练习https://www.nowcoder.com/ta/cracking-the-coding-interview
 PAT, HDOJ, POJ, Leedcode中题目, 专题.
 

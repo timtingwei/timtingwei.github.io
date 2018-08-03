@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Problem:大家应该都会玩“锤子剪刀布”的游戏：两人同时给出手势，胜负规则如图所示：现给出两人的交锋记录，请统计双方的胜、平、负次数，并且给出双方分别出什么手势的胜算最大。 Input:输入第1行给出正整数N（&amp;lt;=105），即双方交锋的次数。随后N行，每行给出一次交锋的信息，即甲、乙双方同时给出的的手">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1018. 锤子剪刀布 (20)-PAT乙级">
+<meta property="og:url" content="https://timtingwei.github.io/2018/07/30/PAT-basic-1018/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="Problem:大家应该都会玩“锤子剪刀布”的游戏：两人同时给出手势，胜负规则如图所示：现给出两人的交锋记录，请统计双方的胜、平、负次数，并且给出双方分别出什么手势的胜算最大。 Input:输入第1行给出正整数N（&amp;lt;=105），即双方交锋的次数。随后N行，每行给出一次交锋的信息，即甲、乙双方同时给出的的手势。C代表“锤子”、J代表“剪刀”、B代表“布”，第1个字母代表甲方，第2个代表乙方，中">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-30T15:39:32.383Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1018. 锤子剪刀布 (20)-PAT乙级">
+<meta name="twitter:description" content="Problem:大家应该都会玩“锤子剪刀布”的游戏：两人同时给出手势，胜负规则如图所示：现给出两人的交锋记录，请统计双方的胜、平、负次数，并且给出双方分别出什么手势的胜算最大。 Input:输入第1行给出正整数N（&amp;lt;=105），即双方交锋的次数。随后N行，每行给出一次交锋的信息，即甲、乙双方同时给出的的手势。C代表“锤子”、J代表“剪刀”、B代表“布”，第1个字母代表甲方，第2个代表乙方，中">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/07/30/PAT-basic-1018/"/>
+
+
+
+
+
+  <title>1018. 锤子剪刀布 (20)-PAT乙级 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/30/PAT-basic-1018/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">1018. 锤子剪刀布 (20)-PAT乙级</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T22:38:38+08:00">
+                2018-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem:"></a>Problem:</h2><p>大家应该都会玩“锤子剪刀布”的游戏：两人同时给出手势，胜负规则如图所示：现给出两人的交锋记录，请统计双方的胜、平、负次数，并且给出双方分别出什么手势的胜算最大。</p>
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input:"></a>Input:</h2><p>输入第1行给出正整数N（&lt;=105），即双方交锋的次数。随后N行，每行给出一次交锋的信息，即甲、乙双方同时给出的的手势。C代表“锤子”、J代表“剪刀”、B代表“布”，第1个字母代表甲方，第2个代表乙方，中间有1个空格。</p>
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output:"></a>Output:</h2><p>输出第1、2行分别给出甲、乙的胜、平、负次数，数字间以1个空格分隔。第3行给出两个字母，分别代表甲、乙获胜次数最多的手势，中间有1个空格。如果解不唯一，则输出按字母序最小的解。</p>
+<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h2><p>10<br>C J<br>J B<br>C B<br>B B<br>B C<br>C C<br>C B<br>J B<br>B C<br>J J</p>
+<h2 id="Sample-output"><a href="#Sample-output" class="headerlink" title="Sample output:"></a>Sample output:</h2><p>5 3 2<br>2 3 5<br>B B</p>
+<h2 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h2><p>虽然考虑到了9中组合, 但写的时候思路不清晰, 甚至没有把胜出时候的手势放入数组.<br>冗杂在于<br>1, 一开始想把它放进一个struct, 但实际上只拥有六个整型, 为什么不放到数组里?<br>2, getMax函数纠结了好久, 实际有更为简单的方法</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">score</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> w = <span class="number">0</span>, f = <span class="number">0</span>, e = <span class="number">0</span>;    <span class="comment">// 胜负平</span></span><br><span class="line">  <span class="keyword">int</span> C = <span class="number">0</span>, J = <span class="number">0</span>, B = <span class="number">0</span>;    <span class="comment">// 胜的时候出的手势</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; x;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> motion[<span class="number">4</span>] = <span class="string">"BCJ"</span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">getMax</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// a,b,c谁最大, 返回0,1,2; 并列返回字典序列</span></span><br><span class="line">  x.clear();</span><br><span class="line">  <span class="keyword">int</span> m;</span><br><span class="line">  m = max(a, b); m = max(m, c);</span><br><span class="line">  <span class="keyword">if</span> (m == a) x.push_back(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> (m == b) x.push_back(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">if</span> (m == c) x.push_back(<span class="number">2</span>);</span><br><span class="line">  sort(x.begin(), x.end());</span><br><span class="line">  <span class="keyword">return</span> motion[x[<span class="number">0</span>]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> a[<span class="number">2</span>], b[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  score jia, yi;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;T) == <span class="number">1</span> &amp;&amp; T) &#123;</span><br><span class="line">    <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">      <span class="built_in">scanf</span>(<span class="string">"%s %s"</span>, a, b);</span><br><span class="line">      <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'J'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; jia.f++; yi.w++; yi.C++; &#125;  <span class="comment">// 乙胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; jia.w++; yi.f++; jia.J++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'C'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.w++; yi.f++; jia.C++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; yi.w++; jia.f++; yi.B++; &#125;  <span class="comment">// yi胜</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'B'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.f++; yi.w++; yi.J++; &#125;  <span class="comment">// yi胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; yi.f++; jia.w++; jia.B++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, jia.w, jia.e, jia.f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, yi.w, yi.e, yi.f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, getMax(jia.B, jia.C, jia.J));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, getMax(yi.B, yi.C, yi.J));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h2><p>将字符转换为整数进行计算<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">00  平   10 甲   20 乙</span><br><span class="line">01  乙   11 平   21 甲</span><br><span class="line">02  甲   12 乙   22 平</span><br></pre></td></tr></table></figure></p>
+<p>可以发现, -2, 1时, 甲胜;  -1, 2时, 甲负<br>甲乙胜负可以转换, 平局可以通过总局数得到, 因此只需要记录甲的胜负</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; s_c_i = &#123;&#125;;    <span class="comment">// 将字符转换成整数, 用于索引和计算</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> str[<span class="number">4</span>] = <span class="string">"BCJ"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  <span class="keyword">int</span> jia[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;, yi[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;T) == <span class="number">1</span> &amp;&amp; T) &#123;</span><br><span class="line">    s_c_i[<span class="string">'J'</span>] = <span class="number">0</span>, s_c_i[<span class="string">'C'</span>] = <span class="number">1</span>, s_c_i[<span class="string">'B'</span>] = <span class="number">2</span>;  <span class="comment">// 将字符转换成整数用于计算</span></span><br><span class="line">    <span class="keyword">int</span> w = <span class="number">0</span>, f = <span class="number">0</span>, ct = T;                        <span class="comment">// 甲胜利, 失败, 总局数</span></span><br><span class="line">    <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">      <span class="keyword">char</span> sa, sb;</span><br><span class="line">      <span class="built_in">cin</span> &gt;&gt; sa &gt;&gt; sb;</span><br><span class="line">      <span class="keyword">int</span> d = s_c_i[sa] - s_c_i[sb];</span><br><span class="line">      <span class="keyword">if</span> (d == <span class="number">-2</span> || d == <span class="number">1</span>) &#123;    <span class="comment">// 甲胜</span></span><br><span class="line">        w++; jia[s_c_i[sa]]++;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (d == <span class="number">-1</span> || d == <span class="number">2</span>) &#123;   <span class="comment">// 甲负, 乙胜</span></span><br><span class="line">        f++; yi[s_c_i[sb]]++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, w, ct-w-f, f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, f, ct-w-f, w);</span><br><span class="line">    <span class="keyword">int</span> jiamax = (jia[<span class="number">0</span>] &gt;= jia[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    jiamax = (jia[jiamax] &gt;= jia[<span class="number">2</span>]) ? jiamax : <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> yimax = (yi[<span class="number">0</span>] &gt;= yi[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    yimax = (yi[yimax] &gt;= yi[<span class="number">2</span>]) ? yimax : <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, str[jiamax]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, str[yimax]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution 3:"></a>Solution 3:</h2><p><span style="color:red"><br>只记录甲的胜负, 计算出乙胜负平; 六种排列组合; 三个计数器放在数组中, 用 ?:判断哪个位置计数最高<br>能用数组解决的不用struct的, 能用原子类型解决的不用数组;<br></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> str[<span class="number">4</span>] = &#123;<span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'J'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  <span class="keyword">int</span> win = <span class="number">0</span>, fail = <span class="number">0</span>;   <span class="comment">// 只记录甲的胜负</span></span><br><span class="line">  <span class="keyword">int</span> winjia[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;, winyi[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; T;</span><br><span class="line">  <span class="keyword">int</span> ct = T;</span><br><span class="line">  <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">    <span class="keyword">char</span> a, b;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;</span><br><span class="line">    <span class="comment">// 六种排列组合</span></span><br><span class="line">    <span class="keyword">if</span> (a == <span class="string">'B'</span> &amp;&amp; b == <span class="string">'C'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">0</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'B'</span> &amp;&amp; b == <span class="string">'J'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">2</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'C'</span> &amp;&amp; b == <span class="string">'B'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">0</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'C'</span> &amp;&amp; b == <span class="string">'J'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">1</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'J'</span> &amp;&amp; b == <span class="string">'B'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">2</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'J'</span> &amp;&amp; b == <span class="string">'C'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">1</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, win, ct-win-fail, fail);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, fail, ct-win-fail, win);</span><br><span class="line">  <span class="keyword">int</span> jiamax = (winjia[<span class="number">0</span>] &gt;= winjia[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  jiamax = (winjia[jiamax] &gt;= winjia[<span class="number">2</span>]) ? jiamax : <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">int</span> yimax = (winyi[<span class="number">0</span>] &gt;= winyi[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  yimax = (winyi[yimax] &gt;= winyi[<span class="number">2</span>]) ? yimax : <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%c"</span>, str[jiamax]);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, str[yimax]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/30/algorithm-learning/" rel="next" title="算法学习安排">
+                <i class="fa fa-chevron-left"></i> 算法学习安排
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/31/PAT-basic-1017/" rel="prev" title="1017. A除以B（20)-PAT乙级">
+                1017. A除以B（20)-PAT乙级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem"><span class="nav-number">1.</span> <span class="nav-text">Problem:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Input"><span class="nav-number">2.</span> <span class="nav-text">Input:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Output"><span class="nav-number">3.</span> <span class="nav-text">Output:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Input"><span class="nav-number">4.</span> <span class="nav-text">Sample Input:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-output"><span class="nav-number">5.</span> <span class="nav-text">Sample output:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution1"><span class="nav-number">6.</span> <span class="nav-text">Solution1:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution2"><span class="nav-number">7.</span> <span class="nav-text">Solution2:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution-3"><span class="nav-number">8.</span> <span class="nav-text">Solution 3:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
