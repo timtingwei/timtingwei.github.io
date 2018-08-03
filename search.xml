@@ -3,6 +3,57 @@
   
     
     <entry>
+      <title><![CDATA[1033. 旧键盘打字(20)-PAT乙级]]></title>
+      <url>/2018/08/04/PAT-basic-1033/</url>
+      <content type="html"><![CDATA[<h2 id="1033-旧键盘打字-20-（20-point-s-）"><a href="#1033-旧键盘打字-20-（20-point-s-）" class="headerlink" title="1033 旧键盘打字(20)（20 point(s)）"></a>1033 旧键盘打字(20)（20 point(s)）</h2><p>旧键盘上坏了几个键，于是在敲一段文字的时候，对应的字符就不会出现。现在给出应该输入的一段文字、以及坏掉的那些键，打出的结果文字会是怎样？</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在2行中分别给出坏掉的那些键、以及应该输入的文字。<br>其中对应英文字母的坏键以大写给出；<br>每段文字是不超过10^5^个字符的串。<br>可用的字符包括字母[a-z, A-Z]、数字0-9、以及下划线“_”（代表空格）、“,”、“.”、“-”、“+”（代表上档键）。<br>题目保证第2行输入的文字串非空。</p>
+<p>注意：如果上档键坏掉了，那么大写的英文字母无法被打出。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中输出能够被打出的结果文字。如果没有一个字符能被打出，则输出空行。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>7+IE.<br>7_This_is_a_test.</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>_hs_s_a_tst</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>只有打出和打不出两种情况。<br>打不出分成: 数字字符对应, 英文字符 对应 坏键大写, ‘+’导致所有大写字符都打不出.<br>每次输入一个字符去和坏键对比, 打印出ok的字符</p>
+<p>case2 error:</p>
+<p>没有一个字符能被打出的情况<br>abcd<br>abcd</p>
+<p>+<br>+</p>
+<p>+<br>aabb22BSa2</p>
+<p>排除不可用字母 <span style="color:red"> 这是我想到的一个边界情况, 不可用字符需要被当作无效输入跳过的 </span><br>abc<br>a\bsd_\,</p>
+<p>debug case2: 第一行 为空 的情况!! <span style="color:red">怎么也没想到是第一行空, 也就是没有损坏键的情况</span></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入如下:</span><br><span class="line"></span><br><span class="line">abcd</span><br><span class="line">输出:</span><br><span class="line">abcd</span><br></pre></td></tr></table></figure>
+<p>code:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// debug case 2: 可用字符就这么几个 -&gt; 不是这个原因</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">is_ok</span><span class="params">(<span class="keyword">char</span> ch)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((<span class="string">'a'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'z'</span>) || (<span class="string">'A'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'Z'</span>)</span><br><span class="line">      || (<span class="string">'0'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'9'</span>)</span><br><span class="line">      || (ch == <span class="string">','</span> || ch == <span class="string">'.'</span> || ch == <span class="string">'-'</span> || ch == <span class="string">'+'</span> || ch == <span class="string">'_'</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> bad, input;</span><br><span class="line">  getline(<span class="built_in">cin</span>, bad); <span class="built_in">cin</span> &gt;&gt; input;  <span class="comment">// debug: 改用空行</span></span><br><span class="line">  <span class="comment">// cin &gt;&gt; bad &gt;&gt; input;           // case2: 通不过的原因, 第一行可能是空行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; input.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> ok = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (!is_ok(input[i])) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; bad.length(); j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (input[i] == bad[j]) &#123;ok = <span class="number">0</span>; <span class="keyword">break</span>;&#125;   <span class="comment">// 直接对应相等</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">isalpha</span>(input[i]) &amp;&amp; (<span class="built_in">toupper</span>(input[i]) == bad[j]))  &#123;</span><br><span class="line">        ok = <span class="number">0</span>; <span class="keyword">break</span>;       <span class="comment">// 字符i是字母, 转成大写对应相等</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (bad[j] == <span class="string">'+'</span> &amp;&amp; <span class="built_in">isupper</span>(input[i])) &#123;</span><br><span class="line">        ok = <span class="number">0</span>; <span class="keyword">break</span>;       <span class="comment">// 坏键是+, 对应i是大写</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ok) <span class="built_in">cout</span> &lt;&lt; input[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT, 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1032. 挖掘机技术哪家强(20)-PAT乙级]]></title>
+      <url>/2018/08/04/PAT-basic-1032/</url>
+      <content type="html"><![CDATA[<h2 id="1032-挖掘机技术哪家强-20"><a href="#1032-挖掘机技术哪家强-20" class="headerlink" title="1032 挖掘机技术哪家强(20)"></a>1032 挖掘机技术哪家强(20)</h2><p>为了用事实说明挖掘机技术到底哪家强，PAT组织了一场挖掘机技能大赛。现请你根据比赛结果统计出技术最强的那个学校。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在第1行给出不超过10^5^的正整数N，即参赛人数。<br>随后N行，每行给出一位参赛者的信息和成绩，<br>包括其所代表的学校的编号（从1开始连续编号）、及其比赛成绩（百分制），中间以空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中给出总得分最高的学校的编号、及其总分，中间以空格分隔。题目保证答案唯一，没有并列。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>6<br>3 65<br>2 80<br>1 100<br>2 70<br>3 40<br>3 0</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>2 150</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>思路: 用数组存各个学校的总分, 计算完成之后, 得出总分最高的索引和总分</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">100050</span>;</span><br><span class="line"><span class="keyword">int</span> scores[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, max_i = <span class="number">-1</span>, max_score = <span class="number">-1</span>;</span><br><span class="line">  <span class="comment">// memset(scores, 0, sizeof(scores));   // 这句造成编译错误</span></span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> j, tmp_s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; j &gt;&gt; tmp_s;</span><br><span class="line">    scores[j] += tmp_s;</span><br><span class="line">    <span class="keyword">if</span> (scores[j] &gt; max_score) &#123; max_i = j; max_score = scores[j];&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; max_i &lt;&lt; <span class="string">" "</span> &lt;&lt; max_score &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT, 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[1027. 打印沙漏(20)-PAT乙级]]></title>
       <url>/2018/08/02/PAT-basic-1027/</url>
       <content type="html"><![CDATA[<h2 id="1027-打印沙漏-20"><a href="#1027-打印沙漏-20" class="headerlink" title="1027 打印沙漏(20)"></a>1027 打印沙漏(20)</h2><p>本题要求你写个程序把给定的符号打印成沙漏的形状。例如给定17个“*”，要求按下列格式打印<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*****</span><br><span class="line"> ***</span><br><span class="line">  *</span><br><span class="line"> ***</span><br><span class="line">*****</span><br></pre></td></tr></table></figure></p>
@@ -182,8 +233,8 @@
       <title><![CDATA[算法学习安排]]></title>
       <url>/2018/07/30/algorithm-learning/</url>
       <content type="html"><![CDATA[<h2 id="我的安排"><a href="#我的安排" class="headerlink" title="我的安排"></a>我的安排</h2><p>水题-&gt;数据结构-&gt;专项</p>
-<p>算法竞赛入门经典 07.12</p>
-<p>《数据结构》严蔚敏, 理解+实现, 07.30<br>每一种结构都找题刷,leetcode(列的比较清晰), 程序员面试经典(可以换个角度思考)</p>
+<p>一, 算法竞赛入门经典 07.12</p>
+<p>二, 《数据结构》严蔚敏, 理解+实现, 07.30<br>每一种结构都找题刷,leetcode(列的比较清晰), 程序员面试经典(可以换个角度思考)</p>
 <blockquote>
 <ul>
 <li>1.基础<br>二叉树相关（层次遍历、求深度、求两个节点距离、翻转二叉树、前中后序遍历）<br>链表相关（插入节点、链表逆置、使用链表进行大数字的加减，双向链表实现队列、寻找链表中的环）<br>堆（大量数据中寻找最大N个数字几乎每次都会问，还有堆在插入时进行的调整）<br>排序（八大排序，各自的时间复杂度、排序算法的稳定性。快排几乎每次都问）<br>二分查找（一般会深入，如寻找数组总和为K的两个数字）<br>两个栈实现队列。<br>图（深度广度优先遍历、单源最短路径、最小生成树）<br>动态规划问题。</li>
@@ -191,8 +242,8 @@
 </ul>
 </blockquote>
 <p>理解: 可视化数据结构帮助理解:<a href="https://visualgo.net/en" target="_blank" rel="noopener">https://visualgo.net/en</a></p>
-<p>&lt;<algorithm-4th>&gt; 08.06<br>网课, 课后作业,<a href="https://www.coursera.org/learn/algorithms-part1/home/welcome" target="_blank" rel="noopener">https://www.coursera.org/learn/algorithms-part1/home/welcome</a><br>小橙书后的作业, 只做网上列出部分 <a href="https://algs4.cs.princeton.edu/home/" target="_blank" rel="noopener">https://algs4.cs.princeton.edu/home/</a></algorithm-4th></p>
-<p>配合刷题, 穿插<br>程序员面试金典, 配合牛客网练习<a href="https://www.nowcoder.com/ta/cracking-the-coding-interview" target="_blank" rel="noopener">https://www.nowcoder.com/ta/cracking-the-coding-interview</a><br>PAT, HDOJ, POJ, Leedcode中题目, 专题.</p>
+<p>三, 《algorithm-4th》 08.06<br>网课, 课后作业,<a href="https://www.coursera.org/learn/algorithms-part1/home/welcome" target="_blank" rel="noopener">https://www.coursera.org/learn/algorithms-part1/home/welcome</a><br>小橙书后的作业, 只做网上列出部分 <a href="https://algs4.cs.princeton.edu/home/" target="_blank" rel="noopener">https://algs4.cs.princeton.edu/home/</a></p>
+<p>四, 配合刷题<br>程序员面试金典, 配合牛客网练习<a href="https://www.nowcoder.com/ta/cracking-the-coding-interview" target="_blank" rel="noopener">https://www.nowcoder.com/ta/cracking-the-coding-interview</a><br>PAT, HDOJ, POJ, Leedcode中题目, 专题.</p>
 <p><code>----2018.07.30----</code></p>
 <h2 id="方法总结"><a href="#方法总结" class="headerlink" title="方法总结"></a>方法总结</h2><p>下面是引用左程云大佬&lt;&lt;左程云：程序员该如何学习算法？&gt;&gt;的建议:</p>
 <p>对于算法，我给大家的建议：</p>

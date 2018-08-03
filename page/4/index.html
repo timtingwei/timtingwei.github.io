@@ -229,6 +229,278 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/11/dsacpp/02-D1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/dsacpp/02-D1/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-D1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T19:22:42+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">觉得markdown格式的页面, 排版很不舒服。虽然有标题的概念, 但是标题字体大小不容易分清, 结构不是显而易见。尝试使用不带格式的记笔记，仍然保留markdown语法, 以便复制对比效果。</span><br><span class="line">------------------------------ split line ---------------------------</span><br><span class="line">实现源码[dsacpp - vector_ordered](https://github.com/timtingwei/dsacpp/blob/master/src/02/vector_ordered.cpp)</span><br><span class="line"></span><br><span class="line"># 有序向量唯一化</span><br><span class="line">	无序: 比对</span><br><span class="line">	有序: 比较</span><br><span class="line"></span><br><span class="line">## 有序性及其甄别</span><br><span class="line"></span><br><span class="line">	&gt; * 有序/无序序列中, 任意/总有一对相邻元素顺序/逆序。</span><br><span class="line">	</span><br><span class="line">	&gt; * 相邻逆序对数目, 可以度量逆序程度。</span><br><span class="line">	</span><br><span class="line">		&gt; * 逆序程度实现</span><br><span class="line">		</span><br><span class="line">		===================== source code =========================</span><br><span class="line">		// 逆序程度</span><br><span class="line">		/* my test code </span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		int Vector&lt;T&gt;::disordered() const &#123;</span><br><span class="line">			int count = 0;</span><br><span class="line">			for (int i = 0; i &lt; _size - 1; i++)</span><br><span class="line">				if (_elem[i] != _elem[i+1]) count++;  // ERROR: 逆序:前个元素大于后一元素</span><br><span class="line">			return count;</span><br><span class="line">		&#125;</span><br><span class="line">		*/</span><br><span class="line">		</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		int Vector&lt;T&gt;::disordered() const &#123;</span><br><span class="line">			int count = 0;   // 计数器</span><br><span class="line">			for (int i = i; i &lt; _size; i++)</span><br><span class="line">				count += (_elem[i-1] &gt; _elem[i]);    // 逆序对则计数+1, bool和int的隐式转换</span><br><span class="line">			return count;  // 向量有序当且仅当n = 0</span><br><span class="line">		&#125; // 若只需要判断是否有序, 首次遇到逆序对之后, 就立即终止</span><br><span class="line">		============================================================</span><br><span class="line">		</span><br><span class="line">	&gt; * 若元素支持大小比较, 可将无序向量转换为有序向量。</span><br><span class="line">	&gt; * 无序向量转换为有序向量后, 算法多可优化。</span><br><span class="line"></span><br><span class="line">## 低效算法</span><br><span class="line"></span><br><span class="line">	&gt; 1, 我自己的低效deduplicate()版本, </span><br><span class="line">		依赖一次性remove函数.</span><br><span class="line">		&gt; * 尝试自己实现,</span><br><span class="line">		</span><br><span class="line">		======================== sourece code =======================</span><br><span class="line">		// my deduplicate code</span><br><span class="line">		// 唯一化(低效)</span><br><span class="line">		int deduplicate_lower(int rm_arr[]);</span><br><span class="line">		// 唯一化所依赖的通过索引数组一次性remove函数</span><br><span class="line">		void remove(int rm_arr[], int n);</span><br><span class="line">		</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		int Vector&lt;T&gt;::deduplicate_lower(int rm_arr[]) &#123;</span><br><span class="line">			// 删除有序向量重复的元素, rm_arr是保存删除对象索引数组, 返回被删除元素的数量</span><br><span class="line">			assert(!disordered());   // 当前为有序向量</span><br><span class="line">			Rank n = 0;            // 数组当前插入位置</span><br><span class="line">			Rank r1 = 0, r2 = 1;   // 创建两个索引值线性扫描</span><br><span class="line">			while (r2 &lt; _size) &#123;</span><br><span class="line">				if (_elem[r1] == _elem[r2]) &#123;   // r2指向的元素和r1对应元素重复</span><br><span class="line">					rm_arr[n++] = r2;     // 索引数组中加入r2</span><br><span class="line">					// remove(r2);</span><br><span class="line">				&#125; else &#123; r1 = r2;&#125;</span><br><span class="line">				r2++;    // 递增r2</span><br><span class="line">				&#125;</span><br><span class="line">			remove(rm_arr, n);   // 一次性删除索引对应的元素</span><br><span class="line">			return n;            // 返回删除元素数量</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	    // 有序向量唯一化所依赖的通过索引数组一次性remove函数</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		void Vector&lt;T&gt;::remove(int rm_arr[], int n) &#123;</span><br><span class="line">			// 删除索引除外的索引对应元素保留, 从左向右扫描</span><br><span class="line">			int i_n = 0;     // 指向rm_arr中的元素</span><br><span class="line">			int new_i = 0;   // 保留索引</span><br><span class="line">			T* old_elem = _elem;    // 备份一份当前元素</span><br><span class="line">			_elem = new T[_capacity = _capacity];</span><br><span class="line">			for (int i = 0; i &lt; _size; i++) &#123;</span><br><span class="line">				if (i != rm_arr[i_n]) &#123;     // 当前索引不在表中</span><br><span class="line">					_elem[new_i++] = old_elem[i];   // 当前索引对应元素赋值给当前元素的新位置</span><br><span class="line">				&#125; else &#123;     // 当前索引在删除索引的表中</span><br><span class="line">					i_n++;     // 指向下一个rm_arr中的元素</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			_size -= n;</span><br><span class="line">			delete [] old_elem;</span><br><span class="line">		&#125;</span><br><span class="line">		=============================================================</span><br><span class="line">	</span><br><span class="line">	&gt; 2, 视频中的唯一化(低效版)</span><br><span class="line">		代码如下:</span><br><span class="line">		======================= source code ========================</span><br><span class="line">		// 有序向量唯一化</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		int Vector&lt;T&gt;::uniquify() &#123;</span><br><span class="line">			int old_size = _size; int i = 0;  // 首元素开始</span><br><span class="line">			while (i &lt; _size - 1) &#123;</span><br><span class="line">				(_elem[i+1] == _elem[i]) ? remove(i+1) : i++;</span><br><span class="line">			&#125;    // _size的改变由remove隐式完成</span><br><span class="line">			return old_size - _size;</span><br><span class="line">		&#125;</span><br><span class="line">		============================================================</span><br><span class="line"></span><br><span class="line">## 低效算法: 复杂度</span><br><span class="line">	&gt; 1, 低效复杂度</span><br><span class="line">		运行时间取决于while循环, 总计 _size - 1 = n - 1 </span><br><span class="line">		最坏情况: 每次调用remove(), 耗时O(n)~ O(1), 累计O(n^2)</span><br><span class="line">	&gt; 2, 比较</span><br><span class="line">		我实现了一次性remove的操作, 应该可以将O(n^2)的复杂度降到O(n)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 高效算法:</span><br><span class="line">	&gt; 1, 反思</span><br><span class="line">		低效来自于, 同一元素可作为删除元素的后继, 而多次参与前移。</span><br><span class="line">	&gt; 2, 启示</span><br><span class="line">		将重复区间视为单位, 成批的删除</span><br><span class="line">	&gt; 3, 算法</span><br><span class="line">		[i] [] [ . . . . duplicates] [j] </span><br><span class="line">		从i开始扫描, 直达找到不相等的元素j, 将j移动到i的后一位置。</span><br><span class="line">		</span><br><span class="line">		高明之处在于: 实际上没有删除, 却等效于删除</span><br><span class="line">		================== source code ==============================</span><br><span class="line">		/* my test code</span><br><span class="line">		template &lt;typename&gt;</span><br><span class="line">		int Vector&lt;T&gt;::uniquify() &#123;</span><br><span class="line">			int old_size = _size;</span><br><span class="line">		    int i = 0, j = 1;   // i指向首位置</span><br><span class="line">			int n = 1;    // 实际更新后的_elem的索引</span><br><span class="line">			while (i &lt; _size - 1)</span><br><span class="line">				if (_elem[i] != _elem[j])</span><br><span class="line">					&#123; _elem[n++] = _elem[j]; i = j; size--;</span><br><span class="line">					&#125; else &#123;j++;&#125;</span><br><span class="line">	        return old_size - n;</span><br><span class="line">		&#125;</span><br><span class="line">		*/</span><br><span class="line">		</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		int Vector&lt;T&gt;::uniquify_faster() &#123;</span><br><span class="line">			int i = 0, j = 0;   // 两个计数都指向首元素</span><br><span class="line">			while (++j &lt; _size) &#123;   // j扫描到末尾</span><br><span class="line">				if (_elem[i] != _elem[j]) &#123;_elem[++i] = _elem[j];&#125;  // j指向元素移到i后</span><br><span class="line">			&#125;</span><br><span class="line">			_size = ++i; shrunk();      // 改变_size数值后, 缩容</span><br><span class="line">			return j - i;    // 注意j扫到尾端的特性</span><br><span class="line">		&#125;     // 依赖shrink();</span><br><span class="line">		============================================================</span><br><span class="line"></span><br><span class="line">	    /* 实现问题分析</span><br><span class="line">		// 为什么不要另外的n作为索引计数?</span><br><span class="line">		当j移动至i后, 计数i也增加, 重新指向移动位置后的j, 不需要对原有那份的拷贝即可完成索引操作。记录位置只用i。算法设计时，也考虑一个操作是否必要。一份复制是否必要。</span><br><span class="line">		// 为什么不在uniquify中进行new 和 delete?</span><br><span class="line">		接口分离的体现, 在函数中改变_size, 通过_size的改变, 再由shrunk/expand对空间进行操作。</span><br><span class="line">	    */</span><br><span class="line"></span><br><span class="line">## 高效算法: 实例与复杂度</span><br><span class="line">	&gt; 1, *反思 (典型例子)</span><br><span class="line">		共计n-1次迭代, 每次常数时间, 累计O(n)时间。</span><br><span class="line">		</span><br><span class="line">		优化之处在于, 没有亦步亦趋的移动, 而是直接移动到最终的位置；又只通过计算得到_size规模, 没有任何显式的删除操作。</span><br><span class="line">		体现了, 一个差的算法, 在经过反思之后, 拟定的改进策略, 最终使得效率有所改进。</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/11/cpp/cpp-notes-0003/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/11/cpp/cpp-notes-0003/" itemprop="url">C++ Zero To One 0.003</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T16:06:51+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="重载函数什么时候用virtual"><a href="#重载函数什么时候用virtual" class="headerlink" title="重载函数什么时候用virtual?"></a>重载函数什么时候用virtual?</h1><p>源码: <a href="https://github.com/timtingwei/cppd/blob/master/tmp/overload_function.cpp" target="_blank" rel="noopener">source code - load_funtion.cpp</a></p>
+<h2 id="问题来源"><a href="#问题来源" class="headerlink" title="问题来源"></a>问题来源</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(VST visit)</span></span>;</span><br><span class="line"><span class="comment">// template &lt;typename VST&gt; virtual void traverse(VST visit, T* e);</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt; <span class="function"><span class="keyword">void</span> <span class="title">traverse</span><span class="params">(VST visit, T* e)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>为什么这里不需要virtual??</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 单个T类型元素加1的类</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T &amp;e)</span> </span>&#123;e++;&#125;    <span class="comment">// Increase&lt;T&gt;()实现函数功能  </span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>为什么这里又需要virtual??</p>
+<h2 id="概念偏差"><a href="#概念偏差" class="headerlink" title="概念偏差"></a>概念偏差</h2><p>virtual 和我原先理解的重载函数不太相同。也就是vitual和重载函数不是同一个概念。</p>
+<p><strong>vitual为虚函数</strong>：基类的引用或者指针调用一个虚成员函数时会执行动态绑定。 </p>
+<p><strong>重载函数</strong>：同一作用域内的几个函数名字相同但形参列表不同。</p>
+<h2 id="使用与不使用virtual"><a href="#使用与不使用virtual" class="headerlink" title="使用与不使用virtual"></a>使用与不使用virtual</h2><p>解释一下 virtual 和 override 搭配, 继承类中可对基类的虚函数重载<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span>    <span class="comment">// 声明virtual后, 可被继承类override重载</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Base\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base &#123;   <span class="comment">// 'override'可写可不写</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> override </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Derived\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Base</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Base\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Derived</span> :</span> Base &#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Derived\n"</span>;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>关键问题: 上述两者什么差别????</code></p>
+<p>运行测试一下:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注释是使用virtual结果</span></span><br><span class="line">  Base b;</span><br><span class="line">  Derived d;</span><br><span class="line"></span><br><span class="line">  Base&amp; br = b;      <span class="comment">// refer b, br的类型是Base&amp;</span></span><br><span class="line">  Base&amp; dr = d;      <span class="comment">// dr类型也是Base&amp;</span></span><br><span class="line">  br.print();        <span class="comment">// Base</span></span><br><span class="line">  dr.print();        <span class="comment">// Derived</span></span><br><span class="line"></span><br><span class="line">  Base* pb = &amp;b;     <span class="comment">// pointer to b, Base*</span></span><br><span class="line">  Base* pd = &amp;d;     <span class="comment">// Base* as well</span></span><br><span class="line"></span><br><span class="line">  pb-&gt;print();       <span class="comment">// Base</span></span><br><span class="line">  pd-&gt;print();       <span class="comment">// Derived</span></span><br><span class="line"></span><br><span class="line">  b.Base::print();   <span class="comment">// Base</span></span><br><span class="line">  d.Base::print();   <span class="comment">// Base</span></span><br></pre></td></tr></table></figure></p>
+<p>使用vitual的运行结果:</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Base</span><br><span class="line">Derived</span><br><span class="line">Base</span><br><span class="line">Derived</span><br><span class="line">Base</span><br><span class="line">Base</span><br></pre></td></tr></table></figure>
+<p>不使用虚方法的运行结果:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br><span class="line">Base</span><br></pre></td></tr></table></figure></p>
+<p>virtual版本, 基类的引用或者指针会在调用一个虚函数时候, 动态绑定对应的函数。</p>
+<h2 id="解决最初问题"><a href="#解决最初问题" class="headerlink" title="解决最初问题"></a>解决最初问题</h2><h3 id="为什么traverse函数不需要virtual"><a href="#为什么traverse函数不需要virtual" class="headerlink" title="为什么traverse函数不需要virtual"></a>为什么traverse函数不需要virtual</h3><p>traverse函数，属于在同一作用域，形参列表不同的函数。重载的概念是函数重载的概念，并不是继承类之间的虚函数override概念。</p>
+<h3 id="为什么函数对象需要virtual重载操作符函数"><a href="#为什么函数对象需要virtual重载操作符函数" class="headerlink" title="为什么函数对象需要virtual重载操作符函数?"></a>为什么函数对象需要virtual重载操作符函数?</h3><p>定义继承类Increase_two, override在基类中被声明成virtual的类, 实现元素加2<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 函数对象用virtual声明operator()()</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase</span> &#123;</span></span><br><span class="line">  <span class="comment">// 重载()后, 对象可充当函数的功能</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span>* e)</span> </span>&#123;(*e)++;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Increase_two</span> :</span> Increase &#123;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span>* e)</span> override </span>&#123;(*e)+= <span class="number">2</span>;&#125;    <span class="comment">// 元素+2;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>测试函数, 以及prints结果如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f_increase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Increase a;</span><br><span class="line">  Increase_two b;</span><br><span class="line"></span><br><span class="line">  Increase&amp; ra = a;</span><br><span class="line">  Increase&amp; rb = b;     <span class="comment">// rb的类型为 Increase&amp;</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> e = <span class="number">5</span>; <span class="keyword">int</span>* pe = &amp;e;</span><br><span class="line">  ra.<span class="keyword">operator</span>()(pe);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"e = "</span> &lt;&lt; e &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;    <span class="comment">// prints "e = 6"</span></span><br><span class="line">  <span class="keyword">int</span> e2 = <span class="number">5</span>; <span class="keyword">int</span>* pe2 = &amp;e2;</span><br><span class="line">  rb.<span class="keyword">operator</span>()(pe2);   <span class="comment">// 调用基类的引用时, 动态绑定到Increase_two中的方法</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"e2 = "</span> &lt;&lt; e2 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;  <span class="comment">// prints "e2 = 7"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>对重载操作符声明virtual, 可以让继承类对他的重载操作符行为进行重载。当调用基类的引用或者指针时候, 在编译阶段就能绑定到继承类对应的重载函数版本。</p>
+<h1 id="静态成员声明定义使用"><a href="#静态成员声明定义使用" class="headerlink" title="静态成员声明定义使用"></a>静态成员声明定义使用</h1><p>源码: <a href="https://github.com/timtingwei/cppd/blob/master/tmp/static.cpp" target="_blank" rel="noopener">source code - static.cpp</a></p>
+<h2 id="静态成员的特点"><a href="#静态成员的特点" class="headerlink" title="静态成员的特点"></a>静态成员的特点</h2><p>静态数据成员不属于任何类的一个对象。</p>
+<p>类似于全局变量, 存在于任何的函数定义之外, 一直存在于整个程序的生命周期</p>
+<h2 id="类内static成员如何声明定义"><a href="#类内static成员如何声明定义" class="headerlink" title="类内static成员如何声明定义?"></a>类内static成员如何声明定义?</h2><blockquote>
+<ul>
+<li>在类内部声明, 外部通过类名作用域访问定义<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyStatic</span></span></span><br><span class="line"><span class="class"><span class="title">public</span>:</span></span><br><span class="line"> <span class="keyword">static</span> <span class="keyword">int</span> i_stc;   <span class="comment">// 类内部声明</span></span><br><span class="line"> <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> MyStatic::i_stc = <span class="number">0</span>;     <span class="comment">// 类外部定义, 注意需要声明成员的类型</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>也可以通过静态成员函数和一般的成员函数对它进行修改, 此时静态成员函数可通过类名访问。</p>
+<h2 id="在不同实例中被多次调用改变后的情况"><a href="#在不同实例中被多次调用改变后的情况" class="headerlink" title="在不同实例中被多次调用改变后的情况?"></a>在不同实例中被多次调用改变后的情况?</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void MyStatic::increment() &#123;++i_stc;&#125;</span><br><span class="line"></span><br><span class="line">void f() &#123;</span><br><span class="line">  MyStatic c0;</span><br><span class="line">  c0.increment();</span><br><span class="line">  std::cout &lt;&lt; &quot;c0 = &quot; &lt;&lt; c0.i_stc &lt;&lt; std::endl;</span><br><span class="line">  MyStatic c1;</span><br><span class="line">  c1.increment();</span><br><span class="line">  std::cout &lt;&lt; &quot;c1 = &quot; &lt;&lt; c1.i_stc &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void f1() &#123;</span><br><span class="line">  MyStatic c2;</span><br><span class="line">  c2.increment();</span><br><span class="line">  std::cout &lt;&lt; &quot;c2 = &quot; &lt;&lt; c2.i_stc &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">c0 = 1</span><br><span class="line">c1 = 2</span><br><span class="line">c2 = 3</span><br></pre></td></tr></table></figure>
+<p>静态数据成员类似于全局变量, 无论在何处, 每调用一次修改静态成员的函数, 数据相应的改变, 且不会随着作用域的离开而销毁。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/essay/architecture-application-between-computer-science/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1462,327 +1734,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/10/dsacpp/01-C/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-C</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:22+08:00">
-                2018-01-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>渐进分析: 大O记号 </p>
-<p>好读书不求甚解。</p>
-<p>考察DSA（考察人）:</p>
-<blockquote>
-<ul>
-<li>长远</li>
-<li>主流,</li>
-</ul>
-</blockquote>
-<p>渐进分析(Asymptotic Analysis) n &gt;&gt; 2, 对于规模为n输入，算法</p>
-<ul>
-<li>需要执行的基本操作数: T(n) = ?</li>
-<li>..存储单元: S(n) = ?       // 通常不考虑？<strong>教材</strong></li>
-</ul>
-<p><strong>教材P33</strong></p>
-<blockquote>
-<ul>
-<li>空间复杂度不会超过常数规模，纵然是新开辟的，算法所需的空间总量，也不过与基本操作的次数同阶。从这个意义上，时间复杂度是空间复杂度的天然上限。</li>
-<li>但两种情况下会有意义:<ul>
-<li>对空间效率也异常在乎(时间复杂度的平凡上界难以令人满意)</li>
-<li>数据的输入规模大。</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<p>big-O()比T(n), f(n)更简洁，但依然反应增长趋势(长远)</p>
-<blockquote>
-<ul>
-<li>常系数可忽略(主流):O(f(n)) = O(c*f(n))</li>
-<li>低次项可忽略(主流)</li>
-</ul>
-</blockquote>
-<p>O(1)<br>常数</p>
-<blockquote>
-<ul>
-<li>2 = 2013 = 2013*2013 = O(1)</li>
-<li>效率: 最高效</li>
-<li>出现的情况，需要具体分析<pre><code>不含循环，不含分支转向，一定不能有(递归)调用？
-</code></pre><strong>教材</strong></li>
-</ul>
-</blockquote>
-<p>O(logn)<br>对数</p>
-<blockquote>
-<ul>
-<li>常底数无所谓</li>
-<li>常数次幂无所谓</li>
-<li>多项式</li>
-<li>效率: 接近于常数</li>
-</ul>
-</blockquote>
-<p>O(n^c)<br>多项式</p>
-<blockquote>
-<ul>
-<li>一般 取最高次<br>线性：所有O(n)函数<br>从O(n)到O(n^2):编程习题主要覆盖范围<br>效率: 已经可令人满意。</li>
-</ul>
-</blockquote>
-<p>O(2^n)<br>指数<br>效率: 算法成本增长极快，通常不可忍受。<br>n^x-&gt;2^n, 是从有效算法到无效算法的分水岭。</p>
-<p>2-Subset<br>直觉算法：逐一枚举S的每一个子集，并统计其中元素总和<br>定理:2-Subset is NP-complete<br>意即:就目前模型而言，不存在在多项式时间内回答此问题的算法。<br>     除非，添加条件：分布规律啦, 票的总数啦，</p>
-<p>复杂度增长速度表格。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/10/dsacpp/01-B/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-B</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:07:54+08:00">
-                2018-01-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>功能：<br>算法:<br>规范：图灵机复位h的原因。 =&gt; 在软件中叫做接口</p>
-<p>RAM: Random Access Machine<br>共同之处：无限的空间。<br>寄存器：</p>
-<blockquote>
-<ul>
-<li>常数赋值给RAM             </li>
-<li>RAM之间直接赋值 R[i] &lt; R[j]</li>
-<li>RAM之间间接赋值 R[i] &lt;- R[R[j]]</li>
-<li>RAM+-</li>
-<li>判断0跳转      IF R[i] = 0 GOTO l</li>
-<li>判断正跳转             &gt; 0</li>
-<li>跳转</li>
-<li>停止           STOP</li>
-</ul>
-</blockquote>
-<p>概括:<br>对计算工具抽象后的简化。<br>独立于环境和平台，可评判效率。</p>
-<blockquote>
-<ul>
-<li>将执行时间，转化为操作次数。T(n) = 算法为求求解规模为n问题的，所需执行次数</li>
-<li><h1 id="这个次数是清晰的，可度量的。"><a href="#这个次数是清晰的，可度量的。" class="headerlink" title="这个次数是清晰的，可度量的。"></a>这个次数是清晰的，可度量的。</h1></li>
-</ul>
-</blockquote>
-<p>RAM实例:Floor<br>向下取整除法, 0 &lt;= c, 0 &lt; d<br>c%d = max {x | d<em>c &lt;= c}<br>    = max {x | d</em>x &lt; 1+c}</p>
-<h2 id="R-0-c-1-R-1-d"><a href="#R-0-c-1-R-1-d" class="headerlink" title="R[0] = c+1, R[1] = d"></a>R[0] = c+1, R[1] = d</h2><p>0, R[0] &lt;- c                 // int c = c;<br>1, R[1] &lt;- d                 // int d = d;<br>2, R[2] &lt;- 0                 // int x = 0;<br>3, R[3] &lt;- 1                 // int a = 1;<br>4, R[0] &lt;- R[0] + R[2]       // c++<br>6, R[0] &lt;- R[0] - R[1]       // c-=d<br>7, R[2] &lt;- R[2] + R[3]       // x++<br>8, IF R[0] &gt; 0 GOTO 4        // if c &gt; 0 goto 4<br>9, R[0] &lt;- R[2] - R[3]       // else x– and;<br>9, STOP                      // return R[0] = x</p>
-<p>src:</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1833,7 +1784,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
