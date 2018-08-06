@@ -1,7 +1,7 @@
 ---
 title: 配置jdk环境和classpath
 date: 2018-08-06 15:33:22
-tags: Java
+tags: Java, 配置, Mac
 ---
 
 学《Algorithms》这本书的时候, 教材有一套自己的标准库
