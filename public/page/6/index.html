@@ -229,6 +229,142 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/git-push-credential/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/22/git-push-credential/" itemprop="url">Git Push免密码设置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T08:02:48+08:00">
+                2017-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="使用-git-credentials保存验证"><a href="#使用-git-credentials保存验证" class="headerlink" title="使用.git-credentials保存验证"></a><strong>使用.git-credentials保存验证</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ touch .git-credentials</span><br><span class="line">$ emacs .git-credentials</span><br><span class="line">https://&#123;timting***&#125;:&#123;********&#125;@github.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.emacs.d/</span><br><span class="line">$ git push -u origin master</span><br><span class="line">Username <span class="keyword">for</span> <span class="string">'https://github.com'</span>:   C-c C-c</span><br></pre></td></tr></table></figure>
+<p><strong>去掉{}</strong></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ emacs ~/.git-credentials</span><br><span class="line">https://timting***:********@github.com</span><br><span class="line">$ git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ cat ~/.gitconfig</span><br><span class="line">[user]</span><br><span class="line">	email = timtingwei@hotmail.com</span><br><span class="line">	name = timtingwei</span><br><span class="line">[credential]</span><br><span class="line">	helper = store</span><br></pre></td></tr></table></figure>
+<p>现在push不再需要验证。</p>
+<p><strong>但我不希望用文件保存我的密码</strong></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ls -ld .git-credentials</span><br><span class="line">-rw------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ sudo chmod 200 .git-credentials</span><br><span class="line">[sudo] password <span class="keyword">for</span> tim: </span><br><span class="line">tim@htwt:~$ ls -ld .git-credentials</span><br><span class="line">--w------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ git config --global credential.helper store</span><br></pre></td></tr></table></figure>
+<p>重启bash</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tim@htwt:~/.emacs.d$ git push origin master</span><br><span class="line">fatal: unable to open /home/tim/.git-credentials: Permission denied</span><br></pre></td></tr></table></figure>
+<p>=&gt; 修改权限的方法没用, 别人看不到, git也看不到。</p>
+<p>======</p>
+<h2 id="安全性存疑，因此改用设置cache"><a href="#安全性存疑，因此改用设置cache" class="headerlink" title="安全性存疑，因此改用设置cache"></a><strong>安全性存疑，因此改用设置cache</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ rm ~/.git-credentials</span><br></pre></td></tr></table></figure>
+<p>通过设置git的cache的话可以让它记住密码之后自己设置一个cache有效时间 这样也一定程度保证了一些安全性。</p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper cache</span><br><span class="line">\<span class="comment"># Set git to use the credential memory cache</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper <span class="string">'cache --timeout=3600'</span></span><br><span class="line">\<span class="comment"># Set the cache to timeout after 1 hour (setting is in seconds)</span></span><br></pre></td></tr></table></figure>
+<p>======</p>
+<p>refwebsite:<br>[1], <a href="https://www.zhihu.com/question/31836445" target="_blank" rel="noopener">https://www.zhihu.com/question/31836445</a><br>[2], <a href="http://www.jianshu.com/p/f54053afecf2" target="_blank" rel="noopener">http://www.jianshu.com/p/f54053afecf2</a><br>[3], <a href="https://help.github.com/articles/caching-your-github-password-in-git/" target="_blank" rel="noopener">https://help.github.com/articles/caching-your-github-password-in-git/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/markdown-delete-line/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1363,7 +1499,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1376,7 +1512,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
