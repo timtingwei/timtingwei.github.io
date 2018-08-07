@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="shell," />
+  <meta name="keywords" content="Java, String," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="用常规方法安装好npm之后,$ npm --versionbash: npm: commmand not found 以为是没有安装后，换用brewhomehttps://brew.sh/index_zh-cn.html进行安装$ brew --version 依旧 command not found 注意到，warn">
-<meta name="keywords" content="shell">
+<meta name="description" content="在学习《算法》的时候, P42中提到赋值语句不会创建新的对象, 而只是创建另一个指向某个已经存在的对象的引用并且,在Java中, 所有的非原始数据类型都是对象, 包括数组 Java中原始的数据类型有: byte，short，int，long，char，float，double和boolean。 这些基本类型可以分为四组">
+<meta name="keywords" content="Java, String">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mac添加PATH环境变量">
-<meta property="og:url" content="https://timtingwei.github.io/2018/06/20/append-path-on-mac/index.html">
+<meta property="og:title" content="Java中对String对象赋值">
+<meta property="og:url" content="https://timtingwei.github.io/2018/08/07/20180807/index.html">
 <meta property="og:site_name" content="mituh&#39;s notes">
-<meta property="og:description" content="用常规方法安装好npm之后,$ npm --versionbash: npm: commmand not found 以为是没有安装后，换用brewhomehttps://brew.sh/index_zh-cn.html进行安装$ brew --version 依旧 command not found 注意到，warning:==&amp;gt; Cleaning up /Library/Caches/H">
+<meta property="og:description" content="在学习《算法》的时候, P42中提到赋值语句不会创建新的对象, 而只是创建另一个指向某个已经存在的对象的引用并且,在Java中, 所有的非原始数据类型都是对象, 包括数组 Java中原始的数据类型有: byte，short，int，long，char，float，double和boolean。 这些基本类型可以分为四组：整数 - 包括：byte，short，int和long，用于整数有符号数字。浮">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-20T16:59:36.733Z">
+<meta property="og:updated_time" content="2018-08-07T15:48:09.076Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mac添加PATH环境变量">
-<meta name="twitter:description" content="用常规方法安装好npm之后,$ npm --versionbash: npm: commmand not found 以为是没有安装后，换用brewhomehttps://brew.sh/index_zh-cn.html进行安装$ brew --version 依旧 command not found 注意到，warning:==&amp;gt; Cleaning up /Library/Caches/H">
+<meta name="twitter:title" content="Java中对String对象赋值">
+<meta name="twitter:description" content="在学习《算法》的时候, P42中提到赋值语句不会创建新的对象, 而只是创建另一个指向某个已经存在的对象的引用并且,在Java中, 所有的非原始数据类型都是对象, 包括数组 Java中原始的数据类型有: byte，short，int，long，char，float，double和boolean。 这些基本类型可以分为四组：整数 - 包括：byte，short，int和long，用于整数有符号数字。浮">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://timtingwei.github.io/2018/06/20/append-path-on-mac/"/>
+  <link rel="canonical" href="https://timtingwei.github.io/2018/08/07/20180807/"/>
 
 
 
 
 
-  <title>Mac添加PATH环境变量 | mituh's notes</title>
+  <title>Java中对String对象赋值 | mituh's notes</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/20/append-path-on-mac/">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/07/20180807/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="mituh">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Mac添加PATH环境变量</h1>
+          <h1 class="post-title" itemprop="name headline">Java中对String对象赋值</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T01:15:47+08:00">
-                2018-06-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T23:40:28+08:00">
+                2018-08-07
               </time>
             
 
@@ -300,22 +300,18 @@
       
 
       
-        <p>用常规方法安装好npm之后,<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line">bash: npm: commmand not found</span><br></pre></td></tr></table></figure></p>
-<p>以为是没有安装后，换用brewhome<a href="参考 - brewhome官网">https://brew.sh/index_zh-cn.html</a>进行安装<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ brew --version</span><br></pre></td></tr></table></figure></p>
-<p>依旧 command not found</p>
-<p>注意到，warning:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">==&gt; Cleaning up /Library/Caches/Homebrew...</span><br><span class="line">==&gt; Migrating /Library/Caches/Homebrew to /Users/htwt/Library/Caches/Homebrew...</span><br><span class="line">==&gt; Deleting /Library/Caches/Homebrew...</span><br><span class="line">Already up-to-date.</span><br><span class="line">Warning: /usr/<span class="built_in">local</span>/bin is not <span class="keyword">in</span> your PATH.</span><br><span class="line">==&gt; Installation successful!</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ echo $PATH</span><br><span class="line">/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure>
-<p>需要手动添加一个PATH<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/bin:<span class="variable">$PATH</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure></p>
-<p>现在npm, brew都可以直接用了</p>
-<p>另外一种方法是修改 ~/.bash_profile文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># export local bin</span><br><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>接着,<br>$ source ~/.bash_profile</p>
-<p>但接着又出现了新的问题, 每次重启emacs, 重启terminal之后, 都需要 source ~/.bash_profile</p>
-<p>解决方法如下:<br>1, 搞清楚用的是哪个shell,<br>$ echo $SHELL<br>/bin/bash</p>
-<p>2, zsh对应~/.zshrc, bash对应~/.bashrc,<br>添加入source ~/.bash_profile</p>
-<p>这样的话， 在每次打开shell时候都能自动加载了</p>
+        <p>在学习《算法》的时候, P42中提到<br><code>赋值语句不会创建新的对象, 而只是创建另一个指向某个已经存在的对象的引用</code><br>并且,<br><code>在Java中, 所有的非原始数据类型都是对象, 包括数组</code></p>
+<p>Java中原始的数据类型有: byte，short，int，long，char，float，double和boolean。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">这些基本类型可以分为四组：</span><br><span class="line"></span><br><span class="line">整数 - 包括：byte，short，int和long，用于整数有符号数字。</span><br><span class="line">浮点数 - 包括float和double，表示具有分数精度的数字。</span><br><span class="line">字符 - 包括字符，表示字符集中的符号，如字母和数字。</span><br><span class="line">布尔(Boolean) - 此组包括布尔值，它是表示 true/false 值的特殊类型。</span><br></pre></td></tr></table></figure>
 <hr>
-<p>ref:</p>
+<p>回到刚才的问题上, 但在练习中出现了如下代码, </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// PrintString_04.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintString_04</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// String string1 = new String("hello");</span></span><br><span class="line">    String string1 = <span class="string">"hello"</span>;</span><br><span class="line">    String string2 = string1;    <span class="comment">// string2是string1的引用?</span></span><br><span class="line">    string2 = <span class="string">"world"</span>;           <span class="comment">// 修改string2, string1为何不发生改变？</span></span><br><span class="line">    StdOut.println(string1);</span><br><span class="line">    StdOut.println(string2);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">String string1 = "hello";</span></span><br><span class="line"><span class="comment">String string2 = string1;    // string2确实是指向string1的引用</span></span><br><span class="line"><span class="comment">string2 = "world";           // 创建新的对象"wolrd", 此时string2指向新对象的引用</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p><span style="corlor:red">Java中的String对象不可变, 对对象赋值是指向等号右边对象的引用, 但对String对象赋值时, 等号右边的双引号中的字符串, 实际上是新创建了一个对象, 指向了新对象的引用。</span></p>
+<p>主要困惑我的地方，一开始没看清楚String和42页左下角Counter对象在赋值时候的区别。<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Counter c1 = <span class="keyword">new</span> Counter(<span class="string">"ones"</span>);</span><br><span class="line">c1.increment();</span><br><span class="line">Counter c2 = c1;</span><br><span class="line">c2.increment();</span><br><span class="line">StdOut.println(c1);</span><br></pre></td></tr></table></figure></p>
+<p>那段代码的第三行,<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Count c2 = c1;   <span class="comment">// c1是不是创建新的对象的，c2指向的就是c1的地址</span></span><br></pre></td></tr></table></figure></p>
+<p>而<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">string2 = &quot;world&quot;;  // 看似差不多, 实际上&quot;world&quot;是个新对象, string2指向新对象</span><br></pre></td></tr></table></figure></p>
+<p>目前, 因为String的不变性, 我暂时把String理解成和原始数据类型一样来操作, 就可以了.</p>
+<p>ref:<br><a href="https://blog.csdn.net/ilvest/article/details/64904520" target="_blank" rel="noopener">https://blog.csdn.net/ilvest/article/details/64904520</a><br><a href="https://blog.csdn.net/zhangjg_blog/article/details/18319521" target="_blank" rel="noopener">https://blog.csdn.net/zhangjg_blog/article/details/18319521</a></p>
 
       
     </div>
@@ -333,7 +329,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/shell/" rel="tag"># shell</a>
+            <a href="/tags/Java-String/" rel="tag"># Java, String</a>
           
         </div>
       
@@ -346,8 +342,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/20/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/08/06/config-jdk-path/" rel="next" title="配置jdk环境和classpath">
+                <i class="fa fa-chevron-left"></i> 配置jdk环境和classpath
               </a>
             
           </div>
@@ -355,10 +351,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/25/archi-materials/" rel="prev" title="建筑材料复习">
-                建筑材料复习 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
