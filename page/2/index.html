@@ -229,6 +229,135 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/31/PAT-basic-1017/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/31/PAT-basic-1017/" itemprop="url">1017. A除以B（20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T00:16:36+08:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1017-A除以B-20"><a href="#1017-A除以B-20" class="headerlink" title="1017. A除以B (20)"></a>1017. A除以B (20)</h2><p>本题要求计算A/B，其中A是不超过1000位的正整数，B是1位正整数。你需要输出商数Q和余数R，<br>使得A = B * Q + R成立。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在1行中依次给出A和B，中间以1空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在1行中依次输出Q和R，中间以1空格分隔。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>123456789050987654321 7</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>17636684150141093474 3</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>思路:<br>  1, 用数组储存大整数, 模拟大整数除以1位数<br>  2, 更省空间和减少循环次数的做法: 用C++字符串读取, 模拟手动除法, 首位整数 / B, 如果得到不是0就输出, 余数*10+下一位; </p>
+<p><span stype="color:red"><br>2优点在于,<br>边计算边输出;<br>首个索引与循环分开计算, 减少在循环内的判断;<br>对边界条件的定义处理在一个if语句中;<br>用string可以减少指针带来的诸多问题<br></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> bs[<span class="number">1050</span>];</span><br><span class="line"><span class="keyword">int</span> ans[<span class="number">1050</span>];</span><br><span class="line"><span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> b, q = <span class="number">0</span>, r = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s %d"</span>, bs, &amp;b);</span><br><span class="line">  <span class="keyword">int</span> len = <span class="built_in">strlen</span>(bs);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> x = r * <span class="number">10</span> + bs[i] - <span class="string">'0'</span>;</span><br><span class="line">    q = x / b;</span><br><span class="line">    r = x % b;</span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">0</span> &amp;&amp; q == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">    ans[cnt++] = q;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cnt == <span class="number">0</span> &amp;&amp; ans[<span class="number">0</span>] == <span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">"0"</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cnt; i++) &#123; <span class="built_in">printf</span>(<span class="string">"%d"</span>, ans[i]); &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">" %d\n"</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改后的代码:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> a; <span class="keyword">int</span> b;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;</span><br><span class="line">  <span class="keyword">int</span> len = a.length();</span><br><span class="line">  <span class="keyword">int</span> f = (a[<span class="number">0</span>] - <span class="string">'0'</span>) / b;</span><br><span class="line">  <span class="keyword">if</span> ((f != <span class="number">0</span> &amp;&amp; len &gt; <span class="number">1</span>)|| len == <span class="number">1</span>)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f;</span><br><span class="line">  <span class="keyword">int</span> temp = (a[<span class="number">0</span>] - <span class="string">'0'</span>) % b;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">    f = (temp * <span class="number">10</span> + a[i] - <span class="string">'0'</span>) / b;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f;</span><br><span class="line">    temp = (temp * <span class="number">10</span> + a[i] - <span class="string">'0'</span>) % b;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span> &lt;&lt; temp &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/30/PAT-basic-1018/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2244,141 +2373,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/20/append-path-on-mac/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/20/append-path-on-mac/" itemprop="url">Mac添加PATH环境变量</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T01:15:47+08:00">
-                2018-06-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用常规方法安装好npm之后,<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line">bash: npm: commmand not found</span><br></pre></td></tr></table></figure></p>
-<p>以为是没有安装后，换用brewhome<a href="参考 - brewhome官网">https://brew.sh/index_zh-cn.html</a>进行安装<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ brew --version</span><br></pre></td></tr></table></figure></p>
-<p>依旧 command not found</p>
-<p>注意到，warning:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">==&gt; Cleaning up /Library/Caches/Homebrew...</span><br><span class="line">==&gt; Migrating /Library/Caches/Homebrew to /Users/htwt/Library/Caches/Homebrew...</span><br><span class="line">==&gt; Deleting /Library/Caches/Homebrew...</span><br><span class="line">Already up-to-date.</span><br><span class="line">Warning: /usr/<span class="built_in">local</span>/bin is not <span class="keyword">in</span> your PATH.</span><br><span class="line">==&gt; Installation successful!</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ echo $PATH</span><br><span class="line">/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure>
-<p>需要手动添加一个PATH<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/bin:<span class="variable">$PATH</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure></p>
-<p>现在npm, brew都可以直接用了</p>
-<p>另外一种方法是修改 ~/.bash_profile文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># export local bin</span><br><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>接着,<br>$ source ~/.bash_profile</p>
-<p>但接着又出现了新的问题, 每次重启emacs, 重启terminal之后, 都需要 source ~/.bash_profile</p>
-<p>解决方法如下:<br>1, 搞清楚用的是哪个shell,<br>$ echo $SHELL<br>/bin/bash</p>
-<p>2, zsh对应~/.zshrc, bash对应~/.bashrc,<br>添加入source ~/.bash_profile</p>
-<p>这样的话， 在每次打开shell时候都能自动加载了</p>
-<hr>
-<p>ref:</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2429,7 +2423,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2442,7 +2436,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
