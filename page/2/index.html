@@ -229,6 +229,262 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/04/PAT-basic-1032/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/PAT-basic-1032/" itemprop="url">1032. 挖掘机技术哪家强(20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T01:40:22+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1032-挖掘机技术哪家强-20"><a href="#1032-挖掘机技术哪家强-20" class="headerlink" title="1032 挖掘机技术哪家强(20)"></a>1032 挖掘机技术哪家强(20)</h2><p>为了用事实说明挖掘机技术到底哪家强，PAT组织了一场挖掘机技能大赛。现请你根据比赛结果统计出技术最强的那个学校。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在第1行给出不超过10^5^的正整数N，即参赛人数。<br>随后N行，每行给出一位参赛者的信息和成绩，<br>包括其所代表的学校的编号（从1开始连续编号）、及其比赛成绩（百分制），中间以空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中给出总得分最高的学校的编号、及其总分，中间以空格分隔。题目保证答案唯一，没有并列。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>6<br>3 65<br>2 80<br>1 100<br>2 70<br>3 40<br>3 0</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>2 150</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>思路: 用数组存各个学校的总分, 计算完成之后, 得出总分最高的索引和总分</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">100050</span>;</span><br><span class="line"><span class="keyword">int</span> scores[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, max_i = <span class="number">-1</span>, max_score = <span class="number">-1</span>;</span><br><span class="line">  <span class="comment">// memset(scores, 0, sizeof(scores));   // 这句造成编译错误</span></span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> j, tmp_s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; j &gt;&gt; tmp_s;</span><br><span class="line">    scores[j] += tmp_s;</span><br><span class="line">    <span class="keyword">if</span> (scores[j] &gt; max_score) &#123; max_i = j; max_score = scores[j];&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; max_i &lt;&lt; <span class="string">" "</span> &lt;&lt; max_score &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1027/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/PAT-basic-1027/" itemprop="url">1027. 打印沙漏(20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:14:01+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1027-打印沙漏-20"><a href="#1027-打印沙漏-20" class="headerlink" title="1027 打印沙漏(20)"></a>1027 打印沙漏(20)</h2><p>本题要求你写个程序把给定的符号打印成沙漏的形状。例如给定17个“*”，要求按下列格式打印<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*****</span><br><span class="line"> ***</span><br><span class="line">  *</span><br><span class="line"> ***</span><br><span class="line">*****</span><br></pre></td></tr></table></figure></p>
+<p>所谓“沙漏形状”，是指每行输出奇数个符号；各行符号中心对齐；相邻两行符号数差2；符号数先从大到小顺序递减到1，再从小到大顺序递增；首尾符号数相等。</p>
+<p>给定任意N个符号，不一定能正好组成一个沙漏。要求打印出的沙漏能用掉尽可能多的符号。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在一行给出1个正整数N（&lt;=1000）和一个符号，中间以空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>首先打印出由给定符号组成的最大的沙漏形状，最后在一行中输出剩下没用掉的符号数。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>19 *</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">*****</span><br><span class="line"> ***</span><br><span class="line">  *</span><br><span class="line"> ***</span><br><span class="line">*****</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>S(a) = 1, 3, 5,  7, 9,<br>S(b) = 1, 7, 17 …<br>当n的值越过表b的某值时, 对应的星号的一种情况, 例如在[7, 17)都是不算1, 上下各两行.<br>因此只要计算前x项奇数*2+1的总和.</p>
+<p>题中n&lt;=1000,</p>
+<p>(1+n) * (n/2)/2 = 500;<br>x = 31       (实际上我的x是调试出来的 :b)</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 计算前31项奇数之和</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n; <span class="keyword">char</span> ch;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d %c"</span>, &amp;n, &amp;ch);</span><br><span class="line">  <span class="keyword">int</span> i, j = <span class="number">1</span>, sum = <span class="number">1</span>, p;</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">31</span>; i++) &#123;</span><br><span class="line">    j += <span class="number">2</span>;</span><br><span class="line">    sum += j*<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (sum &gt; n) &#123;p = n - (sum-(j*<span class="number">2</span>)); <span class="keyword">break</span>;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> line = i--;</span><br><span class="line">  <span class="comment">// 上打印line行, 下打印line-1行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = line; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; line-i; j++) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1</span>+i*<span class="number">2</span>; j++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= line; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; line-i; j++)  <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1</span>+i*<span class="number">2</span>; j++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, p);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1026/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1700,270 +1956,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/29/UVa-136-Ugly-Numbers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/29/UVa-136-Ugly-Numbers/" itemprop="url">UVa 136-Ugly Numbers</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T17:50:01+08:00">
-                2018-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>丑数是指不能被2, 3, 5以外的其他素数整除的数。把丑数从小到大排列起来, 结果如下:<br><code>1,2,3,4,5,6,8,9,10,12,15,...</code><br>求第1500个丑数。</p>
-<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h2><p>There is no input to this program.</p>
-<h2 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output:"></a>Sample Output:</h2><p>The 1500’th ugly number is <number>.</number></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>思路:<br>  1, 按照我原先的思路, 首先想到, 把除235以外的1500个素数给计算出来, 再从5开始判断是否会被其中的某个数整除, <code>1500*1500*1500(n^3);</code><br>  2, 使用优先队列, 用已有的丑数, 生成新的丑数;<br>  已经有丑数x, 计算2x, 3x, 5x, (他们一定不能被除了235外的其他素数整除, 如果能整除, 其他素数就不是素数 )<br>  用优先队列dq存放已生成的丑数, 队首是最小数,<br>  生成新的丑数后队首出dq栈, 判断生成数是否已经在之前出现过(使用set)<br>  没出现过的加入ugly_set, push入dq栈队尾<br>  入完ugly_set栈, 检测数量是不是到了1500   // 这里存在bug1</p>
-<p>bug1: 检测ugly_set数量是1500存在bug, 因为有的丑数还没有去生成新丑数时, 丑数数量已经足够, 但实际上, 这些还没生成的丑数中, 存在比已经生成丑数更小的丑数, 因此直接让他生成1500次, 1500次的pq队首代表第1500个丑数.<br>bug2: The 1500’th ugly number is -1735655424. 需要定义LL</p>
-<p>skill1: priority_queue<int, vector<int="">, cmp&gt; pq来定义优先队列, cmp用结构体重载()来实现<br>skill2: set是一个自带排序的数据结构<br>skill3: 对于set类型的s, s.count(a), 可以判断集合s中是否存在元素a<br>skill4: long long写起来麻烦, 可以 <code>typedef long long LL;</code>定义简写的长整型</int,></p>
-<p><span style="color:red"><strong><br>归纳:<br>新的丑数用旧的数生成, 把旧的丑数, 放在优先队列里, 数越小权重越高.<br>不是用set来计数, 而是用pq出队列的次数来计数ugly number的数量, set只是用来判断生成数是否之前出现过.
-</strong></span></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;     // priority_queue定义在头文件queue中</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="comment">// #include &lt;algorithm&gt;</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> LL a, <span class="keyword">const</span> LL b)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b;   <span class="comment">// a&gt;b, a的优先级比b小, 返回true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span>&lt;LL&gt; ugly;</span><br><span class="line"><span class="comment">// priority_queue&lt;LL&gt; pq;   // priority_queue&lt;LL&gt; pq; 这样定义数越大优先级越高</span></span><br><span class="line">priority_queue&lt;LL, <span class="built_in">vector</span>&lt;LL&gt;, cmp &gt; pq;</span><br><span class="line"><span class="comment">// priority_queue&lt;LL, vector&lt;LL&gt;, greater&lt;LL&gt; &gt; pq;   // 等价</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> multi[<span class="number">3</span>] = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n = <span class="number">1500</span>;</span><br><span class="line">  pq.push(<span class="number">1</span>); ugly.insert(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; ; i++) &#123;</span><br><span class="line">    LL x = pq.top(); pq.pop();</span><br><span class="line">    <span class="keyword">if</span> (i == n) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"The 1500'th ugly number is %lld.\n"</span>, x);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++) &#123;</span><br><span class="line">      LL x2 = x * multi[j];</span><br><span class="line">      <span class="keyword">if</span> (!ugly.count(x2)) &#123; pq.push(x2); ugly.insert(x2);&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 对set进行排序(set已经排序好了, 不需要重排)</span></span><br><span class="line">  <span class="comment">// set&lt;int&gt;::iterator it = ugly.end();</span></span><br><span class="line">  <span class="comment">// printf("The 1500'th ugly number is %d.\n", *(--it));  // 不是用set来计数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/06/git-request-commit-and-merge/" itemprop="url">Git Request 提交, 合并</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T14:35:29+08:00">
-                2018-07-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近和学长<a href="https://github.com/HankDaly" target="_blank" rel="noopener">HankDaly</a>共同contribute一个项目。<br>涉及到三个操作:<br>1, HankDaly从我的github上获取代码<br>2, HankDaly修改代码并提交给我<br>3, 我对代码进行审核合并到项目中</p>
-<h2 id="1-HankDaly从我的github上获取代码-从项目维护者那获取代码"><a href="#1-HankDaly从我的github上获取代码-从项目维护者那获取代码" class="headerlink" title="1, HankDaly从我的github上获取代码(从项目维护者那获取代码)"></a>1, HankDaly从我的github上获取代码(从项目维护者那获取代码)</h2><p>a, 在github上fork项目, timtingwei/cppd  =&gt; HankDaly/cppd<br>b, HankDaly, clone自己的项目到本地<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-HankDaly修改代码并提交给我"><a href="#2-HankDaly修改代码并提交给我" class="headerlink" title="2, HankDaly修改代码并提交给我"></a>2, HankDaly修改代码并提交给我</h2><p>a, 完成修改后, git push origin master 上传本地当前分支代码到远程master分支<br>b, 打开github, 在自己远程仓库的项目中, 找到pull request, 新建一个pull request<br>c, 选择自己要request的分支, 和base分支, 当前默认都为master<br><img src="/images/pull-request-new-requset.png" alt="我拿自己fork HankDaly/test 做的实验"><br>d, 创建这次pull request</p>
-<h2 id="3-我对代码进行审核合并到项目中"><a href="#3-我对代码进行审核合并到项目中" class="headerlink" title="3, 我对代码进行审核合并到项目中"></a>3, 我对代码进行审核合并到项目中</h2><p>在没有冲突的情况下可以直接在github上合并。<br>在冲突情况下必须手动pull下来, diff后修改矛盾, 再merge, pull request会自动消失。</p>
-<p>这里主要做的事情是, 手动在另外一个branch中, 审阅request上来的代码, 再与master合并</p>
-<p>这里我前面在pull的时候, 总没有git checkout -b hank-master</p>
-<p>我所推测的步骤应该是:</p>
-<p>a, 切换到一个专门用于审阅request的分支<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout -b hank-master</span><br></pre></td></tr></table></figure></p>
-<p>b, 在当前分支下, 拉下来学长的push<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git pull https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
-<p>没有conflict的话可以直接pull下来。</p>
-<p>如果这里有confilict<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONFLICT</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
-<p>手动将confilict改完, 就是保存一份没有冲突的</p>
-<p>c, 提交对代码的改动<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"merge hank's code"</span></span><br></pre></td></tr></table></figure></p>
-<p>d, 切换到master分支合并代码<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge hank-master</span><br></pre></td></tr></table></figure></p>
-<p>e, 提交到远程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
-<p>什么时候会出现conflict?<br>我改动的同时, request也改动了相同的代码。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2014,7 +2006,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
