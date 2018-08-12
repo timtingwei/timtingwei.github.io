@@ -229,6 +229,263 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/07/20180807/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/07/20180807/" itemprop="url">Java中对String对象赋值</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T23:40:28+08:00">
+                2018-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在学习《算法》的时候, P42中提到<br><code>赋值语句不会创建新的对象, 而只是创建另一个指向某个已经存在的对象的引用</code><br>并且,<br><code>在Java中, 所有的非原始数据类型都是对象, 包括数组</code></p>
+<p>Java中原始的数据类型有: byte，short，int，long，char，float，double和boolean。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">这些基本类型可以分为四组：</span><br><span class="line"></span><br><span class="line">整数 - 包括：byte，short，int和long，用于整数有符号数字。</span><br><span class="line">浮点数 - 包括float和double，表示具有分数精度的数字。</span><br><span class="line">字符 - 包括字符，表示字符集中的符号，如字母和数字。</span><br><span class="line">布尔(Boolean) - 此组包括布尔值，它是表示 true/false 值的特殊类型。</span><br></pre></td></tr></table></figure>
+<hr>
+<p>回到刚才的问题上, 但在练习中出现了如下代码, </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// PrintString_04.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintString_04</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// String string1 = new String("hello");</span></span><br><span class="line">    String string1 = <span class="string">"hello"</span>;</span><br><span class="line">    String string2 = string1;    <span class="comment">// string2是string1的引用?</span></span><br><span class="line">    string2 = <span class="string">"world"</span>;           <span class="comment">// 修改string2, string1为何不发生改变？</span></span><br><span class="line">    StdOut.println(string1);</span><br><span class="line">    StdOut.println(string2);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">String string1 = "hello";</span></span><br><span class="line"><span class="comment">String string2 = string1;    // string2确实是指向string1的引用</span></span><br><span class="line"><span class="comment">string2 = "world";           // 创建新的对象"wolrd", 此时string2指向新对象的引用</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p><span style="corlor:red">Java中的String对象不可变, 对对象赋值是指向等号右边对象的引用, 但对String对象赋值时, 等号右边的双引号中的字符串, 实际上是新创建了一个对象, 指向了新对象的引用。</span></p>
+<p>主要困惑我的地方，一开始没看清楚String和42页左下角Counter对象在赋值时候的区别。<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Counter c1 = <span class="keyword">new</span> Counter(<span class="string">"ones"</span>);</span><br><span class="line">c1.increment();</span><br><span class="line">Counter c2 = c1;</span><br><span class="line">c2.increment();</span><br><span class="line">StdOut.println(c1);</span><br></pre></td></tr></table></figure></p>
+<p>那段代码的第三行,<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Count c2 = c1;   <span class="comment">// c1是不是创建新的对象的，c2指向的就是c1的地址</span></span><br></pre></td></tr></table></figure></p>
+<p>而<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">string2 = &quot;world&quot;;  // 看似差不多, 实际上&quot;world&quot;是个新对象, string2指向新对象</span><br></pre></td></tr></table></figure></p>
+<p>目前, 因为String的不变性, 我暂时把String理解成和原始数据类型一样来操作, 就可以了.</p>
+<p>ref:<br><a href="https://blog.csdn.net/ilvest/article/details/64904520" target="_blank" rel="noopener">https://blog.csdn.net/ilvest/article/details/64904520</a><br><a href="https://blog.csdn.net/zhangjg_blog/article/details/18319521" target="_blank" rel="noopener">https://blog.csdn.net/zhangjg_blog/article/details/18319521</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/06/config-jdk-path/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/06/config-jdk-path/" itemprop="url">配置jdk环境和classpath</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T15:33:22+08:00">
+                2018-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>学《Algorithms》这本书的时候, 教材有一套自己的标准库<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Getting started. To use this class, you must have StdIn.class in your Java classpath.</span><br><span class="line">If you used our autoinstaller, you should be all set. </span><br><span class="line">Otherwise, either download stdlib.jar and add to your Java classpath or download StdIn.java and put a copy in your working directory.</span><br></pre></td></tr></table></figure></p>
+<p>ref:<a href="https://introcs.cs.princeton.edu/java/stdlib/javadoc/StdIn.html" target="_blank" rel="noopener">https://introcs.cs.princeton.edu/java/stdlib/javadoc/StdIn.html</a></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">ls -l /usr/bin/java</span><br><span class="line">lrwxr-xr-x  1 root  wheel  74 Jun 17 16:18 /usr/bin/java -&gt; /System/Library/Frameworks/JavaVM.framework/Versions/Current/Commands/java</span><br></pre></td></tr></table></figure>
+<p>这个只是替身路径, Go to这个路径, 展开后在<br><code>/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home</code>找到真实路径</p>
+<p>编辑~/.bash_profile中(我的是这个)<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home <span class="comment">#jdk安装路径   </span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span> </span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar:<span class="variable">$JAVA_HOME</span>/lib/stdlib.jar</span><br></pre></td></tr></table></figure></p>
+<p>需要把从《Algorithms》上下载下来的stdlib.jar放入JAVA_HOME的lib文件中.</p>
+<p>保存并<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> .bash_profile</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/04/PAT-basic-1033/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1270,282 +1527,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/30/PAT-basic-1018/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/30/PAT-basic-1018/" itemprop="url">1018. 锤子剪刀布 (20)-PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T22:38:38+08:00">
-                2018-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem:"></a>Problem:</h2><p>大家应该都会玩“锤子剪刀布”的游戏：两人同时给出手势，胜负规则如图所示：现给出两人的交锋记录，请统计双方的胜、平、负次数，并且给出双方分别出什么手势的胜算最大。</p>
-<h2 id="Input"><a href="#Input" class="headerlink" title="Input:"></a>Input:</h2><p>输入第1行给出正整数N（&lt;=105），即双方交锋的次数。随后N行，每行给出一次交锋的信息，即甲、乙双方同时给出的的手势。C代表“锤子”、J代表“剪刀”、B代表“布”，第1个字母代表甲方，第2个代表乙方，中间有1个空格。</p>
-<h2 id="Output"><a href="#Output" class="headerlink" title="Output:"></a>Output:</h2><p>输出第1、2行分别给出甲、乙的胜、平、负次数，数字间以1个空格分隔。第3行给出两个字母，分别代表甲、乙获胜次数最多的手势，中间有1个空格。如果解不唯一，则输出按字母序最小的解。</p>
-<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h2><p>10<br>C J<br>J B<br>C B<br>B B<br>B C<br>C C<br>C B<br>J B<br>B C<br>J J</p>
-<h2 id="Sample-output"><a href="#Sample-output" class="headerlink" title="Sample output:"></a>Sample output:</h2><p>5 3 2<br>2 3 5<br>B B</p>
-<h2 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h2><p>虽然考虑到了9中组合, 但写的时候思路不清晰, 甚至没有把胜出时候的手势放入数组.<br>冗杂在于<br>1, 一开始想把它放进一个struct, 但实际上只拥有六个整型, 为什么不放到数组里?<br>2, getMax函数纠结了好久, 实际有更为简单的方法</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">score</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> w = <span class="number">0</span>, f = <span class="number">0</span>, e = <span class="number">0</span>;    <span class="comment">// 胜负平</span></span><br><span class="line">  <span class="keyword">int</span> C = <span class="number">0</span>, J = <span class="number">0</span>, B = <span class="number">0</span>;    <span class="comment">// 胜的时候出的手势</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; x;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> motion[<span class="number">4</span>] = <span class="string">"BCJ"</span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">getMax</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// a,b,c谁最大, 返回0,1,2; 并列返回字典序列</span></span><br><span class="line">  x.clear();</span><br><span class="line">  <span class="keyword">int</span> m;</span><br><span class="line">  m = max(a, b); m = max(m, c);</span><br><span class="line">  <span class="keyword">if</span> (m == a) x.push_back(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> (m == b) x.push_back(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">if</span> (m == c) x.push_back(<span class="number">2</span>);</span><br><span class="line">  sort(x.begin(), x.end());</span><br><span class="line">  <span class="keyword">return</span> motion[x[<span class="number">0</span>]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> a[<span class="number">2</span>], b[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  score jia, yi;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;T) == <span class="number">1</span> &amp;&amp; T) &#123;</span><br><span class="line">    <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">      <span class="built_in">scanf</span>(<span class="string">"%s %s"</span>, a, b);</span><br><span class="line">      <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'J'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; jia.f++; yi.w++; yi.C++; &#125;  <span class="comment">// 乙胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; jia.w++; yi.f++; jia.J++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'C'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.w++; yi.f++; jia.C++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; yi.w++; jia.f++; yi.B++; &#125;  <span class="comment">// yi胜</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'B'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.f++; yi.w++; yi.J++; &#125;  <span class="comment">// yi胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; yi.f++; jia.w++; jia.B++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, jia.w, jia.e, jia.f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, yi.w, yi.e, yi.f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, getMax(jia.B, jia.C, jia.J));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, getMax(yi.B, yi.C, yi.J));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h2><p>将字符转换为整数进行计算<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">00  平   10 甲   20 乙</span><br><span class="line">01  乙   11 平   21 甲</span><br><span class="line">02  甲   12 乙   22 平</span><br></pre></td></tr></table></figure></p>
-<p>可以发现, -2, 1时, 甲胜;  -1, 2时, 甲负<br>甲乙胜负可以转换, 平局可以通过总局数得到, 因此只需要记录甲的胜负</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; s_c_i = &#123;&#125;;    <span class="comment">// 将字符转换成整数, 用于索引和计算</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> str[<span class="number">4</span>] = <span class="string">"BCJ"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  <span class="keyword">int</span> jia[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;, yi[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;T) == <span class="number">1</span> &amp;&amp; T) &#123;</span><br><span class="line">    s_c_i[<span class="string">'J'</span>] = <span class="number">0</span>, s_c_i[<span class="string">'C'</span>] = <span class="number">1</span>, s_c_i[<span class="string">'B'</span>] = <span class="number">2</span>;  <span class="comment">// 将字符转换成整数用于计算</span></span><br><span class="line">    <span class="keyword">int</span> w = <span class="number">0</span>, f = <span class="number">0</span>, ct = T;                        <span class="comment">// 甲胜利, 失败, 总局数</span></span><br><span class="line">    <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">      <span class="keyword">char</span> sa, sb;</span><br><span class="line">      <span class="built_in">cin</span> &gt;&gt; sa &gt;&gt; sb;</span><br><span class="line">      <span class="keyword">int</span> d = s_c_i[sa] - s_c_i[sb];</span><br><span class="line">      <span class="keyword">if</span> (d == <span class="number">-2</span> || d == <span class="number">1</span>) &#123;    <span class="comment">// 甲胜</span></span><br><span class="line">        w++; jia[s_c_i[sa]]++;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (d == <span class="number">-1</span> || d == <span class="number">2</span>) &#123;   <span class="comment">// 甲负, 乙胜</span></span><br><span class="line">        f++; yi[s_c_i[sb]]++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, w, ct-w-f, f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, f, ct-w-f, w);</span><br><span class="line">    <span class="keyword">int</span> jiamax = (jia[<span class="number">0</span>] &gt;= jia[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    jiamax = (jia[jiamax] &gt;= jia[<span class="number">2</span>]) ? jiamax : <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> yimax = (yi[<span class="number">0</span>] &gt;= yi[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    yimax = (yi[yimax] &gt;= yi[<span class="number">2</span>]) ? yimax : <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, str[jiamax]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, str[yimax]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution 3:"></a>Solution 3:</h2><p><span style="color:red"><br>只记录甲的胜负, 计算出乙胜负平; 六种排列组合; 三个计数器放在数组中, 用 ?:判断哪个位置计数最高<br>能用数组解决的不用struct的, 能用原子类型解决的不用数组;<br></span></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> str[<span class="number">4</span>] = &#123;<span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'J'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  <span class="keyword">int</span> win = <span class="number">0</span>, fail = <span class="number">0</span>;   <span class="comment">// 只记录甲的胜负</span></span><br><span class="line">  <span class="keyword">int</span> winjia[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;, winyi[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; T;</span><br><span class="line">  <span class="keyword">int</span> ct = T;</span><br><span class="line">  <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">    <span class="keyword">char</span> a, b;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;</span><br><span class="line">    <span class="comment">// 六种排列组合</span></span><br><span class="line">    <span class="keyword">if</span> (a == <span class="string">'B'</span> &amp;&amp; b == <span class="string">'C'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">0</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'B'</span> &amp;&amp; b == <span class="string">'J'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">2</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'C'</span> &amp;&amp; b == <span class="string">'B'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">0</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'C'</span> &amp;&amp; b == <span class="string">'J'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">1</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'J'</span> &amp;&amp; b == <span class="string">'B'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">2</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'J'</span> &amp;&amp; b == <span class="string">'C'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">1</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, win, ct-win-fail, fail);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, fail, ct-win-fail, win);</span><br><span class="line">  <span class="keyword">int</span> jiamax = (winjia[<span class="number">0</span>] &gt;= winjia[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  jiamax = (winjia[jiamax] &gt;= winjia[<span class="number">2</span>]) ? jiamax : <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">int</span> yimax = (winyi[<span class="number">0</span>] &gt;= winyi[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  yimax = (winyi[yimax] &gt;= winyi[<span class="number">2</span>]) ? yimax : <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%c"</span>, str[jiamax]);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, str[yimax]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/30/algorithm-learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/30/algorithm-learning/" itemprop="url">算法学习安排</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T07:03:03+08:00">
-                2018-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="我的安排"><a href="#我的安排" class="headerlink" title="我的安排"></a>我的安排</h2><p>水题-&gt;数据结构-&gt;专项</p>
-<p>一, 算法竞赛入门经典 07.12</p>
-<p>二, 《数据结构》严蔚敏, 理解+实现, 07.30<br>每一种结构都找题刷,leetcode(列的比较清晰), 程序员面试经典(可以换个角度思考)</p>
-<blockquote>
-<ul>
-<li>1.基础<br>二叉树相关（层次遍历、求深度、求两个节点距离、翻转二叉树、前中后序遍历）<br>链表相关（插入节点、链表逆置、使用链表进行大数字的加减，双向链表实现队列、寻找链表中的环）<br>堆（大量数据中寻找最大N个数字几乎每次都会问，还有堆在插入时进行的调整）<br>排序（八大排序，各自的时间复杂度、排序算法的稳定性。快排几乎每次都问）<br>二分查找（一般会深入，如寻找数组总和为K的两个数字）<br>两个栈实现队列。<br>图（深度广度优先遍历、单源最短路径、最小生成树）<br>动态规划问题。</li>
-<li>2, 深入<br>红黑树性质<br>分治法和动态规划的区别<br>计算时间复杂度<br>二叉树和哈希表查找的时间复杂度</li>
-</ul>
-</blockquote>
-<p>理解: 可视化数据结构帮助理解:<a href="https://visualgo.net/en" target="_blank" rel="noopener">https://visualgo.net/en</a></p>
-<p>三, 《algorithm-4th》 08.06<br>网课, 课后作业,<a href="https://www.coursera.org/learn/algorithms-part1/home/welcome" target="_blank" rel="noopener">https://www.coursera.org/learn/algorithms-part1/home/welcome</a><br>小橙书后的作业, 只做网上列出部分 <a href="https://algs4.cs.princeton.edu/home/" target="_blank" rel="noopener">https://algs4.cs.princeton.edu/home/</a></p>
-<p>四, 配合刷题<br>程序员面试金典, 配合牛客网练习<a href="https://www.nowcoder.com/ta/cracking-the-coding-interview" target="_blank" rel="noopener">https://www.nowcoder.com/ta/cracking-the-coding-interview</a><br>PAT, HDOJ, POJ, Leedcode中题目, 专题.</p>
-<p><code>----2018.07.30----</code></p>
-<h2 id="方法总结"><a href="#方法总结" class="headerlink" title="方法总结"></a>方法总结</h2><p>下面是引用左程云大佬&lt;&lt;左程云：程序员该如何学习算法？&gt;&gt;的建议:</p>
-<p>对于算法，我给大家的建议：</p>
-<p>先找到线团，然后进入线团里学着怎么玩。为了进入线团，需要先把基础知识掌握好。《算法和数据结构》（教材），你一定要看完+理解。这里面讲的都是不能再基础的东西了，觉得讲得不好，自己搜维基百科。没办法，如果坚持不下来，你后面就受罪去吧。</p>
-<p>然后有一些很经典的书可以迅速让你进入状态，比如我这本《程序员代码面试指南》，还有《剑指offer》，配合在线练习：<a href="https://www.nowcoder.com/ta/coding-interviews，" target="_blank" rel="noopener">https://www.nowcoder.com/ta/coding-interviews，</a><br>《程序员面试金典》配合在线练习：<a href="https://www.nowcoder.com/ta/cracking-the-coding-interview，这些好书。" target="_blank" rel="noopener">https://www.nowcoder.com/ta/cracking-the-coding-interview，这些好书。</a><br>我在牛客网上还有一个针对小白的扫盲的课程<a href="https://www.nowcoder.com/courses/semester/algorithm。" target="_blank" rel="noopener">https://www.nowcoder.com/courses/semester/algorithm。</a></p>
-<p>对于线上刷题平台的题目，先不找解答，先自己实现，实现的多烂，复杂度多差，都坚持写完。然后分析出复杂度。接下来去网上找答案，看到复杂度和你一样或比你低的，直接略过。看到比你好的，重点看，一定要理解，然后分析为什么比你的好，如果你真的理解了，你一定能找到别人优化的点。这个过程可能是最奇妙的过程，不要给自己太大压力，这个过程其实可以很欢乐，你有想法并创造出来，练习了自己的coding能力。别人有更好的实现，推翻了你的所有模型和幻想，你幻灭了，却也因此找到了让你血脉喷张方法。这个阶段看似苦，实际上其乐无穷。你在学习别人解法的过程中，又了解了很多算法和数据结构。而且你付出的每一滴汗水，都是结果导向的，可量化的，实实在在的。写写简单的测试函数就可以发现自己方法的运行时间和更好的解法就是没法比。这是一个非常培养自驱力的阶段，这是一个只追求解法更快更强的阶段。你看到很多经典的结构，你学到很多细思极妙的优化。比读那些让你吃力的书更加快乐，也能够一直启发你走下去。你苦苦寻找啊，觉得好的不能再好的方法啊，直到有一天，你突然看到一个更优的解法，相信我，你一定会一整天都在贤者时间里。</p>
-<p><span style="color:red"><br><strong>刷题的方法</strong></span></p>
-<p>1.实现<br>2.复杂度分析<br>3.找复杂度低的答案<br>4.对比优化的点(重点看理解):<br>(写测试函数)<br>(了解更多的算法和数据结构)<br>5.总结(每题都总结到blog)<br>(结果导向, 可量化)<br></p>
-<p><span style="color:red"><strong>(刷题时候碰到新的算法:)</strong></span></p>
-<p>我不建议刚开始刷题的人就直接在网络上搜集文章开始学习，因为太散了，而且需要花很多时间去鉴别正确与否。当这些内容都掌握之后，再开始在网上搜集各种各样的题，并与网友参加各种各样的讨论，会比较高效。把底子打好之后，对于专项算法的学习就得心应手了，而且会学的很快。 对于很庞大的算法，我个人的习惯是找例子来引导自己的思路，一点一点的接近算法的核心。唯一需要注意的是，一定要写代码，光看没有用的。对于经典算法的学习，大体上分成几个阶段：</p>
-<p>第一阶段：对于某一个具体的算法，首先要搞清楚这个算法解决的问题是什么，可能是实现一个具体的功能，也可能是在某些方面，比如时间复杂度或者空间复杂度方面很卓越，总之搞清楚这个算法被研究出来的目的是什么。<span style="color:red">（搞清楚这种算法的接口怎么调用, 再哪些地方应用较多, 复杂度分析)</span></p>
-<p>第二阶段：然后就要弄清楚这个算法的生存环境了，也就是看看你此时研究的东西是不是对别的知识有依赖，应该先把底层依赖的知识理解并掌握。这些问题都解决之后，就进入到算法本身的学习，理解一个算法是一件辛苦的事情，刚开始看必然会产生很多的困惑，比如经常会怀疑作者讲述的内容的重要性？这些内容和这个算法有什么联系呢？经常会有这种摸不着头脑的感觉，其实作者做的铺垫都是为了建立起描述算法主要内容的基础，只有接受和理解这些基础，才能逐渐触碰到算法的精髓，所以耐心是很重要的。(理解底层的理论知识, 用来描述算法的基础, 这方面我以前不太重视, 但现在要按这个方法来)<br>第三阶段：算法的主要过程看完之后，往往还是会感到困惑，主要是不知道这个过程好在哪，这就进入了下一个阶段，理解作者对这个过程在功能性或者效率卓越这件事上的解释和证明。这才真正触碰到算法最精髓的部分，也就是深度的理解算法的主要过程所带来的好处，这才是最锻炼人理解能力的地方。<span style="color:red">(理解这个算法设计巧妙的地方)</span><br>第四阶段：上面几点是算法学习阶段的过程了，接下来就是研究算法的代码实现，自己设计测试用例亲自跑一下代码，以及从代码运行时间的角度分析这个算法的优势，这也是加深对算法的理解的过程。<span style="color:red">(先理解算法的底层内容, 再动手实现代码)</span><br>第五阶段：最后是配合相应的题目练习，让自己通过题目练习的方式，会用、善用学习到的算法，并对这个算法产生一定的敏感程度，具体是指看到某些题目时，能够根据题目的特点，产生与该算法的对应，也就是具备举一反三的能力。<span style="color:red">(实现某种算法后, 用他来做题解决问题, 仍然是回到第一部, 但显然第一部的背景比这里所说的大, 这里更多的是指算法题; 通过刷这一类型的题来达到举一反三的能力)</span></p>
-<hr>
-<p>ref:<br><a href="https://m.nowcoder.com/discuss/61529" target="_blank" rel="noopener">https://m.nowcoder.com/discuss/61529</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1596,7 +1577,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">69</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1609,7 +1590,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
