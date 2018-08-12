@@ -103,3 +103,34 @@ int main() {
   return 0;
 }
 ```
+
+----
+
+我学习了哈希散列之后, 在网上又看到这样的解法:
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+int main() {
+  string bad, should;
+  getline(cin, bad);
+  getline(cin, should);
+  for (int i = 0; i < should.length(); i++) {
+    if (bad.find(toupper(should[i])) != string::npos) continue;
+    if (isupper(should[i]) && bad.find('+') != string::npos) continue;
+    cout << should[i];
+  }
+  return 0;
+}
+```
+
+分析可得
+1, 把操作都放在一个string中进行, 没有额外的vector, 减少了很多代码。
+
+2, string对象, 可以调用find()函数, 如果找到了这个字符, 就返回这个字符的索引, 如果没找到, 返回一个与string::npos相等的值 cout << string::npos << endl;   // 18446744073709551615
+
+3, toupper和isupper的使用, 注意的是, toupper对非字母的字符也能起到作用, 因此可以将对整个字符串进行遍历
+
+4, Hash散列, 通过查找HashTable中的key值, 判断key是否在列表中, 这里抽象出来, 就是判断某个字符ch, 或者是toupper(ch), 用find()函数判断是不是在这个字符串中, 在的给出相应的操作。
+
+5, 这道题对不符合条件的进行忽略continue, 不符合的有两种:一种是转换成upper之后能在坏键字符串中找到的, 一种是, 另一种是大写, 但坏键中有"+"上档位键 
