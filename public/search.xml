@@ -3,6 +3,50 @@
   
     
     <entry>
+      <title><![CDATA[1043 输出PATest - PAT乙级]]></title>
+      <url>/2018/08/14/20180814-02/</url>
+      <content type="html"><![CDATA[<h3 id="1043-输出PATest（20-point-s-）"><a href="#1043-输出PATest（20-point-s-）" class="headerlink" title="1043 输出PATest（20 point(s)）"></a>1043 输出PATest（20 point(s)）</h3><p>给定一个长度不超过 10^4的、仅由英文字母构成的字符串。请将字符重新调整顺序，按 PATestPATest…. 这样的顺序输出，并忽略其它字符。当然，六种字符的个数不一定是一样多的，若某种字符已经输出完，则余下的字符仍按 PATest 的顺序打印，直到所有字符都被输出。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出一个长度不超过 10^4​的、仅由英文字母构成的非空字符串。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中按题目要求输出排序后的字符串。题目保证输出非空。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>redlesPayBestPATTopTeePHPereatitAPPT</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>PATestPATestPTetPTePePee</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>Hash散列将字符key转化成对应索引, 每出现一次cnt+1, 让散列表中的字符按照顺序循环打印, 每次打印都减少次数, 直到次数为空</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> chars[<span class="number">6</span>] = &#123;<span class="string">'P'</span>, <span class="string">'A'</span>, <span class="string">'T'</span>, <span class="string">'e'</span>, <span class="string">'s'</span>, <span class="string">'t'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> cnt[<span class="number">6</span>];</span><br><span class="line">  <span class="built_in">memset</span>(cnt, <span class="number">0</span>, <span class="keyword">sizeof</span>(cnt));</span><br><span class="line">  <span class="built_in">string</span> s; <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">6</span>; j++)</span><br><span class="line">      <span class="keyword">if</span> (s[i] == chars[j]) &#123; cnt[j]++; <span class="keyword">break</span>; &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    if (s[i] == 'P') cnt[0]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 'A') cnt[1]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 'T') cnt[2]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 'e') cnt[3]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 's') cnt[4]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 't') cnt[5]++;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">int</span> ok;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    ok = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (cnt[i]) &#123;</span><br><span class="line">        ok = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%c"</span>, chars[i]);</span><br><span class="line">        cnt[i]--;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">while</span> (ok);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT, 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1042 字符统计(20) - PAT乙级]]></title>
+      <url>/2018/08/14/20180814-01/</url>
+      <content type="html"><![CDATA[<h3 id="1042-字符统计（20）（20-point-s-）"><a href="#1042-字符统计（20）（20-point-s-）" class="headerlink" title="1042 字符统计（20）（20 point(s)）"></a>1042 字符统计（20）（20 point(s)）</h3><p>请编写程序，找出一段给定文字中出现最频繁的那个英文字母。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出一个长度不超过 1000 的字符串。字符串由 ASCII 码表中任意可见字符及空格组成，至少包含 1 个英文字母，以回车结束（回车不算在内）。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出出现频率最高的那个英文字母及其出现次数，其间以空格分隔。如果有并列，则输出按字母序最小的那个字母。统计时不区分大小写，输出小写字母。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>This is a simple TEST.  There ARE numbers and other symbols 1&amp;2&amp;3………..</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>e 7</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>将字符的ascii码作为address,  address = key, a[adrr] = cnt(key);<br>用max_p记录出现次数最多字符的ascii码, 打印时, 可以直接转换和索引.</p>
+<p>坑点, case 2, 如果有并列, 输出字典序小的, 判断两个位置最大值是否相等, 且当前i对应字母更小;</p>
+<p>另外我测试了ascii码的分布情况, 所以, 散列表大小开到150左右就ok了<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&apos;a&apos; = 97, &apos;z&apos; = 122, &apos;A&apos; = 65, &apos;Z&apos; = 90</span><br><span class="line">&apos;0&apos; = 48, &apos;9&apos; = 57</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> cnt[<span class="number">200</span>];   <span class="comment">// 假设ascii200位</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">memset</span>(cnt, <span class="number">0</span>, <span class="keyword">sizeof</span>(cnt));</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  getline(<span class="built_in">cin</span>, s);</span><br><span class="line">  <span class="keyword">int</span> max_p = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[i])) &#123;</span><br><span class="line">      <span class="keyword">int</span> ch = <span class="built_in">tolower</span>(s[i]);</span><br><span class="line">      cnt[ch]++;</span><br><span class="line">      <span class="keyword">if</span> (cnt[ch] &gt; cnt[max_p]) max_p = ch;</span><br><span class="line">      <span class="keyword">if</span> (cnt[ch] == cnt[max_p] &amp;&amp; (ch &lt; max_p)) max_p = ch;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%c %d\n"</span>, max_p, cnt[max_p]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT, 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[1039 到底买不买(20) - PAT乙级]]></title>
       <url>/2018/08/13/20180813-03/</url>
       <content type="html"><![CDATA[<h3 id="1039-到底买不买-20-（20-point-s-）"><a href="#1039-到底买不买-20-（20-point-s-）" class="headerlink" title="1039 到底买不买(20)（20 point(s)）"></a>1039 到底买不买(20)（20 point(s)）</h3><p>小红想买些珠子做一串自己喜欢的珠串。卖珠子的摊主有很多串五颜六色的珠串，但是不肯把任何一串拆散了卖。于是小红要你帮忙判断一下，某串珠子里是否包含了全部自己想要的珠子？如果是，那么告诉她有多少多余的珠子；如果不是，那么告诉她缺了多少珠子。</p>
