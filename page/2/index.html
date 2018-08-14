@@ -229,6 +229,541 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/12/20180812/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/12/20180812/" itemprop="url">1081 检查密码(20) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-12T00:19:27+08:00">
+                2018-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1081-检查密码（15-point-s-）"><a href="#1081-检查密码（15-point-s-）" class="headerlink" title="1081 检查密码（15 point(s)）"></a>1081 检查密码（15 point(s)）</h3><p>本题要求你帮助某网站的用户注册模块写一个密码合法性检查的小功能。该网站要求用户设置的密码必须由不少于6个字符组成，并且只能有英文字母、数字和小数点 .，还必须既有字母也有数字。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出一个正整数 N（≤ 100），随后 N 行，每行给出一个用户设置的密码，为不超过 80 个字符的非空字符串，以回车结束。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对每个用户的密码，在一行中输出系统反馈信息，分以下5种：</p>
+<p>如果密码合法，输出Your password is wan mei.；<br>如果密码太短，不论合法与否，都输出Your password is tai duan le.；<br>如果密码长度合法，但存在不合法字符，则输出Your password is tai luan le.；<br>如果密码长度合法，但只有字母没有数字，则输出Your password needs shu zi.；<br>如果密码长度合法，但只有数字没有字母，则输出Your password needs zi mu.。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>5<br>123s<br>zheshi.wodepw<br>1234.5678<br>WanMei23333<br>pass*word.6</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>Your password is tai duan le.<br>Your password needs shu zi.<br>Your password needs zi mu.<br>Your password is wan mei.<br>Your password is tai luan le.</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>画树状分析</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  getchar();</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    getline(<span class="built_in">cin</span>, s);</span><br><span class="line">    <span class="keyword">int</span> alpha = <span class="number">0</span>, digit = <span class="number">0</span>, ch_flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">isdigit</span>(s[i]) || <span class="built_in">isalpha</span>(s[i]) || s[i] == <span class="string">'.'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isdigit</span>(s[i])) digit++;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[i])) alpha++;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ch_flag = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (s.length() &lt; <span class="number">6</span>) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is tai duan le."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s.length() &gt;= <span class="number">6</span> &amp;&amp; !ch_flag) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is tai luan le."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s.length() &gt;= <span class="number">6</span> &amp;&amp; (alpha != <span class="number">0</span>) &amp;&amp; (digit == <span class="number">0</span>)) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password needs shu zi."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s.length() &gt;= <span class="number">6</span> &amp;&amp; (alpha == <span class="number">0</span>) &amp;&amp; (digit != <span class="number">0</span>)) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password needs zi mu."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is wan mei."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/11/20180811-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/11/20180811-02/" itemprop="url">1067 试密码(20) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T23:42:15+08:00">
+                2018-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1067-试密码（20-point-s-）"><a href="#1067-试密码（20-point-s-）" class="headerlink" title="1067 试密码（20 point(s)）"></a>1067 试密码（20 point(s)）</h3><p>当你试图登录某个系统却忘了密码时，系统一般只会允许你尝试有限多次，当超出允许次数时，账号就会被锁死。本题就请你实现这个小功能。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在第一行给出一个密码（长度不超过 20 的、不包含空格、Tab、回车的非空字符串）和一个正整数 N（≤ 10），分别是正确的密码和系统允许尝试的次数。随后每行给出一个以回车结束的非空字符串，是用户尝试输入的密码。输入保证至少有一次尝试。当读到一行只有单个 # 字符时，输入结束，并且这一行不是用户的输入。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对用户的每个输入，如果是正确的密码且尝试次数不超过 N，则在一行中输出 Welcome in，并结束程序；如果是错误的，则在一行中按格式输出 Wrong password: 用户输入的错误密码；当错误尝试达到 N 次时，再输出一行 Account locked，并结束程序。</p>
+<h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例 1："></a>输入样例 1：</h4><p>Correct%pw 3<br>correct%pw<br>Correct@PW<br>whatisthepassword!<br>Correct%pw<br>#</p>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例 1："></a>输出样例 1：</h4><p>Wrong password: correct%pw<br>Wrong password: Correct@PW<br>Wrong password: whatisthepassword!<br>Account locked</p>
+<h4 id="输入样例-2："><a href="#输入样例-2：" class="headerlink" title="输入样例 2："></a>输入样例 2：</h4><p>cool@gplt 3<br>coolman@gplt<br>coollady@gplt<br>cool@gplt<br>try again<br>#</p>
+<h4 id="输出样例-2："><a href="#输出样例-2：" class="headerlink" title="输出样例 2："></a>输出样例 2：</h4><p>Wrong password: coolman@gplt<br>Wrong password: coollady@gplt<br>Welcome in</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>三个注意点:</p>
+<p>注意点1: 用getline时, 之前读过一行, 还会留下一个换行符没读, 因此只会打印出一个空行, 第二行的字符串不会被读取到。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> ans; <span class="keyword">int</span> N;</span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; ans &gt;&gt; N;</span><br><span class="line">getline(<span class="built_in">cin</span>, s);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">./a.out</span><br><span class="line">aabbc 5</span><br><span class="line">dsdsd</span><br></pre></td></tr></table></figure>
+<p>解决方法是, 在这种情况下, 在getline()之前加一个getchar()</p>
+<p>注意点2: 想清楚操作执行的顺序</p>
+<blockquote>
+<ul>
+<li>读取输入</li>
+<li>检查输入是不是#</li>
+<li>读取次数+1</li>
+<li>正确且不超过N, welcome结束</li>
+<li>不正确且不超过N, wrong, 如果这是最后一次机会, 不等下次locked结束</li>
+</ul>
+</blockquote>
+<p>注意点3:如果密码错误且到达了错误次数, 是先输出wrong再输入locked</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> ans; <span class="keyword">int</span> N;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; ans &gt;&gt; N;</span><br><span class="line">  getchar();</span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    getline(<span class="built_in">cin</span>, s);</span><br><span class="line">    cnt++;</span><br><span class="line">    <span class="keyword">if</span> (s == <span class="string">"#"</span>) <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">if</span> (s == ans &amp;&amp; cnt &lt;= N) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Welcome in"</span> &lt;&lt; <span class="built_in">endl</span>; <span class="keyword">break</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s != ans &amp;&amp; cnt &lt;= N) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Wrong password: "</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      <span class="keyword">if</span> (cnt == N) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Account locked"</span> &lt;&lt; <span class="built_in">endl</span>; <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/11/20180811/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/11/20180811/" itemprop="url">1054. 求平均值(20) - PAT乙级 Java版</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-11T21:32:03+08:00">
+                2018-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1054-求平均值（20-point-s-）"><a href="#1054-求平均值（20-point-s-）" class="headerlink" title="1054 求平均值（20 point(s)）"></a>1054 求平均值（20 point(s)）</h3><p>本题的基本要求非常简单：给定 N 个实数，计算它们的平均值。但复杂的是有些输入数据可能是非法的。一个“合法”的输入是 [−1000,1000] 区间内的实数，并且最多精确到小数点后 2 位。当你计算平均值的时候，不能把那些非法的数据算在内。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出正整数 N（≤100）。随后一行给出 N 个实数，数字间以一个空格分隔。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对每个非法输入，在一行中输出 ERROR: X is not a legal number，其中 X 是输入。最后在一行中输出结果：The average of K numbers is Y，其中 K 是合法输入的个数，Y 是它们的平均值，精确到小数点后 2 位。如果平均值无法计算，则用 Undefined 替换 Y。如果 K 为 1，则输出 The average of 1 number is Y。</p>
+<h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例 1："></a>输入样例 1：</h4><p>7<br>5 -3.2 aaa 9999 2.3.4 7.123 2.35</p>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例 1："></a>输出样例 1：</h4><p>ERROR: aaa is not a legal number<br>ERROR: 9999 is not a legal number<br>ERROR: 2.3.4 is not a legal number<br>ERROR: 7.123 is not a legal number<br>The average of 3 numbers is 1.38</p>
+<h4 id="输入样例-2："><a href="#输入样例-2：" class="headerlink" title="输入样例 2："></a>输入样例 2：</h4><p>2<br>aaa -9999</p>
+<h4 id="输出样例-2："><a href="#输出样例-2：" class="headerlink" title="输出样例 2："></a>输出样例 2：</h4><p>ERROR: aaa is not a legal number<br>ERROR: -9999 is not a legal number<br>The average of 0 numbers is Undefined</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>用Java抛出异常机制做, try {..} catch {…},try的内部可以修改变量, 可以手动抛出错误</p>
+<p>注意case2: number数量为1的时候<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Scanner in = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> T = in.nextInt();</span><br><span class="line">    <span class="keyword">double</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; T; i++) &#123;</span><br><span class="line">      <span class="keyword">double</span> x = <span class="number">0</span>;</span><br><span class="line">      String s = <span class="keyword">null</span>;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        s = in.next();</span><br><span class="line">        x = Double.parseDouble(s);</span><br><span class="line">        <span class="keyword">double</span> temp = Double.parseDouble(String.format(<span class="string">"%.2f"</span>, x));</span><br><span class="line">        <span class="keyword">if</span> (x &lt; -<span class="number">1000</span> || x &gt; <span class="number">1000</span> || Math.abs(temp - x) &gt;= <span class="number">0.001</span>) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> NumberFormatException();    <span class="comment">// 要加括号</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        sum += x;</span><br><span class="line">        cnt++;</span><br><span class="line">      &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</span><br><span class="line">        System.out.println(<span class="string">"ERROR: "</span> + s + <span class="string">" is not a legal number"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    in.close();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cnt == <span class="number">0</span>) &#123;</span><br><span class="line">      System.out.println(<span class="string">"The average of 0 numbers is Undefined"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cnt == <span class="number">1</span>) &#123;</span><br><span class="line">      System.out.printf(<span class="string">"The average of 1 number is %.2f\n"</span>, sum);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      System.out.printf(<span class="string">"The average of %d numbers is %.2f\n"</span>, cnt, sum / cnt);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/10/20180810-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/10/20180810-02/" itemprop="url">Queue链表实现的注意点</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T01:37:56+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Queue的链表实现"><a href="#Queue的链表实现" class="headerlink" title="Queue的链表实现"></a>Queue<item>的链表实现</item></h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 队列的链表实现</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.NoSuchElementException;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Queue</span>&lt;<span class="title">Item</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Node first;</span><br><span class="line">  <span class="keyword">private</span> Node last;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> N = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    Item item;</span><br><span class="line">    Node next;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> first == <span class="keyword">null</span>;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span>     <span class="title">size</span><span class="params">()</span>    </span>&#123; <span class="keyword">return</span> N; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Item e)</span> </span>&#123;   <span class="comment">// 在尾部添加元素O(1)</span></span><br><span class="line">    Node oldLast = last;</span><br><span class="line">    last = <span class="keyword">new</span> Node();</span><br><span class="line">    last.item = e;</span><br><span class="line">    last.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) first = last;          <span class="comment">// 别忘, 如果为first = null, first指向last引用</span></span><br><span class="line">    <span class="keyword">else</span>           oldLast.next = last;   <span class="comment">// 别忘, 新结点的上一个结点与新结点的链</span></span><br><span class="line">    ++N;                                  <span class="comment">// 别忘, 改变计数</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Item <span class="title">dequeue</span><span class="params">()</span> </span>&#123;        <span class="comment">// 在头部删除</span></span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException(<span class="string">"Queue underflow"</span>);</span><br><span class="line">    Item e = first.item;</span><br><span class="line">    first = first.next;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) last = <span class="keyword">null</span>;          <span class="comment">// 别忘, 删除后链表空, first=first.next=null, last=null;</span></span><br><span class="line">    <span class="comment">// 如果删除之前只有一个结点, 删除之后链表空了</span></span><br><span class="line">    --N;                                 <span class="comment">// 别忘, 改变计数</span></span><br><span class="line">    <span class="keyword">return</span> e;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Queue链表实现的注意点"><a href="#Queue链表实现的注意点" class="headerlink" title="Queue链表实现的注意点"></a>Queue链表实现的注意点</h2><p><span style="color:red"> 注意如下几个: </span><br>enqueue尾部插入</p>
+<blockquote>
+<ul>
+<li>1, 旧尾结点用一个Node保存, last指向新的引用</li>
+<li>2, last结点指向下一个null结点</li>
+<li>3, 判空，if (first == null) first = last;</li>
+<li>4, 非空, 上旧尾结点与新尾结点链接</li>
+</ul>
+</blockquote>
+<p>dequeue头部删除</p>
+<blockquote>
+<ul>
+<li>1, 判空, 抛出异常</li>
+<li>2, 保留返回值, first = first.next;删除结点</li>
+<li>3, 判空, last = null; 若删除前只剩一个结点, first.next为空, </li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/10/20180810/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1008,531 +1543,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1027/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/02/PAT-basic-1027/" itemprop="url">1027. 打印沙漏(20)-PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:14:01+08:00">
-                2018-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1027-打印沙漏-20"><a href="#1027-打印沙漏-20" class="headerlink" title="1027 打印沙漏(20)"></a>1027 打印沙漏(20)</h2><p>本题要求你写个程序把给定的符号打印成沙漏的形状。例如给定17个“*”，要求按下列格式打印<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*****</span><br><span class="line"> ***</span><br><span class="line">  *</span><br><span class="line"> ***</span><br><span class="line">*****</span><br></pre></td></tr></table></figure></p>
-<p>所谓“沙漏形状”，是指每行输出奇数个符号；各行符号中心对齐；相邻两行符号数差2；符号数先从大到小顺序递减到1，再从小到大顺序递增；首尾符号数相等。</p>
-<p>给定任意N个符号，不一定能正好组成一个沙漏。要求打印出的沙漏能用掉尽可能多的符号。</p>
-<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在一行给出1个正整数N（&lt;=1000）和一个符号，中间以空格分隔。</p>
-<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>首先打印出由给定符号组成的最大的沙漏形状，最后在一行中输出剩下没用掉的符号数。</p>
-<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>19 *</p>
-<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">*****</span><br><span class="line"> ***</span><br><span class="line">  *</span><br><span class="line"> ***</span><br><span class="line">*****</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>S(a) = 1, 3, 5,  7, 9,<br>S(b) = 1, 7, 17 …<br>当n的值越过表b的某值时, 对应的星号的一种情况, 例如在[7, 17)都是不算1, 上下各两行.<br>因此只要计算前x项奇数*2+1的总和.</p>
-<p>题中n&lt;=1000,</p>
-<p>(1+n) * (n/2)/2 = 500;<br>x = 31       (实际上我的x是调试出来的 :b)</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 计算前31项奇数之和</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n; <span class="keyword">char</span> ch;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d %c"</span>, &amp;n, &amp;ch);</span><br><span class="line">  <span class="keyword">int</span> i, j = <span class="number">1</span>, sum = <span class="number">1</span>, p;</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">31</span>; i++) &#123;</span><br><span class="line">    j += <span class="number">2</span>;</span><br><span class="line">    sum += j*<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (sum &gt; n) &#123;p = n - (sum-(j*<span class="number">2</span>)); <span class="keyword">break</span>;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> line = i--;</span><br><span class="line">  <span class="comment">// 上打印line行, 下打印line-1行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = line; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; line-i; j++) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1</span>+i*<span class="number">2</span>; j++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= line; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; line-i; j++)  <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1</span>+i*<span class="number">2</span>; j++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, p);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1026/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/02/PAT-basic-1026/" itemprop="url">1026. 程序运行时间（20)-PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:13:58+08:00">
-                2018-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1026-程序运行时间-15"><a href="#1026-程序运行时间-15" class="headerlink" title="1026 程序运行时间(15)"></a>1026 程序运行时间(15)</h2><p>要获得一个C语言程序的运行时间，常用的方法是调用头文件time.h，其中提供了clock()函数，可以捕捉从程序开始运行到clock()被调用时所耗费的时间。这个时间单位是clock tick，即“时钟打点”。<br>同时还有一个常数CLK_TCK，给出了机器时钟每秒所走的时钟打点数。<br>于是为了获得一个函数f的运行时间，我们只要</p>
-<p>在调用f之前先调用clock()，获得一个时钟打点数C1；<br>在f执行完成后再调用clock()，获得另一个时钟打点数C2；<br>两次获得的时钟打点数之差(C2-C1)就是f运行所消耗的时钟打点数，<br>再除以常数CLK_TCK，就得到了以秒为单位的运行时间。</p>
-<p>这里不妨简单假设常数CLK_TCK为100。现给定被测函数前后两次获得的时钟打点数，请你给出被测函数运行的时间。</p>
-<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在一行中顺序给出2个整数C1和C2。注意两次获得的时钟打点数肯定不相同，即C1 &lt; C2，并且取值在[0, 10^7^]。</p>
-<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中输出被测函数运行的时间。运行时间必须按照“hh:mm:ss”（即2位的“时:分:秒”）格式输出；不足1秒的时间四舍五入到秒。</p>
-<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>123 4577973</p>
-<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>12:42:59</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>时分秒转换问题</p>
-<p>根据打点数之差, CLK得到秒, 将秒转化为hh:mm:ss, 三次除以60(错误)<br>case 1通不过.</p>
-<p>清晰的思路: 计算得到总共多少秒, hh:总秒数/3600取整, mm:剩余秒数/60取整, ss:剩余秒数四舍五入</p>
-<p><span style="color:red">这种看似简单的题目, 一旦出现没有预计到的问题, 容易东拼西凑的去完成.<br>因此刷题的时候还是先想清楚算法思路, 再开始动手, 更重要的是要注重数据结构, 别一味的铺张代码</span></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">double</span> c1, c2;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lf %lf"</span>, &amp;c1, &amp;c2);</span><br><span class="line">  <span class="keyword">double</span> c = (c2-c1) / <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> h, m, s;</span><br><span class="line">  h = c/<span class="number">3600</span>;</span><br><span class="line">  c = c-h*<span class="number">3600</span>;</span><br><span class="line">  m = c/<span class="number">60</span>;</span><br><span class="line">  c = c-m*<span class="number">60</span>;</span><br><span class="line">  s = <span class="built_in">floor</span>(c+<span class="number">0.5</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%02d:%02d:%02d\n"</span>, h, m, s);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>也贴一下, 之前错误的版本。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">int</span> tm[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> CT = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">double</span> c1, c2;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lf %lf"</span>, &amp;c1, &amp;c2);</span><br><span class="line">  <span class="keyword">double</span> s = (c2 - c1) / CT;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">int</span> hh, mm, ss;</span><br><span class="line">  hh = s/<span class="number">3600</span>;</span><br><span class="line">  mm = (s/<span class="number">3600</span>-hh)*<span class="number">3600</span>/<span class="number">60</span>;</span><br><span class="line">  ss = <span class="built_in">floor</span>(((s/<span class="number">3600</span>-hh)*<span class="number">3600</span>/<span class="number">60</span> - mm) * <span class="number">60</span> + <span class="number">0.5</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%02d:%02d:%02d\n"</span>, hh, mm, ss);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1024/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/02/PAT-basic-1024/" itemprop="url">1024. 科学计数法（20)-PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:13:50+08:00">
-                2018-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1024-科学计数法-20-（20-point-s-）"><a href="#1024-科学计数法-20-（20-point-s-）" class="headerlink" title="1024 科学计数法 (20)（20 point(s)）"></a>1024 科学计数法 (20)（20 point(s)）</h2><p>科学计数法是科学家用来表示很大或很小的数字的一种方便的方法，其满足正则表达式[+-][1-9]”.”[0-9]+E[+-][0-9]+，即数字的整数部分只有1位，小数部分至少有1位，该数字及其指数部分的正负号即使对正数也必定明确给出。</p>
-<p>现以科学计数法的格式给出实数A，请编写程序按普通数字表示法输出A，并保证所有有效位都被保留。</p>
-<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>每个输入包含1个测试用例，即一个以科学计数法表示的实数A。该数字的存储长度不超过9999字节，且其指数的绝对值不超过9999。</p>
-<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>对每个测试用例，在一行中按普通数字表示法输出A，并保证所有有效位都被保留，包括末尾的0。</p>
-<h2 id="输入样例1："><a href="#输入样例1：" class="headerlink" title="输入样例1："></a>输入样例1：</h2><p>+1.23400E-03</p>
-<h2 id="输出样例1："><a href="#输出样例1：" class="headerlink" title="输出样例1："></a>输出样例1：</h2><p>0.00123400</p>
-<h2 id="输入样例2："><a href="#输入样例2：" class="headerlink" title="输入样例2："></a>输入样例2：</h2><p>-1.2E+10</p>
-<h2 id="输出样例2："><a href="#输出样例2：" class="headerlink" title="输出样例2："></a>输出样例2：</h2><p>-12000000000</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>(可最后用前面计算出的数值, 配合小数点拼出了一个string, 这种做法十分不满意, 需要重新做一遍)<br>第一个正负号作为输出时, +不输出, -输出负作为开头,<br>把符号和E中间的数组放入字符串<br>E后符号-, 小数点向左移动位置, 整数部分数字个数 in<br>  符号+, 小数点向右移动位置, 小数部分数字个数 fn</p>
-<p>符号后字符串转化成整数, syb_n,</p>
-<p>第二个[+-]决定, back/front, fn/in, 小数点左移/右移</p>
-<p>flag == 0:<br>-1.23E+03   fn=2, syb_n=3, 末尾添1个0<br>-1.230<br>-1.2E+10    fn=1, syb_n=10, back=syb_n-fn=9  push_back 9个0, .右移syb_n</p>
-<p>-1.234E+03  fn=3, syb_n=3，末尾添入0个0 syb_n-fn&gt;0添syb-n个0<br>-1.234</p>
-<p>flag == 1;<br>+17.56E-01  in=2, syb_n=1, 1-2+1=0 不添0, 小数点左移1位  添入几个0 syb_n-in+1 &lt;= 0 不添<br>+17.56E-02  in=2, syb_n=2, 2-2+1=0, 添1个0 小数点左移2位  front=sys_n-in+1, .左移syb_n</p>
-<p>*/</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">char</span> c;</span><br><span class="line">  c = getchar();</span><br><span class="line">  <span class="keyword">if</span> (c == <span class="string">'-'</span>) <span class="built_in">cout</span> &lt;&lt; <span class="string">"-"</span>;</span><br><span class="line">  <span class="built_in">string</span> s;     <span class="comment">// 数组和小数点部分</span></span><br><span class="line">  <span class="keyword">int</span> in = <span class="number">0</span>, fn = <span class="number">0</span>, ok = <span class="number">0</span>;   <span class="comment">// 科学计数法的整数和小数部分个数, 转换标示</span></span><br><span class="line">  <span class="keyword">while</span> ((c = getchar()) &amp;&amp; c != <span class="string">'E'</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="string">'.'</span>) &#123;ok = <span class="number">1</span>; <span class="keyword">continue</span>;&#125;</span><br><span class="line">    s.push_back(c);</span><br><span class="line">    ok ? fn++ : in++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 读第二个正负号</span></span><br><span class="line">  c = getchar();</span><br><span class="line">  <span class="keyword">int</span> flag = (c == <span class="string">'+'</span>) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// 读syb_n字符</span></span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; syb_v;</span><br><span class="line">  <span class="keyword">while</span> ((c = getchar()) &amp;&amp; (c != <span class="string">'\n'</span>) &amp;&amp; (c != <span class="string">'\r'</span>)) &#123;</span><br><span class="line">    syb_v.push_back(c - <span class="string">'0'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 计算syb_n</span></span><br><span class="line">  <span class="keyword">int</span> syb_n = <span class="number">0</span>, k = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = syb_v.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    syb_n += k * syb_v[i];</span><br><span class="line">    k *= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> front = syb_n-in+<span class="number">1</span>, back = syb_n-fn;</span><br><span class="line">  <span class="keyword">if</span> (flag == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (front &gt; <span class="number">0</span>) <span class="built_in">cout</span> &lt;&lt; <span class="string">"0."</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; front<span class="number">-1</span>; i++) <span class="built_in">cout</span> &lt;&lt; <span class="string">"0"</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (back &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">int</span> len = s.size();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i == len+back) <span class="built_in">cout</span> &lt;&lt; <span class="string">"."</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; s[i];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; s;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; back; i++) <span class="built_in">cout</span> &lt;&lt; <span class="string">"0"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1020/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/02/PAT-basic-1020/" itemprop="url">1020. 月饼 (25)-PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:01:33+08:00">
-                2018-08-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1020-月饼-25-（25-point-s-）"><a href="#1020-月饼-25-（25-point-s-）" class="headerlink" title="1020 月饼 (25)（25 point(s)）"></a>1020 月饼 (25)（25 point(s)）</h2><p>月饼是中国人在中秋佳节时吃的一种传统食品，不同地区有许多不同风味的月饼。现给定所有种类月饼的库存量、总售价、以及市场的最大需求量，请你计算可以获得的最大收益是多少。</p>
-<p>注意：销售时允许取出一部分库存。样例给出的情形是这样的：假如我们有3种月饼，其库存量分别为18、15、10万吨，总售价分别为75、72、45亿元。如果市场的最大需求量只有20万吨，那么我们最大收益策略应该是卖出全部15万吨第2种月饼、以及5万吨第3种月饼，获得 72 + 45/2 = 94.5（亿元）。</p>
-<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>每个输入包含1个测试用例。每个测试用例先给出一个不超过1000的正整数N表示月饼的种类数、以及不超过500（以万吨为单位）的正整数D表示市场最大需求量。随后一行给出N个正数表示每种月饼的库存量（以万吨为单位）；最后一行给出N个正数表示每种月饼的总售价（以亿元为单位）。数字间以空格分隔。</p>
-<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>对每组测试用例，在一行中输出最大收益，以亿元为单位并精确到小数点后2位。</p>
-<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>3 20<br>18 15 10<br>75 72 45<br>输出样例：</p>
-<p>94.50</p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>计算各种月饼每吨的售价, 优先每吨售价最高的月饼填满需求, 剩下的用售价次高的填满<br>采用优先队列, dq放每个月饼结点, 价格越高结点会被排在更前面</p>
-<p><span style="color:red">注意一下测试点3(case 3)通不过的情况, 如果都供应完了, 还没达到市场需求的情况, 按当前供应量来计算价格</span></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Cake</span> &#123;</span></span><br><span class="line">  <span class="keyword">double</span> num, tot;</span><br><span class="line">  <span class="keyword">double</span> each_d;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span> <span class="params">(<span class="keyword">const</span> Cake c1, <span class="keyword">const</span> Cake c2)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c1.each_d &lt;= c2.each_d;     <span class="comment">// 每吨的价格越高权重越高</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">vector</span>&lt;Cake&gt; cakes;</span><br><span class="line">priority_queue&lt;Cake, <span class="built_in">vector</span>&lt;Cake&gt;, cmp &gt; dq;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, D;   <span class="comment">// 种类数和市场需求</span></span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N &gt;&gt; D;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    Cake tmp_c;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; tmp_c.num;</span><br><span class="line">    cakes.push_back(tmp_c);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; cakes[i].tot;</span><br><span class="line">    cakes[i].each_d = cakes[i].tot / cakes[i].num;</span><br><span class="line">    dq.push(cakes[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">double</span> ans = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> now_d = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    <span class="comment">// debug case3: 如果都供应完了, 还没达到市场需求的情况</span></span><br><span class="line">    <span class="keyword">if</span> (dq.empty()) <span class="keyword">break</span>;</span><br><span class="line">    Cake cmax = dq.top();</span><br><span class="line">    <span class="keyword">if</span> (D - now_d &gt;= cmax.num) &#123;   <span class="comment">// 如果需求量比当前最有优价格的供货量大</span></span><br><span class="line">      now_d += cmax.num;</span><br><span class="line">      ans += cmax.each_d * cmax.num;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;    <span class="comment">// 只需要提供一部分</span></span><br><span class="line">      ans += (D - now_d) * cmax.each_d;</span><br><span class="line">      now_d = D;    <span class="comment">// 供应部分后, 满足市场需求</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    dq.pop();   <span class="comment">// 队首月饼供应完毕</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%.2lf\n"</span>, ans);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1583,7 +1593,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1596,7 +1606,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
