@@ -229,6 +229,510 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-E/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-E</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:41+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="迭代与递归"><a href="#迭代与递归" class="headerlink" title="迭代与递归"></a>迭代与递归</h1><p>分而治之：分解成子问题，递归式的求解。</p>
+<p>空间复杂度：指不包含算法的输入本身所占的空间之外，所需要的另加的用于计算所必须的空间总量。</p>
+<h1 id="减而治之"><a href="#减而治之" class="headerlink" title="减而治之"></a>减而治之</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> 合                合并</span><br><span class="line">----&gt;    问题   --------</span><br><span class="line">^      /      \        ^</span><br><span class="line">| 缩减/        \ 平凡   |</span><br><span class="line">|	   /          \       |</span><br><span class="line"> -&gt; 子问题     子问题 &lt;---</span><br><span class="line"> !     !         !    !</span><br><span class="line"> -------         ------</span><br><span class="line">   治              治</span><br></pre></td></tr></table></figure>
+<p>-—例子1—–<br><code>求n个总数之和</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// A为整数数组, n为问题规模, 返回数组中整数的总和</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">      (n &lt; <span class="number">1</span>) ?</span><br><span class="line">      <span class="number">0</span> : sum(A, n<span class="number">-1</span>) + A[n<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析:</strong></p>
+<blockquote>
+<ul>
+<li>该问题分解为一个缩减问题sum(A, n-1) 和 一个平凡问题A[n-1]</li>
+<li>最后规模小到一定程度时， 缩减问题变为 平凡问题</li>
+<li>将两个问题合并得到结果</li>
+</ul>
+</blockquote>
+<p><strong>复杂度如何？</strong></p>
+<p><code>递归跟踪(recursion trace)</code>分析 (用于简单的递归)</p>
+<ul>
+<li>检查每个<span style="color:red"><strong>递归实例</strong></span></li>
+<li>累积所需要时间（调用语句本身抹去，计入递归实例）</li>
+<li>其总和是算法执行时间<br>||          ||<br>vv          vv<br><code>线性递归</code>：得出上述递归是线性递归，复杂度渐进O(n)</li>
+</ul>
+<p><code>递推方程</code>分析 (用于复杂的递归)<br>上述例子中:<br>T(n) = T(n-1) + O(1)         // recurrence<br>T(0) = O(1)                  // base</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">T(n) - n = T(n-1) - (n-1) = T(n-2) - (n-2) ...</span><br><span class="line">         = T(2) - 2</span><br><span class="line">		 = T(1) - 1</span><br><span class="line">		 = T(0) - 0 = O(1)</span><br><span class="line"></span><br><span class="line">T(n) = O(1) + n = O(n)</span><br></pre></td></tr></table></figure>
+<p>-——例子2—————–<br><code>任给数组A[0,n), 将其前后颠倒</code>            // 更一般的子区间[lo, hi]<br><strong>统一接口</strong> : void reverse(int * A, int lo, int hi);</p>
+<p><code>递归版</code></p>
+<p>规模缩小两个单位。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 输入指向数组A的指针, A中要转置的左区间lo， A中要转置的右区间lo</span></span><br><span class="line">  <span class="comment">// 无返回值，改变指针A所指向的数组, 使其倒序</span></span><br><span class="line">  <span class="keyword">if</span> (lo &lt; hi) &#123;</span><br><span class="line">    swap(&amp;(A[lo]), &amp;(A[hi]));</span><br><span class="line">    <span class="keyword">if</span> (((hi-lo) == <span class="number">1</span>) || ((hi - lo) == <span class="number">0</span>)) <span class="keyword">return</span>;</span><br><span class="line">    reverse(A, lo + <span class="number">1</span>, hi - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析时间复杂度：</p>
+<p><code>递归跟踪(recursion trace)</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int main();</span><br><span class="line">reverse(A[n], lo, hi);</span><br><span class="line">reverse(A[n-2], lo+1, hi-1);</span><br><span class="line">reverse(A[n-4], lo+2, hi-2);</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">reverse(A[1], lo+(n-1)/2, hi+(n-1)/2);</span><br><span class="line">or</span><br><span class="line">reverse(A[0], lo + n/2, hi+ n/2);</span><br><span class="line">      (n-1)/2 , n是奇数</span><br><span class="line">     /                   </span><br><span class="line">O(1)*                    = O(n)</span><br><span class="line">     \n / 2,    n是偶数</span><br></pre></td></tr></table></figure></p>
+<p><code>递推方程</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">T(n) = T(n) + O(1);</span><br><span class="line">T(n) - n = T(n-1) - (n-1)</span><br><span class="line">T(n) - n = T(2) - 2</span><br><span class="line">         = T(0) - 0</span><br><span class="line">T(n) = T(0) + n = O(n)</span><br></pre></td></tr></table></figure></p>
+<p>&lt;span style=”color”:blue”&gt;<em>感觉不怎么正确??</em></p>
+<p>课后推敲:</p>
+<p><code>迭代原始版本</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse_iterate_original</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 迭代原始版本</span></span><br><span class="line">next:</span><br><span class="line">  <span class="keyword">if</span> (lo &lt; hi)</span><br><span class="line">  &#123;swap(&amp;A[lo], &amp;A[hi]); lo++; hi--; <span class="keyword">goto</span> next;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue"><em>使用next作为分支标记,goto跳转，真的能让代码运行，从来没用过</em></span></p>
+<p><code>迭代精简版</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse_iterate</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 迭代版本</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi) swap(&amp;A[lo++], &amp;A[hi--]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="分而治之-divide-and-conquer"><a href="#分而治之-divide-and-conquer" class="headerlink" title="分而治之(divide-and-conquer)"></a>分而治之(divide-and-conquer)</h1><p>分解为多个或两个子问题，得到解后归并。<br>-—–二分递归———-</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mid_sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 数组求和 :二分递归</span></span><br><span class="line">  <span class="keyword">if</span> (lo == hi) <span class="keyword">return</span> A[lo];</span><br><span class="line">  <span class="keyword">int</span> mid = (lo + hi) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> mid_sum(A, lo, mid) + mid_sum(A, mid + <span class="number">1</span>, hi);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><span style="color:red"><strong>注意 mid + 1</strong></span></p>
+<p>// 分析:<br>// 被分解成两个相似问题，mid_sum(n/2)<br>// 规模每次缩减一半，最后到达递归基<br>// 将多个问题结果合并</p>
+<p>分析复杂度:</p>
+<p><code>递归跟踪(几何归纳)</code></p>
+<p>以2为倍数的<strong>几何级数</strong>，总和与<strong>末项同阶</strong>。</p>
+<p><code>递推方程(代数运算)</code></p>
+<p>两个问题都是n/2<br>累加O(1)时间<br>递归基O(1)时间返回</p>
+<p>递推关系<br>T(n) = 2* T(n/2) + O(1)<br>T(1) = O(1)</p>
+<p>..<br>T(n) = O(n)</p>
+<h1 id="Max2-迭代1"><a href="#Max2-迭代1" class="headerlink" title="Max2: 迭代1"></a>Max2: 迭代1</h1><p>从数组区间A[lo, hi)中找出最大的两个整数A[x1]和A[x2]   // A[x1] &gt; A[x2]<br>比较次数要尽可能的少</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max2_three_iters</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;   <span class="comment">// 1 &lt; n = hi - lo</span></span><br><span class="line">  <span class="keyword">int</span> max1 = <span class="number">0</span>, max2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> x1, x2;</span><br><span class="line">  <span class="keyword">if</span> (hi &lt; lo) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = lo; i &lt;= hi; i++)</span><br><span class="line">    <span class="keyword">if</span> (max1 &lt; A[i]) &#123;max1 = A[i]; x1 = i;&#125;       <span class="comment">// hi-lo-1 = n-1</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (x1 != lo) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i_lo  = lo; i_lo &lt; x1; i_lo++)</span><br><span class="line">      <span class="keyword">if</span> (max2 &lt; A[i_lo]) &#123;max2 = A[i_lo]; x2 = i_lo;&#125; <span class="comment">// x1-lo-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (x1 != hi) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i_hi = x1+<span class="number">1</span>; i_hi &lt;= hi; i_hi++)</span><br><span class="line">      <span class="keyword">if</span> (max2 &lt; A[i_hi]) &#123;max2 = A[i_hi]; x2 = i_hi;&#125; <span class="comment">// hi-x1-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> max_array[<span class="number">2</span>] = &#123;max1, max2&#125;;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" A[x1] = "</span> &lt;&lt; A[x1] &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">" A[x2] = "</span> &lt;&lt; A[x2] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总共比较n-1+n-2 =2n-3 </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max2</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 遍历一次，改变指针</span></span><br><span class="line">  <span class="keyword">int</span>* x1 = &amp;lo;</span><br><span class="line">  <span class="keyword">int</span> lo_next = lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span>* x2 = &amp;lo_next;</span><br><span class="line">  <span class="keyword">if</span> (A[*x1] &lt; A[*x2]) &#123;x1 = &amp;lo_next; x2 = &amp;lo;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = lo + <span class="number">2</span>; i &lt;= hi; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[*x2] &lt; A[i]) &#123;      <span class="comment">// 索引i的对象比较小的值大</span></span><br><span class="line">      <span class="keyword">if</span> (A[*x1] &lt; A[i]) &#123;    <span class="comment">// 索引i的对象甚至超过了较大值</span></span><br><span class="line">        x2 = &amp;(*x1); x1 = &amp;i;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      *x2 = i;                <span class="comment">// x1指针指向的元素赋值成i</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" A[*x1] "</span>  &lt;&lt; A[*x1] &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">" A[*x2] "</span>  &lt;&lt; A[*x2] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最好情况: 1 + (n-2)<em>1 = n-1<br>最坏情况: 1+ (n-2) </em>2 = 2n-3</p>
+<p><code>即使在最坏情况，也更高效的改进算法</code></p>
+<blockquote>
+<ul>
+<li>分而治之</li>
+<li>实现退化情况</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">max2</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi, <span class="keyword">int</span> &amp; x1, <span class="keyword">int</span> &amp; x2)</span> </span>&#123;     <span class="comment">// [lo, hi)</span></span><br><span class="line">  <span class="keyword">if</span> (lo + <span class="number">2</span> == hi) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[lo] &lt; A[lo+<span class="number">1</span>]) &#123;</span><br><span class="line">      x1 = A[lo+<span class="number">1</span>]; x2 = A[lo];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      x2 = A[lo+<span class="number">1</span>]; x1 = A[lo];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;                         <span class="comment">// T(2) = 1</span></span><br><span class="line">  <span class="keyword">if</span> (lo + <span class="number">3</span> == hi) &#123;       <span class="comment">// lo, lo+1, lo+2, lo+3; 19, 2, 3, -1;</span></span><br><span class="line">    x1 = lo, x2 = lo+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (A[x1] &lt; A[x2]) &#123;x1 = lo+<span class="number">1</span>; x2 = lo;&#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = lo+<span class="number">2</span>; i &lt; hi+<span class="number">1</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A[i] &gt; A[x2]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[i] &gt; A[x1]) &#123;</span><br><span class="line">          <span class="keyword">int</span> tmp = x1;</span><br><span class="line">          x1 = i; x2 = tmp;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        x2 = i;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;                         <span class="comment">// T(3) &lt;= 3</span></span><br><span class="line">  <span class="keyword">int</span> mid = (lo + hi) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> x1L, x2L; max2(A, lo, mid, x1L, x2L);</span><br><span class="line">  <span class="keyword">int</span> x1R, x2R; max2(A, mid+<span class="number">1</span>, hi, x1R, x2R);</span><br><span class="line">  <span class="keyword">if</span> (A[x1L] &gt; A[x1R]) &#123;</span><br><span class="line">    x1 = x1L; x2 = (x2L &lt; x1R) ? x1R:x2L;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    x1 = x1R; x2 = (x2R &lt; x1L) ? x1L:x2R;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">// 1 + 1 = 2</span></span><br></pre></td></tr></table></figure>
+<p>最坏情况: T(n) = 2 * T(n/2) + 2 &lt;= 5n/3 -2</p>
+<p><code>递推方程推导过程:</code> ? </p>
+<p><code>最好情况复杂度:</code> ?</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>两种重要算法策略：减而治之，分而治之</p>
+<p>两种分析方法：递归跟踪和递推方程</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-C/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-C</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:22+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>渐进分析: 大O记号 </p>
+<p>好读书不求甚解。</p>
+<p>考察DSA（考察人）:</p>
+<blockquote>
+<ul>
+<li>长远</li>
+<li>主流,</li>
+</ul>
+</blockquote>
+<p>渐进分析(Asymptotic Analysis) n &gt;&gt; 2, 对于规模为n输入，算法</p>
+<ul>
+<li>需要执行的基本操作数: T(n) = ?</li>
+<li>..存储单元: S(n) = ?       // 通常不考虑？<strong>教材</strong></li>
+</ul>
+<p><strong>教材P33</strong></p>
+<blockquote>
+<ul>
+<li>空间复杂度不会超过常数规模，纵然是新开辟的，算法所需的空间总量，也不过与基本操作的次数同阶。从这个意义上，时间复杂度是空间复杂度的天然上限。</li>
+<li>但两种情况下会有意义:<ul>
+<li>对空间效率也异常在乎(时间复杂度的平凡上界难以令人满意)</li>
+<li>数据的输入规模大。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>big-O()比T(n), f(n)更简洁，但依然反应增长趋势(长远)</p>
+<blockquote>
+<ul>
+<li>常系数可忽略(主流):O(f(n)) = O(c*f(n))</li>
+<li>低次项可忽略(主流)</li>
+</ul>
+</blockquote>
+<p>O(1)<br>常数</p>
+<blockquote>
+<ul>
+<li>2 = 2013 = 2013*2013 = O(1)</li>
+<li>效率: 最高效</li>
+<li>出现的情况，需要具体分析<pre><code>不含循环，不含分支转向，一定不能有(递归)调用？
+</code></pre><strong>教材</strong></li>
+</ul>
+</blockquote>
+<p>O(logn)<br>对数</p>
+<blockquote>
+<ul>
+<li>常底数无所谓</li>
+<li>常数次幂无所谓</li>
+<li>多项式</li>
+<li>效率: 接近于常数</li>
+</ul>
+</blockquote>
+<p>O(n^c)<br>多项式</p>
+<blockquote>
+<ul>
+<li>一般 取最高次<br>线性：所有O(n)函数<br>从O(n)到O(n^2):编程习题主要覆盖范围<br>效率: 已经可令人满意。</li>
+</ul>
+</blockquote>
+<p>O(2^n)<br>指数<br>效率: 算法成本增长极快，通常不可忍受。<br>n^x-&gt;2^n, 是从有效算法到无效算法的分水岭。</p>
+<p>2-Subset<br>直觉算法：逐一枚举S的每一个子集，并统计其中元素总和<br>定理:2-Subset is NP-complete<br>意即:就目前模型而言，不存在在多项式时间内回答此问题的算法。<br>     除非，添加条件：分布规律啦, 票的总数啦，</p>
+<p>复杂度增长速度表格。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-B/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-B</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:07:54+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>功能：<br>算法:<br>规范：图灵机复位h的原因。 =&gt; 在软件中叫做接口</p>
+<p>RAM: Random Access Machine<br>共同之处：无限的空间。<br>寄存器：</p>
+<blockquote>
+<ul>
+<li>常数赋值给RAM             </li>
+<li>RAM之间直接赋值 R[i] &lt; R[j]</li>
+<li>RAM之间间接赋值 R[i] &lt;- R[R[j]]</li>
+<li>RAM+-</li>
+<li>判断0跳转      IF R[i] = 0 GOTO l</li>
+<li>判断正跳转             &gt; 0</li>
+<li>跳转</li>
+<li>停止           STOP</li>
+</ul>
+</blockquote>
+<p>概括:<br>对计算工具抽象后的简化。<br>独立于环境和平台，可评判效率。</p>
+<blockquote>
+<ul>
+<li>将执行时间，转化为操作次数。T(n) = 算法为求求解规模为n问题的，所需执行次数</li>
+<li><h1 id="这个次数是清晰的，可度量的。"><a href="#这个次数是清晰的，可度量的。" class="headerlink" title="这个次数是清晰的，可度量的。"></a>这个次数是清晰的，可度量的。</h1></li>
+</ul>
+</blockquote>
+<p>RAM实例:Floor<br>向下取整除法, 0 &lt;= c, 0 &lt; d<br>c%d = max {x | d<em>c &lt;= c}<br>    = max {x | d</em>x &lt; 1+c}</p>
+<h2 id="R-0-c-1-R-1-d"><a href="#R-0-c-1-R-1-d" class="headerlink" title="R[0] = c+1, R[1] = d"></a>R[0] = c+1, R[1] = d</h2><p>0, R[0] &lt;- c                 // int c = c;<br>1, R[1] &lt;- d                 // int d = d;<br>2, R[2] &lt;- 0                 // int x = 0;<br>3, R[3] &lt;- 1                 // int a = 1;<br>4, R[0] &lt;- R[0] + R[2]       // c++<br>6, R[0] &lt;- R[0] - R[1]       // c-=d<br>7, R[2] &lt;- R[2] + R[3]       // x++<br>8, IF R[0] &gt; 0 GOTO 4        // if c &gt; 0 goto 4<br>9, R[0] &lt;- R[2] - R[3]       // else x– and;<br>9, STOP                      // return R[0] = x</p>
+<p>src:</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/04/trip-of-game-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1755,439 +2259,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/git-push-credential/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/22/git-push-credential/" itemprop="url">Git Push免密码设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T08:02:48+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="使用-git-credentials保存验证"><a href="#使用-git-credentials保存验证" class="headerlink" title="使用.git-credentials保存验证"></a><strong>使用.git-credentials保存验证</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ touch .git-credentials</span><br><span class="line">$ emacs .git-credentials</span><br><span class="line">https://&#123;timting***&#125;:&#123;********&#125;@github.com</span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.emacs.d/</span><br><span class="line">$ git push -u origin master</span><br><span class="line">Username <span class="keyword">for</span> <span class="string">'https://github.com'</span>:   C-c C-c</span><br></pre></td></tr></table></figure>
-<p><strong>去掉{}</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ emacs ~/.git-credentials</span><br><span class="line">https://timting***:********@github.com</span><br><span class="line">$ git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ cat ~/.gitconfig</span><br><span class="line">[user]</span><br><span class="line">	email = timtingwei@hotmail.com</span><br><span class="line">	name = timtingwei</span><br><span class="line">[credential]</span><br><span class="line">	helper = store</span><br></pre></td></tr></table></figure>
-<p>现在push不再需要验证。</p>
-<p><strong>但我不希望用文件保存我的密码</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ls -ld .git-credentials</span><br><span class="line">-rw------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ sudo chmod 200 .git-credentials</span><br><span class="line">[sudo] password <span class="keyword">for</span> tim: </span><br><span class="line">tim@htwt:~$ ls -ld .git-credentials</span><br><span class="line">--w------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ git config --global credential.helper store</span><br></pre></td></tr></table></figure>
-<p>重启bash</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tim@htwt:~/.emacs.d$ git push origin master</span><br><span class="line">fatal: unable to open /home/tim/.git-credentials: Permission denied</span><br></pre></td></tr></table></figure>
-<p>=&gt; 修改权限的方法没用, 别人看不到, git也看不到。</p>
-<p>======</p>
-<h2 id="安全性存疑，因此改用设置cache"><a href="#安全性存疑，因此改用设置cache" class="headerlink" title="安全性存疑，因此改用设置cache"></a><strong>安全性存疑，因此改用设置cache</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ rm ~/.git-credentials</span><br></pre></td></tr></table></figure>
-<p>通过设置git的cache的话可以让它记住密码之后自己设置一个cache有效时间 这样也一定程度保证了一些安全性。</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper cache</span><br><span class="line">\<span class="comment"># Set git to use the credential memory cache</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper <span class="string">'cache --timeout=3600'</span></span><br><span class="line">\<span class="comment"># Set the cache to timeout after 1 hour (setting is in seconds)</span></span><br></pre></td></tr></table></figure>
-<p>======</p>
-<p>refwebsite:<br>[1], <a href="https://www.zhihu.com/question/31836445" target="_blank" rel="noopener">https://www.zhihu.com/question/31836445</a><br>[2], <a href="http://www.jianshu.com/p/f54053afecf2" target="_blank" rel="noopener">http://www.jianshu.com/p/f54053afecf2</a><br>[3], <a href="https://help.github.com/articles/caching-your-github-password-in-git/" target="_blank" rel="noopener">https://help.github.com/articles/caching-your-github-password-in-git/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/markdown-delete-line/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/22/markdown-delete-line/" itemprop="url">Markdown删除线</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T07:24:06+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>~~删除一句~~<br><del>删除一句</del></p>
-<p>~~删除<br>多行~~<br><del>删除<br>多行</del></p>
-<p>~~删除包含语法\[mituh’s notes\]\[timtingwei.github.io\]~~<br><del>删除包含语法[mituh’s notes][timtingwei.github.io]</del></p>
-<p>\====<br>不知道还有其他方法否？</p>
-<p>\====<br>refwebsite:<br><a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Markdown</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/20/install-openGL-in-ubuntu14-04/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/20/install-openGL-in-ubuntu14-04/" itemprop="url">在ubuntu14.04上建立OpenGL编译环境</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T13:58:49+08:00">
-                2017-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>学习教程<a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">LearnOpenGL-CN</a>前先配置学习环境，对照后面编译时链接的函数库，</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br></pre></td></tr></table></figure>
-<p>需要：</p>
-<blockquote>
-<ul>
-<li>GLEW</li>
-<li>GLFW/GLFW3</li>
-<li>libgl1-mesa</li>
-<li>libglu1-mesa</li>
-</ul>
-</blockquote>
-<p><code>ps: 不是完全明白这里链接库的对应关系</code></p>
-<p>==========</p>
-<p>参考:<a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">Howto_Install_OpenGL_Development_Environment</a></p>
-<p><strong>建立基本编译环境</strong><br>首先不可或缺的，就是編譯器與基本的函式庫，如果系統沒有安裝的話，請依照下面的方式安裝：<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install build-essential</span><br></pre></td></tr></table></figure></p>
-<p><strong>安裝OpenGL Library</strong><br>接下來要把我們會用到的 Library 裝上去，首先安裝 OpenGL Library<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libgl1-mesa-dev</span><br></pre></td></tr></table></figure></p>
-<p><strong>安裝OpenGL Utilities</strong><br>OpenGL Utilities 是一組建構於 OpenGL Library 之上的工具組，提供許多很方便的函式，使 OpenGL 更強大且更容易使用。 接下來我們安裝OpenGL Utilities</p>
-<blockquote>
-<p>在Linux下你需要链接libGL.so库文件，这需要添加-lGL到你的链接器设置中。如果找不到这个库你可能需要安装Mesa，NVidia或AMD的开发包，</p>
-</blockquote>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libglu1-mesa-dev</span><br></pre></td></tr></table></figure>
-<p><strong>安裝GLFW/GLFW3</strong><br>GLFW是一个专门针对OpenGL的C语言库，它提供了一些渲染物体所需的最低限度的接口。它允许用户创建OpenGL上下文，定义窗口参数以及处理用户输入，这正是我们需要的。</p>
-<p>GLFW可以从它官方网站的<a href="http://www.glfw.org/download.html" target="_blank" rel="noopener">下载页</a>上获取。</p>
-<p>参考网站<a href="https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project" target="_blank" rel="noopener">How to build &amp; install GLFW 3 and use it in a Linux project</a><br>解压后,</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install cmake</span><br><span class="line"></span><br><span class="line">$ cmake -G <span class="string">"Unix Makefiles"</span></span><br><span class="line"></span><br><span class="line">$ sudo apt-get build-dep glfw</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree</span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br><span class="line"></span><br><span class="line">Install the project...</span><br><span class="line">-- Install configuration: <span class="string">""</span></span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3native.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Config.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3ConfigVersion.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets-noconfig.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/pkgconfig/glfw3.pc</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/libglfw3.a</span><br></pre></td></tr></table></figure>
-<p><strong>从<a href="http://www.glfw.org/docs/3.0/quick.html" target="_blank" rel="noopener">测试源码网站</a>复制案例代码测试</strong><br>该案例中#include <glfw glfw3.h=""></glfw></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 -c main.cpp</span><br><span class="line"></span><br><span class="line">$ ./main.o</span><br><span class="line">bash: ./main.o: cannot execute binary file: Exec format error  &amp;lt;==执行main.o提示不是二进制可执行文件</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi</span><br><span class="line">/usr/bin/ld: //usr/<span class="built_in">local</span>/lib/libglfw3.a(vulkan.c.o): undefined reference to symbol <span class="string">'dlclose@@GLIBC_2.2.5'</span></span><br><span class="line">//lib/x86_64-linux-gnu/libdl.so.2: error adding symbols: DSO missing from <span class="built_in">command</span> line</span><br><span class="line">collect2: error: ld returned 1 <span class="built_in">exit</span> status</span><br></pre></td></tr></table></figure>
-<p>You may also need to add the linker options -ldl -lXinerama -lXcursor to get it to work correctly if you are getting undefined references to <strong>dlclose</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line"></span><br><span class="line">$ ./main.exec</span><br></pre></td></tr></table></figure>
-<p>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></p>
-<p>执行:</p>
-<p>$ ./main.exec</p>
-<p><del>*<em>安装glut\</em>*</del></p>
-<p><del>```sh<br>sudo apt-get install libglut-dev<br>```</del></p>
-<p><del>沒有libglut-dev可以改用<br>```sh<br>sudo apt-get install freeglut3-dev<br>```</del></p>
-<p><del>設定編譯參數與編譯<br>在這之前，我們需要一個測試範例，example.c</del> <a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">如下</a>：</p>
-<p><del>有了測試範例、基礎編譯環境與各個 OpenGL 相關的函式庫之後，我們所需要做的就是告訴編譯器我們有安裝 OpenGL 函式庫，編譯程式時要連結這些函式庫。</del></p>
-<p><del>gcc example.c -o example.out -lGL -lGLU -lglut<br>因為我們安裝了 OpenGL Utility Toolkit ，它是建立在 OpenGL Utilities 與 OpenGL Library 之上，因此我們可以簡單連結 OpenGL Utility Toolkit 的函式庫就可以達到我們的目地了。下面的編譯參數跟上面的是同樣效果：</del></p>
-<p><del>gcc example.c -o example.out -lglut<br>下面簡單說明一下所使用的 gcc 參數</del></p>
-<p><del>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></del></p>
-<p><del>執行<br>接下來我們就可以來看看我們的結果，如果看到右圖，代表成功了!~<br>./example.out</del></p>
-<p><strong>编译和链接GLEW</strong></p>
-<p>对于用GCC编译的Linux用户建议使用这个命令行选项-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi。没有正确链接相应的库会产生 undefined reference(未定义的引用) 这个错误。</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get build-dep glew</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
-<p>==========</p>
-<p><strong>测试教程中的案例代码</strong></p>
-<p>复制 [代码hello_window.cpp][<a href="https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp" target="_blank" rel="noopener">https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp</a>]<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line">$ ls</span><br><span class="line">a.out  hello_window.cpp</span><br><span class="line">$ ./a.out</span><br><span class="line">Starting GLFW context, OpenGL 3.3</span><br></pre></td></tr></table></figure></p>
-<p>看到初始化窗口，代表成功。</p>
-<p><strong>编译后窗口透明问题</strong><br>虽然窗口初始化成功, 但不知道我的窗口为什么是透明的, 难道是ubuntu的原因吗？<br>Render部分再加入两行代码<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glClearColor(<span class="number">0.2f</span>, <span class="number">0.3f</span>, <span class="number">0.3f</span>, <span class="number">1.0f</span>);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT);</span><br></pre></td></tr></table></figure></p>
-<p><strong>编译后libGLEW.so.2.1: No such file or directory 问题</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">..</span><br><span class="line">$ ./a.out</span><br><span class="line">./a.out: error <span class="keyword">while</span> loading shared libraries: libGLEW.so.2.1: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
-<p>查询<a href="https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew" target="_blank" rel="noopener">stackoverflow libGLEW相关问题</a><br>得到libGLEW在lib64下, 于是便创建软link<br>$ sudo ln -s /usr/lib64/libGLEW.so.2.1 /usr/lib/libGLEW.so.2.1</p>
-<p>==========</p>
-<p>refwebsite:<br><a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/</a><br><a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment</a><br><a href="https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project" target="_blank" rel="noopener">https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project</a><br><a href="http://www.glfw.org/docs/3.0/quick.html" target="_blank" rel="noopener">http://www.glfw.org/docs/3.0/quick.html</a><br><a href="https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew" target="_blank" rel="noopener">https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew</a><br><a href="http://www.glfw.org/download.html" target="_blank" rel="noopener">http://www.glfw.org/download.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2238,7 +2309,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">78</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2251,7 +2322,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
