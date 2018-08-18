@@ -3,11 +3,181 @@
   
     
     <entry>
-      <title></title>
+      <title><![CDATA[1041 考试座位号(15) - PAT乙级]]></title>
+      <url>/2018/08/18/20180818-06/</url>
+      <content type="html"><![CDATA[<h3 id="1041-考试座位号（15-point-s-）"><a href="#1041-考试座位号（15-point-s-）" class="headerlink" title="1041 考试座位号（15 point(s)）"></a>1041 考试座位号（15 point(s)）</h3><p>每个 PAT 考生在参加考试时都会被分配两个座位号，一个是试机座位，一个是考试座位。正常情况下，考生在入场时先得到试机座位号码，入座进入试机状态后，系统会显示该考生的考试座位号码，考试时考生需要换到考试座位就座。但有些考生迟到了，试机已经结束，他们只能拿着领到的试机座位号码求助于你，从后台查出他们的考试座位号码。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出一个正整数 N（≤1000），随后 N 行，每行给出一个考生的信息：准考证号 试机座位号 考试座位号。其中准考证号由 14 位数字组成，座位从 1 到 N 编号。输入保证每个人的准考证号都不同，并且任何时候都不会把两个人分配到同一个座位上。</p>
+<p>考生信息之后，给出一个正整数 M（≤N），随后一行中给出 M 个待查询的试机座位号码，以空格分隔。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对应每个需要查询的试机座位号码，在一行中输出对应考生的准考证号和考试座位号码，中间用 1 个空格分隔。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>4<br>10120150912233 2 4<br>10120150912119 4 1<br>10120150912126 1 3<br>10120150912002 3 2<br>2<br>3 4</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>10120150912002 2<br>10120150912119 1</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>将一个考生的三个数据信息存储在一个Node结构中, 以机考座位号建立哈希表, 查找时可通过该表O(1)时间内找到对应Node, 输入该Node信息.</p>
+<p>bug:<br><code>主要struct花括号后的;</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="built_in">string</span> id;</span><br><span class="line">  <span class="keyword">int</span> ji;</span><br><span class="line">  <span class="keyword">int</span> kao;</span><br><span class="line">&#125;;  <span class="comment">// bug</span></span><br><span class="line"></span><br><span class="line">Node a[<span class="number">2000</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="built_in">memset</span>(a, <span class="number">0</span>, <span class="keyword">sizeof</span>(a));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    Node node;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; node.id &gt;&gt; node.ji &gt;&gt; node.kao;</span><br><span class="line">    a[node.ji] = node;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> M; <span class="built_in">cin</span> &gt;&gt; M;</span><br><span class="line">  <span class="keyword">while</span> (M--) &#123;</span><br><span class="line">    <span class="keyword">int</span> ji; <span class="built_in">cin</span> &gt;&gt; ji;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; a[ji].id &lt;&lt; <span class="string">" "</span> &lt;&lt; a[ji].kao &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1036 跟奥巴马一起编程(15) - PAT乙级]]></title>
+      <url>/2018/08/18/20180818-05/</url>
+      <content type="html"><![CDATA[<h3 id="1036-跟奥巴马一起编程-15-（15-point-s-）"><a href="#1036-跟奥巴马一起编程-15-（15-point-s-）" class="headerlink" title="1036 跟奥巴马一起编程(15)（15 point(s)）"></a>1036 跟奥巴马一起编程(15)（15 point(s)）</h3><p>美国总统奥巴马不仅呼吁所有人都学习编程，甚至以身作则编写代码，成为美国历史上首位编写计算机代码的总统。2014年底，为庆祝“计算机科学教育周”正式启动，奥巴马编写了很简单的计算机代码：在屏幕上画一个正方形。现在你也跟他一起画吧！</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出正方形边长N（3&lt;=N&lt;=20）和组成正方形边的某种字符C，间隔一个空格。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>输出由给定字符C画出的正方形。但是注意到行间距比列间距大，所以为了让结果看上去更像正方形，我们输出的行数实际上是列数的50%（四舍五入取整）。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>10 a</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>aaaaaaaaaa<br>a        a<br>a        a<br>a        a<br>aaaaaaaaaa</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>可能有更简单的。。</p>
+<p>附上, <a href="https://zhuanlan.zhihu.com/p/37031514" target="_blank" rel="noopener">灵魂画手 milo yip - 如何用 C 语言画小猪佩奇</a></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="keyword">char</span> c;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d %c"</span>, &amp;N, &amp;c);</span><br><span class="line">  <span class="keyword">int</span> M = <span class="built_in">floor</span>((<span class="keyword">double</span>)N / <span class="number">2</span> + <span class="number">0.5</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, c);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M - <span class="number">2</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, c);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; N<span class="number">-1</span>; j++) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, c);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, c);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1012 数字分类 (20) - PAT乙级]]></title>
+      <url>/2018/08/18/20180818-04/</url>
+      <content type="html"><![CDATA[<h3 id="1012-数字分类-20-（20-point-s-）"><a href="#1012-数字分类-20-（20-point-s-）" class="headerlink" title="1012 数字分类 (20)（20 point(s)）"></a>1012 数字分类 (20)（20 point(s)）</h3><p>给定一系列正整数，请按要求对数字进行分类，并输出以下5个数字：</p>
+<p>A1 = 能被5整除的数字中所有偶数的和；</p>
+<p>A2 = 将被5除后余1的数字按给出顺序进行交错求和，即计算n1-n2+n3-n4…；</p>
+<p>A3 = 被5除后余2的数字的个数；</p>
+<p>A4 = 被5除后余3的数字的平均数，精确到小数点后1位；</p>
+<p>A5 = 被5除后余4的数字中最大数字。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>每个输入包含1个测试用例。每个测试用例先给出一个不超过1000的正整数N，随后给出N个不超过1000的待分类的正整数。数字间以空格分隔。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对给定的N个正整数，按题目要求计算A1~A5并在一行中顺序输出。数字间以空格分隔，但行末不得有多余空格。</p>
+<p>若其中某一类数字不存在，则在相应位置输出“N”。</p>
+<h4 id="输入样例1："><a href="#输入样例1：" class="headerlink" title="输入样例1："></a>输入样例1：</h4><p>13 1 2 3 4 5 6 7 8 9 10 20 16 18</p>
+<h4 id="输出样例1："><a href="#输出样例1：" class="headerlink" title="输出样例1："></a>输出样例1：</h4><p>30 11 2 9.7 9</p>
+<h4 id="输入样例2："><a href="#输入样例2：" class="headerlink" title="输入样例2："></a>输入样例2：</h4><p>8 1 2 4 5 6 7 9 16</p>
+<h4 id="输出样例2："><a href="#输出样例2：" class="headerlink" title="输出样例2："></a>输出样例2：</h4><p>N 11 2 N 9</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h4><p>对15天前的方式进行了改进.</p>
+<p>用exist数组解决不存在N问题, 所有答案存储在一个int数组中, 除了double以外。<br>循环5次打印, 分成存在和不存在, 存在分成保留一位小数平均数和其他整数.</p>
+<p>思路正确无坑点， 一次通过, 用hash表记得include cstring.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> exist[<span class="number">6</span>];</span><br><span class="line"><span class="keyword">int</span> ans[<span class="number">6</span>];</span><br><span class="line"><span class="keyword">double</span> ans_3;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">  <span class="built_in">memset</span>(exist, <span class="number">0</span>, <span class="keyword">sizeof</span>(exist));</span><br><span class="line">  <span class="built_in">memset</span>(ans, <span class="number">0</span>, <span class="keyword">sizeof</span>(ans));</span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>, flag = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> tmp; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;tmp);</span><br><span class="line">    <span class="keyword">if</span> (tmp % <span class="number">5</span> == <span class="number">0</span> &amp;&amp; tmp % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">      ans[<span class="number">0</span>] += tmp; exist[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (tmp % <span class="number">5</span> == <span class="number">1</span>) &#123;</span><br><span class="line">      ans[<span class="number">1</span>] += tmp * flag; exist[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">      flag *= <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (tmp % <span class="number">5</span> == <span class="number">2</span>) &#123;</span><br><span class="line">      ans[<span class="number">2</span>]++; exist[<span class="number">2</span>] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (tmp % <span class="number">5</span> == <span class="number">3</span>) &#123;</span><br><span class="line">      ans_3 += tmp; cnt++; exist[<span class="number">3</span>] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (tmp % <span class="number">5</span> == <span class="number">4</span> &amp;&amp; tmp &gt; ans[<span class="number">4</span>]) &#123;</span><br><span class="line">      ans[<span class="number">4</span>] = tmp; exist[<span class="number">4</span>] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="keyword">if</span> (exist[i]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i != <span class="number">3</span>) <span class="built_in">printf</span>(<span class="string">"%d"</span>, ans[i]);</span><br><span class="line">      <span class="keyword">else</span> <span class="built_in">printf</span>(<span class="string">"%.1f"</span>, ans_3 / cnt);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"N"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>十五天前的版本<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> MAXN = <span class="number">10000000</span>;</span><br><span class="line"><span class="keyword">int</span> a[MAXN];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n) == <span class="number">1</span> &amp;&amp; n) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;a[i]);&#125;</span><br><span class="line">    <span class="keyword">int</span> a1 = <span class="number">0</span>, a2 = <span class="number">0</span>, a3 = <span class="number">0</span>, a5 = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">double</span> a4 = <span class="number">0.0</span>;</span><br><span class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>, a2_n = <span class="number">0</span>, a4_n = <span class="number">0</span>;  <span class="comment">// A2 6 6的情况也为0</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> ((a[i] % <span class="number">5</span> == <span class="number">0</span>) &amp;&amp; (a[i] % <span class="number">2</span> == <span class="number">0</span>)) a1 += a[i];</span><br><span class="line">      <span class="keyword">if</span> (a[i] % <span class="number">5</span> == <span class="number">1</span>) &#123;</span><br><span class="line">        a2 += (flag * a[i]);</span><br><span class="line">        flag *= <span class="number">-1</span>;</span><br><span class="line">        a2_n++;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (a[i] % <span class="number">5</span> == <span class="number">2</span>) a3++;</span><br><span class="line">      <span class="keyword">if</span> (a[i] % <span class="number">5</span> == <span class="number">3</span>) &#123; a4 += a[i]; a4_n++;&#125;</span><br><span class="line">      <span class="keyword">if</span> (a[i] % <span class="number">5</span> == <span class="number">4</span> &amp;&amp; a[i] &gt; a5) a5 = a[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (a1 != <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%d"</span>, a1);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"N"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (a2_n != <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" %d"</span>, a2);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" N"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (a3 != <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" %d"</span>, a3);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" N"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (a4_n != <span class="number">0</span>) &#123;</span><br><span class="line">      a4 /= a4_n;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" %.1f"</span>, a4);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" N"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (a5 != <span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" %d"</span>, a5);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">" N"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT, 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1046 划拳(15) - PAT乙级]]></title>
+      <url>/2018/08/18/20180818-03/</url>
+      <content type="html"><![CDATA[<h3 id="1046-划拳（15-point-s-）"><a href="#1046-划拳（15-point-s-）" class="headerlink" title="1046 划拳（15 point(s)）"></a>1046 划拳（15 point(s)）</h3><p>划拳是古老中国酒文化的一个有趣的组成部分。酒桌上两人划拳的方法为：每人口中喊出一个数字，同时用手比划出一个数字。如果谁比划出的数字正好等于两人喊出的数字之和，谁就赢了，输家罚一杯酒。两人同赢或两人同输则继续下一轮，直到唯一的赢家出现。</p>
+<p>下面给出甲、乙两人的划拳记录，请你统计他们最后分别喝了多少杯酒。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行先给出一个正整数 N（≤100），随后 N 行，每行给出一轮划拳的记录，格式为：</p>
+<p>甲喊 甲划 乙喊 乙划<br>其中喊是喊出的数字，划是划出的数字，均为不超过 100 的正整数（两只手一起划）。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中先后输出甲、乙两人喝酒的杯数，其间以一个空格分隔。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>5<br>8 10 9 12<br>5 10 5 10<br>3 8 5 12<br>12 18 1 13<br>4 16 12 15</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>1 2</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>简单题目, 花费了一点时间。<br>两个坑点:<br>1, 四个变量的顺序搞错, a, jia, b, yi<br>2, 在用C写的时候, scanf(“%d %d %d %d\n”, &amp;jia, &amp;a, &amp;yi, &amp;b); 导致多读, 循环不结束.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="keyword">int</span> cnt_a = <span class="number">0</span>, cnt_b = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    <span class="keyword">int</span> a, jia, b, yi;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a &gt;&gt; jia &gt;&gt; b &gt;&gt; yi;</span><br><span class="line">    <span class="keyword">if</span> (jia == a+b &amp;&amp; yi != a+b) &#123;</span><br><span class="line">      cnt_b++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (jia != a+b &amp;&amp; yi == a+b) &#123;</span><br><span class="line">      cnt_a++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; cnt_a &lt;&lt; <span class="string">" "</span> &lt;&lt; cnt_b &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT </tag>
+            
+            <tag> 算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1080 MOOC期终成绩(25) - PAT乙级]]></title>
+      <url>/2018/08/18/20180818-02/</url>
+      <content type="html"><![CDATA[<h3 id="1080-MOOC期终成绩（25-point-s-）"><a href="#1080-MOOC期终成绩（25-point-s-）" class="headerlink" title="1080 MOOC期终成绩（25 point(s)）"></a>1080 MOOC期终成绩（25 point(s)）</h3><p>对于在中国大学MOOC（<a href="http://www.icourse163.org/" target="_blank" rel="noopener">http://www.icourse163.org/</a> ）学习“数据结构”课程的学生，想要获得一张合格证书，必须首先获得不少于200分的在线编程作业分，然后总评获得不少于60分（满分100）。总评成绩的计算公式为 G=(G​mid−term×40%+G final×60%)，如果 Gmid−term&gt;Gfinal；否则总评 G 就是 G​final。这里 Gmid−term和 Gfinal分别为学生的期中和期末成绩。</p>
+<p>现在的问题是，每次考试都产生一张独立的成绩单。本题就请你编写程序，把不同的成绩单合为一张。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在第一行给出3个整数，分别是 P（做了在线编程作业的学生数）、M（参加了期中考试的学生数）、N（参加了期末考试的学生数）。每个数都不超过10000。</p>
+<p>接下来有三块输入。第一块包含 P 个在线编程成绩 Gp<br>​​ ；第二块包含 M 个期中考试成绩 G​mid−term<br>​​ ；第三块包含 N 个期末考试成绩 G​final<br>​​ 。每个成绩占一行，格式为：学生学号 分数。其中学生学号为不超过20个字符的英文字母和数字；分数是非负整数（编程总分最高为900分，期中和期末的最高分为100分）。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>打印出获得合格证书的学生名单。每个学生占一行，格式为：</p>
+<p>学生学号 G​p G​mid−term G​final G</p>
+<p>如果有的成绩不存在（例如某人没参加期中考试），则在相应的位置输出“−1”。输出顺序为按照总评分数（四舍五入精确到整数）递减。若有并列，则按学号递增。题目保证学号没有重复，且至少存在1个合格的学生。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>6 6 7<br>01234 880<br>a1903 199<br>ydjh2 200<br>wehu8 300<br>dx86w 220<br>missing 400<br>ydhfu77 99<br>wehu8 55<br>ydjh2 98<br>dx86w 88<br>a1903 86<br>01234 39<br>ydhfu77 88<br>a1903 66<br>01234 58<br>wehu8 84<br>ydjh2 82<br>missing 99<br>dx86w 81</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>missing 400 -1 99 99<br>ydjh2 200 98 82 88<br>dx86w 220 88 81 84<br>wehu8 300 55 84 84</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>读取每个学生信息放在一个Node中, Node放入以学生姓名为键值的Map。<br>符合合格的学生一个vector容器, 容器按要求进行排序.</p>
+<p>坑点:</p>
+<blockquote>
+<ul>
+<li>将成绩初始化为-1, 用于计算时, 转换成0, 用于打印时, 转换成-1</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="built_in">string</span> id;</span><br><span class="line">  <span class="keyword">int</span> p = <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> mid = <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> final = <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> total = <span class="number">-1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">vector</span>&lt;Node&gt; v;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(Node n1, Node n2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (n1.total != n2.total) <span class="keyword">return</span> n1.total &gt; n2.total;</span><br><span class="line">  <span class="keyword">return</span> n1.id &lt;= n2.id;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> P, M, N;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; P &gt;&gt; M &gt;&gt; N;</span><br><span class="line">  <span class="built_in">map</span>&lt;<span class="built_in">string</span>, Node&gt; mp;</span><br><span class="line">  <span class="built_in">string</span> tmp_id; <span class="keyword">int</span> tmp_p, tmp_mid, tmp_final;</span><br><span class="line">  <span class="keyword">while</span> (P--) &#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; tmp_id &gt;&gt; tmp_p;</span><br><span class="line">    mp[tmp_id].id = tmp_id;</span><br><span class="line">    mp[tmp_id].p = tmp_p;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> (M--) &#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; tmp_id &gt;&gt; tmp_mid;</span><br><span class="line">    mp[tmp_id].id = tmp_id;</span><br><span class="line">    mp[tmp_id].mid = tmp_mid;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; tmp_id &gt;&gt; tmp_final;</span><br><span class="line">    mp[tmp_id].id = tmp_id;</span><br><span class="line">    mp[tmp_id].final = tmp_final;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> it = mp.begin(); it != mp.end(); it++) &#123;</span><br><span class="line">    <span class="comment">// cout &lt;&lt; it-&gt;second.id &lt;&lt; endl;</span></span><br><span class="line">    tmp_p = (it-&gt;second.p == <span class="number">-1</span>) ? <span class="number">0</span> : it-&gt;second.p;</span><br><span class="line">    tmp_mid = (it-&gt;second.mid == <span class="number">-1</span>) ? <span class="number">0</span> : it-&gt;second.mid;</span><br><span class="line">    tmp_final = (it-&gt;second.final == <span class="number">-1</span>) ? <span class="number">0</span> : it-&gt;second.final;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tmp_p &gt;= <span class="number">200</span>) &#123;</span><br><span class="line">      <span class="keyword">int</span> total = (tmp_mid &gt; tmp_final) ?</span><br><span class="line">          <span class="built_in">floor</span>((tmp_mid * <span class="number">0.4</span> + tmp_final * <span class="number">0.6</span>) + <span class="number">0.5</span>) : tmp_final;</span><br><span class="line">      it-&gt;second.total = total;</span><br><span class="line">      <span class="keyword">if</span> (it-&gt;second.mid == <span class="number">-1</span> &amp;&amp; it-&gt;second.final == <span class="number">-1</span>) it-&gt;second.total = <span class="number">-1</span>;</span><br><span class="line">      <span class="keyword">if</span> (total &gt;= <span class="number">60</span>) &#123;</span><br><span class="line">        v.push_back(it-&gt;second);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  sort(v.begin(), v.end(), cmp);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size(); i++) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; v[i].id &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].p &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].mid</span><br><span class="line">         &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].final &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].total &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 排序 </tag>
+            
+            <tag> map </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1045 快速排序(25) - PAT乙级]]></title>
+      <url>/2018/08/18/20180818-01/</url>
+      <content type="html"><![CDATA[<h3 id="1045-快速排序（25-point-s-）"><a href="#1045-快速排序（25-point-s-）" class="headerlink" title="1045 快速排序（25 point(s)）"></a>1045 快速排序（25 point(s)）</h3><p>著名的快速排序算法里有一个经典的划分过程：我们通常采用某种方法取一个元素作为主元，通过交换，把比主元小的元素放到它的左边，比主元大的元素放到它的右边。 给定划分后的 N 个互不相同的正整数的排列，请问有多少个元素可能是划分前选取的主元？</p>
+<p>例如给定 $N = 5$, 排列是1、3、2、4、5。则：</p>
+<p>1 的左边没有元素，右边的元素都比它大，所以它可能是主元；<br>尽管 3 的左边元素都比它小，但其右边的 2 比它小，所以它不能是主元；<br>尽管 2 的右边元素都比它大，但其左边的 3 比它大，所以它不能是主元；<br>类似原因，4 和 5 都可能是主元。<br>因此，有 3 个元素可能是主元。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在第 1 行中给出一个正整数 N（≤10^5​​); 第 2 行是空格分隔的 N 个不同的正整数，每个数不超过 10^9​​。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在第 1 行中输出有可能是主元的元素个数；在第 2 行中按递增顺序输出这些元素，其间以 1 个空格分隔，行首尾不得有多余空格。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>5<br>1 3 2 4 5</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>3<br>1 4 5</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>这道题不错, 原以为很简单, 不像是25分的题目, 就开始盲目做了。<br>思路1: 用p扫描数组的同时, 用i = p-1; j =  p+1;分别向前和向后扫描, 结果5分钟写完, 1, 3超时,<br>思路2: 观察数组排序后的特性, 主元是对应i的位置两个元素相等的元素. 但还有一个条件, 比如 1 1 1, 主元应该只有1; 再例如, 6 2 4 3 1, 排序后是 1 2 3 4 6, 2不是主元, 因此除了相等外, 还需要原数列该位置的数左边均小于这个数。</p>
+<p>坑点：<br>1, 即使这样的思路下, 如果用遍历检查当前位置之前的元素 是否 均小于这个元素, 那么同样会超时, 因此只用一个max量来记录每次操作的元素是否是整个操作的最大值, 只通过max来确定条件2</p>
+<p>思路2, max代替条件2的正确代码<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, tmp;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;tmp);</span><br><span class="line">    v.push_back(tmp);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; tmp_v = v;</span><br><span class="line">  sort(v.begin(), v.end());</span><br><span class="line">  <span class="keyword">int</span> max_i = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (tmp_v[i] &gt; tmp_v[max_i]) max_i = i;</span><br><span class="line">    <span class="keyword">if</span> (tmp_v[i] == v[i] &amp;&amp; max_i == i) ans.push_back(tmp_v[i]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%lu\n"</span>, ans.size());</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ans.size(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, ans[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>另外附上思路1: 超时的代码<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, tmp;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;tmp);</span><br><span class="line">    v.push_back(tmp);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ans;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> p = <span class="number">0</span>; p &lt; N; p++) &#123;</span><br><span class="line">    <span class="keyword">int</span> i = p<span class="number">-1</span>, j = p+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &gt;= <span class="number">0</span> &amp;&amp; v[i] &lt;= v[p]) i--;</span><br><span class="line">    <span class="keyword">while</span> (j &lt; N &amp;&amp; v[j] &gt; v[p]) j++;</span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">-1</span> &amp;&amp; j == N) &#123;</span><br><span class="line">      ans.push_back(v[p]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  sort(ans.begin(), ans.end());</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%lu\n"</span>, ans.size());</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; ans.size(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, ans[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 快速排序 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1077 互评成绩计算(20) - PAT乙级]]></title>
       <url>/2018/08/17/20180817-03/</url>
-      <content type="html"><![CDATA[<hr>
-<p>title: 1077 互评成绩计算(20) - PAT乙级<br>date: 2018-08-17 05:58:52</p>
-<h2 id="tags-PAT-算法"><a href="#tags-PAT-算法" class="headerlink" title="tags: PAT, 算法"></a>tags: PAT, 算法</h2><h3 id="1077-互评成绩计算（20-point-s-）"><a href="#1077-互评成绩计算（20-point-s-）" class="headerlink" title="1077 互评成绩计算（20 point(s)）"></a>1077 互评成绩计算（20 point(s)）</h3><p>在浙大的计算机专业课中，经常有互评分组报告这个环节。一个组上台介绍自己的工作，其他组在台下为其表现评分。最后这个组的互评成绩是这样计算的：所有其他组的评分中，去掉一个最高分和一个最低分，剩下的分数取平均分记为 G1老师给这个组的评分记为 G2。该组得分为 (G1+G2)/2，最后结果四舍五入后保留整数分。本题就要求你写个程序帮助老师计算每个组的互评成绩。</p>
+      <content type="html"><![CDATA[<h3 id="1077-互评成绩计算（20-point-s-）"><a href="#1077-互评成绩计算（20-point-s-）" class="headerlink" title="1077 互评成绩计算（20 point(s)）"></a>1077 互评成绩计算（20 point(s)）</h3><p>在浙大的计算机专业课中，经常有互评分组报告这个环节。一个组上台介绍自己的工作，其他组在台下为其表现评分。最后这个组的互评成绩是这样计算的：所有其他组的评分中，去掉一个最高分和一个最低分，剩下的分数取平均分记为 G1老师给这个组的评分记为 G2。该组得分为 (G1+G2)/2，最后结果四舍五入后保留整数分。本题就要求你写个程序帮助老师计算每个组的互评成绩。</p>
 <h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出两个正整数 N（&gt; 3）和 M，分别是分组数和满分，均不超过 100。随后 N 行，每行给出该组得到的 N 个分数（均保证为整型范围内的整数），其中第 1 个是老师给出的评分，后面 N−1 个是其他组给的评分。合法的输入应该是 [0,M] 区间内的整数，若不在合法区间内，则该分数须被忽略。题目保证老师的评分都是合法的，并且每个组至少会有 3 个来自同学的合法评分。</p>
 <h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>为每个组输出其最终得分。每个得分占一行。</p>
 <h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>6 50<br>42 49 49 35 38 41<br>36 51 50 28 -1 30<br>40 36 41 33 47 49<br>30 250 -25 27 45 31<br>48 0 0 50 50 1234<br>43 41 36 29 42 29</p>
@@ -17,6 +187,12 @@
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, M;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N &gt;&gt; M;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> aveg; <span class="keyword">double</span> g1, g2, tmp;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; g2;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; scores;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N<span class="number">-1</span>; j++) &#123;</span><br><span class="line">      <span class="built_in">cin</span> &gt;&gt; tmp;</span><br><span class="line">      <span class="keyword">if</span> (tmp &lt; <span class="number">0</span> || tmp &gt; M) <span class="keyword">continue</span>;</span><br><span class="line">      scores.push_back(tmp);</span><br><span class="line">    &#125;</span><br><span class="line">    sort(scores.begin(), scores.end());</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; scores.size() - <span class="number">1</span>; j++) &#123; g1 += scores[j];&#125;</span><br><span class="line">    g1 = g1/(scores.size()<span class="number">-2</span>);</span><br><span class="line">    aveg = <span class="built_in">floor</span>((g1+g2)/<span class="number">2</span> + <span class="number">0.5</span>);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; aveg &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       
+        
+        <tags>
+            
+            <tag> PAT, 算法 </tag>
+            
+        </tags>
         
     </entry>
     
@@ -1548,6 +1724,73 @@
     
     <entry>
       <title><![CDATA[建筑设备复习]]></title>
+      <url>/2018/06/26/archi-equipment/</url>
+      <content type="html"><![CDATA[<p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
+<h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>引入管, 管道系统, 给水附件, 消防设备, 升压与贮水设备, 给水局部处理设备</p>
+<h2 id="给水方式"><a href="#给水方式" class="headerlink" title="给水方式"></a>给水方式</h2><h1 id="1-3-1-给水系统-p15"><a href="#1-3-1-给水系统-p15" class="headerlink" title="1.3.1 给水系统 p15"></a>1.3.1 给水系统 p15</h1><h2 id="高层建筑给水系统为什么用竖向分区供水"><a href="#高层建筑给水系统为什么用竖向分区供水" class="headerlink" title="高层建筑给水系统为什么用竖向分区供水?"></a>高层建筑给水系统为什么用竖向分区供水?</h2><p>高层建筑用水标准较高, 使用人数较多, 建筑高度大, 功能复杂, 对防震, 防沉降, 防渗漏等要求高。<br>高层建筑若采用同一给水系统供水, 则垂直方向管线过长, 下层管道中的净水压力过大,<br>必然会增大压力损失, 使管道(附近)易漏水, 启用龙头和阀门易产生水锤和噪声, 影响高层供水的安全可靠性, 因此采用竖向分区供水</p>
+<h2 id="a-并联方式"><a href="#a-并联方式" class="headerlink" title="a, 并联方式"></a>a, 并联方式</h2><h3 id="高位水箱并联给水方式"><a href="#高位水箱并联给水方式" class="headerlink" title="高位水箱并联给水方式"></a>高位水箱并联给水方式</h3><p>各区设置水箱, 水泵集中布置在地下层或底层<br>特点:<br>优: 各区独立运行互不干扰/ 能耗小/ 供水可靠/ 水泵集中布置便于管理<br>缺: 水泵型号较多, 投资较大/ 分区水箱占楼层使用面积大</p>
+<h3 id="分区无水箱给水方式"><a href="#分区无水箱给水方式" class="headerlink" title="分区无水箱给水方式"></a>分区无水箱给水方式</h3><p>分区设置变频调速水泵或多台并联水泵, 且集中布置在地下室或底层<br>根据各区用水量调节水泵转速 或 运行后向各区供水<br>特点:<br>优: 供水可靠性强/ 设备集中设置, 便于管理/ 无高位水箱不占上层面积<br>缺: 水泵型号多, 投资大/ 水泵控制调节复杂</p>
+<h2 id="b-串联给水方式"><a href="#b-串联给水方式" class="headerlink" title="b, 串联给水方式"></a>b, 串联给水方式</h2><p>分区设置水箱和水泵, 水泵分散布置<br>自下区水箱抽水供上区用水<br>特点:<br>优: 设备和管道较简单, 投资省, 能耗小<br>缺: 水泵设置在上层, 对防振动和噪声要求高/ 各区水箱增加结构负荷/ 上区供水受下区限制/ 供水可靠性差</p>
+<h2 id="c-减压给水方式"><a href="#c-减压给水方式" class="headerlink" title="c, 减压给水方式"></a>c, 减压给水方式</h2><p>分区设置水箱/ 由设置在地下室或底层的水泵将水加压至最高层水箱/ 上层供下层用水/ 利用水箱减压<br>特点:<br>优: 水泵台数少, 设备管理维护简单<br>缺: 水泵扬程较大/ 运行费用高/ 最高层水箱容积较大, 增加了结构负荷/ 下层供水压力损耗较大, 不够节能 </p>
+<h1 id="2-2-1-自然循环热水供暖系统-p59"><a href="#2-2-1-自然循环热水供暖系统-p59" class="headerlink" title="2.2.1 自然循环热水供暖系统 p59"></a>2.2.1 自然循环热水供暖系统 p59</h1><p>原理:<br>1, 冷水管向系统内充满水<br>2, 锅炉开始加热<br>3, 当水温升高后, 堆高度开始降低, 热水沿供水管上升至散热器<br>4, 在散热器中散热后温度降低<br>5, 沿回水管流回锅炉再加热, 循环往复</p>
+<h1 id="2-2-2-机械循环热水供暖系统-p61"><a href="#2-2-2-机械循环热水供暖系统-p61" class="headerlink" title="2.2.2 机械循环热水供暖系统 p61"></a>2.2.2 机械循环热水供暖系统 p61</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>1, 因为采用循环水泵为水循环提供动力, 所以循环作用压力大</li>
+<li>2, 系统的作用半径大, 水的流速大, 管径较小, 启动容易, 供暖方式多, 应用广泛</li>
+</ul>
+<h2 id="a-机械供暖与自然供暖的区别"><a href="#a-机械供暖与自然供暖的区别" class="headerlink" title="a, 机械供暖与自然供暖的区别"></a>a, 机械供暖与自然供暖的区别</h2><h3 id="1-循环动力不同"><a href="#1-循环动力不同" class="headerlink" title="1, 循环动力不同:"></a>1, 循环动力不同:</h3><ul>
+<li>机械: 水泵; </li>
+<li>自然: 密度差 <h3 id="2-膨胀水箱的连接点和作用不同"><a href="#2-膨胀水箱的连接点和作用不同" class="headerlink" title="2, 膨胀水箱的连接点和作用不同"></a>2, 膨胀水箱的连接点和作用不同</h3></li>
+<li>机械: 循环水泵入口前的回水管, 作用在于吸收和补充膨胀与收缩的水量, 排气以及起到定压的作用</li>
+<li>自然: 供水立管的最高点, 作用在于吸收系统中热水膨胀体积, 补充水量不足和排气<h3 id="3-排气途径不同"><a href="#3-排气途径不同" class="headerlink" title="3, 排气途径不同"></a>3, 排气途径不同</h3></li>
+<li>机械: 随着水流一起流动</li>
+<li>自然: 逆着水流方向浮升</li>
+</ul>
+<h2 id="b-机械供暖的主要方式-需要仔细看看"><a href="#b-机械供暖的主要方式-需要仔细看看" class="headerlink" title="b, 机械供暖的主要方式(需要仔细看看)"></a>b, 机械供暖的主要方式(需要仔细看看)</h2><h3 id="垂直式"><a href="#垂直式" class="headerlink" title="垂直式"></a>垂直式</h3><p>上供下回<br>下供下回<br>中供式<br>下供上回</p>
+<h3 id="水平式"><a href="#水平式" class="headerlink" title="水平式"></a>水平式</h3><p>水平单管顺流式,<br>单管跨越式</p>
+<h3 id="水平式优点"><a href="#水平式优点" class="headerlink" title="水平式优点"></a>水平式优点</h3><ul>
+<li>1, 安装简单, 穿楼板的立管少, 可逐层安装供暖系统</li>
+<li>2, 顶层不需专设膨胀水箱, 可利用楼梯间.厕所设置, 造价比垂直式低</li>
+</ul>
+<h2 id="水平式问题"><a href="#水平式问题" class="headerlink" title="水平式问题"></a>水平式问题</h2><ul>
+<li>1, 排气, 必须安装气阀</li>
+</ul>
+<h2 id="c-异程式与同程式"><a href="#c-异程式与同程式" class="headerlink" title="c, 异程式与同程式"></a>c, 异程式与同程式</h2><p>异程式: 每根立管都与锅炉.供.回水管组成循环环路, 而通过各根立管的循环环路的长度都是不同的<br>同程式: 增加了回水管长度, 使各分立管的循环环路的长度相等</p>
+<h2 id="同程式优缺点"><a href="#同程式优缺点" class="headerlink" title="同程式优缺点"></a>同程式优缺点</h2><p>优: 有利于环路间的阻力平衡, 热量分配易于达到设计要求,<br>缺: 用的金属管材较多, 施工时地沟深度增加</p>
+<h1 id="3-1-3-高层建筑防火排烟-p115"><a href="#3-1-3-高层建筑防火排烟-p115" class="headerlink" title="3.1.3 高层建筑防火排烟 p115"></a>3.1.3 高层建筑防火排烟 p115</h1><h2 id="a-防火分区和防烟分区"><a href="#a-防火分区和防烟分区" class="headerlink" title="a, 防火分区和防烟分区"></a>a, 防火分区和防烟分区</h2><h3 id="1-防火分区"><a href="#1-防火分区" class="headerlink" title="(1)防火分区"></a>(1)防火分区</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义:"></a>定义:</h4><p>采用防火分隔措施划分的局部区域</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h4><ul>
+<li>1, 可有效防止火灾时火势蔓延和烟气传播</li>
+<li>2, 便于人员疏散和火灾的扑救</li>
+<li>3, 减少火灾的损失<h4 id="要求"><a href="#要求" class="headerlink" title="要求:"></a>要求:</h4></li>
+<li>1, 两个防火分区之间应水平设置 <code>防火墙``防火卷帘``防火门</code>等装置对火势进行阻隔</li>
+<li>2, 每个防火分区最大建筑面积: 一类1000m2, 二类1500m2, 地下室500m2</li>
+<li>3, 高层建筑, 设有火灾自动报警系统和自动灭火系统, 且采用不燃烧或难燃烧材料装修, 地上防火分区&lt;=4000m2, 地下部分 &lt;= 2000m2</li>
+<li>4, 高层建筑与裙房之间设有防火墙等防火分隔设施时, 裙房防火分区 &lt;= 2500m2</li>
+<li>5, 当设有自动喷水灭火系统: 最大面积增加一倍</li>
+</ul>
+<h3 id="2-防烟分区"><a href="#2-防烟分区" class="headerlink" title="(2)防烟分区"></a>(2)防烟分区</h3><h4 id="目的："><a href="#目的：" class="headerlink" title="目的："></a>目的：</h4><p>在火灾发生时候, 将烟气控制在一定范围内</p>
+<h4 id="要求-1"><a href="#要求-1" class="headerlink" title="要求:"></a>要求:</h4><ul>
+<li>1, 防烟分区不应跨越防火分区</li>
+<li>2, 每个防烟分区的建筑面积 &lt;= 500m2</li>
+<li>3, 走道, 净高不超过房间的6.0m, 采用挡烟垂璧, 隔墙突出 &gt;= 0.50的梁划分防烟分区</li>
+</ul>
+<h2 id="b-防-排烟方式"><a href="#b-防-排烟方式" class="headerlink" title="b, 防.排烟方式"></a>b, 防.排烟方式</h2><h3 id="自然排烟"><a href="#自然排烟" class="headerlink" title="自然排烟"></a>自然排烟</h3><p>优: 不需要动力/经济方便<br>缺: 易受到室外风力影响, 火势猛烈时, 火焰可能从开口部位向上蔓延</p>
+<h3 id="机械排烟"><a href="#机械排烟" class="headerlink" title="机械排烟"></a>机械排烟</h3><p>定义:使用排烟风机进行强制排烟<br>优: 不受室外风力影响, 工作可靠<br>缺: 初期投资多</p>
+<h1 id="3-2-4-空气处理设别-p125"><a href="#3-2-4-空气处理设别-p125" class="headerlink" title="3.2.4 空气处理设别 p125"></a>3.2.4 空气处理设别 p125</h1><h2 id="a-空气净化-加热-冷却-加湿-除湿"><a href="#a-空气净化-加热-冷却-加湿-除湿" class="headerlink" title="a, 空气净化, 加热, 冷却, 加湿, 除湿"></a>a, 空气净化, 加热, 冷却, 加湿, 除湿</h2><h2 id="b-装配式空调机组"><a href="#b-装配式空调机组" class="headerlink" title="b, 装配式空调机组"></a>b, 装配式空调机组</h2><h2 id="c-空调制冷设备"><a href="#c-空调制冷设备" class="headerlink" title="c, 空调制冷设备"></a>c, 空调制冷设备</h2><h1 id="4-1-2-建筑电气系统的分类-p144"><a href="#4-1-2-建筑电气系统的分类-p144" class="headerlink" title="4.1.2 建筑电气系统的分类 p144"></a>4.1.2 建筑电气系统的分类 p144</h1><p>组成: 建筑电气系统一般由 用电设备/供配电线路/ 控制和保护装置<br>分类:<br>根据 -&gt; 电能的产生, 分配, 传输和消耗使用,      类 -&gt; 供配电系统/用电系统<br>根据 -&gt; 用电设备的特点和系统中所传递能量的类型, 类 -&gt; 建筑照明系统/建筑动力系统/建筑弱电系统</p>
+<h2 id="a-建筑的供配电系统"><a href="#a-建筑的供配电系统" class="headerlink" title="a, 建筑的供配电系统"></a>a, 建筑的供配电系统</h2><h3 id="电能产生-输送和分配"><a href="#电能产生-输送和分配" class="headerlink" title="电能产生, 输送和分配"></a>电能产生, 输送和分配</h3><h3 id="电路系统的电压和频率"><a href="#电路系统的电压和频率" class="headerlink" title="电路系统的电压和频率"></a>电路系统的电压和频率</h3><h3 id="民用建筑供电系统"><a href="#民用建筑供电系统" class="headerlink" title="民用建筑供电系统"></a>民用建筑供电系统</h3><h3 id="电力负荷的分类"><a href="#电力负荷的分类" class="headerlink" title="电力负荷的分类"></a>电力负荷的分类</h3><h2 id="b-电气照明系统"><a href="#b-电气照明系统" class="headerlink" title="b, 电气照明系统"></a>b, 电气照明系统</h2><h3 id="组成-1"><a href="#组成-1" class="headerlink" title="组成"></a>组成</h3><h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3><h2 id="c-建筑动力系统"><a href="#c-建筑动力系统" class="headerlink" title="c, 建筑动力系统"></a>c, 建筑动力系统</h2><h3 id="电动机种类和应用"><a href="#电动机种类和应用" class="headerlink" title="电动机种类和应用"></a>电动机种类和应用</h3><h3 id="异步电动机的启动"><a href="#异步电动机的启动" class="headerlink" title="异步电动机的启动"></a>异步电动机的启动</h3><h3 id="异步电动机的启动方法"><a href="#异步电动机的启动方法" class="headerlink" title="异步电动机的启动方法"></a>异步电动机的启动方法</h3><h2 id="d-建筑弱点系统"><a href="#d-建筑弱点系统" class="headerlink" title="d, 建筑弱点系统"></a>d, 建筑弱点系统</h2><p>强电: 以安倍为单位<br>弱电: 以毫安为计量单位</p>
+<p>功能: 主要进行信息的传递和交换<br>主要包括: 火灾自动报警, 消防联动系统, 电话通信系统, 建筑广播, 共用电视天线, 有线电视系统, 智能化建筑综合布线和安防系统</p>
+<h1 id="4-4-2-保护接地与保护接零-p188"><a href="#4-4-2-保护接地与保护接零-p188" class="headerlink" title="4.4.2 保护接地与保护接零 p188"></a>4.4.2 保护接地与保护接零 p188</h1><p>保护接地: 电气设备的某部分(设备可导电外壳)用金属导体与大地作良好的电气连接</p>
+<p>保护接零: 电源中性点接地的系统中, 将电气设备不带电的金属部分与零线作良好的接触</p>
+<p>接地体:<br>自然接地体:<br>人工接地体:<br>接地线:<br>接地装置:</p>
+<h2 id="a-接地概述"><a href="#a-接地概述" class="headerlink" title="a, 接地概述"></a>a, 接地概述</h2><h2 id="b-接地类型"><a href="#b-接地类型" class="headerlink" title="b, 接地类型"></a>b, 接地类型</h2><h3 id="工作接地"><a href="#工作接地" class="headerlink" title="工作接地"></a>工作接地</h3><h3 id="保护接地"><a href="#保护接地" class="headerlink" title="保护接地"></a>保护接地</h3><h3 id="保护接零"><a href="#保护接零" class="headerlink" title="保护接零"></a>保护接零</h3><h2 id="c-常见保护接地方式"><a href="#c-常见保护接地方式" class="headerlink" title="c, 常见保护接地方式"></a>c, 常见保护接地方式</h2><h1 id="5-2-火灾自动报警系统-p237"><a href="#5-2-火灾自动报警系统-p237" class="headerlink" title="5.2 火灾自动报警系统 p237"></a>5.2 火灾自动报警系统 p237</h1><h2 id="自动报警系统组成"><a href="#自动报警系统组成" class="headerlink" title="自动报警系统组成"></a>自动报警系统组成</h2><p>触发器, 火灾报警装置, 消防控制设备, 电源</p>
+<h2 id="控制器工作原理"><a href="#控制器工作原理" class="headerlink" title="控制器工作原理"></a>控制器工作原理</h2><p>提供火灾探测器稳定的直流电源, 监视连接的探测器有无故障, 保证探测器长期, 稳定有效, 工作;<br>当火灾探测器探测火情后, 迅速处理, 执行控制</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[建筑设备复习]]></title>
       <url>/2018/06/26/archi-equiptment/</url>
       <content type="html"><![CDATA[<p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
 <h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
@@ -1680,73 +1923,6 @@
 <li>设有水箱的消火栓给水系统</li>
 <li>设有消防水泵和消防水箱的消火栓给水系统</li>
 </ul>
-]]></content>
-      
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[建筑设备复习]]></title>
-      <url>/2018/06/26/archi-equipment/</url>
-      <content type="html"><![CDATA[<p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
-<h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
-<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>引入管, 管道系统, 给水附件, 消防设备, 升压与贮水设备, 给水局部处理设备</p>
-<h2 id="给水方式"><a href="#给水方式" class="headerlink" title="给水方式"></a>给水方式</h2><h1 id="1-3-1-给水系统-p15"><a href="#1-3-1-给水系统-p15" class="headerlink" title="1.3.1 给水系统 p15"></a>1.3.1 给水系统 p15</h1><h2 id="高层建筑给水系统为什么用竖向分区供水"><a href="#高层建筑给水系统为什么用竖向分区供水" class="headerlink" title="高层建筑给水系统为什么用竖向分区供水?"></a>高层建筑给水系统为什么用竖向分区供水?</h2><p>高层建筑用水标准较高, 使用人数较多, 建筑高度大, 功能复杂, 对防震, 防沉降, 防渗漏等要求高。<br>高层建筑若采用同一给水系统供水, 则垂直方向管线过长, 下层管道中的净水压力过大,<br>必然会增大压力损失, 使管道(附近)易漏水, 启用龙头和阀门易产生水锤和噪声, 影响高层供水的安全可靠性, 因此采用竖向分区供水</p>
-<h2 id="a-并联方式"><a href="#a-并联方式" class="headerlink" title="a, 并联方式"></a>a, 并联方式</h2><h3 id="高位水箱并联给水方式"><a href="#高位水箱并联给水方式" class="headerlink" title="高位水箱并联给水方式"></a>高位水箱并联给水方式</h3><p>各区设置水箱, 水泵集中布置在地下层或底层<br>特点:<br>优: 各区独立运行互不干扰/ 能耗小/ 供水可靠/ 水泵集中布置便于管理<br>缺: 水泵型号较多, 投资较大/ 分区水箱占楼层使用面积大</p>
-<h3 id="分区无水箱给水方式"><a href="#分区无水箱给水方式" class="headerlink" title="分区无水箱给水方式"></a>分区无水箱给水方式</h3><p>分区设置变频调速水泵或多台并联水泵, 且集中布置在地下室或底层<br>根据各区用水量调节水泵转速 或 运行后向各区供水<br>特点:<br>优: 供水可靠性强/ 设备集中设置, 便于管理/ 无高位水箱不占上层面积<br>缺: 水泵型号多, 投资大/ 水泵控制调节复杂</p>
-<h2 id="b-串联给水方式"><a href="#b-串联给水方式" class="headerlink" title="b, 串联给水方式"></a>b, 串联给水方式</h2><p>分区设置水箱和水泵, 水泵分散布置<br>自下区水箱抽水供上区用水<br>特点:<br>优: 设备和管道较简单, 投资省, 能耗小<br>缺: 水泵设置在上层, 对防振动和噪声要求高/ 各区水箱增加结构负荷/ 上区供水受下区限制/ 供水可靠性差</p>
-<h2 id="c-减压给水方式"><a href="#c-减压给水方式" class="headerlink" title="c, 减压给水方式"></a>c, 减压给水方式</h2><p>分区设置水箱/ 由设置在地下室或底层的水泵将水加压至最高层水箱/ 上层供下层用水/ 利用水箱减压<br>特点:<br>优: 水泵台数少, 设备管理维护简单<br>缺: 水泵扬程较大/ 运行费用高/ 最高层水箱容积较大, 增加了结构负荷/ 下层供水压力损耗较大, 不够节能 </p>
-<h1 id="2-2-1-自然循环热水供暖系统-p59"><a href="#2-2-1-自然循环热水供暖系统-p59" class="headerlink" title="2.2.1 自然循环热水供暖系统 p59"></a>2.2.1 自然循环热水供暖系统 p59</h1><p>原理:<br>1, 冷水管向系统内充满水<br>2, 锅炉开始加热<br>3, 当水温升高后, 堆高度开始降低, 热水沿供水管上升至散热器<br>4, 在散热器中散热后温度降低<br>5, 沿回水管流回锅炉再加热, 循环往复</p>
-<h1 id="2-2-2-机械循环热水供暖系统-p61"><a href="#2-2-2-机械循环热水供暖系统-p61" class="headerlink" title="2.2.2 机械循环热水供暖系统 p61"></a>2.2.2 机械循环热水供暖系统 p61</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
-<li>1, 因为采用循环水泵为水循环提供动力, 所以循环作用压力大</li>
-<li>2, 系统的作用半径大, 水的流速大, 管径较小, 启动容易, 供暖方式多, 应用广泛</li>
-</ul>
-<h2 id="a-机械供暖与自然供暖的区别"><a href="#a-机械供暖与自然供暖的区别" class="headerlink" title="a, 机械供暖与自然供暖的区别"></a>a, 机械供暖与自然供暖的区别</h2><h3 id="1-循环动力不同"><a href="#1-循环动力不同" class="headerlink" title="1, 循环动力不同:"></a>1, 循环动力不同:</h3><ul>
-<li>机械: 水泵; </li>
-<li>自然: 密度差 <h3 id="2-膨胀水箱的连接点和作用不同"><a href="#2-膨胀水箱的连接点和作用不同" class="headerlink" title="2, 膨胀水箱的连接点和作用不同"></a>2, 膨胀水箱的连接点和作用不同</h3></li>
-<li>机械: 循环水泵入口前的回水管, 作用在于吸收和补充膨胀与收缩的水量, 排气以及起到定压的作用</li>
-<li>自然: 供水立管的最高点, 作用在于吸收系统中热水膨胀体积, 补充水量不足和排气<h3 id="3-排气途径不同"><a href="#3-排气途径不同" class="headerlink" title="3, 排气途径不同"></a>3, 排气途径不同</h3></li>
-<li>机械: 随着水流一起流动</li>
-<li>自然: 逆着水流方向浮升</li>
-</ul>
-<h2 id="b-机械供暖的主要方式-需要仔细看看"><a href="#b-机械供暖的主要方式-需要仔细看看" class="headerlink" title="b, 机械供暖的主要方式(需要仔细看看)"></a>b, 机械供暖的主要方式(需要仔细看看)</h2><h3 id="垂直式"><a href="#垂直式" class="headerlink" title="垂直式"></a>垂直式</h3><p>上供下回<br>下供下回<br>中供式<br>下供上回</p>
-<h3 id="水平式"><a href="#水平式" class="headerlink" title="水平式"></a>水平式</h3><p>水平单管顺流式,<br>单管跨越式</p>
-<h3 id="水平式优点"><a href="#水平式优点" class="headerlink" title="水平式优点"></a>水平式优点</h3><ul>
-<li>1, 安装简单, 穿楼板的立管少, 可逐层安装供暖系统</li>
-<li>2, 顶层不需专设膨胀水箱, 可利用楼梯间.厕所设置, 造价比垂直式低</li>
-</ul>
-<h2 id="水平式问题"><a href="#水平式问题" class="headerlink" title="水平式问题"></a>水平式问题</h2><ul>
-<li>1, 排气, 必须安装气阀</li>
-</ul>
-<h2 id="c-异程式与同程式"><a href="#c-异程式与同程式" class="headerlink" title="c, 异程式与同程式"></a>c, 异程式与同程式</h2><p>异程式: 每根立管都与锅炉.供.回水管组成循环环路, 而通过各根立管的循环环路的长度都是不同的<br>同程式: 增加了回水管长度, 使各分立管的循环环路的长度相等</p>
-<h2 id="同程式优缺点"><a href="#同程式优缺点" class="headerlink" title="同程式优缺点"></a>同程式优缺点</h2><p>优: 有利于环路间的阻力平衡, 热量分配易于达到设计要求,<br>缺: 用的金属管材较多, 施工时地沟深度增加</p>
-<h1 id="3-1-3-高层建筑防火排烟-p115"><a href="#3-1-3-高层建筑防火排烟-p115" class="headerlink" title="3.1.3 高层建筑防火排烟 p115"></a>3.1.3 高层建筑防火排烟 p115</h1><h2 id="a-防火分区和防烟分区"><a href="#a-防火分区和防烟分区" class="headerlink" title="a, 防火分区和防烟分区"></a>a, 防火分区和防烟分区</h2><h3 id="1-防火分区"><a href="#1-防火分区" class="headerlink" title="(1)防火分区"></a>(1)防火分区</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义:"></a>定义:</h4><p>采用防火分隔措施划分的局部区域</p>
-<h4 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h4><ul>
-<li>1, 可有效防止火灾时火势蔓延和烟气传播</li>
-<li>2, 便于人员疏散和火灾的扑救</li>
-<li>3, 减少火灾的损失<h4 id="要求"><a href="#要求" class="headerlink" title="要求:"></a>要求:</h4></li>
-<li>1, 两个防火分区之间应水平设置 <code>防火墙``防火卷帘``防火门</code>等装置对火势进行阻隔</li>
-<li>2, 每个防火分区最大建筑面积: 一类1000m2, 二类1500m2, 地下室500m2</li>
-<li>3, 高层建筑, 设有火灾自动报警系统和自动灭火系统, 且采用不燃烧或难燃烧材料装修, 地上防火分区&lt;=4000m2, 地下部分 &lt;= 2000m2</li>
-<li>4, 高层建筑与裙房之间设有防火墙等防火分隔设施时, 裙房防火分区 &lt;= 2500m2</li>
-<li>5, 当设有自动喷水灭火系统: 最大面积增加一倍</li>
-</ul>
-<h3 id="2-防烟分区"><a href="#2-防烟分区" class="headerlink" title="(2)防烟分区"></a>(2)防烟分区</h3><h4 id="目的："><a href="#目的：" class="headerlink" title="目的："></a>目的：</h4><p>在火灾发生时候, 将烟气控制在一定范围内</p>
-<h4 id="要求-1"><a href="#要求-1" class="headerlink" title="要求:"></a>要求:</h4><ul>
-<li>1, 防烟分区不应跨越防火分区</li>
-<li>2, 每个防烟分区的建筑面积 &lt;= 500m2</li>
-<li>3, 走道, 净高不超过房间的6.0m, 采用挡烟垂璧, 隔墙突出 &gt;= 0.50的梁划分防烟分区</li>
-</ul>
-<h2 id="b-防-排烟方式"><a href="#b-防-排烟方式" class="headerlink" title="b, 防.排烟方式"></a>b, 防.排烟方式</h2><h3 id="自然排烟"><a href="#自然排烟" class="headerlink" title="自然排烟"></a>自然排烟</h3><p>优: 不需要动力/经济方便<br>缺: 易受到室外风力影响, 火势猛烈时, 火焰可能从开口部位向上蔓延</p>
-<h3 id="机械排烟"><a href="#机械排烟" class="headerlink" title="机械排烟"></a>机械排烟</h3><p>定义:使用排烟风机进行强制排烟<br>优: 不受室外风力影响, 工作可靠<br>缺: 初期投资多</p>
-<h1 id="3-2-4-空气处理设别-p125"><a href="#3-2-4-空气处理设别-p125" class="headerlink" title="3.2.4 空气处理设别 p125"></a>3.2.4 空气处理设别 p125</h1><h2 id="a-空气净化-加热-冷却-加湿-除湿"><a href="#a-空气净化-加热-冷却-加湿-除湿" class="headerlink" title="a, 空气净化, 加热, 冷却, 加湿, 除湿"></a>a, 空气净化, 加热, 冷却, 加湿, 除湿</h2><h2 id="b-装配式空调机组"><a href="#b-装配式空调机组" class="headerlink" title="b, 装配式空调机组"></a>b, 装配式空调机组</h2><h2 id="c-空调制冷设备"><a href="#c-空调制冷设备" class="headerlink" title="c, 空调制冷设备"></a>c, 空调制冷设备</h2><h1 id="4-1-2-建筑电气系统的分类-p144"><a href="#4-1-2-建筑电气系统的分类-p144" class="headerlink" title="4.1.2 建筑电气系统的分类 p144"></a>4.1.2 建筑电气系统的分类 p144</h1><p>组成: 建筑电气系统一般由 用电设备/供配电线路/ 控制和保护装置<br>分类:<br>根据 -&gt; 电能的产生, 分配, 传输和消耗使用,      类 -&gt; 供配电系统/用电系统<br>根据 -&gt; 用电设备的特点和系统中所传递能量的类型, 类 -&gt; 建筑照明系统/建筑动力系统/建筑弱电系统</p>
-<h2 id="a-建筑的供配电系统"><a href="#a-建筑的供配电系统" class="headerlink" title="a, 建筑的供配电系统"></a>a, 建筑的供配电系统</h2><h3 id="电能产生-输送和分配"><a href="#电能产生-输送和分配" class="headerlink" title="电能产生, 输送和分配"></a>电能产生, 输送和分配</h3><h3 id="电路系统的电压和频率"><a href="#电路系统的电压和频率" class="headerlink" title="电路系统的电压和频率"></a>电路系统的电压和频率</h3><h3 id="民用建筑供电系统"><a href="#民用建筑供电系统" class="headerlink" title="民用建筑供电系统"></a>民用建筑供电系统</h3><h3 id="电力负荷的分类"><a href="#电力负荷的分类" class="headerlink" title="电力负荷的分类"></a>电力负荷的分类</h3><h2 id="b-电气照明系统"><a href="#b-电气照明系统" class="headerlink" title="b, 电气照明系统"></a>b, 电气照明系统</h2><h3 id="组成-1"><a href="#组成-1" class="headerlink" title="组成"></a>组成</h3><h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3><h2 id="c-建筑动力系统"><a href="#c-建筑动力系统" class="headerlink" title="c, 建筑动力系统"></a>c, 建筑动力系统</h2><h3 id="电动机种类和应用"><a href="#电动机种类和应用" class="headerlink" title="电动机种类和应用"></a>电动机种类和应用</h3><h3 id="异步电动机的启动"><a href="#异步电动机的启动" class="headerlink" title="异步电动机的启动"></a>异步电动机的启动</h3><h3 id="异步电动机的启动方法"><a href="#异步电动机的启动方法" class="headerlink" title="异步电动机的启动方法"></a>异步电动机的启动方法</h3><h2 id="d-建筑弱点系统"><a href="#d-建筑弱点系统" class="headerlink" title="d, 建筑弱点系统"></a>d, 建筑弱点系统</h2><p>强电: 以安倍为单位<br>弱电: 以毫安为计量单位</p>
-<p>功能: 主要进行信息的传递和交换<br>主要包括: 火灾自动报警, 消防联动系统, 电话通信系统, 建筑广播, 共用电视天线, 有线电视系统, 智能化建筑综合布线和安防系统</p>
-<h1 id="4-4-2-保护接地与保护接零-p188"><a href="#4-4-2-保护接地与保护接零-p188" class="headerlink" title="4.4.2 保护接地与保护接零 p188"></a>4.4.2 保护接地与保护接零 p188</h1><p>保护接地: 电气设备的某部分(设备可导电外壳)用金属导体与大地作良好的电气连接</p>
-<p>保护接零: 电源中性点接地的系统中, 将电气设备不带电的金属部分与零线作良好的接触</p>
-<p>接地体:<br>自然接地体:<br>人工接地体:<br>接地线:<br>接地装置:</p>
-<h2 id="a-接地概述"><a href="#a-接地概述" class="headerlink" title="a, 接地概述"></a>a, 接地概述</h2><h2 id="b-接地类型"><a href="#b-接地类型" class="headerlink" title="b, 接地类型"></a>b, 接地类型</h2><h3 id="工作接地"><a href="#工作接地" class="headerlink" title="工作接地"></a>工作接地</h3><h3 id="保护接地"><a href="#保护接地" class="headerlink" title="保护接地"></a>保护接地</h3><h3 id="保护接零"><a href="#保护接零" class="headerlink" title="保护接零"></a>保护接零</h3><h2 id="c-常见保护接地方式"><a href="#c-常见保护接地方式" class="headerlink" title="c, 常见保护接地方式"></a>c, 常见保护接地方式</h2><h1 id="5-2-火灾自动报警系统-p237"><a href="#5-2-火灾自动报警系统-p237" class="headerlink" title="5.2 火灾自动报警系统 p237"></a>5.2 火灾自动报警系统 p237</h1><h2 id="自动报警系统组成"><a href="#自动报警系统组成" class="headerlink" title="自动报警系统组成"></a>自动报警系统组成</h2><p>触发器, 火灾报警装置, 消防控制设备, 电源</p>
-<h2 id="控制器工作原理"><a href="#控制器工作原理" class="headerlink" title="控制器工作原理"></a>控制器工作原理</h2><p>提供火灾探测器稳定的直流电源, 监视连接的探测器有无故障, 保证探测器长期, 稳定有效, 工作;<br>当火灾探测器探测火情后, 迅速处理, 执行控制</p>
 ]]></content>
       
         
