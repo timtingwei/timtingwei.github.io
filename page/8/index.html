@@ -229,6 +229,955 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/cpp/cpp-notes-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/cpp/cpp-notes-01/" itemprop="url">C++ Zero To One 0.001</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T06:45:50+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>接下来, 准备archive每天实际编程中遇到的C++问题，解决问题的过程， 以及得到的结果。以此来熟悉C++的各种特性。</p>
+<p>这样做或许会造成知识点离散, 因此, 后续有必要有选择的，对某些特性进行深入剖析。先破破的来吧，以致于我不会从一个细节陷阱中出来，又陷入另一个。</p>
+<h2 id="右移，左移"><a href="#右移，左移" class="headerlink" title="右移，左移"></a>右移，左移</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">_capacity &gt;&gt;= 1;     // _capacity *= 0.5;</span><br><span class="line">_capacity &lt;&lt;= 1;     // _capacity *= 2;</span><br></pre></td></tr></table></figure>
+<h2 id="new-delete"><a href="#new-delete" class="headerlink" title="new delete"></a>new delete</h2><p>要先new一个新的, 才能delete旧的<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::shrunk() &#123;</span><br><span class="line">  <span class="keyword">if</span> (_size &gt; (_capacity/<span class="number">2</span>)) <span class="keyword">return</span>;   <span class="comment">// 规模大于1/2不必缩容</span></span><br><span class="line">  _capacity = <span class="built_in">std</span>::max(_capacity, DEAFAULT_CAPACITY);</span><br><span class="line">  <span class="comment">// 储存一份旧元素, 创建新的数据空间</span></span><br><span class="line">  T* old_elem = _elem; _elem = <span class="keyword">new</span> T[_capacity &gt;&gt;= <span class="number">1</span>];</span><br><span class="line">  <span class="keyword">for</span> (Rank r = <span class="number">0</span>; r &lt; _size; r++) &#123;</span><br><span class="line">    _elem[r] = old_elem[r];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 删除旧元素的内存空间</span></span><br><span class="line">  <span class="keyword">delete</span> [] old_elem;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>new分配空间<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">copyFrom</span><span class="params">(T* tarr, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">    _elem = <span class="keyword">new</span> T[_capacity = <span class="number">2</span>*(hi - lo)];</span><br><span class="line">    _size = hi - lo;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*tarr = "</span> &lt;&lt; tarr[<span class="number">1</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*_elem = "</span> &lt;&lt; *_elem &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// for (int i = 0; i &lt; _size; i++) &#123;*(_elem+i) = tarr[i];&#125;</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">copyFrom</span><span class="params">(T* tarr, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    _size = hi - lo;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*tarr = "</span> &lt;&lt; tarr[<span class="number">1</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*_elem = "</span> &lt;&lt; *_elem &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// for (int i = 0; i &lt; _size; i++) &#123;*(_elem+i) = tarr[i];&#125;</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>为什么一定要为_elem分配空间? 内存回收问题。 在C++ Primer中具体学习</p>
+<h2 id="同一if语句-同一行中的后置递增"><a href="#同一if语句-同一行中的后置递增" class="headerlink" title="同一if语句, 同一行中的后置递增"></a>同一if语句, 同一行中的后置递增</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"---- test in same if statement----"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">  <span class="comment">// 在同if, for, while中, 对某一变量i后置递增, i前后不变</span></span><br><span class="line">  <span class="keyword">if</span> (equal(i++, arr[i])) <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"equal\n"</span></span><br><span class="line">                                    &lt;&lt; <span class="string">"now i = "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同一if, for, while语句中, 后置递增返回当前值<br>同一行, 不同语句, 当然会让值产生变化</p>
+<h2 id="重载后置-操作符号"><a href="#重载后置-操作符号" class="headerlink" title="重载后置++操作符号"></a>重载后置++操作符号</h2><p>前置递增 operator++()<br>后置递增, 以前置递增为基础 operator++(int i)<br>increment_and_decrement_operators.cpp</p>
+<p>递增运算符重载的返回类型:<br><code>为什么返回*_elem 而不是 *this??</code><br>递减运算符重载函数的返回类型是int&amp;<br>*this的类型为Vector<int>, 而*_elem 的类型是int</int></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T&amp; Vector&lt;T&gt;::<span class="keyword">operator</span>--() &#123;          <span class="comment">// 重载前置--操作符</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++)</span><br><span class="line">    _elem[i]--;                    <span class="comment">// 对每个元素-1</span></span><br><span class="line">  <span class="keyword">return</span> *_elem;                    <span class="comment">// 返回当前 *this or *_elem</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T* Vector&lt;T&gt;::<span class="keyword">operator</span>--(<span class="keyword">int</span> i) &#123;          <span class="comment">// 重载后置--操作符</span></span><br><span class="line">  T* e = _elem;</span><br><span class="line">  --*<span class="keyword">this</span>;                         <span class="comment">// 调用前置递减</span></span><br><span class="line">  <span class="keyword">return</span> e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>&lt;&lt;C++ Primer 5th&gt;&gt; P502, P421</code></p>
+<h2 id="函数指针-和-函数对象"><a href="#函数指针-和-函数对象" class="headerlink" title="函数指针 和 函数对象"></a>函数指针 和 函数对象</h2><p>对无序向量的遍历操作中, 统一对各个元素分别实施visit操作</p>
+<p><strong>函数指针</strong>, 只读或者<span style="color:red"><strong>局部性修改</strong></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(<span class="keyword">void</span> (*visit)(T&amp;))      <span class="comment">// 函数指针</span></span><br><span class="line">  &#123;<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_elem[i]);&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>函数对象</strong>, 可<span style="color:red"><strong>全局性修改</strong></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; &lt;<span class="keyword">template</span> VST&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(VST &amp; visit) &#123;        <span class="comment">// 函数对象</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_elem[i];)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a><span style="color:red"><strong>函数指针</strong></span></h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getLarger</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; i1, <span class="keyword">const</span> <span class="keyword">int</span>&amp; i2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> i1 &lt; i2 ? i2: i1;            <span class="comment">// 返回两者较大</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="声明定义"><a href="#声明定义" class="headerlink" title="声明定义"></a>声明定义</h4><p>声明和定义分离:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> (*pf1)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;);</span><br><span class="line"></span><br><span class="line">pf1 = getLarget;</span><br><span class="line">pf1 = &amp;getLarget;       <span class="comment">// 等价,</span></span><br></pre></td></tr></table></figure></p>
+<p>个人认为&amp;表达出pf1是个指针的语义明确点。</p>
+<p>声明并定义:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> (*pf1)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;) = &amp;getLarger;</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>使用<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i_pf1 = (*pf1)(<span class="number">3</span>, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">int</span> i_pf1_2 = (pf1)(<span class="number">3</span>, <span class="number">5</span>);           <span class="comment">// 等价</span></span><br><span class="line"><span class="keyword">int</span> i_pf1_3 = getLarget(<span class="number">3</span>, <span class="number">5</span>);       <span class="comment">// 等价 调用原函数</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="赋值-指向新的函数"><a href="#赋值-指向新的函数" class="headerlink" title="赋值, 指向新的函数?"></a>赋值, 指向新的函数?</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compareInt</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; i1, <span class="keyword">const</span> <span class="keyword">int</span>&amp; i2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> i1 &lt; i2 ? <span class="literal">true</span> : <span class="literal">false</span>;      <span class="comment">// i1 &lt; i2, 返回true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明并定义</span></span><br><span class="line"><span class="keyword">bool</span> (*pf)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;) = &amp;compareInt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 赋nullptr:指针没有指向任何一个函数</span></span><br><span class="line">pf = <span class="number">0</span>;</span><br><span class="line">pf = getLarger;     <span class="comment">// error: pf已经被声明成bool(*)(const int&amp;, const int&amp;)</span></span><br><span class="line">pf = increment;     <span class="comment">// error: 同上</span></span><br></pre></td></tr></table></figure>
+<p>能重新指向一个nullptr或0, 但是不能指向一个与声明类型不同的新函数地址。</p>
+<p><code>但如果是一个类型相同的函数, 便可以重新指向该函数。</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">otherCompare</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; i1, <span class="keyword">const</span> <span class="keyword">int</span>&amp;)</span> </span>&#123;<span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br><span class="line"></span><br><span class="line">pf = otherCompare;</span><br></pre></td></tr></table></figure>
+<h4 id="重载函数的指针"><a href="#重载函数的指针" class="headerlink" title="重载函数的指针"></a>重载函数的指针</h4><p>函数指针 指向重载函数, 需要在声明时, 形参列表和返回类型需要完全匹配</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ff</span><span class="params">(<span class="keyword">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ff</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重载</span></span><br><span class="line"><span class="keyword">void</span> (*pff1)(<span class="keyword">int</span> *) = &amp;ff;      <span class="comment">// pff1指向ff的 void (int*)版本</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> (*pff2)(<span class="keyword">int</span>) = &amp;ff;        <span class="comment">// Error</span></span><br><span class="line"><span class="keyword">int</span> (*pff3)(<span class="keyword">unsigned</span>) = &amp;ff;    <span class="comment">// Error</span></span><br></pre></td></tr></table></figure>
+<h4 id="函数指针作为形参-调用函数指针"><a href="#函数指针作为形参-调用函数指针" class="headerlink" title="函数指针作为形参(调用函数指针)"></a>函数指针作为形参(调用函数指针)</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 第三个参数是函数指针类型</span></span><br><span class="line">void useBigger(const int&amp;, const int&amp;, bool (*pf)(const int&amp;, const int&amp;));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用时, 传入指向compareInt的指针</span></span><br><span class="line">useBigger(i1, i2, &amp;compareInt);</span><br></pre></td></tr></table></figure>
+<p>可以用别名的方法简化定义</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">decltype</span><span class="params">(compareInt)</span> *FuncP2</span>;    <span class="comment">// FuncP2是指向函数的指针类型</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">decltype</span><span class="params">(compareInt)</span> Func</span>;       <span class="comment">// decltype()返回函数类型, Func是函数类型</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">useBigger</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;, FuncP2)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">useBigger</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;, Func2)</span></span>;   <span class="comment">// 编译器将Func2函数类型自动转换为了函数的指针类型</span></span><br></pre></td></tr></table></figure>
+<h4 id="返回指向函数的指针"><a href="#返回指向函数的指针" class="headerlink" title="返回指向函数的指针"></a>返回指向函数的指针</h4><p>一般, 别名</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> PF = <span class="keyword">bool</span>(*)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;);      <span class="comment">// PF是函数的指针类型</span></span><br><span class="line"><span class="keyword">using</span> F = <span class="keyword">bool</span>(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;);          <span class="comment">// F是指针类型</span></span><br><span class="line"></span><br><span class="line"><span class="function">PF <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span></span>;          <span class="comment">// 返回函数的指针类型</span></span><br><span class="line"><span class="function">F *<span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span></span>;          <span class="comment">// 显式f1返回的是一个指针类型</span></span><br><span class="line"><span class="function">F <span class="title">f2</span><span class="params">(<span class="keyword">int</span>)</span></span>;           <span class="comment">// Error:F是函数类型, 无法返回一个函数</span></span><br></pre></td></tr></table></figure>
+<p>尾置<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">auto f1(int) -&gt; int(*)(int*, int)</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数对象"><a href="#函数对象" class="headerlink" title="函数对象"></a><span style="color:red"><strong>函数对象</strong></span></h3><h4 id="重载"><a href="#重载" class="headerlink" title="重载()"></a>重载()</h4><p>说明这个对象, 他可以当作函数来使用。因此需要重载”()”</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义一个函数对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span>&#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> iarr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">      sum += iarr[i];</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="使用这个函数对象"><a href="#使用这个函数对象" class="headerlink" title="使用这个函数对象"></a>使用这个函数对象</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Sum s;</span><br><span class="line"><span class="keyword">int</span> iarr[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> n = <span class="number">6</span>;</span><br><span class="line">s(iarr, n);      <span class="comment">// sum = 21</span></span><br></pre></td></tr></table></figure>
+<h4 id="作为其他函数的参数"><a href="#作为其他函数的参数" class="headerlink" title="作为其他函数的参数"></a>作为其他函数的参数</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 函数对象作为另一个函数的形参</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CLS&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(CLS &amp; c)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> iarr[] = &#123;<span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>&#125;;</span><br><span class="line">  <span class="keyword">int</span> n = <span class="number">3</span>;</span><br><span class="line">  c(iarr, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line">Sum s1;</span><br><span class="line">f(s1);       <span class="comment">// sum = 18</span></span><br></pre></td></tr></table></figure>
+<h4 id="回顾一下数据结构中的用法"><a href="#回顾一下数据结构中的用法" class="headerlink" title="回顾一下数据结构中的用法"></a>回顾一下数据结构中的用法</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(VST visit) &#123;</span><br><span class="line">  <span class="comment">// 对每个元素执行visit操作</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) &#123;visit(_elem[i]);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为什么不能用引用类型?</span></span><br><span class="line"><span class="comment">// no known conversion for argument 1 from ‘Increase&lt;int&gt;’ to ‘Increase&lt;int&gt;&amp;’</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* my error test</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void increase(Vector&lt;T&gt; V) &#123;</span></span><br><span class="line"><span class="comment">  V.traverse(Increase(T&amp; e));</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">increase</span><span class="params">(Vector&lt;T&gt; V)</span> </span>&#123;</span><br><span class="line">  V.traverse(Increase&lt;T&gt;());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为什么不用实例化, 带入参数便可直接调用??</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/02-C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/02-C/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-C</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:09:15+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="无序向量"><a href="#无序向量" class="headerlink" title="无序向量"></a>无序向量</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span> &#123;</span>&#125;;    <span class="comment">// template定义方式</span></span><br></pre></td></tr></table></figure>
+<p>模板和模板, 模板和类之间可以互相组合。意味着数据结构之间也可以互相组合</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinTree</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Tree</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ..</span></span><br><span class="line">  Vector&lt;<span class="keyword">int</span>&gt; myVector;    <span class="comment">// Right</span></span><br><span class="line"></span><br><span class="line">  Vector&lt;<span class="keyword">float</span>&gt; myfVector;</span><br><span class="line"></span><br><span class="line">  Vector&lt;BinTree&gt; binForest;       <span class="comment">// Combine with other class;</span></span><br><span class="line">  Vector&lt;Tree&lt;<span class="keyword">int</span>&gt;&gt; binForest;     <span class="comment">// Combine with template;</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>无序向量: 没有顺序, 甚至不可能排成顺序。</p>
+<h2 id="元素访问-寻秩访问"><a href="#元素访问-寻秩访问" class="headerlink" title="元素访问(寻秩访问)"></a>元素访问(寻秩访问)</h2><p>v.get(r), v.put(e)</p>
+<p>A[r]</p>
+<p>重载下标运算符”[]”<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 寻秩访问</span></span><br><span class="line"><span class="comment">/* // my test</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">T&amp; Vector&lt;T&gt;::operator[](std::size_t n) &#123;    // 这个类 Vector&lt;T&gt;</span></span><br><span class="line"><span class="comment">  assert(n &lt; _size);</span></span><br><span class="line"><span class="comment">  return _elem[n];</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T&amp; Vector&lt;T&gt;::<span class="keyword">operator</span>[](Rank r) <span class="keyword">const</span> &#123;   <span class="comment">// 不改变数据成员, 定义成常量成员函数</span></span><br><span class="line">  <span class="comment">// 在vector内部, 定义了秩的类型, 统一用Rank</span></span><br><span class="line">  assert(r &lt; _size);   <span class="comment">// 对下标秩进行溢出检测</span></span><br><span class="line">  <span class="keyword">return</span> _elem[r];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>左值, 右值, <code>引用??</code><br>引用类型可作为左值。</p>
+<p>寻秩访问</p>
+<p>代码健壮性简化</p>
+<ul>
+<li>assert 断言, <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cassert&gt;</span></span></span><br><span class="line">assert(r &lt; _size);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入</span></span><br><span class="line"><span class="comment">/* my test</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::insert(const Rank r, const int value) &#123;</span></span><br><span class="line"><span class="comment">  // 检查移动后是否需要扩容</span></span><br><span class="line"><span class="comment">  if (++_size &gt; _capacity) expand();</span></span><br><span class="line"><span class="comment">  // 将秩为r后的所有元素后移一位</span></span><br><span class="line"><span class="comment">  for (Rank i = _size-2; i &gt;= r; i--) &#123;     // 为了不覆盖数据, 从尾部开始移动</span></span><br><span class="line"><span class="comment">    _elem[i+1] = _elem[i];     // 向后移动一位</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // 在r秩位置上填入要插入的值</span></span><br><span class="line"><span class="comment">  _elem[r] = value;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::insert(<span class="keyword">const</span> Rank r, T <span class="keyword">const</span> &amp;e) &#123;</span><br><span class="line">  <span class="comment">// value不应该是某一中特点的类型, 而应该利用template的特性</span></span><br><span class="line">  assert(<span class="number">0</span>&lt;= r &amp;&amp; r &lt; _size);</span><br><span class="line">  expand();  <span class="comment">// 若有必要扩容  结合expand()中, _size &lt; _capacity的定义</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = _size; i &gt; r; i--)  <span class="comment">// 习惯把改变后的值的索引设置成i</span></span><br><span class="line">    _elem[i] = _elem[i<span class="number">-1</span>];     <span class="comment">// 后继元素顺次后移一个单元</span></span><br><span class="line">  _elem[r] = e; _size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Template中泛型T的作用,<br>模板类中函数的互相搭配,<br>插入元素对vector操作的顺序<br>对_capacity和_size的影响。</p>
+<h2 id="删除算法"><a href="#删除算法" class="headerlink" title="删除算法"></a>删除算法</h2><p>自前向后的迁移操作<br>缩容</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 删除操作</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::del(const Rank lo, const Rank hi) &#123;</span></span><br><span class="line"><span class="comment">  for (Rank i = lo; i &lt; _size; i++) &#123;</span></span><br><span class="line"><span class="comment">    // 清空区间元素</span></span><br><span class="line"><span class="comment">    if (i &lt; hi) &#123; _elem[i] = 0;</span></span><br><span class="line"><span class="comment">    &#125; else &#123;</span></span><br><span class="line"><span class="comment">      // 将元素整体前移</span></span><br><span class="line"><span class="comment">      _elem[i - (hi-lo)] = _elem[i];</span></span><br><span class="line"><span class="comment">      // 前移后元素清空</span></span><br><span class="line"><span class="comment">       _elem[i] = 0;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // 缩短规模和空间容量</span></span><br><span class="line"><span class="comment">  _size -= hi-lo; _capacity -= hi-lo;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::del(Rank lo, Rank hi) &#123;</span><br><span class="line">  <span class="comment">// 处理退化情况</span></span><br><span class="line">  <span class="keyword">if</span> (lo == hi) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span> length = hi - lo;</span><br><span class="line">  <span class="comment">// 自前向后的迁移操作</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; _size) &#123;</span><br><span class="line">    <span class="keyword">if</span> (hi &lt; _capacity) &#123;_elem[lo++] = _elem[hi++];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;_elem[lo++] = <span class="number">0</span>;&#125;   <span class="comment">// 处理hi++超出_capacityg容量的情况</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 更新规模或者缩容</span></span><br><span class="line">  _size -= length;</span><br><span class="line">  shrunk();</span><br><span class="line">  <span class="comment">// 返回被删除元素的数目</span></span><br><span class="line">  <span class="keyword">return</span> hi-lo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>1, 规模仍旧不变? 删除一段区间, 这里可以不改变规模, 相当于后面留空?</code> 改进成改变size的版本用于shrunk<br><code>2 , _elem[hi++]能够被一直索引到?</code> 超过_capacity时, 返回未定义的值<br><code>3, _elem[hi++]为什么不清空?</code>把_capacity的剩余空间对应元素赋值给它的方法清空<br><code>4, 看出移动操作过程中, 变量的同步性</code><br><code>5, 缩容不光光是改变_capacity的值, 仍旧要释放空间</code></p>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><p>无序向量： T为可判等, 重载 “==”或者”!=”<br>有序向量： T为可比较，重载 “&lt;” 或  “&gt;”</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 查找</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">int Vector&lt;T&gt;::find(Rank lo, Rank hi, T const &amp;e) const &#123;</span></span><br><span class="line"><span class="comment">  // 查找e在区间[lo,hi)内</span></span><br><span class="line"><span class="comment">  // 从右往左查找</span></span><br><span class="line"><span class="comment">  while (hi &gt;= lo) &#123;</span></span><br><span class="line"><span class="comment">    if (_elem[hi] == e) &#123;return hi;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    hi--;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // 没有在while循环中返回, 不存在匹配元素</span></span><br><span class="line"><span class="comment">  return -1;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Rank Vector&lt;T&gt;::find(Rank lo, Rank hi, T <span class="keyword">const</span> &amp;e) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="comment">// O(hi - lo) = O(n), 在命中多个元素时可返回秩最大者</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi-- &amp;&amp; e != _elem[hi]) &#123;&#125;   <span class="comment">// 逆向查找</span></span><br><span class="line">  <span class="keyword">return</span> hi;   <span class="comment">// hi &lt; lo失败; 否则hi即命中元素的秩</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>利用while本身的条件语句；后置递增的特性</code><br><code>返回hi?</code> 将判断是否成功, 交给<code>上层的调用者</code>;以及成功后被<code>上层算法</code>进一步利用</p>
+<p>最好情况 O(1), 最坏情况O(n)<br>输入敏感(input-sensitive): 最好情况和最坏情况相差悬殊的算法。</p>
+<h2 id="删除单元素"><a href="#删除单元素" class="headerlink" title="删除单元素"></a>删除单元素</h2><p><code>视为区间操作的特例</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 删除单个元素</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::remove(Rank r) &#123;</span></span><br><span class="line"><span class="comment">  // 单元素的删除操作, 视为区间操作的特例 [r, r+1)</span></span><br><span class="line"><span class="comment">  remove(r, r+1);</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;     <span class="comment">// 删除向量中秩为r的元素, 0 &lt;= r &lt; size</span></span><br><span class="line">T&amp; Vector&lt;T&gt;::remove(Rank r) &#123;  <span class="comment">// O(n-r)</span></span><br><span class="line">  T&amp; <span class="keyword">old_t</span> = _elem[r];    <span class="comment">// 备份被删除的元素</span></span><br><span class="line">  remove(r, r+<span class="number">1</span>);         <span class="comment">// 调用区间删除算法</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">old_t</span>;           <span class="comment">// 返回被删除元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>颠倒考虑</code></p>
+<p>复杂度分析:<br>每次循环的耗时正比于删除区间的后缀长度 O(n-hi)<br>循环的次数等于区间宽度 O(hi-lo)<br>总体 O(n^2) 复杂度</p>
+<p>right, but not fast!!</p>
+<h2 id="唯一化"><a href="#唯一化" class="headerlink" title="唯一化"></a>唯一化</h2><p><code>实现</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 唯一化</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::deduplicate(Rank lo, Rank hi) &#123;</span></span><br><span class="line"><span class="comment">  // 对向量中的元素遍历,</span></span><br><span class="line"><span class="comment">  for (Rank i = lo; i &lt; hi; i++) &#123;</span></span><br><span class="line"><span class="comment">    // find右往左查, 返回lo-1代表失败</span></span><br><span class="line"><span class="comment">    // 删除当前元素, 不再对后续元素查找</span></span><br><span class="line"><span class="comment">    if (find(lo, i, _elem[i]) != lo-1) &#123;remove(i); break;&#125;</span></span><br><span class="line"><span class="comment">    if (find(i+1, hi, _elem[i]) != i) &#123; remove(i);&#125;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::deduplicate() &#123;</span><br><span class="line">  <span class="keyword">int</span> old_size = _size;</span><br><span class="line">  Rank i = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; _size) &#123;</span><br><span class="line">    find(<span class="number">0</span>, i, _elem[i]) &lt; <span class="number">0</span> ?</span><br><span class="line">                             i++  <span class="comment">// 小于0说明无雷同, 继续查找</span></span><br><span class="line">                             : remove(i);    <span class="comment">// 删除雷同者(至多一个?!)</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span>  old_size - _size;      <span class="comment">// 返回规模的变化量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>记录规模?</code> 考虑返回值怎么设计，这里我估计会在更高级的接口中用到<br><code>从1开始?</code> 因为要在当前i的前缀中查找<br><code>至多一个?</code> 删除至多一个, 实际不一定至多一个<br><code>为什么不需要改变_size和_capacity大小?</code> 说明remove为更底层的操作, 在底层操作中, 定义底层的数据成员的修改, 这样做的话, 在更高级的操作中, 可以不去管这些细节。也是封装调用的好处。</p>
+<p><code>**正确性证明**</code>：<br><strong>不变性</strong>: 对于当前元素V[i]的前缀V[0, i)中, 各元素彼此互异<br>初始时, i = 1, 两个元素成立,…</p>
+<p><strong>单调性</strong>:<br>1)前缀单调非降, 后缀减少, 且前缀迟早增至_size;   // 与1)结合<br>2)后缀单调下降, _size迟早减至0;     // 2)更容易把握</p>
+<p>故算法必然终止, 至多迭代O(n)轮</p>
+<p><code>复杂度</code></p>
+<p>主要来自find() 和 remove();<br>find()从右向左针对前缀, remove()从左向右针对后缀, 因此每次while循环不超过O(n);<br>while循环会进行n次,<br>总体复杂度为 O(n^2)</p>
+<p><code>练习三种优化方案（未完成）</code></p>
+<p>1, 仿照uniquify()高效版本的思路.<br>元素移动的次数可以降至O(n), 但比较次数依然是O(n^2); 而且破坏稳定性<br>2, 先对需要删除的重复元素标记, 然后统一删除.<br>稳定性保持, 但因查找长度更长, 从而导致更多的对比操作<br>3, V.sort().uniquify(): 简明实现最优的O(nlogn)</p>
+<h2 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h2><p>visit</p>
+<p><a href="https://timtingwei.github.io/2018/01/10/cpp/cpp-notes-01/">关于函数指针和函数对象的笔记</a><br>函数指针机制 ?? </p>
+<p>函数对象机制 ??</p>
+<p>两种方法优劣</p>
+<p>实例: 将向量中所有的元素统一加一<br>重载操作符 “++”<br>重载操作符 “()”</p>
+<p>练习更为复杂的遍历</p>
+<h3 id="减1"><a href="#减1" class="headerlink" title="减1"></a>减1</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 遍历运用函数对象机制，对各个元素减1</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">// 单个T类型元素减1的类</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">Vector&lt;T&gt;::struct Decrease &#123;</span></span><br><span class="line"><span class="comment">  virtual void operator() &#123;T &amp;e--;&#125;     // 重载()操作, 类对象当作函数来用</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void decrease(Vector&lt;T&gt;&amp; V) &#123;</span></span><br><span class="line"><span class="comment">  V.traverse(Decrease&lt;T&gt;());</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">// 泛型模板在调用的时候都要带&lt;type&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decrease</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T &amp;e)</span> </span>&#123;e--;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrease</span><span class="params">(Vector&lt;T&gt; &amp; V)</span> </span>&#123;</span><br><span class="line">  V.traverse(Decrease&lt;T&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="为什么不是Vector-struct-Decrease"><a href="#为什么不是Vector-struct-Decrease" class="headerlink" title="为什么不是Vector::struct Decrease?"></a>为什么不是Vector<t>::struct Decrease?</t></h4><p>// Decrease对象, 不需要声明在vector类内, 这是借用函数对象作为traverse的参数, traverse声明在类内, 这个参数的类型是VST, 即函数对象。</p>
+<h4 id="为什么需要virtual"><a href="#为什么需要virtual" class="headerlink" title="为什么需要virtual"></a>为什么需要virtual</h4><h4 id="void-operator-T-amp-e"><a href="#void-operator-T-amp-e" class="headerlink" title="void operator()(T &amp;e)?"></a>void operator()(T &amp;e)?</h4><p>// 第一个括号是代表重载运算符是(), 第二个是该重载函数的参数列表</p>
+<h4 id="三个函数之间的关系"><a href="#三个函数之间的关系" class="headerlink" title="三个函数之间的关系?"></a>三个函数之间的关系?</h4><p>Decrease<t>(T&amp;)函数对象, Vector<t>::traverse(VST&amp;)遍历函数, decrease(Vector<t>)</t></t></t></p>
+<p>// 在类的外部定义decrease函数, 它具有泛型T, 参数为Vector<t>&amp; 类型<br>// decrease()函数内部, 实例V调用traverse方法, 通过多次调用这个函数对象去遍历所有元素</t></p>
+<h4 id="为什么需要函数对象"><a href="#为什么需要函数对象" class="headerlink" title="为什么需要函数对象?"></a>为什么需要函数对象?</h4><h4 id="本质问题-为什么需要函数对象or-函数指针-为什么不直接调用函数呢"><a href="#本质问题-为什么需要函数对象or-函数指针-为什么不直接调用函数呢" class="headerlink" title="本质问题: 为什么需要函数对象or 函数指针,  为什么不直接调用函数呢?"></a>本质问题: 为什么需要函数对象or 函数指针,  为什么不直接调用函数呢?</h4><p>将遍历traverse作为一种统一的接口, 具体的操作让其他的函数对象来完成, 这样子的接口相对清晰。</p>
+<h3 id="加倍"><a href="#加倍" class="headerlink" title="加倍"></a>加倍</h3><p>Double(T &amp;e)</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Double_value</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T&amp; e)</span> </span>&#123;e *= <span class="number">2</span>;&#125;   <span class="comment">// 函数对象对元素翻倍</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">double_value</span><span class="params">(Vector&lt;T&gt;&amp; V)</span> </span>&#123;</span><br><span class="line">  V.traverse(Double_value&lt;T&gt;());      <span class="comment">// 函数对象作为遍历函数的参数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="求和"><a href="#求和" class="headerlink" title="求和"></a>求和</h3><h4 id="函数中传入指针"><a href="#函数中传入指针" class="headerlink" title="函数中传入指针"></a>函数中传入指针</h4><p>Sum(T&amp; e, T* sumPtr)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 用于traverse的求和函数对象</span><br><span class="line">template &lt;typename T&gt;</span><br><span class="line">struct Sum &#123;</span><br><span class="line">  virtual void operator()(const T&amp; e, T* sumPtr) &#123;(*sumPtr) += e;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">template &lt;typename T&gt; template &lt;typename VST&gt;</span><br><span class="line">T&amp; Vector&lt;T&gt;::traverse(VST visit, T* e) &#123;</span><br><span class="line">  // 重载traverse(), 对Sum对象函数传入保存求和结果的指针</span><br><span class="line">  for (int i = 1; i &lt; _size; i++) visit(_elem[i], e);   // 从第二个值开始累加</span><br><span class="line">  return *e;       // 返回求和结果</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Sum()函数对象中传入的参数, 在traverse的visit中定义好的, 因此需要重载traverse函数, 让它传入一个保存求和结果的指针。</strong></p>
+<p>前面都没什么问题,<br>实际调用的函数, 第一次我是这样写的, 返回的结果正确无误。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sum_ptr</span><span class="params">(Vector&lt;T&gt;&amp; V)</span> </span>&#123;</span><br><span class="line">  T* sumPtr = &amp;(V[<span class="number">0</span>]);        <span class="comment">// 别定义空指针, 该指针指向向量首位</span></span><br><span class="line">  T sum = V.traverse(Sum&lt;T&gt;(), sumPtr);     <span class="comment">// 调用并赋值</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但print_vector()之后<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">-- --------print_vector--------- --</span><br><span class="line">_size = 3</span><br><span class="line">_capacity = 10</span><br><span class="line">0:52                 ==&gt; _elem的首位被修改, 原本应该是10</span><br><span class="line">1:24</span><br><span class="line">2:18</span><br><span class="line">3:0</span><br><span class="line">4:0</span><br><span class="line">5:0</span><br><span class="line">6:0</span><br><span class="line">7:0</span><br><span class="line">8:0</span><br><span class="line">9:0</span><br></pre></td></tr></table></figure></p>
+<p>因为Sum函数对象中, 会通过解引用指针, 不小心修改了V[0]的值!!!</p>
+<p>于是我便做了如下修改:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sum_ptr</span><span class="params">(Vector&lt;T&gt;&amp; V)</span> </span>&#123;</span><br><span class="line">  T sum_init = V[<span class="number">0</span>];              <span class="comment">// 创建一个副本, 避免通过指针修改V[0]</span></span><br><span class="line">  T* sumPtr = &amp;(sum_init);        <span class="comment">// 别定义空指针, 该指针指向副本</span></span><br><span class="line">  T sum = V.traverse(Sum&lt;T&gt;(), sumPtr);     <span class="comment">// 调用并赋值</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">-- --------print_vector--------- --</span><br><span class="line">_size = 3</span><br><span class="line">_capacity = 10</span><br><span class="line">0:10</span><br><span class="line">1:24</span><br><span class="line">2:18</span><br><span class="line">3:0</span><br><span class="line">4:0</span><br><span class="line">5:0</span><br><span class="line">6:0</span><br><span class="line">7:0</span><br><span class="line">8:0</span><br><span class="line">9:0</span><br></pre></td></tr></table></figure>
+<h5 id="重载函数什么时候用virtual"><a href="#重载函数什么时候用virtual" class="headerlink" title="重载函数什么时候用virtual?"></a>重载函数什么时候用virtual?</h5><h4 id="类内static存放"><a href="#类内static存放" class="headerlink" title="类内static存放"></a>类内static存放</h4><p>static sumStc<br>静态数据成员在类内部声明, 外部定义, 作用相当于全局变量。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过类内static求和的函数对象</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Sum_static</span> &#123;</span></span><br><span class="line">  <span class="keyword">static</span> T <span class="keyword">sum_t</span>;     <span class="comment">// 内部声明存放求和结果的static变量</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T&amp; e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">sum_t</span> += e; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"revise static sum_t, sum_t = "</span></span><br><span class="line">                          &lt;&lt; <span class="keyword">sum_t</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;    <span class="comment">// 当心全局变量出错</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T Sum_static&lt;T&gt;::<span class="keyword">sum_t</span> = <span class="number">0</span>;   <span class="comment">// 外部定义静态数据成员</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sum_static</span><span class="params">(Vector&lt;T&gt; V)</span> </span>&#123;</span><br><span class="line">  Sum_static&lt;T&gt; sumstc;           <span class="comment">// 实例化模板别忘记&lt;type&gt;</span></span><br><span class="line">  V.traverse(Sum_static&lt;T&gt;());</span><br><span class="line">  T sum = sumstc.<span class="keyword">sum_t</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"in sum_static, sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于static, 我的相关练习<a href="https://github.com/timtingwei/cppd/blob/master/tmp/static.cpp" target="_blank" rel="noopener">source code</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/02-B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/02-B/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-B</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:09:07+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="可扩充向量"><a href="#可扩充向量" class="headerlink" title="可扩充向量"></a>可扩充向量</h1><h2 id="静态管理空间"><a href="#静态管理空间" class="headerlink" title="静态管理空间"></a>静态管理空间</h2><p>_capacity固定, 存在不足:</p>
+<blockquote>
+<p>1, 上溢(overflow）, _elem[]不足以存放元素<br>2, 下溢(underflow), _elem[]中元素寥寥无几<br>装填因子(load factor) = <em>size/ </em> capacity &lt;&lt; 50% 空间利用率低</p>
+</blockquote>
+<h1 id="动态管理空间"><a href="#动态管理空间" class="headerlink" title="动态管理空间"></a>动态管理空间</h1><p>蝉的哲学：每过一段时间，身体生长，以致于无法外壳容纳自己的身体，退去一层外壳，但之以容纳新的外壳。</p>
+<p>即将发生<strong>上溢</strong>，适当扩展容量</p>
+<h2 id="扩容算法实现"><a href="#扩容算法实现" class="headerlink" title="扩容算法实现"></a>扩容算法实现</h2><p>最终的扩容代码如下: </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::expand() &#123;</span><br><span class="line">  <span class="keyword">if</span> (_size &lt; _capacity) <span class="keyword">return</span>;    <span class="comment">// 容量未到达不必扩容</span></span><br><span class="line">  _capacity = max(_capacity, DEAFAULT_CAPACITY);    <span class="comment">// 不小于最小容量</span></span><br><span class="line">  <span class="comment">// 存储旧元素, 新数组容量扩大</span></span><br><span class="line">  T* old_elem = _elem; _elem = <span class="keyword">new</span> T[_capacity &lt;&lt;= <span class="number">1</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) &#123;</span><br><span class="line">    _elem[i] = old_elem[i];   <span class="comment">// 复制原数组到新数组的对应位置</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">delete</span> [] old_elem;    <span class="comment">// 释放原数组的对应空间，归还系统</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外尝试两种出现BUG的代码：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::expand() &#123;</span></span><br><span class="line"><span class="comment">  if (_size == _capacity) &#123;   // 规模到达最大容量时</span></span><br><span class="line"><span class="comment">    // 创建一个容量更大的数组</span></span><br><span class="line"><span class="comment">    T* _new_elem = new T[_capacity *= 1.2];  // ERROR:没有delete又重新new了一个</span></span><br><span class="line"><span class="comment">    Rank _tmp_size = _size;</span></span><br><span class="line"><span class="comment">    _size = 0;</span></span><br><span class="line"><span class="comment">    // 复制原数组到新数组的对应位置</span></span><br><span class="line"><span class="comment">    copyFrom(this-&gt;_elem, 0, _tmp_size);</span></span><br><span class="line"><span class="comment">    // 释放原数组的对应空间，归还系统</span></span><br><span class="line"><span class="comment">    delete [] _elem;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 最终版本的expand()中, new一个数组储存旧元素, 下面new一个数组, 作为扩容数组</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::expand() &#123;</span></span><br><span class="line"><span class="comment">  if (_size &lt; _capacity) return;    // 容量未到达不必扩容</span></span><br><span class="line"><span class="comment">  _capacity = max(_capacity, DEAFAULT_CAPACITY);    // 不小于最小容量</span></span><br><span class="line"><span class="comment">  // 存储旧元素, 新数组容量扩大</span></span><br><span class="line"><span class="comment">  T* new_elem = new T[_capacity &lt;&lt;= 1];</span></span><br><span class="line"><span class="comment">  for (int i = 0; i &lt; _size; i++) &#123;</span></span><br><span class="line"><span class="comment">    new_elem[i] = _elem[i];   // 复制原数组到新数组的对应位置</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // ERROR:不能直接赋值, 需要copyFrom(), 这里对_elem的更新不直接, 先新后旧的原则</span></span><br><span class="line"><span class="comment">  _elem = new_elem;      // ERROR:当前数组元素更新为新数组元素, 可T类型还没有operator=()</span></span><br><span class="line"><span class="comment">  delete [] new_elem;    // 释放临时数组的对应空间，归还系统</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></p>
+<p>第二种错误代码分析：</p>
+<blockquote>
+<ul>
+<li>备份一份旧的, 把当前的刷成新的。</li>
+<li>创建一份新的, 把旧的拷贝过去， 在赋值给旧的。这种方法做了多余的操作。</li>
+</ul>
+</blockquote>
+<p>封装的好处</p>
+<blockquote>
+<ul>
+<li><code>得益于向量的封装, 尽管扩容之后数据区的物理地址有所改变, 却不致出现野指针</code>, 封装后，上述通过_elem统一的指示器标记起点.</li>
+</ul>
+</blockquote>
+<p>为何必须采用容量加倍</p>
+<blockquote>
+<ul>
+<li>递增式扩容</li>
+<li>加倍式扩容</li>
+</ul>
+</blockquote>
+<h1 id="递增式扩容"><a href="#递增式扩容" class="headerlink" title="递增式扩容"></a>递增式扩容</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">_elem = <span class="keyword">new</span>[T = _capacity + INCREMENT];     <span class="comment">// 追加固定大小量</span></span><br></pre></td></tr></table></figure>
+<p>每次扩容, 复制原向量的成本<br>I, 2I, 3I, … (m-1)I           // 算术级数</p>
+<p><span style="color:red"><strong>算术级数</strong></span>:从某个数开始, 以固定间隔为<br>单位, 不断的线性递增，总和成为算术级数。<strong>总和和末项成平方关系</strong></p>
+<p>总耗时 = I <em> (m-1) </em> m/2 = O(n^2), 每次O(n)</p>
+<h1 id="加倍式扩容"><a href="#加倍式扩容" class="headerlink" title="加倍式扩容"></a>加倍式扩容</h1><p>1, 2, 4, 8, 16…2^m 次扩容           // 几何级数<br>几何级数与末项等阶, O(n)</p>
+<p>总耗时O(n), 每次扩容分摊成本为O(1)</p>
+<p>空间上的牺牲, 在时间上获得巨大的收益。</p>
+<h1 id="分摊复杂度"><a href="#分摊复杂度" class="headerlink" title="分摊复杂度"></a>分摊复杂度</h1><h2 id="平均分析-vs-分摊分析"><a href="#平均分析-vs-分摊分析" class="headerlink" title="平均分析 vs 分摊分析"></a>平均分析 vs 分摊分析</h2><p><code>平均分析(average/ expected complexity)</code><br>独立事件, 割裂相关性<br>往往不能准确反应。</p>
+<p><code>分摊分析(amortized complexity)</code><br>连续的, 足够多的操作。<br>实际可行，整体考量。<br>更为真实反应。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/02-A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/02-A/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-A</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:58+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="接口与实现"><a href="#接口与实现" class="headerlink" title="接口与实现"></a>接口与实现</h1><p>如何根据同一接口规范，定制ADT和实现implementation一个数据结构?<br>如何通过更有效的算法，使得对外接口更高效的工作?</p>
+<ul>
+<li>search </li>
+<li><p>sort</p>
+<p><code>Abstract Data Type vs. Data Structure</code></p>
+<p>抽象数据类型 = 数据模型 + 定义在该模型上的一组操作<br>数据结构     = 基于某种特定语言，实现ADT的一套算法</p>
+</li>
+</ul>
+<h1 id="向量ADT"><a href="#向量ADT" class="headerlink" title="向量ADT"></a>向量ADT</h1><h2 id="数组到向量"><a href="#数组到向量" class="headerlink" title="数组到向量"></a>数组到向量</h2><p>数组是连续的内存空间，均匀划分成若干个单元，而每一个单元都与[0, n)的<strong>编号一一对应</strong></p>
+<p>A[i] = A + i * s, s为单个元素所占空间量, 故亦称作线性数组(linear array)</p>
+<p>向量是数组的抽象和泛化， 由一组元素按照线性次序封装而成<br>与[0, n)内的<strong>秩(rank)</strong>一一对应    // 循秩访问(call-by-rank)<br>元素类型不限于基本类型<br>操作，管理维护更加简化安全。<br>可更为简便的参与更复杂的数据结构的定制。</p>
+<h1 id="操作实例"><a href="#操作实例" class="headerlink" title="操作实例"></a>操作实例</h1><h2 id="Vector模板类"><a href="#Vector模板类" class="headerlink" title="Vector模板类"></a>Vector模板类</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> Rank;             <span class="comment">// 秩</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEAFAULT_CAPACITY 3   <span class="comment">// 默认初始容量</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span> &#123;</span>   <span class="comment">// 向量模板类</span></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  Rank _size; <span class="keyword">int</span> _capacity; T* _elem;   <span class="comment">// 规模, 容量, 数据区</span></span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  <span class="comment">/* ... 内部函数*/</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">/* ... 构造函数*/</span></span><br><span class="line">  <span class="comment">/* ... 析构函数*/</span></span><br><span class="line">  <span class="comment">/* ... 只读函数*/</span></span><br><span class="line">  <span class="comment">/* ... 可写函数*/</span></span><br><span class="line">  <span class="comment">/* ... 遍历函数*/</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>应用和实现相互分离;<br>实现对内部数据项的封装。</p>
+<h2 id="构造和析构"><a href="#构造和析构" class="headerlink" title="构造和析构"></a>构造和析构</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span> &#123;</span>   <span class="comment">// 向量模板类</span></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  Rank _size; <span class="keyword">int</span> _capacity; T* _elem;   <span class="comment">// 规模, 容量, 数据区</span></span><br><span class="line"> <span class="keyword">protected</span>:</span><br><span class="line">  <span class="comment">/* ... 内部函数*/</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">// /* ... 构造函数</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">copyFrom</span><span class="params">(T* <span class="keyword">const</span> A, Rank lo, Rank hi)</span></span>;</span><br><span class="line">  Vector(<span class="keyword">int</span> c = DEAFAULT_CAPACITY)</span><br><span class="line">  &#123;_elem = <span class="keyword">new</span> T[_capacity = c]; _size = <span class="number">0</span>;&#125;     <span class="comment">// 默认</span></span><br><span class="line">  Vector(T* <span class="keyword">const</span> A, Rank lo, Rank hi)          <span class="comment">// 数组区间复制</span></span><br><span class="line">  &#123;copyFrom(A, lo, hi);&#125;</span><br><span class="line">  Vector(Vector&lt;T&gt; <span class="keyword">const</span>&amp; V, Rank lo, Rank hi)   <span class="comment">// 向量区间复制</span></span><br><span class="line">  &#123;copyFrom(V, lo, hi);&#125;</span><br><span class="line">  Vector(Vector&lt;T&gt; <span class="keyword">const</span>&amp; V)                     <span class="comment">// 向量整体复制</span></span><br><span class="line">  &#123;copyFrom(V._elem, <span class="number">0</span>, V._size);&#125;</span><br><span class="line">  <span class="comment">//  */</span></span><br><span class="line">  <span class="comment">// /* ... 析构函数</span></span><br><span class="line">  ~Vector() &#123;<span class="keyword">delete</span> [] _elem;&#125;                   <span class="comment">// 释放内部空间</span></span><br><span class="line">  <span class="comment">// */</span></span><br><span class="line">  <span class="comment">/* ... 只读函数*/</span></span><br><span class="line">  <span class="comment">/* ... 可写函数*/</span></span><br><span class="line">  <span class="comment">/* ... 遍历函数*/</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::copyFrom(T* <span class="keyword">const</span> A, Rank lo, Rank hi) &#123;</span><br><span class="line">  _elem = <span class="keyword">new</span> T[_capacity = <span class="number">2</span>*(hi- lo)];      <span class="comment">// 分配空间</span></span><br><span class="line">  _size = <span class="number">0</span>;  <span class="comment">// 清零规模</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi)   <span class="comment">// A[lo, hi)中的元素逐一</span></span><br><span class="line">    _elem[_size++] = A[lo++];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-F/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-F</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:52+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><p>Make it work  \<br>Make it right - 递归<br>Make it fast  - 迭代<br>     – Kent Beck</p>
+<p><code>动态规划</code>: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">2</span> &gt; n) ? n : fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>work, right, but not fast.</p>
+<h1 id="封底估算"><a href="#封底估算" class="headerlink" title="封底估算"></a>封底估算</h1><p>$^36 = 2^25,  ==&gt; $^43 = 2^30 = (2^10)^3 = 10^9 flo = 1sec<br>$^5 = 10,     ==&gt; $^67 = 10^14 flo = 10^5 sec = 1 day</p>
+<h1 id="递归跟踪"><a href="#递归跟踪" class="headerlink" title="递归跟踪"></a>递归跟踪</h1><p>效率低的原因是递归实例被重复调用。</p>
+<p><code>解决方法A(记忆:memoization)</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_memoization</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> mem_lst[])</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 将已经计算的结果, 制成表备查</span></span><br><span class="line">  <span class="keyword">if</span> (is_exist(mem_lst[n])) &#123;</span><br><span class="line">    <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">2</span> &gt; n) &#123;mem_lst[n] = n;&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      mem_lst[n] = fib_memoization(n<span class="number">-1</span>, mem_lst) +</span><br><span class="line">          fib_memoization(n<span class="number">-2</span>, mem_lst);</span><br><span class="line">      <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>解决方法B 动态规划</code><br>上楼梯。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_dynamic</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> f = <span class="number">0</span>, g = <span class="number">1</span>;          <span class="comment">// fib(0) = 0; fib(1) = 1;</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">0</span> &lt; n--) &#123;</span><br><span class="line">    g = g + f;</span><br><span class="line">    f = g - f;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> g;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不太能理解, 先放着</p>
+<h1 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h1><p><code>子序列(Subsequence)</code>: 有序列中若干字符，按原相对次序构成</p>
+<p><code>最长公共子序列(Longest common subsequence)</code>，两个序列公共子序列的最长者</p>
+<p>可能有多个，可能有歧义</p>
+<p><code>实现</code></p>
+<p>暂时还实现不了</p>
+<h2 id="动态规划-1"><a href="#动态规划-1" class="headerlink" title="动态规划"></a>动态规划</h2><p>理解了一下，方法上有差异，思想上为自下而上的求解，有那么点在gh中做的时候的思想在里面。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-E/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-E</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:41+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="迭代与递归"><a href="#迭代与递归" class="headerlink" title="迭代与递归"></a>迭代与递归</h1><p>分而治之：分解成子问题，递归式的求解。</p>
+<p>空间复杂度：指不包含算法的输入本身所占的空间之外，所需要的另加的用于计算所必须的空间总量。</p>
+<h1 id="减而治之"><a href="#减而治之" class="headerlink" title="减而治之"></a>减而治之</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> 合                合并</span><br><span class="line">----&gt;    问题   --------</span><br><span class="line">^      /      \        ^</span><br><span class="line">| 缩减/        \ 平凡   |</span><br><span class="line">|	   /          \       |</span><br><span class="line"> -&gt; 子问题     子问题 &lt;---</span><br><span class="line"> !     !         !    !</span><br><span class="line"> -------         ------</span><br><span class="line">   治              治</span><br></pre></td></tr></table></figure>
+<p>-—例子1—–<br><code>求n个总数之和</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// A为整数数组, n为问题规模, 返回数组中整数的总和</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">      (n &lt; <span class="number">1</span>) ?</span><br><span class="line">      <span class="number">0</span> : sum(A, n<span class="number">-1</span>) + A[n<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析:</strong></p>
+<blockquote>
+<ul>
+<li>该问题分解为一个缩减问题sum(A, n-1) 和 一个平凡问题A[n-1]</li>
+<li>最后规模小到一定程度时， 缩减问题变为 平凡问题</li>
+<li>将两个问题合并得到结果</li>
+</ul>
+</blockquote>
+<p><strong>复杂度如何？</strong></p>
+<p><code>递归跟踪(recursion trace)</code>分析 (用于简单的递归)</p>
+<ul>
+<li>检查每个<span style="color:red"><strong>递归实例</strong></span></li>
+<li>累积所需要时间（调用语句本身抹去，计入递归实例）</li>
+<li>其总和是算法执行时间<br>||          ||<br>vv          vv<br><code>线性递归</code>：得出上述递归是线性递归，复杂度渐进O(n)</li>
+</ul>
+<p><code>递推方程</code>分析 (用于复杂的递归)<br>上述例子中:<br>T(n) = T(n-1) + O(1)         // recurrence<br>T(0) = O(1)                  // base</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">T(n) - n = T(n-1) - (n-1) = T(n-2) - (n-2) ...</span><br><span class="line">         = T(2) - 2</span><br><span class="line">		 = T(1) - 1</span><br><span class="line">		 = T(0) - 0 = O(1)</span><br><span class="line"></span><br><span class="line">T(n) = O(1) + n = O(n)</span><br></pre></td></tr></table></figure>
+<p>-——例子2—————–<br><code>任给数组A[0,n), 将其前后颠倒</code>            // 更一般的子区间[lo, hi]<br><strong>统一接口</strong> : void reverse(int * A, int lo, int hi);</p>
+<p><code>递归版</code></p>
+<p>规模缩小两个单位。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 输入指向数组A的指针, A中要转置的左区间lo， A中要转置的右区间lo</span></span><br><span class="line">  <span class="comment">// 无返回值，改变指针A所指向的数组, 使其倒序</span></span><br><span class="line">  <span class="keyword">if</span> (lo &lt; hi) &#123;</span><br><span class="line">    swap(&amp;(A[lo]), &amp;(A[hi]));</span><br><span class="line">    <span class="keyword">if</span> (((hi-lo) == <span class="number">1</span>) || ((hi - lo) == <span class="number">0</span>)) <span class="keyword">return</span>;</span><br><span class="line">    reverse(A, lo + <span class="number">1</span>, hi - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析时间复杂度：</p>
+<p><code>递归跟踪(recursion trace)</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int main();</span><br><span class="line">reverse(A[n], lo, hi);</span><br><span class="line">reverse(A[n-2], lo+1, hi-1);</span><br><span class="line">reverse(A[n-4], lo+2, hi-2);</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">reverse(A[1], lo+(n-1)/2, hi+(n-1)/2);</span><br><span class="line">or</span><br><span class="line">reverse(A[0], lo + n/2, hi+ n/2);</span><br><span class="line">      (n-1)/2 , n是奇数</span><br><span class="line">     /                   </span><br><span class="line">O(1)*                    = O(n)</span><br><span class="line">     \n / 2,    n是偶数</span><br></pre></td></tr></table></figure></p>
+<p><code>递推方程</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">T(n) = T(n) + O(1);</span><br><span class="line">T(n) - n = T(n-1) - (n-1)</span><br><span class="line">T(n) - n = T(2) - 2</span><br><span class="line">         = T(0) - 0</span><br><span class="line">T(n) = T(0) + n = O(n)</span><br></pre></td></tr></table></figure></p>
+<p>&lt;span style=”color”:blue”&gt;<em>感觉不怎么正确??</em></p>
+<p>课后推敲:</p>
+<p><code>迭代原始版本</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse_iterate_original</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 迭代原始版本</span></span><br><span class="line">next:</span><br><span class="line">  <span class="keyword">if</span> (lo &lt; hi)</span><br><span class="line">  &#123;swap(&amp;A[lo], &amp;A[hi]); lo++; hi--; <span class="keyword">goto</span> next;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue"><em>使用next作为分支标记,goto跳转，真的能让代码运行，从来没用过</em></span></p>
+<p><code>迭代精简版</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse_iterate</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 迭代版本</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi) swap(&amp;A[lo++], &amp;A[hi--]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="分而治之-divide-and-conquer"><a href="#分而治之-divide-and-conquer" class="headerlink" title="分而治之(divide-and-conquer)"></a>分而治之(divide-and-conquer)</h1><p>分解为多个或两个子问题，得到解后归并。<br>-—–二分递归———-</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mid_sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 数组求和 :二分递归</span></span><br><span class="line">  <span class="keyword">if</span> (lo == hi) <span class="keyword">return</span> A[lo];</span><br><span class="line">  <span class="keyword">int</span> mid = (lo + hi) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> mid_sum(A, lo, mid) + mid_sum(A, mid + <span class="number">1</span>, hi);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><span style="color:red"><strong>注意 mid + 1</strong></span></p>
+<p>// 分析:<br>// 被分解成两个相似问题，mid_sum(n/2)<br>// 规模每次缩减一半，最后到达递归基<br>// 将多个问题结果合并</p>
+<p>分析复杂度:</p>
+<p><code>递归跟踪(几何归纳)</code></p>
+<p>以2为倍数的<strong>几何级数</strong>，总和与<strong>末项同阶</strong>。</p>
+<p><code>递推方程(代数运算)</code></p>
+<p>两个问题都是n/2<br>累加O(1)时间<br>递归基O(1)时间返回</p>
+<p>递推关系<br>T(n) = 2* T(n/2) + O(1)<br>T(1) = O(1)</p>
+<p>..<br>T(n) = O(n)</p>
+<h1 id="Max2-迭代1"><a href="#Max2-迭代1" class="headerlink" title="Max2: 迭代1"></a>Max2: 迭代1</h1><p>从数组区间A[lo, hi)中找出最大的两个整数A[x1]和A[x2]   // A[x1] &gt; A[x2]<br>比较次数要尽可能的少</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max2_three_iters</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;   <span class="comment">// 1 &lt; n = hi - lo</span></span><br><span class="line">  <span class="keyword">int</span> max1 = <span class="number">0</span>, max2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> x1, x2;</span><br><span class="line">  <span class="keyword">if</span> (hi &lt; lo) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = lo; i &lt;= hi; i++)</span><br><span class="line">    <span class="keyword">if</span> (max1 &lt; A[i]) &#123;max1 = A[i]; x1 = i;&#125;       <span class="comment">// hi-lo-1 = n-1</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (x1 != lo) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i_lo  = lo; i_lo &lt; x1; i_lo++)</span><br><span class="line">      <span class="keyword">if</span> (max2 &lt; A[i_lo]) &#123;max2 = A[i_lo]; x2 = i_lo;&#125; <span class="comment">// x1-lo-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (x1 != hi) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i_hi = x1+<span class="number">1</span>; i_hi &lt;= hi; i_hi++)</span><br><span class="line">      <span class="keyword">if</span> (max2 &lt; A[i_hi]) &#123;max2 = A[i_hi]; x2 = i_hi;&#125; <span class="comment">// hi-x1-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> max_array[<span class="number">2</span>] = &#123;max1, max2&#125;;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" A[x1] = "</span> &lt;&lt; A[x1] &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">" A[x2] = "</span> &lt;&lt; A[x2] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总共比较n-1+n-2 =2n-3 </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max2</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 遍历一次，改变指针</span></span><br><span class="line">  <span class="keyword">int</span>* x1 = &amp;lo;</span><br><span class="line">  <span class="keyword">int</span> lo_next = lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span>* x2 = &amp;lo_next;</span><br><span class="line">  <span class="keyword">if</span> (A[*x1] &lt; A[*x2]) &#123;x1 = &amp;lo_next; x2 = &amp;lo;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = lo + <span class="number">2</span>; i &lt;= hi; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[*x2] &lt; A[i]) &#123;      <span class="comment">// 索引i的对象比较小的值大</span></span><br><span class="line">      <span class="keyword">if</span> (A[*x1] &lt; A[i]) &#123;    <span class="comment">// 索引i的对象甚至超过了较大值</span></span><br><span class="line">        x2 = &amp;(*x1); x1 = &amp;i;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      *x2 = i;                <span class="comment">// x1指针指向的元素赋值成i</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" A[*x1] "</span>  &lt;&lt; A[*x1] &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">" A[*x2] "</span>  &lt;&lt; A[*x2] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最好情况: 1 + (n-2)<em>1 = n-1<br>最坏情况: 1+ (n-2) </em>2 = 2n-3</p>
+<p><code>即使在最坏情况，也更高效的改进算法</code></p>
+<blockquote>
+<ul>
+<li>分而治之</li>
+<li>实现退化情况</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">max2</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi, <span class="keyword">int</span> &amp; x1, <span class="keyword">int</span> &amp; x2)</span> </span>&#123;     <span class="comment">// [lo, hi)</span></span><br><span class="line">  <span class="keyword">if</span> (lo + <span class="number">2</span> == hi) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[lo] &lt; A[lo+<span class="number">1</span>]) &#123;</span><br><span class="line">      x1 = A[lo+<span class="number">1</span>]; x2 = A[lo];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      x2 = A[lo+<span class="number">1</span>]; x1 = A[lo];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;                         <span class="comment">// T(2) = 1</span></span><br><span class="line">  <span class="keyword">if</span> (lo + <span class="number">3</span> == hi) &#123;       <span class="comment">// lo, lo+1, lo+2, lo+3; 19, 2, 3, -1;</span></span><br><span class="line">    x1 = lo, x2 = lo+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (A[x1] &lt; A[x2]) &#123;x1 = lo+<span class="number">1</span>; x2 = lo;&#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = lo+<span class="number">2</span>; i &lt; hi+<span class="number">1</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A[i] &gt; A[x2]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[i] &gt; A[x1]) &#123;</span><br><span class="line">          <span class="keyword">int</span> tmp = x1;</span><br><span class="line">          x1 = i; x2 = tmp;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        x2 = i;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;                         <span class="comment">// T(3) &lt;= 3</span></span><br><span class="line">  <span class="keyword">int</span> mid = (lo + hi) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> x1L, x2L; max2(A, lo, mid, x1L, x2L);</span><br><span class="line">  <span class="keyword">int</span> x1R, x2R; max2(A, mid+<span class="number">1</span>, hi, x1R, x2R);</span><br><span class="line">  <span class="keyword">if</span> (A[x1L] &gt; A[x1R]) &#123;</span><br><span class="line">    x1 = x1L; x2 = (x2L &lt; x1R) ? x1R:x2L;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    x1 = x1R; x2 = (x2R &lt; x1L) ? x1L:x2R;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">// 1 + 1 = 2</span></span><br></pre></td></tr></table></figure>
+<p>最坏情况: T(n) = 2 * T(n/2) + 2 &lt;= 5n/3 -2</p>
+<p><code>递推方程推导过程:</code> ? </p>
+<p><code>最好情况复杂度:</code> ?</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>两种重要算法策略：减而治之，分而治之</p>
+<p>两种分析方法：递归跟踪和递推方程</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1117,1106 +2066,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/28/dsacpp/01-D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/dsacpp/01-D/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-D</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T11:14:53+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><span style="color:blue"><em>我把邓老师课上对自己有需要的笔记写下来，并在看完视频后补充教材和课后习题的内容.</em></span></p>
-<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><p>运用DSA</p>
-<p>算法分析的两个任务</p>
-<blockquote>
-<ul>
-<li>正确性(不变性 * 单调性)</li>
-<li>复杂度增长速度表格</li>
-</ul>
-</blockquote>
-<p>C++等高级语言的基本指令，等效于常数条RAM的基本指令；渐进意义下，相当<br>  分支转向：goto   // 算法灵魂；出于结构考虑，被隐藏<br>  迭代循环:for(), while()..   // 本质上 “if+goto”<br>  调用+递归                   // 本质上也是 “goto”</p>
-<p>复杂度分析方法:</p>
-<blockquote>
-<ol>
-<li>迭代: 级数求和</li>
-<li>递归: 递归跟踪 + 递推方程<br>猜测 + 验证</li>
-</ol>
-</blockquote>
-<h1 id="级数"><a href="#级数" class="headerlink" title="级数"></a>级数</h1><h2 id="算术级数：与末项平方同阶"><a href="#算术级数：与末项平方同阶" class="headerlink" title="算术级数：与末项平方同阶"></a>算术级数：与<strong>末项平方</strong>同阶</h2><h2 id="幂方级数：比幂次高出一阶"><a href="#幂方级数：比幂次高出一阶" class="headerlink" title="幂方级数：比幂次高出一阶"></a>幂方级数：比幂次高出一阶</h2><h2 id="几何级数（a-gt-1）-与末项同阶"><a href="#几何级数（a-gt-1）-与末项同阶" class="headerlink" title="几何级数（a &gt; 1）:与末项同阶"></a>几何级数（a &gt; 1）:与末项同阶</h2><h2 id="收敛级数-O-1"><a href="#收敛级数-O-1" class="headerlink" title="收敛级数:O(1)"></a>收敛级数:O(1)</h2><h2 id="未必收敛，但长度有限"><a href="#未必收敛，但长度有限" class="headerlink" title="未必收敛，但长度有限"></a>未必收敛，但长度有限</h2><p>h(n) = 1 + 1/2 + 1/3 + … + 1/n = O(logn)            // 调和级数<br>log1 + log2 + log3 + … + logn = log(n!) = O(nlogn)  // 对数级数</p>
-<h2 id="推荐书籍"><a href="#推荐书籍" class="headerlink" title="推荐书籍"></a>推荐书籍</h2><p><code>&lt;&lt;Concrete Math&gt;&gt;</code> 具体数学</p>
-<h1 id="循环-vs-级数"><a href="#循环-vs-级数" class="headerlink" title="循环 vs 级数"></a>循环 vs 级数</h1><h2 id="没有耦合的二层循环"><a href="#没有耦合的二层循环" class="headerlink" title="没有耦合的二层循环"></a>没有耦合的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
-<p>算术级数:  n * n = O(n^2)<br>等效：矩形被填充的过程，时间复杂度等于矩形面积。</p>
-<h2 id="耦合的二层循环"><a href="#耦合的二层循环" class="headerlink" title="耦合的二层循环"></a>耦合的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
-<p>算术级数: n(n-1) / 2 = O(n^2)<br>等效：三角形被填充，复杂度等于矩形面积。</p>
-<h2 id="递增不为1的二层循环"><a href="#递增不为1的二层循环" class="headerlink" title="递增不为1的二层循环"></a>递增不为1的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j += <span class="number">2013</span>)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
-<p>算术级数：O(n^2)</p>
-<h2 id="外循环左移一位-加倍"><a href="#外循环左移一位-加倍" class="headerlink" title="外循环左移一位(加倍)"></a>外循环左移一位(加倍)</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i &lt;&lt;= <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">    O1peration(i, j);</span><br></pre></td></tr></table></figure>
-<p>几何级数：O(n)     // ??</p>
-<h2 id="更复杂的实例"><a href="#更复杂的实例" class="headerlink" title="更复杂的实例"></a>更复杂的实例</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;  i; j += j)</span><br><span class="line">    O1peration(i, j);</span><br></pre></td></tr></table></figure>
-<h2 id="习题解析"><a href="#习题解析" class="headerlink" title="习题解析"></a>习题解析</h2><h1 id="取非极端元素、冒泡排序"><a href="#取非极端元素、冒泡排序" class="headerlink" title="取非极端元素、冒泡排序"></a>取非极端元素、冒泡排序</h1><h2 id="取非极端元素"><a href="#取非极端元素" class="headerlink" title="取非极端元素"></a>取非极端元素</h2><p>算法： </p>
-<blockquote>
-<p>1, 从S中取出三个元素{x, y, z}<br>2, 确定并排除其中的最小值和最大值<br>3, 输出剩下的元素z</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ordinaryElements</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 从n &gt;= 3个互异整数中,除最大、最小者以外,任取一个“常规元素”</span></span><br><span class="line">  <span class="comment">// 先比较a,b;再确定c对于(a,b)区间的关系</span></span><br><span class="line">  <span class="keyword">int</span> a = A[<span class="number">0</span>], b = A[<span class="number">1</span>], c = A[<span class="number">2</span>];    <span class="comment">// 从特定单元读取元素O(3)</span></span><br><span class="line">  <span class="comment">// 统一成区间(a, b), 用于c对其判断</span></span><br><span class="line">  <span class="keyword">if</span> (a &lt; b) &#123; &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    swap(&amp;a, &amp;b);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (c &lt; a) <span class="keyword">return</span> a;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (c &gt; b) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">  <span class="comment">// return 输出非极端数O(1)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// =======================================</span></span><br><span class="line">  <span class="comment">// T(n) = O(3) + O(3) + O(1) = O(7) = O(1)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结论:无论输入规模有多大，所需执行该算法的执行时间都不变。</p>
-<h2 id="起泡排序问题"><a href="#起泡排序问题" class="headerlink" title="起泡排序问题"></a>起泡排序问题</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubblesort</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">bool</span> sorted = <span class="literal">false</span>; sorted = !sorted; n--)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n+<span class="number">1</span>; i++) &#123;  <span class="comment">// 自左向右逐对检查[0,n)各相邻元素</span></span><br><span class="line">      <span class="keyword">if</span> (A[i<span class="number">-1</span>] &gt; A[i]) &#123;         <span class="comment">// 若逆序,则</span></span><br><span class="line">        swap(&amp;A[i<span class="number">-1</span>], &amp;A[i]);      <span class="comment">// 令其交换位置</span></span><br><span class="line">        sorted = <span class="literal">false</span>;            <span class="comment">// 消除全局有序标记</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="算法分析-1"><a href="#算法分析-1" class="headerlink" title="算法分析"></a>算法分析</h1><p>不变性：经k轮扫描交换后，最大的k个元素必然就位<br>单调性：经k轮扫描交换后，问题的规模缩减至n-k<br>正确性：经至多k轮扫描后，算法必然终止，且能给出正确答案</p>
-<p>基本且重要的技巧：通过挖掘不变性和单调性，证明算法的正确性</p>
-<h1 id="封底估计-Back-Of-The-Envelope-Calculation"><a href="#封底估计-Back-Of-The-Envelope-Calculation" class="headerlink" title="封底估计 Back-Of-The-Envelope Calculation"></a>封底估计 Back-Of-The-Envelope Calculation</h1><p>不需要工具</p>
-<p>787km 占据整个周长的1/50 =&gt; 整个周长4wkm</p>
-<p>抓住问题的主要方面，简洁得出总体规律</p>
-<p>在复杂度分析中，对象是时间。</p>
-<h1 id="封底估计实例"><a href="#封底估计实例" class="headerlink" title="封底估计实例"></a>封底估计实例</h1><blockquote>
-<ul>
-<li>一天: = 24hr <em> 60min </em> 60sec = 25 * 4000 = 10^5 sec</li>
-<li>一生: = 1世纪 = 100yr <em> 365 = 3 </em> 10^4 = 3 * 10^9 sec</li>
-<li>“50年” = 1.6 * 10^9 sec</li>
-<li>三生三世: 300yr = 10^10 = (1 googel)^(1/10) sec</li>
-<li>宇宙大爆炸至今: 10^21 = 10^(10^10)^2 sec<br>三生三世是10^10s<br>三生三世中的一天，相当于在一天中的1s<br>整个宇宙中的三生三世，就是在三生三世中的0.1s</li>
-</ul>
-</blockquote>
-<p>1亿 = 10^9</p>
-<p>复杂度和浮点运算能力flops相除，能得到某算法的时间。</p>
-<p>人口普查 n = 10^9<br>\=====================<br>普通PC 1Ghz 10^9 flops<br>Bullesort: O(n^2) ==&gt; (10^9)^2 = 10^18 </p>
-<p>时间: 10^18 / 10^9  = 10^9<br>3<em>10^9 = 100yr, 10^9 = 30年<br>\=====================<br>普通PC  10^9 flops<br>Mergesort: O(n\</em>logn) =&gt; (10^9)*log(10^9) = 30 * 10^9</p>
-<p>时间; 30 * 10^9 / 10^9 = 30s<br>\=====================<br>天河1A 10^15 flops<br>Bullesort:</p>
-<p>时间:20min: 10^3s<br>\=====================</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/27/gitignore-invalid/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/27/gitignore-invalid/" itemprop="url">gitignore-invalid</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T08:55:27+08:00">
-                2017-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/25/hello-triangle-three-execises/" itemprop="url">OpenGL绘制三角形附练习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T14:56:13+08:00">
-                2017-12-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>代码已托管在<a href="https://github.com/timtingwei/LearnOpenGL/tree/master/src/1.getting_started" target="_blank" rel="noopener">/timtingwei/LearnOpenGL</a></p>
-<h1 id="图形管线渲染有哪几个阶段？"><a href="#图形管线渲染有哪几个阶段？" class="headerlink" title="图形管线渲染有哪几个阶段？"></a>图形管线渲染有哪几个阶段？</h1><p>顶点数据(Vertex data[])  -&gt;</p>
-<blockquote>
-<p>1, <strong>顶点着色器</strong>(Vertex Shader) -&gt;<br>2, 形状(图元)装配(Shape Assembly) -&gt;<br>3, <strong>几何着色器</strong>(Geometry Shader) -&gt;<br>4, 光栅化(Rasterization) -&gt;<br>5, <strong>片段着色器</strong>(Fragment Shader) -&gt;<br>6, 测试与混合(Test And Blending)</p>
-</blockquote>
-<p>三个着色器可以自己定义。</p>
-<p><strong>顶点数据(Vertex data)：</strong></p>
-<blockquote>
-<ul>
-<li>Vertex是一个3D坐标的集合</li>
-<li>Vertex Data是用顶点属性(Vertex Attribute), 如位置Position, 颜色Color</li>
-</ul>
-</blockquote>
-<p><strong>顶点着色器(Vertex Shader)：</strong></p>
-<blockquote>
-<ul>
-<li>把3D坐标转换成另外一种3D坐标</li>
-<li>允许对Vertex Attribute做基本处理</li>
-</ul>
-</blockquote>
-<p><strong>片段着色器(Fragment Shader)：</strong></p>
-<blockquote>
-<ul>
-<li>计算一个像素最终的颜色</li>
-<li>着色器包含3D场景数据(光照，阴影，光的颜色)</li>
-</ul>
-</blockquote>
-<p><strong>Alpha测试和混合(Blending):</strong></p>
-<blockquote>
-<ul>
-<li>测试深度，反应前后。</li>
-<li>检查Alpha并混合，(同个片段着色器，渲染多个三角形时候的颜色可能不同)</li>
-</ul>
-</blockquote>
-<p>补充: 图元(Primitive):</p>
-<blockquote>
-<ul>
-<li>任何一个绘制指令的调用，都把图元传递给OpenGL。</li>
-<li>如GL_POINTS、GL_TRIANGLES、GL_LINE_STRIP。</li>
-</ul>
-</blockquote>
-<h1 id="绘制绘制三角形"><a href="#绘制绘制三角形" class="headerlink" title="绘制绘制三角形"></a>绘制绘制三角形</h1><h2 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h2><p>使用GLSL(OpenGL Shading Language)编写顶点着色器<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#version 330 core          <span class="comment">// 每个着色器起始于版本声明, core代表核心模式</span></span></span><br><span class="line"></span><br><span class="line">layout (location=<span class="number">0</span>) in vec3 aPos;      <span class="comment">// 设定输入变量的位置值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  gl_Position = vec4(aPos.x, aPos.y, aPos.z, <span class="number">1.0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>为什么需要<strong>layout (location=0)</strong>设定位置值？</p>
-<blockquote>
-<ul>
-<li><strong>glVertexAttributPointer</strong>函数第一个参数指定配置顶点属性，而**layout (location=0) 定义了顶点某变量的position属性。</li>
-</ul>
-</blockquote>
-<p>相关内容in, out, uniform, type类型, 向量组合, main函数，会在下一节，<a href="https://timtingwei.github.io">着色器中</a>讲解</p>
-<h2 id="编译顶点着色器"><a href="#编译顶点着色器" class="headerlink" title="编译顶点着色器"></a>编译顶点着色器</h2><p>编写着色器源码后，</p>
-<blockquote>
-<p>1, 先创建着色器对象;<br>2, 再把源码附加到着色器对象上;<br>3, 编译并检查</p>
-</blockquote>
-<p><strong>1, 创建顶点着色器对象</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> vertexShader;                         <span class="comment">// ID引用</span></span><br><span class="line">vertexShader = glCreateShader(GL_VERTEX_SHADER);   <span class="comment">// 传递着色器类型参数</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>2, 附源码</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glShaderSource(vertexShader, <span class="number">1</span>, &amp;vertexShaderSource, <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure></p>
-<p><strong>glShaderSource</strong>函数的几个参数：</p>
-<blockquote>
-<p>0, 着色器对象<br>1, 传递的源码字符数量<br>2, 顶点着色器的真正源码<br>3, 先设置为NULL</p>
-</blockquote>
-<p><strong>3, 编译</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glCompileShader(vertexShader);</span><br><span class="line"><span class="comment">// 检查编译是否成功</span></span><br><span class="line"><span class="keyword">int</span> success;</span><br><span class="line"><span class="keyword">char</span> infoLog[<span class="number">512</span>];</span><br><span class="line">glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line"><span class="comment">// 如果不成功，用glGetShaderInfoLog获取信息, 存储再InfoLog中，打印</span></span><br><span class="line"><span class="keyword">if</span> &#123;!success&#125; &#123;</span><br><span class="line">  glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="片段着色器"><a href="#片段着色器" class="headerlink" title="片段着色器"></a>片段着色器</h2><p>同理顶点着色器，编写着色器源码</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#version 330 core</span></span><br><span class="line"></span><br><span class="line">out vec4 FragColor;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  FragColor =  vec4(<span class="number">1.0f</span>, <span class="number">0.5f</span>, <span class="number">0.2f</span>, <span class="number">1.0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>片段着色器只有一个vec4作为out, 表示最终的输出颜色, 最后一个值是alpha量</p>
-<h2 id="编译片段着色器"><a href="#编译片段着色器" class="headerlink" title="编译片段着色器"></a>编译片段着色器</h2><p>1, 创建对象<br>2, 附加源码<br>3, 编译并检查</p>
-<p>自己重新写一遍, 并检查错误<br>1, 创建对象尝试<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> fragmentShader;</span><br><span class="line">glCreateShader(fragmentShader, GL_FRAGMENT_SHADER);   <span class="comment">// ERROR</span></span><br></pre></td></tr></table></figure></p>
-<p><span style="color:red"> <em>改正</em> </span><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> fragmentShader;</span><br><span class="line">glCreateShader(GL_FRAGMENT_SHADER);     <span class="comment">// DE<span class="doctag">BUG:</span>:不需要用着色器对象作为函数的参数，</span></span><br></pre></td></tr></table></figure></p>
-<p>查阅<a href="https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateShader.xhtml" target="_blank" rel="noopener">khronos.org - glCreateShader</a></p>
-<blockquote>
-<ul>
-<li>Like buffer and texture objects, the name space for shader objects may be shared across a set of contexts, as long as the server sides of the contexts share the same address space. If the name space is shared across contexts, any attached objects and the data associated with those attached objects are shared as well.<br>会绑定上下文中的ID创建object, 而且同一ShaderType会被联系起来。</li>
-</ul>
-</blockquote>
-<p>2, 附源码尝试<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glShaderSource(<span class="number">1</span>, fragmentShader, fragmentSource, <span class="literal">NULL</span>)   <span class="comment">// ERROR</span></span><br></pre></td></tr></table></figure></p>
-<p><span style="color:red"> <em>改正</em> </span><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glShaderSource(fragmentShader, <span class="number">1</span>, fragmentShaderSource, <span class="literal">NULL</span>);  <span class="comment">// DE<span class="doctag">BUG:</span>:交换参数位置</span></span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<ol>
-<li>着色器对象</li>
-<li>传递源码字符的数量</li>
-</ol>
-</blockquote>
-<p>3, 尝试编译<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">bool</span> success;    <span class="comment">// ERROR</span></span><br><span class="line">glCompileShader(GL_FRAGMENT_SHADER, fragmentShader, success); <span class="comment">// ERROR</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span>* infoLog[<span class="number">512</span>];                                <span class="comment">// ERROR</span></span><br><span class="line"><span class="keyword">if</span> (!success) &#123;</span><br><span class="line">  <span class="comment">// 失败把报错内容储存再infoLog中输出</span></span><br><span class="line">  glGetShaderinfoLog(fragmentShader, &amp;success, &amp;infoLog);   <span class="comment">// ERROR</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"COMPILE::ERROR::FRAGEMENT::SHADER"</span> </span><br><span class="line">            &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><span style="color:red"> <em>改正</em> </span><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glCompileShader(fragmentShader);     <span class="comment">// DE<span class="doctag">BUG:</span>:只要着色器对象一个参数</span></span><br><span class="line"><span class="keyword">int</span> success;                         <span class="comment">// DE<span class="doctag">BUG:</span>: success是一个int类型</span></span><br><span class="line"><span class="keyword">char</span> infoLog[<span class="number">512</span>];                   <span class="comment">// DE<span class="doctag">BUG:</span>: char 并非 unsigned cha*</span></span><br><span class="line">glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &amp;success);   <span class="comment">// DE<span class="doctag">BUG:</span>:获取success在先，才能对success做判断</span></span><br><span class="line"><span class="keyword">if</span> (!success) &#123;</span><br><span class="line">  <span class="comment">// 失败输出</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="创建着色器程序"><a href="#创建着色器程序" class="headerlink" title="创建着色器程序"></a>创建着色器程序</h2><p>绘制图元时，使用的是glUseProgram(shaderProgram), 因此，先要创建着色器程序</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> shaderProgram;</span><br><span class="line">shaderProgram = glCreateProgram();</span><br></pre></td></tr></table></figure>
-<h2 id="链接着色器对象"><a href="#链接着色器对象" class="headerlink" title="链接着色器对象"></a>链接着色器对象</h2><p>两个着色器对象要链接。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glAttachShader(shaderProgram, vertexShader);</span><br><span class="line">glAttachShader(shaderProgram, fragmentShader);</span><br><span class="line">glLinkProgram(shaderProgram);</span><br></pre></td></tr></table></figure></p>
-<h2 id="编译着色程序"><a href="#编译着色程序" class="headerlink" title="编译着色程序"></a>编译着色程序</h2><p>与之前的着色器编译原理相同，只是调用函数和参数变量改变了。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glGetProgramiv(shaderProgram, GL_LINK_STATUS, &amp;success);</span><br><span class="line"><span class="keyword">if</span> (!success) &#123;</span><br><span class="line">  glGetProgramInfoLog(shaderProgram, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PROGRAM::LINKING_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>之后可以glUseProgram函数，激活程序对象。激活后，着色器调用和渲染调用都会使用这个程序对象。</p>
-<h2 id="删除着色器"><a href="#删除着色器" class="headerlink" title="删除着色器"></a>删除着色器</h2><p>完成以上几步后不要忘记删除着色器<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glDeleteShader(vertexShader);</span><br><span class="line">glDeleteShader(fragmentShader);</span><br></pre></td></tr></table></figure></p>
-<h2 id="输入顶点以及索引"><a href="#输入顶点以及索引" class="headerlink" title="输入顶点以及索引"></a>输入顶点以及索引</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 顶点输入</span></span><br><span class="line">GLfloat vertices[] = &#123;</span><br><span class="line">  <span class="number">0.5f</span>,   <span class="number">0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右上角</span></span><br><span class="line">  <span class="number">0.5f</span>,  <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右下角</span></span><br><span class="line">  <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左下角</span></span><br><span class="line">  <span class="number">-0.5f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span>     <span class="comment">// 左上角</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><strong>赋值array的时候, 不要忘记{};</strong></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 顶点索引</span></span><br><span class="line">GLuint indices[] = &#123;</span><br><span class="line">  <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>                <span class="comment">// 第一个三角形</span></span><br><span class="line">  <span class="comment">// ...                 // 可根据vertices数组, 建立多组索引</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="创建和绑定顶点数组对象-VAO"><a href="#创建和绑定顶点数组对象-VAO" class="headerlink" title="创建和绑定顶点数组对象(VAO)"></a><strong>创建和绑定顶点数组对象(VAO)</strong></h2><p>VAO = Vertex Array Object</p>
-<p>功能:</p>
-<blockquote>
-<ul>
-<li>随后的顶点属性调用都会储存在这个VAO之中。</li>
-<li>使得在不同顶点数据和属性设置之间切换变得简单。</li>
-</ul>
-</blockquote>
-<p><strong>存储内容</strong>:</p>
-<blockquote>
-<ul>
-<li>glEnableVertexAttribArray和glDisableVertexAttribArray的调用。</li>
-<li>通过glVertexAttribPointer设置的顶点属性配置。</li>
-<li>通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。</li>
-</ul>
-</blockquote>
-<p>使用注意:</p>
-<blockquote>
-<ul>
-<li><strong>先VAO，再绑定和设置VBO, EBO 以及设置顶点属性指针</strong></li>
-</ul>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">GLuint VAO;</span><br><span class="line">glGenVertexArrays(<span class="number">1</span>, &amp;VAO);   <span class="comment">// 创建VAO对象</span></span><br><span class="line">glBindVertexArray(VAO);       <span class="comment">// 绑定顶点数组对象</span></span><br></pre></td></tr></table></figure>
-<h2 id="创建和绑定顶点缓冲对象-VBO"><a href="#创建和绑定顶点缓冲对象-VBO" class="headerlink" title="创建和绑定顶点缓冲对象(VBO)"></a><strong>创建和绑定顶点缓冲对象(VBO)</strong></h2><p>OpenGL如何解释顶点数据的内存，并指定其如何发送给显卡。</p>
-<p>作用:</p>
-<blockquote>
-<ul>
-<li>通过VBO(Vertex Buffer Object)管理这个内存，它会在GPU内存中存储大量顶点。</li>
-<li>一次性发送大量数据到显卡上，而不是每个顶点发送一次。CPU发到显卡上速度慢，因此，一次发送多个比较好。而发送过去之后顶点着色器又能够立即访问。</li>
-</ul>
-</blockquote>
-<p><span style="color:blue"><em>我想这个过程应该是发生图形管线渲染的第一个阶段，是顶点数据和顶点着色器如何对接？就是依靠CPU发送到显卡上</em> </span><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">GLuint VBO;</span><br><span class="line">glGenBuffer(<span class="number">1</span>, &amp;VBO);           <span class="comment">// 创建</span></span><br><span class="line"><span class="comment">// 把顶点数组复制到缓存中提供OpenGL使用</span></span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure></p>
-<h2 id="索引缓冲对象-EBO"><a href="#索引缓冲对象-EBO" class="headerlink" title="索引缓冲对象(EBO)"></a><strong>索引缓冲对象(EBO)</strong></h2><p>可以创建不同的索引数组，而使用同一个顶点数组。如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> indices[] = &#123; <span class="comment">// 注意索引从0开始! </span></span><br><span class="line">    <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="comment">// 第一个三角形</span></span><br><span class="line">    <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>  <span class="comment">// 第二个三角形</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">GLuint EBO;</span><br><span class="line">glGenBuffer(<span class="number">1</span>, &amp;EBO);                <span class="comment">// 创建</span></span><br><span class="line"><span class="comment">// 把顶点索引复制到缓存中提供OpenGL使用</span></span><br><span class="line">glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);</span><br><span class="line">glBufferData(GL_ELEMENT_ARRAY_BUFFER, <span class="keyword">sizeof</span>(indices), indices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
-<h2 id="设置顶点属性"><a href="#设置顶点属性" class="headerlink" title="设置顶点属性"></a><strong>设置顶点属性</strong></h2><p><img src="/images/vertex_attribute_pointer.png" alt="vertex_attribute_pointer">    </p>
-<blockquote>
-<ul>
-<li>位置数据被储存为32位(4字节)浮点值 =&gt; siezeof(flaot) = 4 types = 32bits</li>
-<li>每个位置包含3个这样的值</li>
-<li>没有空隙, 紧密排列。</li>
-<li>数据中的第一个值再缓冲开始位置。</li>
-</ul>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), (<span class="keyword">void</span>*)<span class="number">0</span>);</span><br><span class="line">glEnableVertexattribArray(<span class="number">0</span>);    <span class="comment">// 开启位置为0的顶点属性</span></span><br></pre></td></tr></table></figure>
-<p><strong>glVertexAttribPointer参数</strong></p>
-<blockquote>
-<p>1, 要配置的顶点属性的位置值。输入的参数顶点属性的位置值。还记得之前的 <span style="color:red"><strong>layout (location=0) in vec3 xx</strong></span> 吗？<br>2, 顶点属性的大小。 vec3 =&gt; 3个值组成<br>3, 指定数据类型。 (GLSL中vec*都是由浮点数值组成的)<br>4, 是否被标准化。 GL_TRUE代表是，所有数据(对有符号数据是-1)映射到0到1之间;<br>5, 步长，这个参数的意思简单说就是从这个属性第二次出现的地方到整个数组0位置之间有多少字节。因为是紧密排列设置成0也可以，OpenGL自己会设置。</p>
-<ol>
-<li>偏移量。位置数据在数组开头就设置成0</li>
-</ol>
-</blockquote>
-<p>顶点属性默认是禁用的，要用glEnableVertexAttribArray函数开启。<br>输入的参数顶点属性的位置值。<span style="color:red"><strong>layout (location=0) in vec3 xx</strong></span> </p>
-<h2 id="绘制图元"><a href="#绘制图元" class="headerlink" title="绘制图元"></a>绘制图元</h2><p><code>在主循环内部绘制图元。</code></p>
-<p>1, 激活程序对象<br>2, 绑定缓存对象<br>3, 绘制<br>4, 解绑缓存对象</p>
-<p><strong>绘制两种方式：</strong><br>glDrawArrays();</p>
-<blockquote>
-<ul>
-<li>使用当前绑定的顶点缓存对象进行绘制<br>glDrawElements()</li>
-<li>使用当前绑定的索引缓冲对象中的索引进行绘制</li>
-</ul>
-</blockquote>
-<p>第一种，<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 激活程序对象</span></span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line"><span class="comment">// 绑定顶点数组对象</span></span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的顶点缓存对象进行绘制</span></span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// 解绑缓存对象</span></span><br><span class="line">glBindVertArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<p>第二种,<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 激活程序对象</span></span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line"><span class="comment">// 绑定顶点数组对象 </span></span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line"><span class="comment">// 使用当前绑定的索引缓冲对象中的索引进行绘制</span></span><br><span class="line">glDrawElements(GL_TRIANGLES, <span class="number">6</span>, GL_UNSIGNED_INT, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// 解绑缓存对象</span></span><br><span class="line">glBindVertArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<p><span style="color:blue"><em>VAO有种结合VBO+EBO的意思</em></span><br><strong>再回顾一遍它的存储内容</strong>:</p>
-<blockquote>
-<ul>
-<li>glEnableVertexAttribArray和glDisableVertexAttribArray的调用。</li>
-<li>通过glVertexAttribPointer设置的顶点属性配置。</li>
-<li>通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。</li>
-</ul>
-</blockquote>
-<p><code>退出循环后删除对象，释放缓存</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glDeleteVertexArray(<span class="number">1</span>, &amp;VAO);</span><br><span class="line">glDeleteBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">glDeleteBuffers(<span class="number">1</span>, &amp;EBO);</span><br></pre></td></tr></table></figure></p>
-<hr>
-<h1 id="课后练习"><a href="#课后练习" class="headerlink" title="课后练习"></a>课后练习</h1><p>实现完成一个三角形/矩形的绘制后，对很多问题不是很清楚。如，</p>
-<blockquote>
-<p>1, 索引缓冲对象EBO绘制和顶点缓冲绘制VBO的区别和联系？<br>2, 顶点着色器和片段着色器之间的关系？<br>3, 设置顶点属性glVertexAttribPointer();函数的几个参数并不理解？</p>
-</blockquote>
-<h2 id="1-添加加更多顶点到数据中，使用glDrawArrays，尝试绘制两个彼此相连的三角形"><a href="#1-添加加更多顶点到数据中，使用glDrawArrays，尝试绘制两个彼此相连的三角形" class="headerlink" title="1. 添加加更多顶点到数据中，使用glDrawArrays，尝试绘制两个彼此相连的三角形"></a><strong>1. 添加加更多顶点到数据中，使用glDrawArrays，尝试绘制两个彼此相连的三角形</strong></h2><p><strong>glDrawArrays();</strong><br>根据数组数据中渲染图元,可以指定渲染图元的类型，给定第一个索引和绘制点的个数，从而确定哪些点被绘制。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 先设置顶点数组</span></span><br><span class="line">GLfloat vertices[] = &#123;</span><br><span class="line">    <span class="comment">// 第一个triangle</span></span><br><span class="line">    <span class="number">0.5f</span>,   <span class="number">0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右上角</span></span><br><span class="line">    <span class="number">0.5f</span>,  <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右下角</span></span><br><span class="line">    <span class="number">0.0f</span>,   <span class="number">0.0f</span>, <span class="number">0.0f</span>,    <span class="comment">// 连接处</span></span><br><span class="line">    <span class="comment">// 第二个triangle</span></span><br><span class="line">    <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左下角</span></span><br><span class="line">    <span class="number">-0.5f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左上角</span></span><br><span class="line">    <span class="number">0.0f</span>,   <span class="number">0.0f</span>, <span class="number">0.0f</span>     <span class="comment">// 连接处</span></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 激活程序对象</span></span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">6</span>);  <span class="comment">// 从顶点数组索引0开始依次绘制6个顶点</span></span><br></pre></td></tr></table></figure>
-<p><strong>glDrawElements();</strong><br>根据索引的数组数据渲染图元，可以指定渲染图元的类型，给定一个数量，索引的类型以及指向索引的指针</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 顶点输入</span></span><br><span class="line">GLfloat vertices[] = &#123;</span><br><span class="line">  <span class="number">0.5f</span>,   <span class="number">0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右上角</span></span><br><span class="line">  <span class="number">0.5f</span>,  <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右下角</span></span><br><span class="line">  <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左下角</span></span><br><span class="line">  <span class="number">-0.5f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span>     <span class="comment">// 左上角</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">GLuint indices[] = &#123;     <span class="comment">// 索引从0开始</span></span><br><span class="line">  <span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>,               <span class="comment">// 第一个三角形</span></span><br><span class="line">  <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>                <span class="comment">// 第二个三角形</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>还需要在绑定VAO后绑定VBO和EBO<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 激活程序对象</span></span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glBindVertexArray(VAO);</span><br><span class="line">glDrawElements(GL_TRIANGLES, <span class="number">6</span>, GL_UNSIGNED_INT, <span class="number">0</span>)  <span class="comment">// 索引数组绘制6个顶点</span></span><br></pre></td></tr></table></figure>
-<p><span style="color:blue"><em>这里并没有给出索引数组的指针，我估计是绑定VAO后，Draw函数调用会从上下文获得这个指针。不知道这个猜想是否正确。</em></span></p>
-<p><a href="https://github.com/timtingwei/LearnOpenGL/blob/master/src/1.getting_started/2.3.hello_triangle_exercise1/hello_triangle_exercise1.cpp" target="_blank" rel="noopener">练习1源码 - github</a></p>
-<hr>
-<h2 id="2-创建相同的两个三角形，但对它们的数据使用不同的VAO和VBO"><a href="#2-创建相同的两个三角形，但对它们的数据使用不同的VAO和VBO" class="headerlink" title="2. 创建相同的两个三角形，但对它们的数据使用不同的VAO和VBO"></a><strong>2. 创建相同的两个三角形，但对它们的数据使用不同的VAO和VBO</strong></h2><p>// 不同VAO和VBO的ID各自放在同一个数组中，可以以数组创建，但需要单独绑定，复制缓存，设置顶点属性，以及单独绘制。</p>
-<p><strong>glGenBuffers</strong>(GLsizei n,<br>                GLuint<em> buffers);<br>生成缓存对象的名字，输入缓存名字的数量n以及缓存对象名字存在的数组，返回n个缓存对象名字在<em>*Buffers</em></em>中。直到调用glBindBuffer()，生成的缓存名字才和某一缓存对象绑定在一起。</p>
-<p><strong>glGenVertexArrays</strong>(GLsizei n,<br>                      GLuint* arrays);<br>返回n个顶点数组对象名字，存储到arrays指针中。</p>
-<p><strong>glBindBuffer(GLenum target,<br>               GLuint buffer);</strong><br>绑定一个已经命名的缓存对象。</p>
-<p><em>target</em><br><code>----------------------------------------------------------</code><br><code>GL_ARRAY_BUFFER</code>            |     顶点属性<br><code>GL_ELEMENT_ARRAY_BUFFER</code>    |     顶点数组索引<br><code>GL_TEXTURE_BUFFER</code>          |     纹理数据缓存<br><code>GL_UNIFORM_BUFFER</code>          |     Uniform块存储<br><code>----------------------------------------------------------</code></p>
-<p><em>buffer</em><br>    缓存对象的名字</p>
-<p><strong>glBindVertexArray</strong>(GLuint array);<br>用名字array绑定一个顶点数组对象。array是从之前glGenVertexArrays()返回的，或者是0意味着接触当前的绑定。</p>
-<p><strong>glBufferData</strong>(GLenum target<br>                 GLsizeiptr size<br>                 const GLvoid * data<br>                 GLenum usage);<br>创建或者初始化一个缓冲对象的数据的储存。</p>
-<p><em>target</em><br>     这里是GL_ARRAY_BUFFER</p>
-<p><em>size</em><br>   新建的缓冲对象大小，以字节(type)类型表示，可以使用sizeof(data)得到</p>
-<p><em>data</em><br>   用于拷贝和初始化新的data对象的，指向data的指针，如果是NULL的话，没有数据被拷贝</p>
-<p><em>usage</em><br>    储存好的数据的使用模式。 <code>GL_STREAM_DRAW, GL_STREAM_READ, GL_STREAM_COPY, GL_STATIC_DRAW, GL_STATIC_READ, GL_STATIC_COPY, GL_DYNAMIC_DRAW, GL_DYNAMIC_READ, or GL_DYNAMIC_COPY</code>有这么几种。这里只用于静态绘制</p>
-<p><strong>glVertexAttribPointer</strong>(GLuint index,<br>                      GLint size,<br>                       GLenum type,<br>                       GLboolean normalized,<br>                       GLsizei stride,<br>                       const GLvoid * pointer);<br>上面有所解释。现在就够用了。</p>
-<p><strong>glEnableVertexAttribArray</strong>(GLuint index);<br>启用设置好的顶点属性数组，<br><em>glDisableVertexAttribArray</em>(GLuint index);<br>关闭</p>
-<p><em>index</em><br>   顶点属性的序号，即位置的序号。与顶点着色器的(location=n)相关.</p>
-<p><strong>glBindVertexArray</strong>();<br>用名字array绑定一个顶点数组对象。array是从之前glGenVertexArrays()返回的，或者是0意味着接触当前的绑定。</p>
-<p><strong>glDrawArrays</strong>(GLenum mode,<br>               GLint first,<br>               GLsizei count);<br>练习1中已经出现过，调用之前先要绑定Array;<br>根据数组数据中渲染图元,可以指定渲染图元的类型，给定第一个索引和绘制点的个数，从而确定哪些点被绘制。</p>
-<p>代码实现如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 输入两个三角形各自的顶点数组</span></span><br><span class="line">GLfloat firstTriangleVertices[] = &#123;</span><br><span class="line">  <span class="comment">// 第一个triangle</span></span><br><span class="line">  <span class="number">0.5f</span>,   <span class="number">0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右上角</span></span><br><span class="line">  <span class="number">0.1f</span>,  <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 右下角</span></span><br><span class="line">  <span class="number">-0.5f</span>,  <span class="number">0.3f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左下角</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">GLfloat secondTriangleVertices[] = &#123;</span><br><span class="line">  <span class="comment">// 第二个triangle</span></span><br><span class="line">  <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左下角</span></span><br><span class="line">  <span class="number">-0.1f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span>,    <span class="comment">// 左上角</span></span><br><span class="line">  <span class="number">0.5f</span>,  <span class="number">-0.3f</span>, <span class="number">0.0f</span>     <span class="comment">// 右下角</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>1, 共同以VAOs和VBOs以数组创建<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">GLuint VBOs[<span class="number">2</span>], VAOs[<span class="number">2</span>];</span><br><span class="line">glGenBuffers(<span class="number">2</span>, VAOs);</span><br><span class="line">glGenVertexArrays(<span class="number">2</span>, VAOs);</span><br></pre></td></tr></table></figure></p>
-<p>2, 单独绑定, 复制, 设置顶点属性<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glBindVertexArray(VAOs[<span class="number">0</span>]);</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBOs[<span class="number">0</span>]);</span><br><span class="line">glBufferData(GL_GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(firstTriangleVertices),</span><br><span class="line">               firstTriangleVertices, GL_STATIC_DRAW);</span><br><span class="line">glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE,</span><br><span class="line">                        <span class="number">3</span> * <span class="keyword">sizeof</span>(GLfloat), (GLvoid*)<span class="number">0</span>);</span><br><span class="line">glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同理VAOs[1], VBOs[1]..</span></span><br><span class="line">glBindVertexArray(VAOs[<span class="number">1</span>]);</span><br><span class="line">glBindBuffer(GL_ARRAY_BUFFER, VBOs[<span class="number">1</span>]);</span><br><span class="line">glBufferData(GL_GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(secondTriangleVertices),</span><br><span class="line">               secondTriangleVertices, GL_STATIC_DRAW);</span><br><span class="line">glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE,</span><br><span class="line">                        <span class="number">3</span> * <span class="keyword">sizeof</span>(GLfloat), (GLvoid*)<span class="number">0</span>);</span><br><span class="line">glEnableVertexAttribArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<p>3, 单独绘制<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ==========firstTriangle=========</span></span><br><span class="line">glUseProgram(shaderProgram);</span><br><span class="line">glBindVertexArray(VAOs[<span class="number">0</span>]);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line"><span class="comment">// ==========secondTriangle========</span></span><br><span class="line">glBindVertexArray(VAOs[<span class="number">1</span>]);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br><span class="line">glBindVertexArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/timtingwei/LearnOpenGL/tree/master/src/1.getting_started/2.4.hello_triangle_exercise2" target="_blank" rel="noopener">练习2源码</a></p>
-<h2 id="3-创建两个着色器程序，第二个程序使用一个不同的片段着色器，输出黄色；再次绘制这两个三角形，让其中一个输出为黄色"><a href="#3-创建两个着色器程序，第二个程序使用一个不同的片段着色器，输出黄色；再次绘制这两个三角形，让其中一个输出为黄色" class="headerlink" title="3.创建两个着色器程序，第二个程序使用一个不同的片段着色器，输出黄色；再次绘制这两个三角形，让其中一个输出为黄色"></a><strong>3.创建两个着色器程序，第二个程序使用一个不同的片段着色器，输出黄色；再次绘制这两个三角形，让其中一个输出为黄色</strong></h2><p>之前提出了一个问题，顶点着色器和片段着色器之间的关系？在这个练习中，有所涉及。</p>
-<p>// 放在同一个数组中，但需要各自绑定和各自绘制， 也可以匹配不同的顶点数组<br>// 注意：片段着色器不能放在数组里。<br>// 顶点着色器，片段着色器attach+link成program, 着色器需要创建，绑定源码，编译，检查编译四个步骤。</p>
-<p>1, GLSL编写橙色和黄色着色器代码<br>2，分别附着，编译，检查着色器，并attach到不同的program<br>3, 用不同的program进行draw</p>
-<p><strong>1, GLSL编写橙色和黄色着色器代码</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 片段着色器0</span></span><br><span class="line"><span class="keyword">const</span> GLchar* fragmentShaderSource0 = <span class="string">"#version 330 core\n"</span></span><br><span class="line">    <span class="string">"out vec4 color;\n"</span></span><br><span class="line">    <span class="string">"void main() &#123;\n"</span></span><br><span class="line">    <span class="string">"color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"</span>   <span class="comment">// orange</span></span><br><span class="line">    <span class="string">"&#125;\n\0"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 片段着色器1</span></span><br><span class="line"><span class="keyword">const</span> GLchar* fragmentShaderSource1 = <span class="string">"#version 330 core\n"</span></span><br><span class="line">    <span class="string">"out vec4 color;\n"</span></span><br><span class="line">    <span class="string">"void main() &#123;\n"</span></span><br><span class="line">    <span class="string">"color = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"</span>   <span class="comment">// yellow</span></span><br><span class="line">    <span class="string">"&#125;\n\0"</span>;</span><br></pre></td></tr></table></figure></p>
-<p><strong>2，分别附着，编译，检查着色器，并attach到不同的program</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建片段着色器</span></span><br><span class="line">  GLuint fragmentShaderOrange;</span><br><span class="line">  GLuint fragmentShaderYellow;</span><br><span class="line">  GLuint shaderProgramOrange;</span><br><span class="line">  GLuint shaderProgramYellow;</span><br><span class="line">  fragmentShaderOrange = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line">  fragmentShaderYellow = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line">  shaderProgramOrange = glCreateProgram();</span><br><span class="line">  shaderProgramYellow = glCreateProgram();</span><br><span class="line">  <span class="comment">// ===========编译第一个片段着色器===================</span></span><br><span class="line">  <span class="comment">// 源码附加到着色器对象上</span></span><br><span class="line">  glShaderSource(fragmentShaderOrange, <span class="number">1</span>, &amp;fragmentShaderSource0, <span class="literal">NULL</span>);</span><br><span class="line">  glCompileShader(fragmentShaderOrange);</span><br><span class="line">  <span class="comment">// 检测glComplieShader是否编译成功</span></span><br><span class="line">  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ===========编译第二个片段黄色着色器===================</span></span><br><span class="line">  <span class="comment">// 源码附加到着色器对象上</span></span><br><span class="line">  glShaderSource(fragmentShaderYellow, <span class="number">1</span>, &amp;fragmentShaderSource1, <span class="literal">NULL</span>);</span><br><span class="line">  glCompileShader(fragmentShaderYellow);</span><br><span class="line">  <span class="comment">// 检测glComplieShader是否编译成功</span></span><br><span class="line">  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 把两个着色器对象链接到用来渲染的两个着色程序中</span></span><br><span class="line">  glAttachShader(shaderProgramOrange, vertexShader);</span><br><span class="line">  <span class="comment">// =====连接第一个片段着色器=====</span></span><br><span class="line">  glAttachShader(shaderProgramOrange, fragmentShaderOrange);</span><br><span class="line">  glLinkProgram(shaderProgramOrange);</span><br><span class="line">  glGetProgramiv(shaderProgramOrange, GL_LINK_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetProgramInfoLog(shaderProgramOrange, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PROGRAM::LINKING_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// =====连接第二个片段着色器=====</span></span><br><span class="line">  glAttachShader(shaderProgramYellow, vertexShader);</span><br><span class="line">  glAttachShader(shaderProgramYellow, fragmentShaderYellow);</span><br><span class="line">  glLinkProgram(shaderProgramYellow);</span><br><span class="line">  glGetProgramiv(shaderProgramYellow, GL_LINK_STATUS, &amp;success);</span><br><span class="line">  <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">    glGetProgramInfoLog(shaderProgramYellow, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PROGRAM::LINKING_FAILED\n"</span></span><br><span class="line">              &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 删除着色器</span></span><br><span class="line">  glDeleteShader(vertexShader);</span><br><span class="line">  glDeleteShader(fragmentShaderOrange);</span><br><span class="line">  glDeleteShader(fragmentShaderYellow);</span><br></pre></td></tr></table></figure></p>
-<p><strong>3, 用不同的program进行draw</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// =====激活程序对象绘制第一个triangle======</span></span><br><span class="line">glUseProgram(shaderProgramOrange);      <span class="comment">// 使用第一个片段着色器连接的program</span></span><br><span class="line">glBindVertexArray(VAOs[<span class="number">0</span>]);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);  <span class="comment">// 从索引0开始依次绘制3个顶点</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// =====激活程序对象绘制第二个triangle======</span></span><br><span class="line">glUseProgram(shaderProgramYellow);      <span class="comment">// 使用第二个片段着色器连接的program</span></span><br><span class="line">glBindVertexArray(VAOs[<span class="number">1</span>]);</span><br><span class="line">glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);  <span class="comment">// 从索引0开始依次绘制3个顶点</span></span><br></pre></td></tr></table></figure></p>
-<p><a href="https://github.com/timtingwei/LearnOpenGL/tree/master/src/1.getting_started/2.5.hello_triangle_exercise3" target="_blank" rel="noopener">练习3源码</a></p>
-<p>=======</p>
-<p>refwebsite:<br><a href="https://learnopengl-cn.github.io/01%20Getting%20started/04%20Hello%20Triangle/" target="_blank" rel="noopener">你好三角形 - learnopengl-CN</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/24/how-to-learn-program/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/24/how-to-learn-program/" itemprop="url">(转载)谈编程语言</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-24T13:26:19+08:00">
-                2017-12-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>文章目录</strong><br><a href="#Bruce-Eckel：编程生涯">Bruce Eckel：编程生涯</a><br><a href="#Peter-Norvig：十年学会编程">Peter Norvig：十年学会编程</a></p>
-<p>转载自<a href="https://program-think.blogspot.com/2012/05/weekly-share-5.html" target="_blank" rel="noopener">编程随想 - program think</a>整理的， 关于编程的心态定位和实践方法的文章，比较经典， 对我有所启发的两篇。</p>
-<hr>
-<h1 id="Bruce-Eckel：编程生涯"><a href="#Bruce-Eckel：编程生涯" class="headerlink" title="Bruce Eckel：编程生涯"></a>Bruce Eckel：编程生涯</h1><p>作者 Bruce Eckel 是编程界的大牛，著有大名鼎鼎的《Thinking in C++》和《Thinking in Java》。<br>本文是他对程序员（尤其是新手）的忠告。</p>
-<p>================================</p>
-<p>大家总是问一个错误的问题：“我应该学习C++还是Java？”在本文中，我将告诉大伙儿：对于选择编程生涯真正需要关注的是哪些问题。</p>
-<p>请注意，这篇文章的目标读者并不是那些已经做出自己选择的人。（对于这些人而言）你会继续自己的编程生涯，而不管别人会怎么说。因为它已经渗透到你的血液中，你已经无法摆脱。你已经知道答案：C++、Java、Shell脚本、Python、还有其它一大堆的语言和技术，你都理所当然地会去学习。甚至有可能你才仅仅14岁，就已经知道好几种不同的语言。</p>
-<p>问我这样的问题的人可能来自其他行业，或者来自诸如Web开发之类的领域。他们知道HTML是一种类编程语言，而且想尝试构建某些更大型的应用。但我特别希望，当你在问这个问题时，你已经意识到了想要在计算机领域取得成功，你需要掌握自学能力，而且永不停息。</p>
-<p><strong>在这个领域做得越多，我越觉得软件开发比任何行业都更接近于写作。</strong> 我们从来不知道是什么造就了优秀的作者，我们只知道什么时候我们会喜欢某个人的文字。编程不是一种工程，仅需要把东西从入口倒进去，然后再转动手柄。把软件开发看成确定性的，是一个诱人的想法。因为这个想法，人们总想搞出一些工具来帮我们开发出想要的软件。但是我的经验告诉我，事实并非如此——人的重要性远高于流程。而软件是否运行在一部精确的机器上已经越来越不重要了——这犹如测不准原理对人类的影响。</p>
-<p>我的父亲是造房子的，小时候我偶尔会帮忙打下手，放放砖块之类。他和他的木工告诉我，他们是为我好才让我干这些活——这样我就不至于走入这个行业。事实确实是这样。</p>
-<p>我们不妨把软件开发比作盖房子。造房子的人当然不可能完全一样。这些人里面有：混凝土工、屋顶工、管道工、电工、砖瓦工、水泥工、瓦片工、搬运工、粗木工、细木工。当然，还有工头。每个工种都需要相应的技能，这些技能都需要花时间和精力去掌握。<strong>跟软件开发一样，造房子也是一个“建立/推翻”的过程。如果你想很快地获得回报，你可能从搬运工和砖瓦工开始做，这样的话，你无需太多的学习曲线就可以获得回报。当需求很多时，你的工作会很稳固，甚至收入也可能提升——如果没有足够的人手的话。但是，一旦行情不妙，木匠甚至工头就可能把砖瓦工一脚踢开。</strong></p>
-<p>当互联网刚刚兴起时，仅仅是花一点时间学习HTML，你就可以得到一份薪水丰厚的工作。但是当形势惨淡时，对于技能的要求更高了——HTML程序员（就像搬运工和砖瓦工一样）第一个被抛弃了，而拥有更高技能的程序员则留了下来。</p>
-<p>我想说的是： <strong>除非你准备活到老学到老，不然的话，不要进入这个行业！编程看起来似乎是一个高收入而又稳定的工作。但要做到这一点，唯一的途径是：始终让自己更有价值。</strong></p>
-<p>当然，你总能找到例外。总有那么一些人，仅仅学了一门编程语言，就可以胜任留在一个岗位上，而不需要增长他的技能。但他们只是幸免于难而已，他们最终无疑是很脆弱的。为了不让自己变得脆弱，你需要持续的提高自己，通过阅读、加入用户组、参加研讨会…… 你学得越深入，你就越有价值，也就意味着你有更好的职业前景，可以配得上更高的薪水。</p>
-<p><strong>另一个方法是：先大致了解这个领域，找到最适合你的地方。</strong>打个比方：我的兄弟对软件很感兴趣，也入了这行，只不过他的工作是安装、维修、升级电脑。他总是一丝不苟，所以当他把电脑搞好，一定会很完美——不光是软件，连电线都会被仔细地捆好。他总是生意兴隆，远超出他的精力所能及。他甚至都不用担心 .com 泡沫的崩溃。显然他的饭碗不容易被抢走。</p>
-<p>我在高校里待了很久，甚至还在UCLA（加州大学洛杉矶分校）进修博士学位，后来又幸运地终止了。我说“幸运”是因为我不再喜欢呆在学校，而我之前在高校待了那么久，只是因为我很享受它。但我所享受的，基本上是不务正业的东西——艺术和舞蹈课，在校报工作，还有一小撮计算机课程（之所以说计算机课程“不务正业”，是因为我本科是物理专业，研究生才是计算机专业）。虽然我在学术上远谈不上卓越（有意思的是很多当时也许不会接受我这个学生的学校现在却用我的书做教材）。我真的很享受作为学生的日子，当我完成博士课程，也许会以一个教授的身份终老一生。</p>
-<p>但就如现在看到的，我在学校里最大的收获恰恰来自我那些“不务正业”的课程，它们拓展了我的思维，使之超越了“我们已经知道的东西”。<strong>在计算机领域中，你总是为某种目标而编程。你对目标了解得越多，你就做得越好。我遇到过一些欧洲的研究生，他们需要结合其它专业领域来搞编程，他们的论文需要解决这个专业领域的特定的问题。</strong></p>
-<p>了解编程之外的领域，将会极大得提高你解决问题的能力 （就如同多学几种编程语言将极大地提高你的编程技能）。很多时候，我发现仅仅学习计算机专业的学生，比那些（除了计算机之外）拥有其它背景的学生，在思维上有更多的局限性。因为后者有着更严谨的思维，也不那么容易想当然。</p>
-<p>有一次我组织了一次会议，其中一个议题是：理想的应聘者有哪些特征：<br>◇把学习当成生活方式。比如：你应该知道不止一种语言，没有什么比学习一门新语言更能让你开阔眼界了。</p>
-<blockquote>
-<ul>
-<li>知道如何获取知识</li>
-<li>Study prior art</li>
-<li>善用工具</li>
-<li>学会把事情简化</li>
-<li>理解业务</li>
-<li><strong>为自己的错误负责。“我就是这样的”是不能接受的托词。能找到自己的失误。</strong></li>
-<li>成为一个领导者，善于沟通和激励。</li>
-<li>搞清楚你在为谁服务</li>
-<li><strong>没有绝对正确的答案（更好的方法总是存在的）。展示并讨论你的代码，不要带着感情因素——你的代码并不等于你本人。</strong></li>
-<li><strong>明白完美是渐进的</strong></li>
-</ul>
-</blockquote>
-<p>适当尝试一些冒险——尤其是能令人感到害怕的冒险。当你尝试之后，将体会到出乎意料的兴奋。（在冒险的过程中）最好不要刻意去计划某个特定的结果。当你过于注重结果，你往往会错过那些真正有价值的问题。我的冒险往往是这样开始的——“我们先做些试验，看看它会把我们带到什么地方”。</p>
-<p>或许某些人会对我的回答感到失望，并回复我说：“是的，这很有趣也很有用。但我到底应该学什么？C++还是Java？” 我再重复一次：并不是所有的问题都有一个唯一的简单的答案。<strong>问题的关键不在于选择某个编程语言，然后掌握之。问题的关键在于：持续学习，并且很多时候，有不止一个选择。</strong> 相信我所说的，你的生活会更精彩！</p>
-<p>原文出处：<br><a href="http://www.artima.com/weblogs/viewpost.jsp?thread=259358" target="_blank" rel="noopener">http://www.artima.com/weblogs/viewpost.jsp?thread=259358</a></p>
-<hr>
-<h1 id="Peter-Norvig：十年学会编程"><a href="#Peter-Norvig：十年学会编程" class="headerlink" title="Peter Norvig：十年学会编程"></a>Peter Norvig：十年学会编程</h1><p>作者 Peter Norvig 是计算机科学家，Google 的研究总监。<br>在本文中，Peter Norvig会告诉你：为什么急功近利地学习软件开发技术是没效果滴？</p>
-<p>================================</p>
-<h2 id="为啥都想速成？"><a href="#为啥都想速成？" class="headerlink" title="为啥都想速成？"></a>为啥都想速成？</h2><p>随便逛一下书店，你会看到《7天自学Java》等诸如此类的N天甚至N小时学习Visual Basic、Windows、Internet的书。我用亚马逊网站的搜索功能，出版年份选1992年以后，书名关键词是：“天”、“自学”、“教你”，查到248个结果，前78个是计算机类图书，第79个是《30天学孟加拉语》。我用“天”换成“小时”，结果更惊人，有多达253本书，前77本是计算机图书，第78是《24小时自学语法句式》。在前200名中，96%是计算机的书。</p>
-<p>结论就是：要么人们急于学习电脑，要么计算机比其他东西学起来要异常简单。没有任何书是关于几天学习贝多芬或量子物理的，甚至连犬类装扮都没有。费雷森（Felleisen）等人在其著作《如何设计程序》中同意这个趋势，其中提到：“坏设计很简单，笨蛋才用21天学，尽管他们还是真傻。”</p>
-<p>让我们看看《三日学会C++》这个书名意味着什么：</p>
-<p>◇学习：<br><strong>三天内你可能没有时间写出有意义的程序，或者从中积累经验。</strong>你不可能有时间去跟职业编程者一起去理解在C++环境下的状况。简而言之，你没有充足的时间学很多。所以这本书只能说肤浅的知识。正如亚历山大·波普（Alexander Pope）所言：一知半解是很危险的。</p>
-<p>◇C++：<br><strong>三天内你可能学会C++的句法（如果你已经了解其他的语言），但你还不会使用它。</strong>打个比方，假如你是个Basic程序员，你可能写出Basic风格的C++程序，而无法理解C++的真实好处。那要点是什么？艾伦·佩里斯(Alan Perlis)曾经说过：“一门不能影响你编程观点的语言不足学的。”有可能你学了一点点C++（或者诸如Javascript、Flex之类），因为你需要和现成的工具接口以完成手头的任务。这种情况下，你不是在学习如何编程，只是在学习如何完成任务。</p>
-<p>◇三日：<br>不幸地是，这远远不够，下一部分会详细讲。</p>
-<h2 id="如何用十年掌握编程"><a href="#如何用十年掌握编程" class="headerlink" title="如何用十年掌握编程"></a>如何用十年掌握编程</h2><p>研究人员（Bloom (1985), Bryan &amp; Harter (1899), Hayes (1989), Simmon &amp; Chase (1973)）得出结论：<strong>想要在诸多领域达到职业水平需要十年，比如国际象棋，作曲，电报操作，绘画，弹钢琴，游泳，网球以及神经心理学和拓扑学的研究。关键是精心练习，只是一遍一遍地重复是不够的，必须挑战恰好超越你能限的事情，尝试并思考你的表现，并自我矫正。周而复始。这并无捷径！</strong>4岁的音乐奇才莫扎特用了13年才能创作世界级的音乐。另外，披头士乐队似乎在1964年的埃德·苏利文（ Ed Sullivan show）演出中一炮而红，但是他们自从1957年就在利物浦和汉堡的酒吧演出，在取得广泛关注后，第一部重量级作品《佩珀军士》（Sgt. Peppers）是在1967年发行。马尔科姆·格拉德威尔（Malcolm Gladwell）撰文描述了一项针对柏林音乐学院学生的研究，他们被分为尖子，中等和不足三类，并被问到他们练琴的情况：<br>所有三组中的人，开始学琴的年龄大概相差无几，五岁左右。在刚开始的几年，所有人练习量也差不多，一周两三个小时。自八岁开始，实质性变化就有了。那些精英学生开始比其他人练习更多：九岁的时候一周六个小时，十二岁的时候一周八个小时，十四岁的时候一周十六个小时，一直到二十岁的时候一周要超过三十小时。截止到二十岁，在他们的生涯里已经有总计一万小时练琴。仅仅表现可以的那部分学生加起来是八千小时，那些未来的音乐老师有四千小时。</p>
-<p>所以，更确切地说，一万小时，而非十年，是个神奇之数。萨缪尔·约翰逊（Samuel Johnson, 1709-1784）认为还需更长时间：“卓越乃一生之追求，而非其它”。 乔叟（Chaucer, 1340-1400）抱怨道”the lyf so short, the craft so long to lerne.” （生之有限，学也无涯）。希波克拉底（Hippocrates, c. 400BC）因这句话被世人所知：”ars longa, vita brevis”（译注：拉丁语，意为“艺无尽，生有涯”），更长的版本是 “Ars longa, vita brevis, occasio praeceps, experimentum periculosum, iudicium difficile”，翻译成英文就是 “Life is short, (the) craft long, opportunity fleeting, experiment treacherous, judgment difficult.” （生有涯，艺无尽，机遇瞬逝，践行误导，决断不易）。</p>
-<h2 id="我的编程成功秘笈是："><a href="#我的编程成功秘笈是：" class="headerlink" title="我的编程成功秘笈是："></a>我的编程成功秘笈是：</h2><blockquote>
-<ul>
-<li><p>首先要对编程感兴趣，能从编程中得到乐趣。一定要让它足够有趣，因为你要保持你的兴趣长达十年。</p>
-</li>
-<li><p><strong>与别的程序员交流；阅读别人的代码——这比看任何书或参加培训课都重要。</strong></p>
-</li>
-<li><p>实践。最好的学习乃实践。俗话说：“编程的至高境界一定要通过充分的实践才能达到，而个人的能力可通过不懈努力获得显著提升。” (p. 366) <strong>“最有效率的学习需要明确的目标，适当的难度，知识回馈，并容许重复或修正错误。”</strong> (p. 20-21) 《实践认知：每日的思维、数学及文化》（Cognition in Practice: Mind, Mathematics, and Culture in Everyday Life） 在这方面可做参考。</p>
-</li>
-<li><p>如果你愿意，花四年学习大学课程（或者再加上读研）。这将给你赢得某些工作机会，并给予你在该领域的深层见解。<strong>但如果你不喜欢学校的学习，你同样可以在工作中获得相似的经验。无论如何，单靠书本是远远不够的。</strong>“学习计算机科学不会让你成为编程专家，如同学习绘画和色彩理论不会让你成为画家一样”。这是埃里克·雷蒙德（Eric Raymond）说的，他是《新黑客字典》（The New Hacker’s Dictionary）的作者。我雇用过的最优秀程序员，只有高中文凭。但他开发过许多伟大软件，有自己的新闻组，通过公司认股赚的钱就让他买下了自己的夜店。</p>
-</li>
-<li><p>和其他程序员一起参与工程项目。在某些项目中担当最优秀程序员，在另一些项目中充当最差劲程序员。<strong>充当领头羊的时候，你要测试你领导一项工程的能力，并用你的视野来激发他人；如果在项目组中垫底，就应该学习其它牛人在做些啥，以及他们不喜欢做的（看他们把哪些活让给你做）。</strong></p>
-</li>
-<li><p>继续别人的工程项目。去理解先前程序员写的程序。<strong>学习如何理解并解决先前程序员没有考虑到的问题。思考你的程序该如何设计以便让之后的程序员更容易维护。</strong></p>
-</li>
-<li><p>至少学6种程序语言。其中包括一种支持类抽象的（Java和C++），一种支持函数抽象的（如Lisp或ML），一种支持语义抽象的（Lisp），一种支援声明规范的（如Prolog或C++模板），还有一种支援协程的（Icon或Scheme），另外一种支持并发的（Sisal）。</p>
-</li>
-<li><p>记住，在“计算机科学”里有“计算机”一词。理解计算机执行你的代码的时候花费的时间。比如：从内存中取一个字（考虑有无缓存未命中情形），连续从磁盘读字，或者在磁盘中定位。</p>
-</li>
-<li><p>参加语言标准化工作。这可能是有关 ANSI C++ 委员会，也可能是决定你编码风格是两格缩进或四格缩进。无论如何，你要知道其他人对语言的喜好程度，有时还要想想他们为什么喜欢这样。</p>
-</li>
-<li><p>知道自己应该在何时脱身于语言标准化</p>
-</li>
-</ul>
-</blockquote>
-<p>所有上述这些，很难通过书本的学习来达到。我头一个孩子出生时，我读了所有的“如何做”（How To）系列的书籍，却依然对育婴毫无头绪。30个月后，我第二个孩子出生，我还需要温习一下那些书吗？绝对不！相反，我完全可以参照个人经验，而结果相当有效。这更让我确信：我的经验胜过那些专家们写的上千页文字。</p>
-<p>弗雷德·布鲁克斯（Fred Brooks）在《没有银弹》（No Silver Bullet）一书给出了寻找顶级设计师的三条建议：</p>
-<blockquote>
-<ul>
-<li>尽早系统地识别出顶级设计师。</li>
-<li>分配一个人作为其职业规划的导师。</li>
-<li><strong>给予机遇让成长中的设计师互相磨砺。</strong></li>
-</ul>
-</blockquote>
-<p>此处假定有部分人已经有成为伟大设计师的潜质，你所需的就是要诱导他们。艾伦·佩里斯（Alan Perlis）一针见血地指出：<strong>“假如人人都可以学雕刻，那就得教米开朗基罗如何不去干雕刻。对于伟大程序员，也是如此。”</strong></p>
-<p>所以，简单地买一本Java书，你或许能找到些有用的东西，但绝不会让你在24小时内甚至24天抑或24月内，成为行家里手。</p>
-<p>原文出处：<br><a href="http://norvig.com/21-days.html" target="_blank" rel="noopener">http://norvig.com/21-days.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/essay/a-little-light/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/22/essay/a-little-light/" itemprop="url">冬至的一点光亮</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T23:30:00+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>今日冬至，晒太阳翻了翻&lt;&lt;鸟哥的Linux入门&gt;&gt;，通读了一遍，了解结构为后续学习挑出主次。中午找S交谈OpenGL相关问题，当然不止于此。有几点收获:<br>1, 学习底层知识，少学习容易过时的知识。我引用Quora上得到的回答，对自己目前的状态做一个反思:”Are you good at object-oriented programming? C? The Unix tools? Have you taken discrete math? A course in computer systems?”<br>2, 不轻易做一个计划，做一个计划不轻易放弃。我对什么事情都感兴趣，什么都想玩一玩，但是如果不把一项技术学精，虎头蛇尾，是一种空言壮志的表现。S举例了我从GH, Python, 计算几何, C++, Flask, OpenGL等计划, 当然我知道还有其他, 说明我容易循着一条轨迹向下寻溯。但时未兴，我无法准确判断计划的可靠性。<br>3, 不把当下决定看得太重。对于那些无所事事的人，他们要减少对时间的浪费;对于我，浪费的时间反而有意义的。浪费与否，学习哪条方向, 都是一种经历。不能陷入到对未知的结果的忧虑当中去，要承认对未知的复杂性。<br>4, 捡最近的镜子。满地镜子看花眼睛时候，找最近的镜子。对S来说，数字化的最近镜子是学生；他如此提醒我，想必是要说，我最近的镜子，应该是我的同学和S。但是什么是技术的最近的镜子呢？数据结构，图形，游戏。也许。</p>
-<p>冬至夜， 按照去年留下的习俗， 和朋友约一起煮火锅下水饺和汤圆。吃得也饱，聊得也欢快。</p>
-<p>其他人陆陆续续的去忙别的事情，只剩下X，H和我。话题的起因是老生常谈，女孩。我看上去是个优胜者，他们两个向我请教。给出了一些符合xu逻辑的方法,<br>1, 列出关于学校集体活动的一个list;<br>2, 将每个活动的具体形式考量一遍;<br>3, 加入该活动的方式;<br>4, 可能会出现的几个状况;<br>5, 综合考量后排序挑选前5个活动参加。<br>因为，前前后后也跟X讲了好多次，没有什么实际行动，我想，问题可能出在，我总是讲具体跟女孩的交流方式，其实这是因人而异的，刻意的追求结果未必是好。但作为前馈数据，需要的大概是接触到更多人的环境，让他自己在这个环境中摸爬。希望这大概能够好些。</p>
-<p>聊完这个，便聊第二个老生常谈，但并未透彻的话题，体制。重新思考话题展开的原因相对来说比较有意义，是探索一种启蒙的模型。这个话题能够展开，总得来讲，出于对当下以及未来的困惑，我尝试分开来讲几点原因，<br>1, 计算机科学自下而上的思维模式，撼动原有的自上而下的体系。这其中差异，看上去是从技术角度出发，却渗透到经济，结构，体制，文化，人性等各个方面。<br>2, 怀有对资社的不充分理解和想要探求的心理状态。<br>3, 评论和试图解决遇到的问题，寻求一种生活的模型。</p>
-<p>X先提出了对该体制是否会倒塌的质疑，我觉得这个问题好回答，但也不好回答，确实凭借我的认知还无法解释清楚，能够解释清楚的人大多也都别有用心。我但是从我的数据库中索引出来一些，但凌晨四点睡去醒来后，又作了些思考。</p>
-<p>人一般走上畸路的过程分成几个阶段，先是犯错误，错误带来不良后果，判断他没救的依据是，依旧不改正错误，后果没得到解决。道理是相同的。</p>
-<p>错误性体现在，社会主义相对于资本主义的乌托邦本质。共产主义，当财富是大家共有的时候，谁来决定财富的分配？能够决定分配的人，势必会有权力。如果该掌权者是一个大公无私的，理性智慧的人，大家能够得到平等的分配。这看上去很对，能够实现。但却忽略了一个关键的事实，人性是有阴暗面的，是有私心的。这种私心若是顺其自然的发展，以共同利益为由，是能够孕育出灿烂果实的；有趣的是，但若想消除这种私心，这种私心就被放大了，因为看上去大家都不存在私心了，但消除别人私心的行为本身就是一种私心，说这是私心温和了些，应该说是恶，然而这种恶会被不断的累积和放大，因此，在最高位置上的伟大领袖，或许并非那么伟大。</p>
-<p>那么后果是什么？总体上讲是系统内耗造成的资源短缺。这种框架下，势必一切会向权力看。人们会为了生存而追求利益，而追求利益的竞争在这个情况下，又转变成了为追逐权力而努力竞争。值得一提的是，生存是第一要义。竞争是必要的，但除了竞争之外还有合作；利益是必要的，但除了利益之外还有共同利益；追逐地位是必要的，但地位的来源不是唯一的来自于权力和财富。</p>
-<p>这种追求利益的方式，产生了第一种后果，其实就是系统内耗。拿我熟悉的高等教育举例子，真正想做科研的教授，他势必不想将时间浪费在这一内耗上，但是不进行这种内耗他便得不到科研经费，科研没有开始就已经结束。然而，也许有人会说，教授你只要忍受一下，便可以开始真正的科研，但事实情况是这样:1, 一旦进行了一次这样的内耗，他会找你第二次; 2, 要记住，这是在进行权力的斗争，如果你做的研究是你的上一级无法控制的，他会对你起疑心；如果你的研究是上一级可以控制的，他会把你的研究为他所用作为自己权力斗争的筹码。也就是说，在这种机制的情况下，他是逆向淘汰的，有科研能力的人，被最终的边缘化。</p>
-<p>第二种后果便是，内耗之后，是对系统资源的严重浪费。这个问题在各行各业各个单位普遍都是存在，且按照中共逻辑来说是正常的。权力的斗争中，可不像我在计算机上写代码一样，他有很多区别，但仍然可以用计算机的角度来解释。</p>
-<p>1, 区别在于，建立一个模型，跑一跑数据资源，出错了；重新建立一个模型，再跑一跑。但现实世界中，没人会给我们这个机会。地下水就是地下水，矿产就是矿产，森林就是森林，不多不少就放在这里，终究竭尽。</p>
-<p>2, 用计算机的角度解释就是说， 上述所说的权力斗争，导致创新能力低下，经济对重工业的依赖性强，资源的消耗速度快。也就是，没有优秀的算法，数据结构选择又不合理，内存管理又不做，建立模型后，冗余运算大，结果是消耗了很多资源，却写了个破程序，还要把时间花在无止尽的debug上。之后也会相应解释。</p>
-<p>那么，错误是否被改正？这其实是个相对较伪命题，这个问题上我们翻过很多次跟斗，共党把他们最信任的，工人骗了，学生骗了，农民也骗了。只要认识到乌托邦的本质，就能够得出结论，他不无法被改正的。如果说要从计划经济走向市场经济，原因是有了权力之后就要用权力去换取财富。十年寒窗是为了什么？更何况12年苦读之后，换来的是更鲜艳的红旗。拿建筑学的建模软件来说，如果sketchUp开源底层代码了，那它还是sketchUp吗？还是叫sketchDown?</p>
-<p>后果是否得到解决呢？对应的，当我写错一个程序的时候，我可能会把他扔掉，甚至说从一开始我就应该谨慎设计一个程序，那样就不至于后面一大堆麻烦。 政府官员需要权力斗争的筹码，这些筹码要从白手套，也就是商人那里得到，企业发展势会消耗资源，在资本主义中这种消耗是良性的，因为商人为了自身利益出发，要考虑一种相对长远的发展，商人就会去选择新的技术，投资新的研发，考虑如何合理分配现有资源，因为他们的资本决定了他们的相对自由。然而，在天朝，权力斗争是激烈的，对筹码的欲望是贪婪的，商人是被迫无奈如妓女似的，环境？资源？这种考虑是可能只会是在某个失眠的夜晚发问内心，然而事实上却是不会存在的，而这种对内心的发问，又会用另外一种形式去完成对内心的救赎。只有这种发展不可持续，才会提出可持续发展观。同理，只有在素质低下的国家，才会提出乐于助人般的口号，提出共识，就先不展开了。</p>
-<p>天朝统治者和民众一起，在追求结果的平等的过程中，必然造成了过程的不平等，而统治者享受到了不平等的高点，低点留给民众享受。然而他们真的是在高点了吗？领袖足够了吗？常委们幸福吗？首富们的日子好过吗？共产主义马克思是cancer, 把白的黑的都卷入了这场漩涡中，无法脱身。但是cancer现在有医治手段了吗？上帝会像看着一个犯错的孩子一样看着我们，他终究还是宽容的吧，他会“给岁月以文明，而不是给文明以岁月”的吧，中华民族还要在时间中被消耗迭代，但他终归还是坚强的吧。即使，有的人选择在别人将他逼疯之前先逼疯了自己，但他们还是坚强无比的吧。</p>
-<p>我们很多人不承认，但事实上不得不承认：我们习惯于将现在当作是过去历史的结果，用历史去解释未来，但事实上，现在就是未来的原因。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/git-push-credential/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/22/git-push-credential/" itemprop="url">Git Push免密码设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T08:02:48+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="使用-git-credentials保存验证"><a href="#使用-git-credentials保存验证" class="headerlink" title="使用.git-credentials保存验证"></a><strong>使用.git-credentials保存验证</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ touch .git-credentials</span><br><span class="line">$ emacs .git-credentials</span><br><span class="line">https://&#123;timting***&#125;:&#123;********&#125;@github.com</span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.emacs.d/</span><br><span class="line">$ git push -u origin master</span><br><span class="line">Username <span class="keyword">for</span> <span class="string">'https://github.com'</span>:   C-c C-c</span><br></pre></td></tr></table></figure>
-<p><strong>去掉{}</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ emacs ~/.git-credentials</span><br><span class="line">https://timting***:********@github.com</span><br><span class="line">$ git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ cat ~/.gitconfig</span><br><span class="line">[user]</span><br><span class="line">	email = timtingwei@hotmail.com</span><br><span class="line">	name = timtingwei</span><br><span class="line">[credential]</span><br><span class="line">	helper = store</span><br></pre></td></tr></table></figure>
-<p>现在push不再需要验证。</p>
-<p><strong>但我不希望用文件保存我的密码</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ls -ld .git-credentials</span><br><span class="line">-rw------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ sudo chmod 200 .git-credentials</span><br><span class="line">[sudo] password <span class="keyword">for</span> tim: </span><br><span class="line">tim@htwt:~$ ls -ld .git-credentials</span><br><span class="line">--w------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ git config --global credential.helper store</span><br></pre></td></tr></table></figure>
-<p>重启bash</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tim@htwt:~/.emacs.d$ git push origin master</span><br><span class="line">fatal: unable to open /home/tim/.git-credentials: Permission denied</span><br></pre></td></tr></table></figure>
-<p>=&gt; 修改权限的方法没用, 别人看不到, git也看不到。</p>
-<p>======</p>
-<h2 id="安全性存疑，因此改用设置cache"><a href="#安全性存疑，因此改用设置cache" class="headerlink" title="安全性存疑，因此改用设置cache"></a><strong>安全性存疑，因此改用设置cache</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ rm ~/.git-credentials</span><br></pre></td></tr></table></figure>
-<p>通过设置git的cache的话可以让它记住密码之后自己设置一个cache有效时间 这样也一定程度保证了一些安全性。</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper cache</span><br><span class="line">\<span class="comment"># Set git to use the credential memory cache</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper <span class="string">'cache --timeout=3600'</span></span><br><span class="line">\<span class="comment"># Set the cache to timeout after 1 hour (setting is in seconds)</span></span><br></pre></td></tr></table></figure>
-<p>======</p>
-<p>refwebsite:<br>[1], <a href="https://www.zhihu.com/question/31836445" target="_blank" rel="noopener">https://www.zhihu.com/question/31836445</a><br>[2], <a href="http://www.jianshu.com/p/f54053afecf2" target="_blank" rel="noopener">http://www.jianshu.com/p/f54053afecf2</a><br>[3], <a href="https://help.github.com/articles/caching-your-github-password-in-git/" target="_blank" rel="noopener">https://help.github.com/articles/caching-your-github-password-in-git/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2262,7 +2116,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">87</span>
+                  <span class="site-state-item-count">93</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2275,7 +2129,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-count">69</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
