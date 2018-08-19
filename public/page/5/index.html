@@ -229,6 +229,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1026/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/PAT-basic-1026/" itemprop="url">1026. 程序运行时间（20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:13:58+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1026-程序运行时间-15"><a href="#1026-程序运行时间-15" class="headerlink" title="1026 程序运行时间(15)"></a>1026 程序运行时间(15)</h2><p>要获得一个C语言程序的运行时间，常用的方法是调用头文件time.h，其中提供了clock()函数，可以捕捉从程序开始运行到clock()被调用时所耗费的时间。这个时间单位是clock tick，即“时钟打点”。<br>同时还有一个常数CLK_TCK，给出了机器时钟每秒所走的时钟打点数。<br>于是为了获得一个函数f的运行时间，我们只要</p>
+<p>在调用f之前先调用clock()，获得一个时钟打点数C1；<br>在f执行完成后再调用clock()，获得另一个时钟打点数C2；<br>两次获得的时钟打点数之差(C2-C1)就是f运行所消耗的时钟打点数，<br>再除以常数CLK_TCK，就得到了以秒为单位的运行时间。</p>
+<p>这里不妨简单假设常数CLK_TCK为100。现给定被测函数前后两次获得的时钟打点数，请你给出被测函数运行的时间。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在一行中顺序给出2个整数C1和C2。注意两次获得的时钟打点数肯定不相同，即C1 &lt; C2，并且取值在[0, 10^7^]。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中输出被测函数运行的时间。运行时间必须按照“hh:mm:ss”（即2位的“时:分:秒”）格式输出；不足1秒的时间四舍五入到秒。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>123 4577973</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>12:42:59</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>时分秒转换问题</p>
+<p>根据打点数之差, CLK得到秒, 将秒转化为hh:mm:ss, 三次除以60(错误)<br>case 1通不过.</p>
+<p>清晰的思路: 计算得到总共多少秒, hh:总秒数/3600取整, mm:剩余秒数/60取整, ss:剩余秒数四舍五入</p>
+<p><span style="color:red">这种看似简单的题目, 一旦出现没有预计到的问题, 容易东拼西凑的去完成.<br>因此刷题的时候还是先想清楚算法思路, 再开始动手, 更重要的是要注重数据结构, 别一味的铺张代码</span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">double</span> c1, c2;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lf %lf"</span>, &amp;c1, &amp;c2);</span><br><span class="line">  <span class="keyword">double</span> c = (c2-c1) / <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> h, m, s;</span><br><span class="line">  h = c/<span class="number">3600</span>;</span><br><span class="line">  c = c-h*<span class="number">3600</span>;</span><br><span class="line">  m = c/<span class="number">60</span>;</span><br><span class="line">  c = c-m*<span class="number">60</span>;</span><br><span class="line">  s = <span class="built_in">floor</span>(c+<span class="number">0.5</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%02d:%02d:%02d\n"</span>, h, m, s);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也贴一下, 之前错误的版本。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">int</span> tm[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> CT = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">double</span> c1, c2;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lf %lf"</span>, &amp;c1, &amp;c2);</span><br><span class="line">  <span class="keyword">double</span> s = (c2 - c1) / CT;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">int</span> hh, mm, ss;</span><br><span class="line">  hh = s/<span class="number">3600</span>;</span><br><span class="line">  mm = (s/<span class="number">3600</span>-hh)*<span class="number">3600</span>/<span class="number">60</span>;</span><br><span class="line">  ss = <span class="built_in">floor</span>(((s/<span class="number">3600</span>-hh)*<span class="number">3600</span>/<span class="number">60</span> - mm) * <span class="number">60</span> + <span class="number">0.5</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%02d:%02d:%02d\n"</span>, hh, mm, ss);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1024/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1832,183 +1964,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/04/archi-structure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/04/archi-structure/" itemprop="url">建筑结构选型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T20:37:57+08:00">
-                2018-07-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>仍然需要补充的内容:<br>排架 图<br>框架 图<br>绘制3例悬挂结构体系的高层建筑立面示意 p139 战略放弃</p>
-<h1 id="名词解释-4-5-简图"><a href="#名词解释-4-5-简图" class="headerlink" title="名词解释 4 * 5 简图"></a>名词解释 4 * 5 简图</h1><h2 id="1-刚架-用力学简图附加说明"><a href="#1-刚架-用力学简图附加说明" class="headerlink" title="1, 刚架(用力学简图附加说明):"></a>1, 刚架(用力学简图附加说明):</h2><p>梁柱之间刚性连接的结构, 适合于单层的体育馆<br><img src="/images/gang-jia.png" alt=""></p>
-<h2 id="2-必考-筒中筒-p135"><a href="#2-必考-筒中筒-p135" class="headerlink" title="2, 必考: 筒中筒 p135"></a>2, 必考: 筒中筒 p135</h2><p>在高层建筑中, 可把电梯间, 楼梯间以及设备井道的墙布置成钢筋混凝土墙, 它既可承受竖向荷载, 又可承受水平力作用。<br>在高层建筑中, 可充分利用建筑物圆周的景观和采光。<br>楼.电梯等服务性用房常位于房屋的中部, 因此由钢筋混凝土组成的楼, 电梯间便成了核心筒(实腹内筒), 外侧的密集的柱子形成空腹外筒<br><img src="/images/tong-zhong-tong.png" alt=""></p>
-<h2 id="3-必考-框架核心筒结构"><a href="#3-必考-框架核心筒结构" class="headerlink" title="3, 必考: 框架核心筒结构:"></a>3, 必考: 框架核心筒结构:</h2><p>筒中筒结构外部柱距较为密集, 常常不能满足建筑设计要求, 有时建筑柱子布距离要满足柱距在4~5m或更大,<br>周边柱不形成筒的工作状态, 筒相当于空间框架的作用, 这种结构称为框架核心筒结构<br><img src="/images/kuang-jia-he-xin-tong.png" alt=""></p>
-<h2 id="框筒-框架核心筒-结构与套筒-筒中筒-比较"><a href="#框筒-框架核心筒-结构与套筒-筒中筒-比较" class="headerlink" title="*, 框筒(框架核心筒)结构与套筒(筒中筒)比较"></a>*, 框筒(框架核心筒)结构与套筒(筒中筒)比较</h2><ul>
-<li>框筒结构柱距8.4m以上       50m * 50m 6根柱子</li>
-<li>套筒结构住距3m以内         50m * 50m 12以上</li>
-<li>框架核心筒比套筒柱子少 </li>
-</ul>
-<h2 id="框筒-框架-筒-区别"><a href="#框筒-框架-筒-区别" class="headerlink" title="*, 框筒 框架+筒 区别"></a>*, 框筒 框架+筒 区别</h2><p>框架-核心筒是结构体系中心一个筒结构，外围是框架<br>就是框架和筒体成的结构<br>框筒一般指是用比较密的柱子，配合深梁或者支撑构成筒体，不管有多少柱子都还是筒，<br>框架核心筒里面的筒即可以是实腹的墙体构成的筒，也可以是这个框筒。</p>
-<h2 id="4-气压式薄膜结构-气胀式"><a href="#4-气压式薄膜结构-气胀式" class="headerlink" title="4, 气压式薄膜结构(气胀式)"></a>4, 气压式薄膜结构(气胀式)</h2><p>也称为气胀式薄膜结构, 在若干充气肋 和 充气被 的密闭空间中保持空气压力, 直接落地承重或者搁置在结构构件上承重<br><img src="/images/qi-ya-shi-bo-mo-jie-gou.png" alt=""></p>
-<p>气承式, 不断的向壳体内鼓风, 在较高的室内气压作用下使其自行撑起, 以承受自重和外荷载的结构.<br><img src="/images/qi-cheng-shi-bo-mo-jie-gou.png" alt=""></p>
-<h2 id="5-剪力墙结构"><a href="#5-剪力墙结构" class="headerlink" title="5, 剪力墙结构"></a>5, 剪力墙结构</h2><p>一般在高层建筑中, 将建筑物外墙和永久性内隔墙布置成钢筋混凝土结构, 既能承受竖向荷载, 又能承受水平力</p>
-<h2 id="6-框支剪力墙-p130"><a href="#6-框支剪力墙-p130" class="headerlink" title="6, 框支剪力墙 p130"></a>6, 框支剪力墙 p130</h2><p>在沿街住宅和商户中, 在底层需要大空间的公共建筑中, 将部分底层剪力墙改成框架柱, 以满足使用要求, 但不利于抗震<br><img src="/images/kuang-zhi-jian-li-qiang.png" alt=""></p>
-<h2 id="8-桁架"><a href="#8-桁架" class="headerlink" title="8, 桁架:"></a>8, 桁架:</h2><p>由杆件通过<code>焊接, 铆接 或 螺栓连接</code> 而成的支撑横梁结构, 杆件主要承受<code>拉力和压力</code>, 可充分发挥材料的作用, 减轻结构自重;<br>材料: 钢, 木 和 混凝土<br><img src="/images/heng-jia-1.png" alt=""></p>
-<p><img src="/images/heng-jia-2.png" alt=""></p>
-<h2 id="9-屋架"><a href="#9-屋架" class="headerlink" title="9, 屋架:"></a>9, 屋架:</h2><p>屋面的结构承重桁架, 由上弦杆和腹杆组成。<br>材料: 钢, 木, 栓<br>式样: 三角形, 梯形, 弧形<br><img src="/images/wu-jia.png" alt=""></p>
-<h2 id="a-刚架"><a href="#a-刚架" class="headerlink" title="a, 刚架:"></a>a, 刚架:</h2><p>梁柱之间刚性连接的结构, 适合于单层的体育馆<br><img src="/images/gang-jia.png" alt=""></p>
-<h2 id="b-排架"><a href="#b-排架" class="headerlink" title="b, 排架:"></a>b, 排架:</h2><p>梁柱之间为铰接的单层结构</p>
-<h2 id="c-框架"><a href="#c-框架" class="headerlink" title="c, 框架:"></a>c, 框架:</h2><p>多层多跨的刚架结构</p>
-<h2 id="d-拱"><a href="#d-拱" class="headerlink" title="d, 拱:"></a>d, 拱:</h2><p>是主要受轴向力为主的结构形式, 形状为弧形<br>结构特点:<br>1, 拱是一种 推力结构, 在竖向的荷载下产生水平推力<br>2, 拱是一种无矩结构, 通过合理拱轴 可以使杆件无弯矩<br>3, 拱可以充分利用材料抗压强度, 断面小, 跨度大</p>
-<p>拱的支座处理:<br>1, 水平推力直接由拉杆承担</p>
-<p>2, 由框架承受</p>
-<p>3, 刚性水平构件承受推力</p>
-<p>4, 由基础承受</p>
-<p><img src="/images/gong.png" alt=""></p>
-<h1 id="画图解释-5-10"><a href="#画图解释-5-10" class="headerlink" title="画图解释 5 * 10"></a>画图解释 5 * 10</h1><h2 id="必考-纽约世贸大厦平面"><a href="#必考-纽约世贸大厦平面" class="headerlink" title="必考: 纽约世贸大厦平面"></a>必考: 纽约世贸大厦平面</h2><ul>
-<li>边长为63m</li>
-<li>平面为方 </li>
-<li>结构形式采用套筒, 实腹外筒和空腹内筒</li>
-<li>上层柱子间距13m, 下层柱柱子采用并柱, 间距大</li>
-<li>网状的轻桁架和主桁架支持地板。桁架相错互相连结。它们与外墙的拱间以及与核心的钢柱焊在一起。</li>
-<li>地板与外墙的拱间通过粘弹阻尼器连在一起，这样来使得建筑内的人不会感觉到震动。<br><img src="/images/nyk-xiersi-plan.png" alt=""></li>
-</ul>
-<h2 id="必考-西尔斯大厦平面"><a href="#必考-西尔斯大厦平面" class="headerlink" title="必考: 西尔斯大厦平面"></a>必考: 西尔斯大厦平面</h2><ul>
-<li>平面为方 </li>
-<li>采用空腹组合筒, 9个筒高低错落</li>
-<li>边长为68.7m, 由9个22.9米见方的正方形组成。</li>
-<li>地上110层，地下一层，框剪结构，采用挤密桩</li>
-<li>50层平面, 90层平面<br><img src="/images/nyk-xiersi-plan.png" alt=""></li>
-</ul>
-<h2 id="壳体结构-分别由母线和旋转轴形成的椭圆壳-双曲壳和锥形壳-轴测图-p47"><a href="#壳体结构-分别由母线和旋转轴形成的椭圆壳-双曲壳和锥形壳-轴测图-p47" class="headerlink" title="壳体结构: 分别由母线和旋转轴形成的椭圆壳, 双曲壳和锥形壳 轴测图 p47"></a>壳体结构: 分别由母线和旋转轴形成的椭圆壳, 双曲壳和锥形壳 轴测图 p47</h2><p><img src="/images/qiao-ti-jie-gou.png" alt=""></p>
-<h2 id="网架-双层双曲交叉索网体系轴测图"><a href="#网架-双层双曲交叉索网体系轴测图" class="headerlink" title="网架: 双层双曲交叉索网体系轴测图"></a>网架: 双层双曲交叉索网体系轴测图</h2><p><img src="/images/wang-jia.png" alt=""></p>
-<h2 id="垂直桁架-绘制高层建筑垂直桁架结构体系的结构示意图-p139"><a href="#垂直桁架-绘制高层建筑垂直桁架结构体系的结构示意图-p139" class="headerlink" title="垂直桁架: 绘制高层建筑垂直桁架结构体系的结构示意图 p139"></a>垂直桁架: 绘制高层建筑垂直桁架结构体系的结构示意图 p139</h2><p>具有很强刚度, 充分利用材料, 把部分框架改为竖向放置的桁架<br><img src="/images/chui-zhi-heng-jia.png" alt=""></p>
-<h2 id="绘制3例悬挂结构体系的高层建筑立面示意-p139"><a href="#绘制3例悬挂结构体系的高层建筑立面示意-p139" class="headerlink" title="绘制3例悬挂结构体系的高层建筑立面示意 p139"></a>绘制3例悬挂结构体系的高层建筑立面示意 p139</h2><h2 id="网壳结构"><a href="#网壳结构" class="headerlink" title="网壳结构"></a>网壳结构</h2><p>肋环型网格: 节点刚性连接, 适用于中.小跨度的穹顶<br><img src="/images/wang-qiao-jie-gou.png" alt=""></p>
-<h1 id="大题-30"><a href="#大题-30" class="headerlink" title="大题 30"></a>大题 30</h1><p>3选1必考</p>
-<h2 id="耶鲁大学冰球馆"><a href="#耶鲁大学冰球馆" class="headerlink" title="耶鲁大学冰球馆"></a>耶鲁大学冰球馆</h2><p>建筑师： 美国建筑师, 沙里宁<br>主要结构: 悬索结构.<br>结构形式分析:上面是拱, 侧边是悬索, 悬索拉在拱和边梁之间。钢索挂在正中一道拱形脊梁和圈梁之上, 场内可容纳3000名观众, 冰球馆的外形像一只古怪的海龟似的结构<br>尺度关系: 在图中表示, 16050, 69500<br>效果图, 剖面图<br><img src="/images/yelu.png" alt=""></p>
-<h2 id="杜勒斯机场"><a href="#杜勒斯机场" class="headerlink" title="杜勒斯机场"></a>杜勒斯机场</h2><p>建筑师: 沙里宁<br>主要结构: 悬索结构<br>结构分析: 候机楼有两层楼巨型钢筋混凝土柱墩, 一排稍高, 一排稍低, 在相对的柱墩子上张挂着40多的钢索, 刚墩上铺屋面板, 钢索中部下垂, 形成自然的凹面曲线屋顶, 柱墩向外倾斜, 屋面向上翘起。具有动势, 很有气派。<br>尺度关系: 矩形平面, 长182.5m, 进深45.6m</p>
-<p>平面(简图,画柱子), 剖面(高度15), 透视<br><img src="/images/dulesi.png" alt=""></p>
-<h2 id="代代木体育馆"><a href="#代代木体育馆" class="headerlink" title="代代木体育馆"></a>代代木体育馆</h2><p>建筑师: 丹下健三<br>主要结构: 柱墩+悬索, 悬索分为主索和侧索<br>结构分析: 代代木竞技场采用高张力缆索为主体的悬索屋顶结构，创造出带有紧张感和灵动感的大型内部空间。其特异的外部形状加之装饰性的表现，可以追溯到作为日本古代原型的神社形式和竖穴式住居，具有原始的想像力。<br>尺度关系: 主跨度为126m，横向索跨度为44m, 高度40m</p>
-<p>平面(示意), 透视+剖面<br><img src="/images/daidaimu.png" alt=""></p>
-<h1 id="刷"><a href="#刷" class="headerlink" title="刷"></a>刷</h1><p>1桁架: 杆件通过 焊接 铆接 螺栓连接 而成的<code>支撑横梁结构</code>, 承受 拉力和压力, 充分发挥材料特性, <code>减轻结构自重</code><br><code>材料: 钢, 木和混凝土</code><br>屋架: 屋面的<code>结构承重</code>桁架结构, 由<code>上弦杆和腹杆</code>组成<br><code>材料: 钢, 木和混凝土</code><br>1刚架: 梁柱之间通过刚性连接而成的结构, <code>适用于单层体育馆</code><br>1排架: 梁柱之间通过铰接而成的结构<br>框架: 多层多跨的刚架结构</p>
-<p>1拱: 主要受轴心力作用的结构, 形状为弧形</p>
-<p>结构特点:<br>推力结构, 在竖向荷载下产生水平推力<br>无弯矩, 通过合理的拱轴, 可以使得杆件无弯矩<br>充分利用材料抗压强度, 断面小, 跨度大</p>
-<p>剪力墙:在高层建筑中, 将建筑物外墙和建筑永久性内隔墙布置成钢筋混凝土结构, <code>既能承受竖向荷载, 又能承受水平荷载</code><br>框支剪力墙: 在高层建筑底层商铺或住宅, 需要底层更多空间时, 将部分剪力墙改成框架柱, 形成框支剪力墙, 避震性不好</p>
-<p>框架核心筒 (框筒): 结构体系中心是一个筒结构, 外围是框架<br>筒中筒    (套筒): 实腹内筒, 空腹外筒</p>
-<p>框筒 框架核心筒的区别<br>框架核心筒外围是框架<br>框架核心筒中的筒, 实腹墙体构成的筒, 也可以是框筒</p>
-<p>气压式薄膜结构: 在若干 充气肋和充气被的作用下，使得结构内部充满压力, 直接落地或搁置在构件上承受外部荷载<br>气承式薄膜结构: 向壳体鼓风使内部充满压力, 在较高的室内压力作用下, 使构件鼓起承受自重荷载.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2059,7 +2014,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">93</span>
+                  <span class="site-state-item-count">94</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
