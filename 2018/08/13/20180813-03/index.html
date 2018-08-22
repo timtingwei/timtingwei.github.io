@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="PAT, 算法, 字符串," />
+  <meta name="keywords" content="PAT,算法,字符串,Hash散列," />
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="1039 到底买不买(20)（20 point(s)）小红想买些珠子做一串自己喜欢的珠串。卖珠子的摊主有很多串五颜六色的珠串，但是不肯把任何一串拆散了卖。于是小红要你帮忙判断一下，某串珠子里是否包含了全部自己想要的珠子？如果是，那么告诉她有多少多余的珠子；如果不是，那么告诉她缺了多少珠子。 为方便起见，我们用[0-9]">
-<meta name="keywords" content="PAT, 算法, 字符串">
+<meta name="keywords" content="PAT,算法,字符串,Hash散列">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1039 到底买不买(20) - PAT乙级">
 <meta property="og:url" content="https://timtingwei.github.io/2018/08/13/20180813-03/index.html">
 <meta property="og:site_name" content="mituh&#39;s notes">
 <meta property="og:description" content="1039 到底买不买(20)（20 point(s)）小红想买些珠子做一串自己喜欢的珠串。卖珠子的摊主有很多串五颜六色的珠串，但是不肯把任何一串拆散了卖。于是小红要你帮忙判断一下，某串珠子里是否包含了全部自己想要的珠子？如果是，那么告诉她有多少多余的珠子；如果不是，那么告诉她缺了多少珠子。 为方便起见，我们用[0-9]、[a-z]、[A-Z]范围内的字符来表示颜色。例如在图1中，第3串是小红想做的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-12T22:35:54.992Z">
+<meta property="og:updated_time" content="2018-08-22T12:17:21.800Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="1039 到底买不买(20) - PAT乙级">
 <meta name="twitter:description" content="1039 到底买不买(20)（20 point(s)）小红想买些珠子做一串自己喜欢的珠串。卖珠子的摊主有很多串五颜六色的珠串，但是不肯把任何一串拆散了卖。于是小红要你帮忙判断一下，某串珠子里是否包含了全部自己想要的珠子？如果是，那么告诉她有多少多余的珠子；如果不是，那么告诉她缺了多少珠子。 为方便起见，我们用[0-9]、[a-z]、[A-Z]范围内的字符来表示颜色。例如在图1中，第3串是小红想做的">
@@ -309,13 +309,17 @@
 <h4 id="输出样例1："><a href="#输出样例1：" class="headerlink" title="输出样例1："></a>输出样例1：</h4><p>Yes 8</p>
 <h4 id="输入样例2："><a href="#输入样例2：" class="headerlink" title="输入样例2："></a>输入样例2：</h4><p>ppRYYGrrYB225<br>YrR8RrY</p>
 <h4 id="输出样例2："><a href="#输出样例2：" class="headerlink" title="输出样例2："></a>输出样例2：</h4><p>No 2</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>注意点:<br>case 1, 2WA: 怎么解决某个珠子需要两课以上问题, 也就是说要把取过的字符给删除?</p>
+<h4 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h4><p>注意点:<br>case 1, 2WA: 怎么解决某个珠子需要两课以上问题, 也就是说要把取过的字符给删除?</p>
 <p><span style="color:red">另外, Hash散列的思想, 主要体现在, 一个address对应一个key, 现在要判断的是珠子这个key是否存在, 用find函数完成了判断, 但我认为还是只用了Hash散列的策略，这里没有去设计是否均匀, 解决冲突等问题, find函数的复杂度也应该不是O(1), 但这个策略还是抓住了问题的本质.</span></p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s, t;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; s &gt;&gt; t;</span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> pos = s.find(t[i]);</span><br><span class="line">    <span class="keyword">if</span> (pos != <span class="built_in">string</span>::npos) &#123;</span><br><span class="line">      cnt++;</span><br><span class="line">      s.erase(pos, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cnt &gt;= t.length()) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Yes "</span> &lt;&lt; s.length() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"No "</span> &lt;&lt; t.length() - cnt &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>补充常用的两种字符串删除,</p>
 <p>一般要对取字符串进行删除, 无非是删除子串和删除字符(删除子串的特殊情况),</p>
 <p>1, 索引+长度删除, 删子串(也可以删长度为1的子串)<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s, t;</span><br><span class="line"></span><br><span class="line"><span class="comment">// erase(int pos, int length);    // 用索引+子串长度删除</span></span><br><span class="line">s = <span class="string">"1aabcd"</span>;</span><br><span class="line">t = <span class="string">"aa"</span>;</span><br><span class="line"><span class="keyword">int</span> pos = s.find(t);</span><br><span class="line">s.erase(pos, t.length());         <span class="comment">// s.erase(pos, 2);</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;                <span class="comment">// 1bcd</span></span><br></pre></td></tr></table></figure></p>
 <p>2, 迭代器删除, 删字符<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// erase(iterator it)             // 用迭代器删除</span></span><br><span class="line">s = <span class="string">"1aabcd"</span>;</span><br><span class="line">t = <span class="string">"b"</span>;</span><br><span class="line">pos = s.find(t);</span><br><span class="line">s.erase(s.begin() + pos);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;                <span class="comment">// 1aacd</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>过了几天再做这道题的时候, 重新练习了Hash的做法.</p>
+<p>根据老板给出的珠子建立Hash表,<br>遍历小红需要的每颗珠子, 如果这个珠子在表中的, 不处理; 如果不在表中(老板提供的), 计数器+1.<br>最后看这个计数器判空结果, 如果cnt为0代表小红需要的都存在, 只要用老板的珠子数, 减去小红的珠子数就是多的; 如果这个cnt非0, No并输出计数器.</p>
+<p><span style="color:red">其实这个过程是储存和查找的过程, 正适合用Hash的特性来做。</span><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">f(key) = ascii(key)    // 这样建表可以均匀</span><br></pre></td></tr></table></figure></p>
+<p>代码如下<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> give[<span class="number">200</span>];</span><br><span class="line"><span class="keyword">char</span> A[<span class="number">1050</span>];</span><br><span class="line"><span class="keyword">char</span> B[<span class="number">1050</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s %s"</span>, A, B);</span><br><span class="line">  <span class="built_in">memset</span>(give, <span class="number">0</span>, <span class="keyword">sizeof</span>(give));</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(A); i++) &#123;</span><br><span class="line">    give[(<span class="keyword">int</span>)A[i]]++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(B); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!give[(<span class="keyword">int</span>)B[i]]) &#123;</span><br><span class="line">      cnt++;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      give[(<span class="keyword">int</span>)B[i]]--;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cnt == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Yes %lu\n"</span>, <span class="built_in">strlen</span>(A) - <span class="built_in">strlen</span>(B));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"No %d\n"</span>, cnt);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -333,7 +337,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/PAT-算法-字符串/" rel="tag"># PAT, 算法, 字符串</a>
+            <a href="/tags/PAT/" rel="tag"># PAT</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/字符串/" rel="tag"># 字符串</a>
+          
+            <a href="/tags/Hash散列/" rel="tag"># Hash散列</a>
           
         </div>
       
@@ -448,7 +458,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -481,7 +491,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1039-到底买不买-20-（20-point-s-）"><span class="nav-number">1.</span> <span class="nav-text">1039 到底买不买(20)（20 point(s)）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.</span> <span class="nav-text">输出格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例1："><span class="nav-number">1.3.</span> <span class="nav-text">输入样例1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例1："><span class="nav-number">1.4.</span> <span class="nav-text">输出样例1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例2："><span class="nav-number">1.5.</span> <span class="nav-text">输入样例2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例2："><span class="nav-number">1.6.</span> <span class="nav-text">输出样例2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solution"><span class="nav-number">1.7.</span> <span class="nav-text">Solution:</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1039-到底买不买-20-（20-point-s-）"><span class="nav-number">1.</span> <span class="nav-text">1039 到底买不买(20)（20 point(s)）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.</span> <span class="nav-text">输出格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例1："><span class="nav-number">1.3.</span> <span class="nav-text">输入样例1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例1："><span class="nav-number">1.4.</span> <span class="nav-text">输出样例1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例2："><span class="nav-number">1.5.</span> <span class="nav-text">输入样例2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例2："><span class="nav-number">1.6.</span> <span class="nav-text">输出样例2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solution1"><span class="nav-number">1.7.</span> <span class="nav-text">Solution1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solution2"><span class="nav-number">1.8.</span> <span class="nav-text">Solution2:</span></a></li></ol></li></ol></div>
             
 
           </div>
