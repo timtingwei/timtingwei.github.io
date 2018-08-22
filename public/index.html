@@ -229,6 +229,772 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/22/20180822-06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/20180822-06/" itemprop="url">20180822-06</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T19:41:05+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/22/20180822-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/20180822-05/" itemprop="url">189. Rotate Array - LeetCode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T19:41:00+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="189-Rotate-Array"><a href="#189-Rotate-Array" class="headerlink" title="189. Rotate Array"></a>189. Rotate Array</h3><p>Given an array, rotate the array to the right by k steps, where k is non-negative.</p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><p>Input: [1,2,3,4,5,6,7] and k = 3<br>Output: [5,6,7,1,2,3,4]<br>Explanation:<br>rotate 1 steps to the right: [7,1,2,3,4,5,6]<br>rotate 2 steps to the right: [6,7,1,2,3,4,5]<br>rotate 3 steps to the right: [5,6,7,1,2,3,4]</p>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><p>Input: [-1,-100,3,99] and k = 2<br>Output: [3,99,-1,-100]<br>Explanation:<br>rotate 1 steps to the right: [99,-1,-100,3]<br>rotate 2 steps to the right: [3,99,-1,-100]</p>
+<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.<br>Could you do it in-place with O(1) extra space?</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>不断往新数组中添加元素, 该元素的索引通过求余数得到<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:O(n), Space:O(n);</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">    <span class="keyword">int</span> n = nums.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = k; i &lt; n + k; i++) &#123;</span><br><span class="line">      v.push_back(nums[i % n]);</span><br><span class="line">    &#125;</span><br><span class="line">    nums = v;</span><br><span class="line">    <span class="comment">// return v;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>扫描k遍, 每一遍都将首个元素移到最后<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ERROR:</span></span><br><span class="line"><span class="comment">// Time:O(n^2), Space:O(1);</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n<span class="number">-1</span>; j++) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[j]; nums[j] = nums[j+<span class="number">1</span>]; nums[j+<span class="number">1</span>] = tmp;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;  <span class="comment">// 从左往右写反</span></span><br></pre></td></tr></table></figure></p>
+<p>扫描k遍， 每遍都将最后一个元素移动最前<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:O(n^2), Space:O(1);</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> j = n<span class="number">-1</span>; j &gt; <span class="number">0</span>; j--) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[j]; nums[j] = nums[j<span class="number">-1</span>]; nums[j<span class="number">-1</span>] = tmp;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;  <span class="comment">// 改成从右往左</span></span><br><span class="line"><span class="comment">// 但是Time Limit Exceeded</span></span><br></pre></td></tr></table></figure></p>
+<p>最新的解法,<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">0 1 2 3 4</span><br><span class="line">3 4 0 1 3</span><br></pre></td></tr></table></figure></p>
+<p>观察数组构造, 将3通过交换到最首位, 4位于其次</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:   Space:O(n)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.size() == <span class="number">0</span> || k == <span class="number">0</span> || k % nums.size() ==<span class="number">0</span>)</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> n = nums.size(), m = k % n;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n-m; i &lt;= n<span class="number">-1</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt; i-(n-m); j--) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[j]; nums[j] = nums[j<span class="number">-1</span>]; nums[j<span class="number">-1</span>] = tmp;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;  <span class="comment">// 改成从右往左, 添加数组为空, k为零的情况, 求余也为0的情况</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/22/20180822-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/20180822-04/" itemprop="url">1029 旧键盘(20) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T19:33:11+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1029-旧键盘-20"><a href="#1029-旧键盘-20" class="headerlink" title="1029 旧键盘(20)"></a>1029 旧键盘(20)</h3><p>旧键盘上坏了几个键，于是在敲一段文字的时候，对应的字符就不会出现。现在给出应该输入的一段文字、以及实际被输入的文字，请你列出肯定坏掉的那些键。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在 2 行中分别给出应该输入的文字、以及实际被输入的文字。每段文字是不超过 80 个字符的串，由字母 A-Z（包括大、小写）、数字 0-9、以及下划线 _（代表空格）组成。题目保证 2 个字符串均非空。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>按照发现顺序，在一行中输出坏掉的键。其中英文字母只输出大写，每个坏键只输出一次。题目保证至少有 1 个坏键。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">7_This_is_a_test</span><br><span class="line">_hs_s_a_es</span><br></pre></td></tr></table></figure>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>7TI</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>通过实际被输出的文字建立可行的Hash表, f(key) = toupper(key) - ‘0’;</p>
+<p>某个下标对应的值为1代表可行.</p>
+<p>遍历输入的那段文字, 若不在Hash表中的, 则是坏键。</p>
+<p>坑点:<br>1, 因为英文字母只输出大写, 所以建表时, 把所有的alpha变成大小来建立, 用大写索引, 用大写输出.<br>2, 不用在意ascii码, 只要随便取个字符, 记录相对距离就可以。<br>3, 因为要保证每个坏键只输出一次, 找到一个坏键之后, 在hash表中改成1, 下次这个碰到这个键, 就可以用if避开它了。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> ok[<span class="number">500</span>];</span><br><span class="line"><span class="keyword">char</span> s[<span class="number">85</span>];</span><br><span class="line"><span class="keyword">char</span> rst[<span class="number">85</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s %s"</span>, s, rst);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(rst); i++) &#123;</span><br><span class="line">    ok[<span class="built_in">toupper</span>(rst[i]) - <span class="string">'0'</span>] = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(s); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!ok[  <span class="built_in">toupper</span>(s[i]) - <span class="string">'0'</span>]) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%c"</span>, <span class="built_in">toupper</span>(s[i]));</span><br><span class="line">      ok[<span class="built_in">toupper</span>(s[i]) - <span class="string">'0'</span>] = <span class="number">1</span>;   <span class="comment">// bug01</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/22/20180822-03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/20180822-03/" itemprop="url">1021 个位数统计(15) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T19:33:04+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1021-个位数统计-15"><a href="#1021-个位数统计-15" class="headerlink" title="1021 个位数统计(15)"></a>1021 个位数统计(15)</h3><p>给定一个 k 位整数 N=d, 请编写程序统计每种不同的个位数字出现的次数。<br>例如：给定 N=100311，则有 2 个 0，3 个 1，和 1 个 3。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>每个输入包含 1 个测试用例，即一个不超过 1000 位的正整数 N。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对 N 中每一种不同的个位数字，以 D:M 的格式在一行中输出该位数字 D 及其在 N 中出现的次数 M。要求按 D 的升序输出。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>100311</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>0:2<br>1:3<br>3:1</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>统计和查找用Hash表.<br>以字符数组的形式读入”整数”, 扫描这个字符数组, 每个数字字符ch对应的Hash表位置是它的ch-‘a’位置. 该位置变量+1</p>
+<p>扫描完成后, 扫描Hash表, 如果某个地址上值不为0就打印出个数, 自然升序.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> cnt[<span class="number">11</span>];</span><br><span class="line"><span class="keyword">char</span> s[<span class="number">1050</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s"</span>, s);</span><br><span class="line">  <span class="built_in">memset</span>(cnt, <span class="number">0</span>, <span class="keyword">sizeof</span>(cnt));</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(s); i++) &#123;</span><br><span class="line">    cnt[s[i]-<span class="string">'0'</span>]++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (cnt[i]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!flag) &#123;</span><br><span class="line">        flag = <span class="number">1</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%d:%d"</span>, i, cnt[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/22/20180822-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/20180822-02/" itemprop="url">1066 图像过滤(15) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T19:33:00+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1066-图像过滤-15"><a href="#1066-图像过滤-15" class="headerlink" title="1066 图像过滤(15)"></a>1066 图像过滤(15)</h3><p>图像过滤是把图像中不重要的像素都染成背景色，使得重要部分被凸显出来。现给定一幅黑白图像，要求你将灰度值位于某指定区间内的所有像素颜色都用一种指定的颜色替换。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在第一行给出一幅图像的分辨率，即两个正整数 M 和 N（0&lt;M,N≤500），另外是待过滤的灰度值区间端点 A 和 B（0≤A&lt;B≤255）、以及指定的替换灰度值。随后 M 行，每行给出 N 个像素点的灰度值，其间以空格分隔。所有灰度值都在 [0, 255] 区间内。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>输出按要求过滤后的图像。即输出 M 行，每行 N 个像素灰度值，每个灰度值占 3 位（例如黑色要显示为 000），其间以一个空格分隔。行首尾不得有多余空格。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>3 5 100 150 0<br>3 189 254 101 119<br>150 233 151 99 100<br>88 123 149 0 255</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>003 189 254 000 000<br>000 233 151 099 000<br>088 000 000 000 255</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>简单题耗了很长时间。</p>
+<p>几点要注意的：</p>
+<blockquote>
+<p>1, 简单题也要写最核心的伪代码, 让主要思路不乱。 比如这题将灰度区间内的替换, 而不是之外.<br>2, 对于边界条件, 不确定可以先留出来, submit一次之后再改(主体对, 再改细节), 比如double还是int<br>3, 要调整好心态.</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> M, N;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;M, &amp;N);</span><br><span class="line">  <span class="keyword">int</span> a, b, rp, tmp;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>, &amp;a, &amp;b, &amp;rp);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i) <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123;</span><br><span class="line">      <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;tmp);</span><br><span class="line">      <span class="keyword">if</span> (j) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">      <span class="keyword">if</span> (a &lt;= tmp &amp;&amp; tmp &lt;= b) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%03d"</span>, rp);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%03d"</span>, tmp);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/22/20180822-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/22/20180822-01/" itemprop="url">1028 List Sorting (25) - PAT甲级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-22T19:30:55+08:00">
+                2018-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1028-List-Sorting-25"><a href="#1028-List-Sorting-25" class="headerlink" title="1028 List Sorting (25)"></a>1028 List Sorting (25)</h3><p>Excel can sort records according to any column. Now you are supposed to imitate this function.</p>
+<h4 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h4><p>Each input file contains one test case. For each case, the first line contains two integers N (&lt;=100000) and C, where N is the number of records and C is the column that you are supposed to sort the records with. Then N lines follow, each contains a record of a student. A student’s record consists of his or her distinct ID (a 6-digit number), name (a string with no more than 8 characters without space), and grade (an integer between 0 and 100, inclusive).</p>
+<h4 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h4><p>For each test case, output the sorting result in N lines. That is, if C = 1 then the records must be sorted in increasing order according to ID’s; if C = 2 then the records must be sorted in non-decreasing order according to names; and if C = 3 then the records must be sorted in non-decreasing order according to grades. If there are several students who have the same name or grade, they must be sorted according to their ID’s in increasing order.</p>
+<h4 id="Sample-Input-1"><a href="#Sample-Input-1" class="headerlink" title="Sample Input 1"></a>Sample Input 1</h4><p>3 1<br>000007 James 85<br>000010 Amy 90<br>000001 Zoe 60</p>
+<h4 id="Sample-Output-1"><a href="#Sample-Output-1" class="headerlink" title="Sample Output 1"></a>Sample Output 1</h4><p>000001 Zoe 60<br>000007 James 85<br>000010 Amy 90</p>
+<h4 id="Sample-Input-2"><a href="#Sample-Input-2" class="headerlink" title="Sample Input 2"></a>Sample Input 2</h4><p>4 2<br>000007 James 85<br>000010 Amy 90<br>000001 Zoe 60<br>000002 James 98</p>
+<h4 id="Sample-Output-2"><a href="#Sample-Output-2" class="headerlink" title="Sample Output 2"></a>Sample Output 2</h4><p>000010 Amy 90<br>000002 James 98<br>000007 James 85<br>000001 Zoe 60</p>
+<h4 id="Sample-Input-3"><a href="#Sample-Input-3" class="headerlink" title="Sample Input 3"></a>Sample Input 3</h4><p>4 3<br>000007 James 85<br>000010 Amy 90<br>000001 Zoe 60<br>000002 James 90</p>
+<h4 id="Sample-Output-3"><a href="#Sample-Output-3" class="headerlink" title="Sample Output 3"></a>Sample Output 3</h4><p>000001 Zoe 60<br>000007 James 85<br>000002 James 90<br>000010 Amy 90</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>使用c++的string比较case6超时, string替换成字符数组, vector<node>替换成Node数组. <span style="color:red">用strcmp比较。</span></node></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="built_in">strcmp</span>(str1, str2);      <span class="comment">// str1字典序比str2小, 返回负值, 具体看差值; 相等为0</span></span><br></pre></td></tr></table></figure>
+<p>在之前vector版本中, 重新使用了一个Node{id, name, score}的构造技巧</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;cstring&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">struct Node &#123;</span><br><span class="line">  char id[10];</span><br><span class="line">  char name[10];</span><br><span class="line">  int score;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">bool cmp1(Node n1, Node n2) &#123;</span><br><span class="line">  return strcmp(n1.id, n2.id) &lt; 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool cmp2(Node n1, Node n2) &#123;</span><br><span class="line">  if (strcmp(n1.name, n2.name) != 0) return strcmp(n1.name, n2.name) &lt;= 0;</span><br><span class="line">  return strcmp(n1.id, n2.id) &lt; 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">bool cmp3(Node n1, Node n2) &#123;</span><br><span class="line">  if (n1.score != n2.score) return n1.score &lt;= n2.score;</span><br><span class="line">  return strcmp(n1.id, n2.id) &lt; 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Node nodes[100050];</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">  int N, C; scanf(&quot;%d %d&quot;, &amp;N, &amp;C);</span><br><span class="line">  int n = 0;</span><br><span class="line">  while (N--) &#123;</span><br><span class="line">    scanf(&quot;%s %s %d&quot;, nodes[n].id, nodes[n].name, &amp;nodes[n].score);</span><br><span class="line">    n++;</span><br><span class="line">  &#125;</span><br><span class="line">  switch (C) &#123;</span><br><span class="line">    case 1: sort(nodes, nodes + n, cmp1); break;</span><br><span class="line">    case 2: sort(nodes, nodes + n, cmp2); break;</span><br><span class="line">    case 3: sort(nodes, nodes + n, cmp3); break;</span><br><span class="line">  &#125;</span><br><span class="line">  for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">    printf(&quot;%s %s %d\n&quot;, nodes[i].id, nodes[i].name, nodes[i].score);</span><br><span class="line">  &#125;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/21/20180821-06/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -734,799 +1500,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/21/20180821-02/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/21/20180821-02/" itemprop="url">122. Best Time to Buy and Sell Stock II - LeetCode</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T20:00:47+08:00">
-                2018-08-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="122-Best-Time-to-Buy-and-Sell-Stock-II-LeetCode"><a href="#122-Best-Time-to-Buy-and-Sell-Stock-II-LeetCode" class="headerlink" title="122. Best Time to Buy and Sell Stock II - LeetCode"></a>122. Best Time to Buy and Sell Stock II - LeetCode</h3><p>Say you have an array for which the ith element is the price of a given stock on day i.</p>
-<p>Design an algorithm to find the maximum profit. You may complete as many transactions as you like (i.e., buy one and sell one share of the stock multiple times).</p>
-<p>Note: You may not engage in multiple transactions at the same time (i.e., you must sell the stock before you buy again).</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (prices.size() == <span class="number">0</span> || prices.size() == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> profit = <span class="number">0</span>, flag = <span class="number">0</span>, min;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.size(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!flag &amp;&amp; prices[i] &gt; prices[i<span class="number">-1</span>]) &#123;</span><br><span class="line">        min = prices[i<span class="number">-1</span>]; flag = <span class="number">1</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">        <span class="keyword">if</span> (prices[i] &lt; prices[i<span class="number">-1</span>]) &#123;</span><br><span class="line">          profit += prices[i<span class="number">-1</span>] - min; flag = <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (i == prices.size() - <span class="number">1</span>) &#123;</span><br><span class="line">          profit += prices[i] - min;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> profit;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Wrong answer</span></span><br><span class="line"><span class="comment">Input:</span></span><br><span class="line"><span class="comment">[1,2]</span></span><br><span class="line"><span class="comment">Output:</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">Expected:</span></span><br><span class="line"><span class="comment">1</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<p>没有注意到判断出最低点时, 当前点已经时最高点的情况.</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:O(n), Space:O(1)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (prices.size() == <span class="number">0</span> || prices.size() == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> profit = <span class="number">0</span>, flag = <span class="number">0</span>, min;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; prices.size(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!flag &amp;&amp; prices[i] &gt; prices[i<span class="number">-1</span>]) &#123;</span><br><span class="line">        min = prices[i<span class="number">-1</span>]; flag = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (i == prices.size()<span class="number">-1</span>) &#123;</span><br><span class="line">          profit += prices[i] - min;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (flag) &#123;</span><br><span class="line">        <span class="keyword">if</span> (prices[i] &lt; prices[i<span class="number">-1</span>]) &#123;</span><br><span class="line">          profit += prices[i<span class="number">-1</span>] - min; flag = <span class="number">0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (i == prices.size() - <span class="number">1</span>) &#123;</span><br><span class="line">          profit += prices[i] - min;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> profit;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/21/20180821-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/21/20180821-01/" itemprop="url">26. Remove Duplicates from Sorted Array - LeetCode</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-21T20:00:43+08:00">
-                2018-08-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="26-Remove-Duplicates-from-Sorted-Array-LeetCode"><a href="#26-Remove-Duplicates-from-Sorted-Array-LeetCode" class="headerlink" title="26. Remove Duplicates from Sorted Array - LeetCode"></a>26. Remove Duplicates from Sorted Array - LeetCode</h3><p>Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.</p>
-<p>Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.size();</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> n;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; n) &#123;</span><br><span class="line">      <span class="keyword">int</span> j = i + <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">while</span> (j &lt; n &amp;&amp; nums[j] == nums[j<span class="number">-1</span>]) j++;</span><br><span class="line">      n -= j - i- <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> p = i+<span class="number">1</span>, q = <span class="number">0</span>; q &lt; n; p++, q++) &#123;</span><br><span class="line">        nums[p] = nums[j+q];</span><br><span class="line">      &#125;</span><br><span class="line">      i++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> n;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;  <span class="comment">// 实现了一个蠢萌版本</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.size();</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> n;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (nums[i] != nums[j<span class="number">-1</span>]) &#123;</span><br><span class="line">        <span class="keyword">int</span> tmp = nums[i]; nums[i] = nums[j]; nums[j] = tmp;</span><br><span class="line">        j++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;  <span class="comment">// 精简了几个指针, 只对数组做一遍的扫描, Time:O(n), Space:O(1), 但不用交换赋值就可以</span></span><br></pre></td></tr></table></figure>
-<p>i指向当前归并的第一个元素, 初始为0, 用j指针从1开始向左遍历数组, 若j指向与i不同的元素, i后面一个元素赋值为j所指向的元素, (有可能赋值自身)。循环结束时, i是归并后最后一个元素的索引, 返回长度需要+1</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time: O(n), Space: O(1)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">removeDuplicates</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.size() == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; nums.size(); j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (nums[j] != nums[i]) &#123;</span><br><span class="line">        i++;</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> i+<span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/20/20180820-07/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/20/20180820-07/" itemprop="url">1085 PAT单位排行(25) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T17:07:16+08:00">
-                2018-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1085-PAT单位排行-25"><a href="#1085-PAT单位排行-25" class="headerlink" title="1085 PAT单位排行(25)"></a>1085 PAT单位排行(25)</h3><p>每次 PAT 考试结束后，考试中心都会发布一个考生单位排行榜。本题就请你实现这个功能。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出一个正整数 N（≤10^​5），即考生人数。随后 N 行，每行按下列格式给出一个考生的信息：<br>准考证号 得分 学校<br>其中准考证号是由 6 个字符组成的字符串，其首字母表示考试的级别：B代表乙级，A代表甲级，T代表顶级；得分是 [0, 100] 区间内的整数；学校是由不超过 6 个英文字母组成的单位码（大小写无关）。注意：题目保证每个考生的准考证号是不同的。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>首先在一行中输出单位个数。随后按以下格式非降序输出单位的排行榜：<br>排名 学校 加权总分 考生人数<br>其中排名是该单位的排名（从 1 开始）；学校是全部按小写字母输出的单位码；加权总分定义为乙级总分/1.5 + 甲级总分 + 顶级总分*1.5的整数部分；考生人数是该属于单位的考生的总人数。</p>
-<p>学校首先按加权总分排行。如有并列，则应对应相同的排名，并按考生人数升序输出。如果仍然并列，则按单位码的字典序输出。</p>
-<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>10<br>A57908 85 Au<br>B57908 54 LanX<br>A37487 60 au<br>T28374 67 CMU<br>T32486 24 hypu<br>A66734 92 cmu<br>B76378 71 AU<br>A47780 45 lanx<br>A72809 100 pku<br>A03274 45 hypu</p>
-<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>5<br>1 cmu 192 2<br>1 au 192 3<br>3 pku 100 1<br>4 hypu 81 2<br>4 lanx 81 2</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>最后一个测试点一直通不过, 问题不是出在对score相加有误差, score我也定义成了double, 问题是出在: <span style="color:red">排序是根据加权总分取整后的值来的</span>, 但是我的做法只是将Node, 从mp中push_back进入vector, 这时的Node.score还是那个double.应该是说, 在排序的时候, score已经是double舍去整数部分后的int了。</p>
-<p>实际上, 这个bug可以在调试排名前两位的score的时候查错, 但是我把问题的关注点放在了浮点数比较的精度上, 导致我用EP=-0.2去迎合答案, 实际上这是一种比较作死的方法.</p>
-<h5 id="坑点"><a href="#坑点" class="headerlink" title="坑点:"></a>坑点:</h5><p>1, 选择用1mp + 1vector 和 3mp+1vector的差别<br>排序用vector, 对学校进行关联用mp。另外关联好学校后, 再使用两个mp, 记录加权总分和考生人数.</p>
-<p>原先的做法是, mp中存储Node, 当需要进行排序时, 直接用Node{a, b, c}构造一个node, push_back进vector<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">v.push_back(Node&#123;it-&gt;second.name, (<span class="keyword">int</span>)it-&gt;second.score, it-&gt;second.num&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>但这里出错的关键就是, 不能用int类型的去构造这个对象的score实例变量了, 因此还是选择将Node中的score声明成int类型, Node的意义在于排序。抛开排序以外, 用mp去关联。</p>
-<p>将一个map<string, node=""> mp, 拆开成两个较小的map容器:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">double</span>&gt; sum;</span><br><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; num;</span><br></pre></td></tr></table></figure></string,></p>
-<p>这样做的好处是什么?<br>我觉得是Node中sum类型的转换代价小了, 只要在vector中存放node, 就可以把node中sum声明成int类型. 在这种情况下, 若还要在mp中存放node的话, 这里的sum是double类型, 因此选择用两个单独的map存放sum和num, 用一个map存放学校名字, 只是用于归并.</p>
-<h5 id="新技巧"><a href="#新技巧" class="headerlink" title="新技巧:"></a>新技巧:</h5><p>1, map的find(key)函数, 返回键为key的映射的迭代器。 如果存在的情况好理解, 使用it-&gt;second调用; 如果不存在的情况是怎么样呢?</p>
-<p>map提供了两种方式来检查是否包含key:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">mp.count(key);  <span class="comment">// 包含返回1, 不包含返回0</span></span><br><span class="line">mp.find(key);   <span class="comment">// 返回迭代器, 如果迭代器是mp.end()说明不存在.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 第一种方法count(key)</span></span><br><span class="line"><span class="keyword">if</span> (!mp.count(id)) &#123;</span><br><span class="line">  mp[school].name = school;    <span class="comment">// 两次查找</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种方法find(key)</span></span><br><span class="line"><span class="keyword">auto</span> it = mp.find(id);</span><br><span class="line"><span class="keyword">if</span> (it == mp.end()) &#123;</span><br><span class="line">  it-&gt;second.name = school;    <span class="comment">// 一次查找</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而我在做题的时候, 为了解决问题, 使用了笨方法<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((mp.find(id)-&gt;second.name).empty()) &#123;   <span class="comment">// why?</span></span><br><span class="line">  mp[school].name = school;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>2, 如何优雅的向一个vector中push_back入一个Node</p>
-<p>我一直以来都用的方法。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">auto</span> it = mp.begin(); it != mp.end(); it++) &#123;</span><br><span class="line">  Node node;</span><br><span class="line">  node.name = it-&gt;second.name;</span><br><span class="line">  node.score = (<span class="keyword">int</span>)it-&gt;second.score;    <span class="comment">// important!</span></span><br><span class="line">  node.num = it-&gt;second.num;</span><br><span class="line">  v.push_back(node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>更加优雅的方法：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">v.push_back(Node&#123;it-&gt;first, (<span class="keyword">int</span>)sum[it-&gt;first], num[it-&gt;first]&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>这种方法有个前提, 要么就是写了构造函数, 要么就是变量没有被定义。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="built_in">string</span> name;</span><br><span class="line">  <span class="keyword">int</span> score;        <span class="comment">// int score = 0;   这样不能用上述Node&#123;a, b, c&#125;方法构造了.</span></span><br><span class="line">  <span class="keyword">int</span> num;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>3, map和unordered_map的区别<br><code>unordered_map</code>内部用散列来代替红黑树实现map, 内部不排序。<br>来处理只映射而不按key排序的需求, 速度比map要快得多. 因此在这里替换一下</p>
-<h5 id="代码"><a href="#代码" class="headerlink" title="代码:"></a>代码:</h5><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="built_in">string</span> name;</span><br><span class="line">  <span class="keyword">int</span> score;</span><br><span class="line">  <span class="keyword">int</span> num;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, Node&gt; mp;</span><br><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="keyword">double</span>&gt; sum;</span><br><span class="line"><span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; num;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;Node&gt; v;   <span class="comment">// bug01</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(Node n1, Node n2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (n1.score != n2.score) <span class="keyword">return</span> n1.score &gt;= n2.score;</span><br><span class="line">  <span class="keyword">if</span> (n1.num != n2.num) <span class="keyword">return</span> n1.num &lt; n2.num;</span><br><span class="line">  <span class="keyword">return</span> n1.name &lt; n2.name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">string</span> id, school; <span class="keyword">double</span> score;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; id;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%lf"</span>, &amp;score);</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; school;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; school.length(); i++) &#123;</span><br><span class="line">      school[i] = <span class="built_in">tolower</span>(school[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (id[<span class="number">0</span>] == <span class="string">'B'</span>) &#123;</span><br><span class="line">      score = score / <span class="number">1.5</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (id[<span class="number">0</span>] == <span class="string">'T'</span>) &#123;</span><br><span class="line">      score = score * <span class="number">1.5</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!mp.count(school)) &#123;</span><br><span class="line">      mp[school].name = school;</span><br><span class="line">    &#125;</span><br><span class="line">    sum[school] += score;   <span class="comment">// bug05</span></span><br><span class="line">    num[school]++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> it = mp.begin(); it != mp.end(); it++) &#123;</span><br><span class="line">    v.push_back(Node&#123;it-&gt;first, (<span class="keyword">int</span>)sum[it-&gt;first], num[it-&gt;first]&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// case7在排序时候已经在比较score</span></span><br><span class="line">  sort(v.begin(), v.end(), cmp);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; v.size() &lt;&lt; <span class="built_in">endl</span>;                 <span class="comment">// bug07</span></span><br><span class="line">  <span class="keyword">int</span> r = <span class="number">1</span>;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; r &lt;&lt; <span class="string">" "</span> &lt;&lt; v[<span class="number">0</span>].name &lt;&lt; <span class="string">" "</span> &lt;&lt; v[<span class="number">0</span>].score &lt;&lt; <span class="string">" "</span> &lt;&lt; v[<span class="number">0</span>].num &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; v.size(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (v[i].score != v[i<span class="number">-1</span>].score) &#123;</span><br><span class="line">      r = i + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; r &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].name &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].score &lt;&lt; <span class="string">" "</span> &lt;&lt; v[i].num &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/20/20180820-06/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/20/20180820-06/" itemprop="url">1079 延迟的回文数(20) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T17:07:13+08:00">
-                2018-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>未完成。。。</p>
-<h3 id="1079-延迟的回文数-20"><a href="#1079-延迟的回文数-20" class="headerlink" title="1079 延迟的回文数(20)"></a>1079 延迟的回文数(20)</h3><p>非回文数也可以通过一系列操作变出回文数。首先将该数字逆转，再将逆转数与该数相加，如果和还不是一个回文数，就重复这个逆转再相加的操作，直到一个回文数出现。如果一个非回文数可以变出回文数，就称这个数为延迟的回文数。（定义翻译自 <a href="https://en.wikipedia.org/wiki/Palindromic_number" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Palindromic_number</a> ）</p>
-<p>给定任意一个正整数，本题要求你找到其变出的那个回文数。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出一个不超过1000位的正整数。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对给定的整数，一行一行输出其变出回文数的过程。每行格式如下</p>
-<p>A + B = C<br>其中 A 是原始的数字，B 是 A 的逆转数，C 是它们的和。A 从输入的整数开始。重复操作直到 C 在 10 步以内变成回文数，这时在一行中输出 C is a palindromic number.；或者如果 10 步都没能得到回文数，最后就在一行中输出 Not found in 10 iterations.。</p>
-<h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例 1："></a>输入样例 1：</h4><p>97152</p>
-<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例 1："></a>输出样例 1：</h4><p>97152 + 25179 = 122331<br>122331 + 133221 = 255552<br>255552 is a palindromic number.</p>
-<h4 id="输入样例-2："><a href="#输入样例-2：" class="headerlink" title="输入样例 2："></a>输入样例 2：</h4><p>196</p>
-<h4 id="输出样例-2："><a href="#输出样例-2：" class="headerlink" title="输出样例 2："></a>输出样例 2：</h4><p>196 + 691 = 887<br>887 + 788 = 1675<br>1675 + 5761 = 7436<br>7436 + 6347 = 13783<br>13783 + 38731 = 52514<br>52514 + 41525 = 94039<br>94039 + 93049 = 187088<br>187088 + 880781 = 1067869<br>1067869 + 9687601 = 10755470<br>10755470 + 07455701 = 18211171<br>Not found in 10 iterations.</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>6666666666666666666667<br>6666666666666666666667 + 7666666666666666666666 = 213188061011727701<br>213188061011727701 + 107727110160881312 = 320915171172609013<br>320915171172609013 + 310906271171519023 = 631821442344128036<br>631821442344128036 + 630821443244128136 = 1262642885588256172<br>1262642885588256172 + 2716528855882462621 = 3979171741470718793<br>3979171741470718793 + 3978170741471719793 = 7957342482942438586<br>7957342482942438586 + 6858342492842437597 = -3631059097924675433<br>-3631059097924675433 + 3345764297909501363- = 7088702077019689060<br>7088702077019689060 + 0609869107702078807 = 7698571184721767867<br>7698571184721767867 + 7687671274811758967 = -3060501614176024782<br>Not found in 10 iterations.</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">reverse</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> tmp;</span><br><span class="line">  <span class="keyword">int</span> n = s.length();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = n<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    tmp += s[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">is_p</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n = s.length();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n / <span class="number">2</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (s[i] != s[n<span class="number">-1</span>-i]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">re_stoi</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">long</span> <span class="keyword">long</span> ans = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> n = s.length(); <span class="keyword">long</span> <span class="keyword">long</span> b = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = n<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    ans += (s[i] - <span class="string">'0'</span>) * b;</span><br><span class="line">    b *= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> A; <span class="built_in">cin</span> &gt;&gt; A;</span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (is_p(A)) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; A &lt;&lt; <span class="string">" is a palindromic number.\n"</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">      <span class="built_in">string</span> s1, s2;</span><br><span class="line">      s1 = A;</span><br><span class="line">      s2 = reverse(A);</span><br><span class="line">      A = to_string(re_stoi(s1) + re_stoi(s2));         <span class="comment">// bug case7</span></span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; <span class="string">" + "</span> &lt;&lt; s2 &lt;&lt; <span class="string">" = "</span> &lt;&lt; A &lt;&lt; <span class="built_in">endl</span>;  <span class="comment">// bug1</span></span><br><span class="line">      <span class="keyword">if</span> (is_p(A)) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; A &lt;&lt; <span class="string">" is a palindromic number.\n"</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 10755470 + 07455701 = 18211171</span></span><br><span class="line">      <span class="comment">// cout &lt;&lt; s1 &lt;&lt; " + " &lt;&lt; s2 &lt;&lt; " = " &lt;&lt; A &lt;&lt; endl;  // bug1</span></span><br><span class="line">      <span class="keyword">if</span> (++cnt == <span class="number">10</span>) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"Not found in 10 iterations.\n"</span>; <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/20/20180820-05/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/20/20180820-05/" itemprop="url">1023 组个最小数(20) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T17:07:10+08:00">
-                2018-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1023-组个最小数-20"><a href="#1023-组个最小数-20" class="headerlink" title="1023 组个最小数(20)"></a>1023 组个最小数(20)</h3><p>给定数字 0-9 各若干个。你可以以任意顺序排列这些数字，但必须全部使用。目标是使得最后得到的数尽可能小（注意 0 不能做首位）。例如：给定两个 0，两个 1，三个 5，一个 8，我们得到的最小的数就是 10015558。</p>
-<p>现给定数字，请编写程序输出能够组成的最小的数。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出 10 个非负整数，顺序表示我们拥有数字 0、数字 1、……数字 9 的个数。整数间用一个空格分隔。10 个数字的总个数不超过 50，且至少拥有 1 个非 0 的数字。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出能够组成的最小的数。</p>
-<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>2 2 0 0 0 3 0 0 1 0</p>
-<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>10015558</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>贪心, 要让整个数小, 就是数越小就排在越前面。<br>观察数列的构造,</p>
-<p>“排序”后的数组,<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">00115558</span><br><span class="line">10015558</span><br></pre></td></tr></table></figure></p>
-<p><span style="color:red">0不能作为数的首位, 也就是说拿一个0以外的最小值放在最前面.</span><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">12345566</span><br><span class="line">12345566</span><br></pre></td></tr></table></figure></p>
-<p>直接输出</p>
-<p>坑点:<br>1, 因为给出的每个位置的个数是从0~9的, 字符串本身排列是顺序的, 不需要sort.<br>2, 用字符串表示一个整数, 选择一个位置的数字时, 注意它是字符.</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> cnt; <span class="built_in">cin</span> &gt;&gt; cnt;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cnt; j++) s += (i + <span class="string">'0'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (s[<span class="number">0</span>] == <span class="string">'0'</span>) &#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; s.length() &amp;&amp; s[i] == <span class="string">'0'</span>) i++;</span><br><span class="line">    <span class="keyword">char</span> tmp = s[<span class="number">0</span>]; s[<span class="number">0</span>] = s[i]; s[i] = tmp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在寻找第一个非0的数字索引的时候, 不需要遍历, 记录有几个0就可以了。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s; <span class="keyword">int</span> first;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> cnt; <span class="built_in">cin</span> &gt;&gt; cnt;</span><br><span class="line">    <span class="keyword">if</span> (!i) first = cnt;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cnt; j++) s += (i + <span class="string">'0'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (s[<span class="number">0</span>] == <span class="string">'0'</span>) &#123;</span><br><span class="line">    <span class="keyword">char</span> tmp = s[<span class="number">0</span>]; s[<span class="number">0</span>] = s[first]; s[first] = tmp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/20/20180820-04/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/20/20180820-04/" itemprop="url">1019 数字黑洞 (20) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T17:07:06+08:00">
-                2018-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1019-数字黑洞-20"><a href="#1019-数字黑洞-20" class="headerlink" title="1019 数字黑洞 (20)"></a>1019 数字黑洞 (20)</h3><p>给定任一个各位数字不完全相同的4位正整数，如果我们先把4个数字按非递增排序，再按非递减排序，然后用第1个数字减第2个数字，将得到一个新的数字。一直重复这样做，我们很快会停在有“数字黑洞”之称的6174，这个神奇的数字也叫Kaprekar常数。</p>
-<p>例如，我们从6767开始，将得到</p>
-<p>7766 - 6677 = 1089\ 9810 - 0189 = 9621\ 9621 - 1269 = 8352\ 8532 - 2358 = 6174\ 7641 - 1467 = 6174\ … …</p>
-<p>现给定任意4位正整数，请编写程序演示到达黑洞的过程。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入给出一个(0, 10000)区间内的正整数N。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>如果N的4位数字全相等，则在一行内输出“N - N = 0000”；否则将计算的每一步在一行内输出，直到6174作为差出现，输出格式见样例。注意每个数字按4位数格式输出。</p>
-<h4 id="输入样例1："><a href="#输入样例1：" class="headerlink" title="输入样例1："></a>输入样例1：</h4><p>6767</p>
-<h4 id="输出样例1："><a href="#输出样例1：" class="headerlink" title="输出样例1："></a>输出样例1：</h4><p>7766 - 6677 = 1089<br>9810 - 0189 = 9621<br>9621 - 1269 = 8352<br>8532 - 2358 = 6174</p>
-<h4 id="输入样例2："><a href="#输入样例2：" class="headerlink" title="输入样例2："></a>输入样例2：</h4><p>2222</p>
-<h4 id="输出样例2："><a href="#输出样例2：" class="headerlink" title="输出样例2："></a>输出样例2：</h4><p>2222 - 2222 = 0000</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>老方法是自己实现了字符串转整数, 整数转字符串的函数,<br>新方法是用现有的函数库, stoi和to_string, 进行上述转换, 再用s.insert(0, 4-s.length(), ‘0’);</p>
-<p>学到新技巧, s.insert(插入第一位置, 重复的次数, 字符串)</p>
-<p>坑点:<br>1, 0~999前面需要+1<br>2, 9998 - 8999 = 0999, 而不是999</p>
-<p>stoi和to_string版本<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">bool cmp_down(char a, char b) return a &gt; b;</span><br><span class="line">bool cmp_up(char a, char b) return a &lt; b;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> v, v1, v2; <span class="built_in">string</span> s;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">  <span class="keyword">int</span> ok = <span class="number">0</span>; <span class="keyword">char</span> first = s[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (s[i] != s[<span class="number">0</span>]) &#123; ok = <span class="number">1</span>; <span class="keyword">break</span>;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!ok) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="string">" - "</span> &lt;&lt; s &lt;&lt; <span class="string">" = 0000"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    s.insert(<span class="number">0</span>, <span class="number">4</span>-s.length(), <span class="string">'0'</span>);</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">      sort(s.begin(), s.end(), cmp_down);</span><br><span class="line">      v1 = stoi(s);</span><br><span class="line">      sort(s.begin(), s.end(), cmp_up);</span><br><span class="line">      v2 = stoi(s);</span><br><span class="line">      v = v1 - v2;</span><br><span class="line">      s = to_string(v);</span><br><span class="line">      s.insert(<span class="number">0</span>, <span class="number">4</span>-s.length(), <span class="string">'0'</span>);</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%04d - %04d = %04d\n"</span>, v1, v2, v);</span><br><span class="line">    &#125; <span class="keyword">while</span> (s != <span class="string">"6174"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>原先的方法:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp_str1</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> a, <span class="keyword">const</span> <span class="keyword">char</span> b)</span> </span>&#123; <span class="keyword">return</span> a &gt;= b;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp_str2</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> a, <span class="keyword">const</span> <span class="keyword">char</span> b)</span> </span>&#123; <span class="keyword">return</span> a &lt;= b;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">convert_int</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 从(末尾*10+前一位)*10</span></span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">1</span>, ans = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">string</span>::iterator p = s.end()<span class="number">-1</span>; p &gt;= s.begin(); p--) &#123;</span><br><span class="line">    ans += (*p - <span class="string">'0'</span>) * i;</span><br><span class="line">    i *= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// cout &lt;&lt; ans &lt;&lt; "\n";</span></span><br><span class="line">  <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">convert_str</span><span class="params">(<span class="keyword">int</span> h)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 转成4位字符串,</span></span><br><span class="line">  <span class="function"><span class="built_in">string</span> <span class="title">ans_s</span><span class="params">(<span class="number">4</span>, <span class="string">'0'</span>)</span></span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">while</span> (h) &#123;</span><br><span class="line">    ans_s[i--] = h % <span class="number">10</span> + <span class="string">'0'</span>;</span><br><span class="line">    h /= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ans_s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s1;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; s1;</span><br><span class="line">  s1 = convert_str(convert_int(s1));   <span class="comment">// debug: 0~999需要处理</span></span><br><span class="line">  <span class="built_in">string</span> s2 = s1;</span><br><span class="line">  sort(s1.begin(), s1.end(), cmp_str1);</span><br><span class="line">  sort(s2.begin(), s2.end(), cmp_str2);</span><br><span class="line">  <span class="keyword">if</span> (s1 == s2) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; <span class="string">" - "</span> &lt;&lt; s1 &lt;&lt; <span class="string">" = 0000"</span> &lt;&lt; <span class="string">"\n"</span>; <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> (s1 != <span class="string">"6174"</span>) &#123;</span><br><span class="line">    s2 = s1;</span><br><span class="line">    sort(s1.begin(), s1.end(), cmp_str1);</span><br><span class="line">    sort(s2.begin(), s2.end(), cmp_str2);</span><br><span class="line">    <span class="keyword">int</span> d = convert_int(s1) - convert_int(s2);</span><br><span class="line">    <span class="built_in">string</span> tmp = convert_str(d);               <span class="comment">// debug:按照四位格式输出</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; <span class="string">" - "</span> &lt;&lt; s2 &lt;&lt; <span class="string">" = "</span> &lt;&lt; tmp &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">    s1 = tmp;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1572,7 +1550,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">107</span>
+                  <span class="site-state-item-count">113</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
