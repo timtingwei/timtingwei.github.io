@@ -229,6 +229,1090 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-E/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-E</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:41+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="迭代与递归"><a href="#迭代与递归" class="headerlink" title="迭代与递归"></a>迭代与递归</h1><p>分而治之：分解成子问题，递归式的求解。</p>
+<p>空间复杂度：指不包含算法的输入本身所占的空间之外，所需要的另加的用于计算所必须的空间总量。</p>
+<h1 id="减而治之"><a href="#减而治之" class="headerlink" title="减而治之"></a>减而治之</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> 合                合并</span><br><span class="line">----&gt;    问题   --------</span><br><span class="line">^      /      \        ^</span><br><span class="line">| 缩减/        \ 平凡   |</span><br><span class="line">|	   /          \       |</span><br><span class="line"> -&gt; 子问题     子问题 &lt;---</span><br><span class="line"> !     !         !    !</span><br><span class="line"> -------         ------</span><br><span class="line">   治              治</span><br></pre></td></tr></table></figure>
+<p>-—例子1—–<br><code>求n个总数之和</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// A为整数数组, n为问题规模, 返回数组中整数的总和</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">      (n &lt; <span class="number">1</span>) ?</span><br><span class="line">      <span class="number">0</span> : sum(A, n<span class="number">-1</span>) + A[n<span class="number">-1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>分析:</strong></p>
+<blockquote>
+<ul>
+<li>该问题分解为一个缩减问题sum(A, n-1) 和 一个平凡问题A[n-1]</li>
+<li>最后规模小到一定程度时， 缩减问题变为 平凡问题</li>
+<li>将两个问题合并得到结果</li>
+</ul>
+</blockquote>
+<p><strong>复杂度如何？</strong></p>
+<p><code>递归跟踪(recursion trace)</code>分析 (用于简单的递归)</p>
+<ul>
+<li>检查每个<span style="color:red"><strong>递归实例</strong></span></li>
+<li>累积所需要时间（调用语句本身抹去，计入递归实例）</li>
+<li>其总和是算法执行时间<br>||          ||<br>vv          vv<br><code>线性递归</code>：得出上述递归是线性递归，复杂度渐进O(n)</li>
+</ul>
+<p><code>递推方程</code>分析 (用于复杂的递归)<br>上述例子中:<br>T(n) = T(n-1) + O(1)         // recurrence<br>T(0) = O(1)                  // base</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">T(n) - n = T(n-1) - (n-1) = T(n-2) - (n-2) ...</span><br><span class="line">         = T(2) - 2</span><br><span class="line">		 = T(1) - 1</span><br><span class="line">		 = T(0) - 0 = O(1)</span><br><span class="line"></span><br><span class="line">T(n) = O(1) + n = O(n)</span><br></pre></td></tr></table></figure>
+<p>-——例子2—————–<br><code>任给数组A[0,n), 将其前后颠倒</code>            // 更一般的子区间[lo, hi]<br><strong>统一接口</strong> : void reverse(int * A, int lo, int hi);</p>
+<p><code>递归版</code></p>
+<p>规模缩小两个单位。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 输入指向数组A的指针, A中要转置的左区间lo， A中要转置的右区间lo</span></span><br><span class="line">  <span class="comment">// 无返回值，改变指针A所指向的数组, 使其倒序</span></span><br><span class="line">  <span class="keyword">if</span> (lo &lt; hi) &#123;</span><br><span class="line">    swap(&amp;(A[lo]), &amp;(A[hi]));</span><br><span class="line">    <span class="keyword">if</span> (((hi-lo) == <span class="number">1</span>) || ((hi - lo) == <span class="number">0</span>)) <span class="keyword">return</span>;</span><br><span class="line">    reverse(A, lo + <span class="number">1</span>, hi - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析时间复杂度：</p>
+<p><code>递归跟踪(recursion trace)</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int main();</span><br><span class="line">reverse(A[n], lo, hi);</span><br><span class="line">reverse(A[n-2], lo+1, hi-1);</span><br><span class="line">reverse(A[n-4], lo+2, hi-2);</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">reverse(A[1], lo+(n-1)/2, hi+(n-1)/2);</span><br><span class="line">or</span><br><span class="line">reverse(A[0], lo + n/2, hi+ n/2);</span><br><span class="line">      (n-1)/2 , n是奇数</span><br><span class="line">     /                   </span><br><span class="line">O(1)*                    = O(n)</span><br><span class="line">     \n / 2,    n是偶数</span><br></pre></td></tr></table></figure></p>
+<p><code>递推方程</code><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">T(n) = T(n) + O(1);</span><br><span class="line">T(n) - n = T(n-1) - (n-1)</span><br><span class="line">T(n) - n = T(2) - 2</span><br><span class="line">         = T(0) - 0</span><br><span class="line">T(n) = T(0) + n = O(n)</span><br></pre></td></tr></table></figure></p>
+<p>&lt;span style=”color”:blue”&gt;<em>感觉不怎么正确??</em></p>
+<p>课后推敲:</p>
+<p><code>迭代原始版本</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse_iterate_original</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 迭代原始版本</span></span><br><span class="line">next:</span><br><span class="line">  <span class="keyword">if</span> (lo &lt; hi)</span><br><span class="line">  &#123;swap(&amp;A[lo], &amp;A[hi]); lo++; hi--; <span class="keyword">goto</span> next;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><span style="color:blue"><em>使用next作为分支标记,goto跳转，真的能让代码运行，从来没用过</em></span></p>
+<p><code>迭代精简版</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse_iterate</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 迭代版本</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi) swap(&amp;A[lo++], &amp;A[hi--]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="分而治之-divide-and-conquer"><a href="#分而治之-divide-and-conquer" class="headerlink" title="分而治之(divide-and-conquer)"></a>分而治之(divide-and-conquer)</h1><p>分解为多个或两个子问题，得到解后归并。<br>-—–二分递归———-</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mid_sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 数组求和 :二分递归</span></span><br><span class="line">  <span class="keyword">if</span> (lo == hi) <span class="keyword">return</span> A[lo];</span><br><span class="line">  <span class="keyword">int</span> mid = (lo + hi) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> mid_sum(A, lo, mid) + mid_sum(A, mid + <span class="number">1</span>, hi);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><span style="color:red"><strong>注意 mid + 1</strong></span></p>
+<p>// 分析:<br>// 被分解成两个相似问题，mid_sum(n/2)<br>// 规模每次缩减一半，最后到达递归基<br>// 将多个问题结果合并</p>
+<p>分析复杂度:</p>
+<p><code>递归跟踪(几何归纳)</code></p>
+<p>以2为倍数的<strong>几何级数</strong>，总和与<strong>末项同阶</strong>。</p>
+<p><code>递推方程(代数运算)</code></p>
+<p>两个问题都是n/2<br>累加O(1)时间<br>递归基O(1)时间返回</p>
+<p>递推关系<br>T(n) = 2* T(n/2) + O(1)<br>T(1) = O(1)</p>
+<p>..<br>T(n) = O(n)</p>
+<h1 id="Max2-迭代1"><a href="#Max2-迭代1" class="headerlink" title="Max2: 迭代1"></a>Max2: 迭代1</h1><p>从数组区间A[lo, hi)中找出最大的两个整数A[x1]和A[x2]   // A[x1] &gt; A[x2]<br>比较次数要尽可能的少</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max2_three_iters</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;   <span class="comment">// 1 &lt; n = hi - lo</span></span><br><span class="line">  <span class="keyword">int</span> max1 = <span class="number">0</span>, max2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> x1, x2;</span><br><span class="line">  <span class="keyword">if</span> (hi &lt; lo) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = lo; i &lt;= hi; i++)</span><br><span class="line">    <span class="keyword">if</span> (max1 &lt; A[i]) &#123;max1 = A[i]; x1 = i;&#125;       <span class="comment">// hi-lo-1 = n-1</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (x1 != lo) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i_lo  = lo; i_lo &lt; x1; i_lo++)</span><br><span class="line">      <span class="keyword">if</span> (max2 &lt; A[i_lo]) &#123;max2 = A[i_lo]; x2 = i_lo;&#125; <span class="comment">// x1-lo-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (x1 != hi) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i_hi = x1+<span class="number">1</span>; i_hi &lt;= hi; i_hi++)</span><br><span class="line">      <span class="keyword">if</span> (max2 &lt; A[i_hi]) &#123;max2 = A[i_hi]; x2 = i_hi;&#125; <span class="comment">// hi-x1-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> max_array[<span class="number">2</span>] = &#123;max1, max2&#125;;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" A[x1] = "</span> &lt;&lt; A[x1] &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">" A[x2] = "</span> &lt;&lt; A[x2] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>总共比较n-1+n-2 =2n-3 </p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max2</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 遍历一次，改变指针</span></span><br><span class="line">  <span class="keyword">int</span>* x1 = &amp;lo;</span><br><span class="line">  <span class="keyword">int</span> lo_next = lo + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span>* x2 = &amp;lo_next;</span><br><span class="line">  <span class="keyword">if</span> (A[*x1] &lt; A[*x2]) &#123;x1 = &amp;lo_next; x2 = &amp;lo;&#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = lo + <span class="number">2</span>; i &lt;= hi; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[*x2] &lt; A[i]) &#123;      <span class="comment">// 索引i的对象比较小的值大</span></span><br><span class="line">      <span class="keyword">if</span> (A[*x1] &lt; A[i]) &#123;    <span class="comment">// 索引i的对象甚至超过了较大值</span></span><br><span class="line">        x2 = &amp;(*x1); x1 = &amp;i;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      *x2 = i;                <span class="comment">// x1指针指向的元素赋值成i</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" A[*x1] "</span>  &lt;&lt; A[*x1] &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">" A[*x2] "</span>  &lt;&lt; A[*x2] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最好情况: 1 + (n-2)<em>1 = n-1<br>最坏情况: 1+ (n-2) </em>2 = 2n-3</p>
+<p><code>即使在最坏情况，也更高效的改进算法</code></p>
+<blockquote>
+<ul>
+<li>分而治之</li>
+<li>实现退化情况</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">max2</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi, <span class="keyword">int</span> &amp; x1, <span class="keyword">int</span> &amp; x2)</span> </span>&#123;     <span class="comment">// [lo, hi)</span></span><br><span class="line">  <span class="keyword">if</span> (lo + <span class="number">2</span> == hi) &#123;</span><br><span class="line">    <span class="keyword">if</span> (A[lo] &lt; A[lo+<span class="number">1</span>]) &#123;</span><br><span class="line">      x1 = A[lo+<span class="number">1</span>]; x2 = A[lo];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      x2 = A[lo+<span class="number">1</span>]; x1 = A[lo];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;                         <span class="comment">// T(2) = 1</span></span><br><span class="line">  <span class="keyword">if</span> (lo + <span class="number">3</span> == hi) &#123;       <span class="comment">// lo, lo+1, lo+2, lo+3; 19, 2, 3, -1;</span></span><br><span class="line">    x1 = lo, x2 = lo+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (A[x1] &lt; A[x2]) &#123;x1 = lo+<span class="number">1</span>; x2 = lo;&#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = lo+<span class="number">2</span>; i &lt; hi+<span class="number">1</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (A[i] &gt; A[x2]) &#123;</span><br><span class="line">        <span class="keyword">if</span> (A[i] &gt; A[x1]) &#123;</span><br><span class="line">          <span class="keyword">int</span> tmp = x1;</span><br><span class="line">          x1 = i; x2 = tmp;</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        x2 = i;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;                         <span class="comment">// T(3) &lt;= 3</span></span><br><span class="line">  <span class="keyword">int</span> mid = (lo + hi) &gt;&gt; <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> x1L, x2L; max2(A, lo, mid, x1L, x2L);</span><br><span class="line">  <span class="keyword">int</span> x1R, x2R; max2(A, mid+<span class="number">1</span>, hi, x1R, x2R);</span><br><span class="line">  <span class="keyword">if</span> (A[x1L] &gt; A[x1R]) &#123;</span><br><span class="line">    x1 = x1L; x2 = (x2L &lt; x1R) ? x1R:x2L;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    x1 = x1R; x2 = (x2R &lt; x1L) ? x1L:x2R;</span><br><span class="line">  &#125;</span><br><span class="line">&#125; <span class="comment">// 1 + 1 = 2</span></span><br></pre></td></tr></table></figure>
+<p>最坏情况: T(n) = 2 * T(n/2) + 2 &lt;= 5n/3 -2</p>
+<p><code>递推方程推导过程:</code> ? </p>
+<p><code>最好情况复杂度:</code> ?</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>两种重要算法策略：减而治之，分而治之</p>
+<p>两种分析方法：递归跟踪和递推方程</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-C/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-C</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:22+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>渐进分析: 大O记号 </p>
+<p>好读书不求甚解。</p>
+<p>考察DSA（考察人）:</p>
+<blockquote>
+<ul>
+<li>长远</li>
+<li>主流,</li>
+</ul>
+</blockquote>
+<p>渐进分析(Asymptotic Analysis) n &gt;&gt; 2, 对于规模为n输入，算法</p>
+<ul>
+<li>需要执行的基本操作数: T(n) = ?</li>
+<li>..存储单元: S(n) = ?       // 通常不考虑？<strong>教材</strong></li>
+</ul>
+<p><strong>教材P33</strong></p>
+<blockquote>
+<ul>
+<li>空间复杂度不会超过常数规模，纵然是新开辟的，算法所需的空间总量，也不过与基本操作的次数同阶。从这个意义上，时间复杂度是空间复杂度的天然上限。</li>
+<li>但两种情况下会有意义:<ul>
+<li>对空间效率也异常在乎(时间复杂度的平凡上界难以令人满意)</li>
+<li>数据的输入规模大。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>big-O()比T(n), f(n)更简洁，但依然反应增长趋势(长远)</p>
+<blockquote>
+<ul>
+<li>常系数可忽略(主流):O(f(n)) = O(c*f(n))</li>
+<li>低次项可忽略(主流)</li>
+</ul>
+</blockquote>
+<p>O(1)<br>常数</p>
+<blockquote>
+<ul>
+<li>2 = 2013 = 2013*2013 = O(1)</li>
+<li>效率: 最高效</li>
+<li>出现的情况，需要具体分析<pre><code>不含循环，不含分支转向，一定不能有(递归)调用？
+</code></pre><strong>教材</strong></li>
+</ul>
+</blockquote>
+<p>O(logn)<br>对数</p>
+<blockquote>
+<ul>
+<li>常底数无所谓</li>
+<li>常数次幂无所谓</li>
+<li>多项式</li>
+<li>效率: 接近于常数</li>
+</ul>
+</blockquote>
+<p>O(n^c)<br>多项式</p>
+<blockquote>
+<ul>
+<li>一般 取最高次<br>线性：所有O(n)函数<br>从O(n)到O(n^2):编程习题主要覆盖范围<br>效率: 已经可令人满意。</li>
+</ul>
+</blockquote>
+<p>O(2^n)<br>指数<br>效率: 算法成本增长极快，通常不可忍受。<br>n^x-&gt;2^n, 是从有效算法到无效算法的分水岭。</p>
+<p>2-Subset<br>直觉算法：逐一枚举S的每一个子集，并统计其中元素总和<br>定理:2-Subset is NP-complete<br>意即:就目前模型而言，不存在在多项式时间内回答此问题的算法。<br>     除非，添加条件：分布规律啦, 票的总数啦，</p>
+<p>复杂度增长速度表格。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/01-B/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-B</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:07:54+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>功能：<br>算法:<br>规范：图灵机复位h的原因。 =&gt; 在软件中叫做接口</p>
+<p>RAM: Random Access Machine<br>共同之处：无限的空间。<br>寄存器：</p>
+<blockquote>
+<ul>
+<li>常数赋值给RAM             </li>
+<li>RAM之间直接赋值 R[i] &lt; R[j]</li>
+<li>RAM之间间接赋值 R[i] &lt;- R[R[j]]</li>
+<li>RAM+-</li>
+<li>判断0跳转      IF R[i] = 0 GOTO l</li>
+<li>判断正跳转             &gt; 0</li>
+<li>跳转</li>
+<li>停止           STOP</li>
+</ul>
+</blockquote>
+<p>概括:<br>对计算工具抽象后的简化。<br>独立于环境和平台，可评判效率。</p>
+<blockquote>
+<ul>
+<li>将执行时间，转化为操作次数。T(n) = 算法为求求解规模为n问题的，所需执行次数</li>
+<li><h1 id="这个次数是清晰的，可度量的。"><a href="#这个次数是清晰的，可度量的。" class="headerlink" title="这个次数是清晰的，可度量的。"></a>这个次数是清晰的，可度量的。</h1></li>
+</ul>
+</blockquote>
+<p>RAM实例:Floor<br>向下取整除法, 0 &lt;= c, 0 &lt; d<br>c%d = max {x | d<em>c &lt;= c}<br>    = max {x | d</em>x &lt; 1+c}</p>
+<h2 id="R-0-c-1-R-1-d"><a href="#R-0-c-1-R-1-d" class="headerlink" title="R[0] = c+1, R[1] = d"></a>R[0] = c+1, R[1] = d</h2><p>0, R[0] &lt;- c                 // int c = c;<br>1, R[1] &lt;- d                 // int d = d;<br>2, R[2] &lt;- 0                 // int x = 0;<br>3, R[3] &lt;- 1                 // int a = 1;<br>4, R[0] &lt;- R[0] + R[2]       // c++<br>6, R[0] &lt;- R[0] - R[1]       // c-=d<br>7, R[2] &lt;- R[2] + R[3]       // x++<br>8, IF R[0] &gt; 0 GOTO 4        // if c &gt; 0 goto 4<br>9, R[0] &lt;- R[2] - R[3]       // else x– and;<br>9, STOP                      // return R[0] = x</p>
+<p>src:</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/04/trip-of-game-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/04/trip-of-game-notes/" itemprop="url"><<游戏之旅>>笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T09:34:38+08:00">
+                2018-01-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近读了云风大大的书, 感谢云风, 对我有所帮助。<br>选读 第1章， 第2章, 3.1, 3.2, 3.3, 3.5.2, 4.4.4, 8.1, 第9章, 13, 14</p>
+<h1 id="对我有所启发的points"><a href="#对我有所启发的points" class="headerlink" title="对我有所启发的points"></a>对我有所启发的points</h1><blockquote>
+<ul>
+<li>写email的建议</li>
+<li>C和C++的关系</li>
+<li>C++的开发经验</li>
+<li>学习C++阅读次序</li>
+<li>template的技巧</li>
+<li><strong>开发的成功和失败的经验</strong></li>
+<li>游戏编程几个反思</li>
+<li>后记中编程实践和思考方法 </li>
+<li>致谢中云风父亲的背景以及教育方法</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="2-算法"><a href="#2-算法" class="headerlink" title="2. 算法"></a>2. 算法</h1><h2 id="2-1-程序-算法-数据结构"><a href="#2-1-程序-算法-数据结构" class="headerlink" title="2.1 程序 = 算法+数据结构"></a>2.1 程序 = 算法+数据结构</h2><p>计算机解决的问题，看成一个需要求解的函数，</p>
+<blockquote>
+<ul>
+<li>算法：将输入转化为输出的方法。</li>
+<li>数据结构: 需要解决问题中的信息用计算机进行的数字描述方法，以及相应的对这些信息的操作。</li>
+</ul>
+</blockquote>
+<h4 id="2-1-1-算法"><a href="#2-1-1-算法" class="headerlink" title="2.1.1 算法"></a>2.1.1 算法</h4><p>时间和空间之间寻求平衡。</p>
+<blockquote>
+<ul>
+<li>空间换时间的做法，非常广泛，即预处理</li>
+<li>时间换空间，不容忽视，即使重复计算。</li>
+</ul>
+</blockquote>
+<p>依赖平台特性:</p>
+<blockquote>
+<ul>
+<li>非并行计算机，不考虑用并行来提速。</li>
+<li>空间允许随机访问，不是纸带机的顺序。</li>
+</ul>
+</blockquote>
+<h4 id="2-1-2-数据结构"><a href="#2-1-2-数据结构" class="headerlink" title="2.1.2 数据结构"></a>2.1.2 数据结构</h4><p>简单定义：对数据的组织方法，还有对数据组织方式的处理方法。<br>C++已经提供了常见的数据结构，为什么还要学？</p>
+<blockquote>
+<ul>
+<li>学蕴含思想</li>
+<li>根据实际情况对数据结构进行改造，更高效。</li>
+</ul>
+</blockquote>
+<h5 id="1-线性表"><a href="#1-线性表" class="headerlink" title="1. 线性表"></a>1. 线性表</h5><pre><code>有限逻辑上的有序数列，有确定的前驱和后驱；
+分为成：数组和链表;
+
+数组:
+</code></pre><h5 id="2-堆栈、队列和串"><a href="#2-堆栈、队列和串" class="headerlink" title="2. 堆栈、队列和串"></a>2. 堆栈、队列和串</h5><h5 id="3-树、二叉树及其他"><a href="#3-树、二叉树及其他" class="headerlink" title="3. 树、二叉树及其他"></a>3. 树、二叉树及其他</h5><p><strong>树：</strong><br>有层次的数据集的组织方式。</p>
+<p>GUI界面，通常用树来组织；<br>游戏中的对象管理，用树来解决管理上的层次问题。</p>
+<p><strong>二叉树:</strong><br>严格来说不算是树。<br>表达式计算，数据压缩，排序查找方面有很多用途。</p>
+<p><strong>四叉树、八叉树：</strong><br>空间状态划分，</p>
+<blockquote>
+<ul>
+<li>四叉树：平面</li>
+<li>八叉树: 空间</li>
+</ul>
+</blockquote>
+<p>空间: 场景空间+ 调色盘算法等（向量空间）</p>
+<p><strong>图：</strong><br>节点没有父子关系，纯粹的点和边的集合。<br>节点和节点之间允许加上一些与它有关的数，称为权(weight)， 带权图称为网络。<br>节点和节点之间可以有方向，也可以无方向。</p>
+<p><strong>图应用于现代网络游戏中，多服务器设计，或者三维游戏中的大场景描述，值得开发者好好研究。</strong></p>
+<p><strong>映射表</strong><br>std::map,STL最复杂的容器。</p>
+<p><strong>禁忌思想，</strong></p>
+<blockquote>
+<ul>
+<li>模拟人的记忆过程，从某点开始，想临近区域扩展解。经过的地方一概进入禁忌状态，为了短期搜索回来，造成循环搜索，会有一个记忆寿命，超过若干步骤后解决禁忌。这个步骤叫做Tabu Length, 禁忌长度。禁忌长度过大会导致计算量增加，过小则会进入循环搜索。</li>
+<li>蚂蚁队伍在附近找最高点。任意选择一个起点，一开始就保持队伍胡乱地向周围爬。蚂蚁队伍遵循一个原则，就是不能回到最近经过的位置。</li>
+</ul>
+</blockquote>
+<p>算法一种思想，自己动手实践，了解这些方法，慢慢地就可以真正运用它到实际中去。不光光要会描述一个问题，以适应不同的算法；还要了解更多的算法会让我们更快解决棘手问题。</p>
+<h4 id="2-4-优化"><a href="#2-4-优化" class="headerlink" title="2.4 优化"></a>2.4 优化</h4><blockquote>
+<ul>
+<li>数学方法的改进</li>
+<li>预运算来节省时间（空间换时间避免重复运算）或是重复运算来节省空间</li>
+<li>简化算法求得近似来取代精确解（或最有解）</li>
+<li>改进数据组织方式，用更少的操作处理更多的数据，甚至避免冗杂数据的处理。</li>
+</ul>
+</blockquote>
+<p>碰到棘手的问题，不要先急于找Google,或者问别人，应该自己思考最好的解决方法。每个人都有自己无数的解决方法，每次独立的思考，都是对思维的一次开阔。</p>
+<p>&lt;<c语言程序设计400例>&gt;</c语言程序设计400例></p>
+<p><strong>C</strong><br>C语言本身是简洁的。语言本身仅仅只是提供了一种用计算机角度实现算法的符号。<br>C语言函数，让问题分而治理它。<br>全局变量，可以让函数之间不通过输入参数来访问一些公有的数据。<br>最让人诟病就是指针的设计。从高级语言的角度来讲，程序员不需要指针。我们只需要有可以指带数据的标识之物。</p>
+<p><strong>BASIC</strong></p>
+<h3 id="比较解释语言和C语言的不同"><a href="#比较解释语言和C语言的不同" class="headerlink" title="比较解释语言和C语言的不同"></a>比较解释语言和C语言的不同</h3><p>解释型语言：</p>
+<blockquote>
+<ol>
+<li>每运行一次，解释器就读一次，对符号进行翻译</li>
+<li>中间状态以严格规定保存起来，在后面的语句需要时被重新加载<br>C语言</li>
+<li>在编码后需要多做一些工作，即他们会被翻译成为机器码，运行时就不需要翻译。</li>
+<li>编译器对代码同类向合并，最后的机器码会很简洁。</li>
+</ol>
+</blockquote>
+<p>逻辑学教育，BASIC，适合理解编程。</p>
+<h1 id="3-编程语言"><a href="#3-编程语言" class="headerlink" title="3. 编程语言"></a>3. 编程语言</h1><h2 id="3-3-C"><a href="#3-3-C" class="headerlink" title="3.3 C++"></a>3.3 C++</h2><h3 id="C-的不同理解"><a href="#C-的不同理解" class="headerlink" title="C++的不同理解"></a>C++的不同理解</h3><p>第一印象可能是为了面向对象的设计，实际上C++是一种支持各种编程范式的语言。它支持面向过程的编程，基于对象的编程，面向对象的编程，以及使用template实现的泛型编程。</p>
+<h3 id="C对于C-的优势"><a href="#C对于C-的优势" class="headerlink" title="C对于C++的优势"></a>C对于C++的优势</h3><p>简洁，而非高效；适合做小内存的嵌入式系统开发。</p>
+<h3 id="但大多数游戏平台，C-比C更适合"><a href="#但大多数游戏平台，C-比C更适合" class="headerlink" title="但大多数游戏平台，C++比C更适合"></a>但大多数游戏平台，C++比C更适合</h3><h2 id="3-4-汇编语言"><a href="#3-4-汇编语言" class="headerlink" title="3.4 汇编语言"></a>3.4 汇编语言</h2><p>合适场合使用汇编，能让程序跑得更快。<br>了解汇编，能让你了解代码最终会以什么形态运行于CPU，对理解高级语言有所帮助，<br>在紧要关头帮忙，程序出现莫名错误，又不能在源码级调整程序。</p>
+<h1 id="4-前Windows时代"><a href="#4-前Windows时代" class="headerlink" title="4. 前Windows时代"></a>4. 前Windows时代</h1><h2 id="4-3-保护模式下的开发工具"><a href="#4-3-保护模式下的开发工具" class="headerlink" title="4.3 保护模式下的开发工具"></a>4.3 保护模式下的开发工具</h2><p>个人主页建立之初，我罗列出了个人兴趣 ：…很多。但是大而全的效果是，我一样都做不好，而且和其他人的个人主页相比没有特色。稍加考虑，立刻砍掉了除了游戏开发之外的所有项目。</p>
+<blockquote>
+<ul>
+<li>翻译allgero文档:自己做了一个辅助翻译的工具;细致了解; 交朋友</li>
+<li><p>写关于游戏编程技术方面的小文，各处转载</p>
+</li>
+<li><p>利用假期，走访网上认识的从事游戏开发的朋友，慢慢踏上了游戏制作的道路。</p>
+</li>
+</ul>
+</blockquote>
+<p>学习新的技术，翻译一本相关的英语著作可以算是捷径。</p>
+<blockquote>
+<ul>
+<li>比囫囵吞枣的读一遍英文原文要有效的多。</li>
+<li>因为有责任感，必须用心搞清楚每一个句子的意思，以免错误而误导阅读你的译作的人们。</li>
+<li>即使对此有所了解，翻译后也能更上一层楼。</li>
+<li>英语水平也会提高。</li>
+</ul>
+</blockquote>
+<h2 id="4-4-闲话allegro"><a href="#4-4-闲话allegro" class="headerlink" title="4.4 闲话allegro"></a>4.4 闲话allegro</h2><h3 id="4-4-4-几何图形和3D"><a href="#4-4-4-几何图形和3D" class="headerlink" title="4.4.4 几何图形和3D"></a>4.4.4 几何图形和3D</h3><p>图形引擎提供，可以绘制一些几何图形，点，线，多边形等等，但制作平面游戏这些并不是必须的，因为游戏中的一切，事先都可以用预先制作好的图片代替掉。</p>
+<p>3D游戏，却是基于多边形。通过空间多边形的网络信息，把一些平面的图片，做一些变形，映射到多边形网格上。<br>相关的:</p>
+<blockquote>
+<ul>
+<li>透视映射</li>
+<li>矩阵，三维空间中变换的工具, 自带一套矩阵运算。</li>
+<li>实现了一套定点数的运算该改善游戏中需要的数学运算速度。</li>
+</ul>
+</blockquote>
+<p><strong>1,定点数</strong><br>巧妙的利用定点数，可以避免许多浮点误差问题，是很有价值的。</p>
+<p>浮点数：计算机用一种纯小数加指数的形式表示实数。<br>定点数：利用整数运算来模拟小数的方法，那就是定点数来表示小数。</p>
+<p>高16位，表示整数位；低16位，表示小数部分；实际是60000+倍，小数点的位置是固定的。</p>
+<p>精读在1/6*10^4, 十进制小数点后四位的精度。</p>
+<p>定点数的一些计算技巧和优势：</p>
+<blockquote>
+<ul>
+<li>原本复杂的三角函数计算，可以依照所需要的精度，预先制作好查询表，以空间换取时间。</li>
+<li>角度表示方式不是360和2pi, 而是64表示直角， 256表示圆周角。</li>
+</ul>
+</blockquote>
+<h2 id="4-5"><a href="#4-5" class="headerlink" title="4.5"></a>4.5</h2><p>云风关于写email的建议：</p>
+<blockquote>
+<ul>
+<li>回复收到的每封email, 即使没空写， 也让对方知道自己已读。</li>
+<li>使用纯文本，发送过大附件前请求</li>
+<li>合适的标题，能概括内容；偏题时，修改标题。</li>
+<li>删除尽可能多的引信，尤其是对方的签名，对主题表达无意义。</li>
+<li>合理分段，表达自己意见，别赞同两字多写一点。</li>
+<li>发出之前，读一遍，修改掉错别字和语法错误，核对一次收件人是否正确</li>
+<li>不要随意公开转载私人信件，即使转载也注明出处。</li>
+</ul>
+</blockquote>
+<h1 id="8-引擎中的优化"><a href="#8-引擎中的优化" class="headerlink" title="8. 引擎中的优化"></a>8. 引擎中的优化</h1><p>“风魂”中很多蹩脚的编码方法，不成熟的整体架构、非系统的编码规范和不严谨的接口定义，但对于自己干了这件贻笑大方的事情，自己却不后悔。敢于把自己的无知展现给世人，是一种勇气。</p>
+<p>只要保持真诚谦逊，错误的存在就能得到理解；整体上或许不完善，但还是有后来者，依旧可以从中学到闪光点，避免踏上弯路。</p>
+<h1 id="9-C和C"><a href="#9-C和C" class="headerlink" title="9. C和C++"></a>9. C和C++</h1><h2 id="9-1-从C到C"><a href="#9-1-从C到C" class="headerlink" title="9.1 从C到C++"></a>9.1 从C到C++</h2><p>1, C只提供了CPU本来就提供的操作，把他映射到更容易让人理解和描述的书写形式上。为了让程序员使用，引入了栈上临时变量，和堆上动态变量的概念，而不是直接面向寄存器。</p>
+<p>2, C对大块的数据，使用数据指针来表达。</p>
+<p>3, C一个个函数组织起来，函数之间按层次调用，去处理那些不同结构的数据</p>
+<p>4, C是对汇编语言的一种抽象, 正如汇编语言是对机器底层指令的一个最小幅度的抽象，为了人类方便控制机器。C程序员要做问题描述和机器模型之间的桥梁。</p>
+<p>5, C是容易学的，它非常接近机器模型，而机器模型非常简洁，有条理；有效率，接近机器模型；困难性，离实际描述太远，在问题描述和机器模型之间找到对应关系，会随着问题的复杂性提高而急剧增加。</p>
+<p><code>困难性的说明</code>，<br>高级语言往往改为对问题本身抽象，把问题归为特定的类别，然后，语言本身只解决这些被抽象的问题，来简单编程的难度，但往往<strong>只能针对特定的类型</strong>。</p>
+<p><code>C++面向对象的说明</code></p>
+<blockquote>
+<ul>
+<li>既然保持强大的抽象能力，又保持底层符合机器模型的优势，在设计变得简单的情况下不失效率。</li>
+<li>将对象分为不同的类型，每个对象都是这种对象的实例。类型的设计是有层次的，就好像动物是一种大类型，而哺乳动物和爬行动物都属于动物。</li>
+</ul>
+</blockquote>
+<h2 id="9-2-C-vs-C-，-效率至上"><a href="#9-2-C-vs-C-，-效率至上" class="headerlink" title="9.2 C vs C++， 效率至上"></a>9.2 C vs C++， 效率至上</h2><p><code>C++中混有C语言的好处:</code></p>
+<blockquote>
+<p>1, 更广泛的移植性<br>2, C的思考方式，会让不致于陷入面向对象和泛型编程的泥沼，只是说很容易钻进设计方法的牛角尖<br>3, 良好的C语言接口可能使得模块的使用方法更容易理解，对多人合作和多语言编程是一种好事<br>4, C简洁, 编译速度快</p>
+</blockquote>
+<h2 id="9-3-优雅的C"><a href="#9-3-优雅的C" class="headerlink" title="9.3 优雅的C++"></a>9.3 优雅的C++</h2><p>将C细化，又不增加额外的开销;<br>不对程序员有过多限制。</p>
+<h3 id="9-3-1-宏"><a href="#9-3-1-宏" class="headerlink" title="9.3.1 宏"></a>9.3.1 宏</h3><p><code>宏的作用</code></p>
+<blockquote>
+<p>1, 定义常数<br>2, 代码生成<br>3, 内联代码<br>4, 对编译流程作出选择</p>
+</blockquote>
+<p>1, 定义常数</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.1415926f;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> PI;</span><br></pre></td></tr></table></figure>
+<p>C++会选择inline函数+template定义常数，最终编译器会把它优化成一个常数，而没有对函数调用的消耗。</p>
+<p>经典的如：<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> min(a, b) ((a&lt;b)?(a):(b))</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="keyword">const</span> T&amp; <span class="title">min</span><span class="params">(<span class="keyword">const</span> T &amp;a, <span class="keyword">const</span> T &amp;b)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> a&lt;b ? a:b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-3-2-const修饰以及类型转换"><a href="#9-3-2-const修饰以及类型转换" class="headerlink" title="9.3.2 const修饰以及类型转换"></a>9.3.2 const修饰以及类型转换</h3><h4 id="const修饰"><a href="#const修饰" class="headerlink" title="const修饰"></a>const修饰</h4><p>const chat<em> 而不是 C 的 char</em></p>
+<p>将函数参数写成const;<br>成员变量修饰成const, 只有在构造的时构建他们;<br>为成员函数增加一个const, 表达这个函数不会修改类的成员变量</p>
+<h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><p>C中几乎任何类型都可以任意转换，缘于C汇编的根。<br>C++用static_cast 以模板的语法表达看起来可以互相转换的类型互换</p>
+<p>const和const之间的转换，只能通过const_cast转换。</p>
+<p>严格描述每个对象的const性质，可以帮助在编译期发生错误减少。</p>
+<h3 id="9-3-3-隐藏实现"><a href="#9-3-3-隐藏实现" class="headerlink" title="9.3.3 隐藏实现"></a>9.3.3 隐藏实现</h3><p>好的C++程序会把所有数据都声明成private的，尽量在同一类中暴露过多的public方法，而protected慎用，至少尽量不用在成员数据上。</p>
+<p>作为良好的面向对象设计，继承类很少去扩展基类的功能，这样子作为具体实现，被隐藏于接口后，结构变得干净整洁。</p>
+<h3 id="9-3-4-引用而非指针"><a href="#9-3-4-引用而非指针" class="headerlink" title="9.3.4 引用而非指针"></a>9.3.4 引用而非指针</h3><p>指针是导致资源被遗忘释放的罪魁祸首。</p>
+<blockquote>
+<ul>
+<li>当旧的指针被赋予新值，旧的值消失，如果消失的值是唯一指向某个对象的地址，那么这个对象控制的资源将永远留在内存中，直到进程结束被系统回收。</li>
+</ul>
+</blockquote>
+<p>引用和指针在实现本质上是完全相同的，但引用的语法只能在构造的那一刻被赋值，并永远不能修改。</p>
+<p>C++优雅设计中，会用引用代替成员变量中的指针，而减少实现类的时候不小心犯错误。</p>
+<h3 id="9-3-5-命名空间"><a href="#9-3-5-命名空间" class="headerlink" title="9.3.5 命名空间"></a>9.3.5 命名空间</h3><p>引用外部的名字空间到当前位置。可以防止不同库之间的名字冲突。</p>
+<h2 id="9-4-C-的误区"><a href="#9-4-C-的误区" class="headerlink" title="9.4 C++的误区"></a>9.4 C++的误区</h2><p>自己的一条准则： 尽可能地使用结构最简单的工具来完成任务，直到这个工具不合适。</p>
+<p>举例:</p>
+<blockquote>
+<ul>
+<li>能用C写的程序，不用C++；能用C的原生数组的情况不用std::vector。能用std::vector的情况不要用std::map, 能自己写的代码不用第三方库。</li>
+</ul>
+</blockquote>
+<p>解释：</p>
+<blockquote>
+<ul>
+<li>没有完美的程序，也没有完美的原则。</li>
+<li>不主张写C++的标准库，重写MFC或者广为大众所使用的代码。大多数C++程序员，没到达这个技术理解。</li>
+</ul>
+</blockquote>
+<h3 id="9-4-1-类层次过细"><a href="#9-4-1-类层次过细" class="headerlink" title="9.4.1 类层次过细"></a>9.4.1 类层次过细</h3><p>会造成间接调用引起的损耗。</p>
+<h3 id="9-4-2-滥用操作符重载"><a href="#9-4-2-滥用操作符重载" class="headerlink" title="9.4.2 滥用操作符重载"></a>9.4.2 滥用操作符重载</h3><p>为了让用户写出的类适用于现存的模板，让用户构造的对象和C++原生的类型有相同的表现，操作符重载是有意义的。<br>如果仅仅是让程序看起来紧凑，或者是类使用起来“好玩”，那就是对其的滥用了。</p>
+<h3 id="9-4-3-滥用标准容器"><a href="#9-4-3-滥用标准容器" class="headerlink" title="9.4.3 滥用标准容器"></a>9.4.3 滥用标准容器</h3><p>用std::vector就不想再碰语言中的原生数组，用过std::string, 就不知道 const char* 是为何物，这是许多C++程序员的通病。</p>
+<p><code>std::map可以这样子做，</code><br>如果只是为了创建一张key-value的对应表可供查询，完全可以用<br>key-value对应的关系记录下来，只做一次排序，在检索的时候可以使用二分查找查找，一种快捷又节省内存的方法。</p>
+<h3 id="9-4-5-滥用多重继承"><a href="#9-4-5-滥用多重继承" class="headerlink" title="9.4.5 滥用多重继承"></a>9.4.5 滥用多重继承</h3><p>会造成实现过于复杂，几乎所有的多重继承问题，都可以化为组合方式来解决。</p>
+<h3 id="9-4-6-忽视C-高级特性的复杂度"><a href="#9-4-6-忽视C-高级特性的复杂度" class="headerlink" title="9.4.6 忽视C++高级特性的复杂度"></a>9.4.6 忽视C++高级特性的复杂度</h3><p>如果把两种复杂度高的特性运用于项目中，其复杂度不是两倍，而是平方。</p>
+<h3 id="9-4-7-学习C"><a href="#9-4-7-学习C" class="headerlink" title="9.4.7 学习C++"></a>9.4.7 学习C++</h3><p>我现在无法把自己学会的东西，理解的东西借助文字教给入门者，因为许多的知识需要自己在实践中领悟。过多的细节，太快地展现出来反而会增加学习的复杂度，难以消化。</p>
+<p>因此，需要</p>
+<blockquote>
+<p>1，学<br>2, 用<br>3, 思考<br>2, 回到1</p>
+</blockquote>
+<p>如果期望C++成为自己开发中的利器，应该尽量多用C++做项目，尽量可能地体验更多的设计方法，用心去写程序，而不是单单去实现而已。自己写出的代码，多多思考，对感觉不好的部分重新设计。</p>
+<p>推荐一个阅读次序:</p>
+<blockquote>
+<p>1, 先学会C，只是也是C++子集的部分。<br>2, &lt;<c++编程思想>&gt;<br>3, &lt;<c++ primer="">&gt; 和 &lt;<c++ programing="" language="">&gt;<br>4, C++ 标准文档(1998定制，电子档)，遇到问题不是去查某本教材，而是直接翻阅文档。<br>5, &lt;<c++的发展和演化>&gt;，深入了解C++设计的根源以及C++编译器实现方法入手.<br>6, &lt;&lt;深度探索C++物件模型&gt;&gt;对追求高效的C++程序员尤为受用。</c++的发展和演化></c++></c++></c++编程思想></p>
+</blockquote>
+<p>进阶学习: 需要一定的开发经验才能阅读</p>
+<blockquote>
+<ul>
+<li>&lt;<effective c++="">&gt;, &lt;<more effective="" c++="">&gt;, &lt;<c++沉思录>&gt;</c++沉思录></more></effective></li>
+<li>泛型编程&lt;<stl 源码剖析="">&gt;，有点难，但是花上一定的时间一定有收获。</stl></li>
+<li>&lt;<c++设计新思维------泛型编程与设计模式之应用>&gt;template使用自信，对泛型编程感觉良好，</c++设计新思维------泛型编程与设计模式之应用></li>
+<li>&lt;<c++标准程序库>&gt;想更精通标准库，C++程序员案头必备的参考手册。</c++标准程序库></li>
+<li>&lt;<effective stl="" 中文版="">&gt;， 与前面的effcive系列一样</effective></li>
+</ul>
+</blockquote>
+<h3 id="9-5-3-再论动态内存分配"><a href="#9-5-3-再论动态内存分配" class="headerlink" title="9.5.3 再论动态内存分配"></a>9.5.3 再论动态内存分配</h3><p>//…</p>
+<p>理解动态内存的捷径，自己写一个内存分配器。从一大块给定的内存上，分配出用户提交的内存。</p>
+<h3 id="9-6-template"><a href="#9-6-template" class="headerlink" title="9.6 template"></a>9.6 template</h3><p>template最初只为了取代C++语言的宏设计，后来被赋予了实例化的特性，可以针对某些特别的类型做特殊的操作。</p>
+<h4 id="9-6-1-封装C-的成员函数的调用"><a href="#9-6-1-封装C-的成员函数的调用" class="headerlink" title="9.6.1 封装C++的成员函数的调用"></a>9.6.1 封装C++的成员函数的调用</h4><h4 id="9-6-4-避免重复代码"><a href="#9-6-4-避免重复代码" class="headerlink" title="9.6.4 避免重复代码"></a>9.6.4 避免重复代码</h4><p><code>大部分程序错误的根源:</code></p>
+<blockquote>
+<ul>
+<li>在多个地方表达相似的概念，意味着日后改动一个地方，就必须记得改动相似的所有地方。而直接复制这些代码，导致编译器并不知道这些地方的相似性，不能为你提供帮助。而人，随着项目扩大，几乎不可能记住做过多少次这种复制动作。</li>
+</ul>
+</blockquote>
+<p>没有意识到在重复，可以用加强对代码糟糕味道的嗅觉敏感度和提高作为编码者的责任心来达到。</p>
+<p>举个blit()例子</p>
+<h4 id="9-6-5-选择最佳的容器"><a href="#9-6-5-选择最佳的容器" class="headerlink" title="9.6.5 选择最佳的容器"></a>9.6.5 选择最佳的容器</h4><p>很多语言都提供了一种未定义类型的变量，可以用来保存各种不同类型的变量。而C++没有提供这样的类型，但是可以用template来模拟一个，也就是设计一个容器存放不同类型的对象。</p>
+<p>对于一个容器到底是保存</p>
+<blockquote>
+<ul>
+<li>对象指针</li>
+<li><p>对象值</p>
+</li>
+<li><p>对于体积较大的对象，保存指针, 复制很快</p>
+</li>
+<li>对于体积较小的对象，保存对象值, 减少间接；减少指针空间的占用</li>
+</ul>
+</blockquote>
+<p>可以利用模板在编译期间由编译器自动进行；</p>
+<h4 id="9-6-5-延迟计算"><a href="#9-6-5-延迟计算" class="headerlink" title="9.6.5 延迟计算"></a>9.6.5 延迟计算</h4><p>由于涉及到了关于重载运算符的内容，暂且通读。大概是讲，可以自定义一种运算方式，但是又要对这种运算方式进行优化，所以需要模板的帮助，在编译期就对他进行不同函数的选择。</p>
+<h4 id="9-6-7-编译时的计算游戏（未完成）"><a href="#9-6-7-编译时的计算游戏（未完成）" class="headerlink" title="9.6.7 编译时的计算游戏（未完成）"></a>9.6.7 编译时的计算游戏（未完成）</h4><p>三个数排序<br>+</p>
+<h3 id="9-7-小结"><a href="#9-7-小结" class="headerlink" title="9.7 小结"></a>9.7 小结</h3><p>早犯一天错误，就可以早一天改正错误。</p>
+<h1 id="13-开发方法"><a href="#13-开发方法" class="headerlink" title="13. 开发方法"></a>13. 开发方法</h1><h2 id="13-1-失败的经验"><a href="#13-1-失败的经验" class="headerlink" title="13.1 失败的经验"></a>13.1 失败的经验</h2><blockquote>
+<p>1, 过多的工作压力压到一个人身上。<br>2, 过分的弹性工作制<br>3, 没完没了的变化和返工<br>4, 没有及时的测试<br>5, 项目的主导严重偏向了某一职位上</p>
+</blockquote>
+<p><code>1, 过多的工作压力压到一个人身上。</code><br>迫于压力，无法学习新的东西，使用好方法解决问题。独揽大局，只能解决眼前碰到的bug, 耦合度太高。</p>
+<p><code>2, 过分的弹性工作制</code><br>兴奋时效率高，停下来几天没有进展也可能发生。到了项目后期，bug重重，受到挫折之后，失去新鲜感，假借弹性工作制之名，导致怠工拖垮项目。放弃的时候，并非没有压力，可能只是不知道下一步该怎么做，或是问题太多，无法入手，项目已经失控。</p>
+<p><code>3, 没完没了的变化和返工</code><br>想法太多，什么都想加入进来，导致最后漏洞很多。</p>
+<p><code>&gt; 4, 没有及时的测试</code><br>很少有严格的测试，而是把错误积累。 </p>
+<p><code>5, 项目的主导严重偏向了某一职位上</code><br>程序员，策划，美术，盲目的跟从和固执的坚持自己都可能会影响整个项目.</p>
+<h2 id="13-2-成功的经验"><a href="#13-2-成功的经验" class="headerlink" title="13.2 成功的经验"></a>13.2 成功的经验</h2><blockquote>
+<p>1, 引擎和实现的分离<br>2, 结对编程（XP 极限编程）<br>3, 随时方便地测试<br>4, 尽早发现结构上的问题, 并尽早重构<br>5, 其他</p>
+</blockquote>
+<p><code>1, 引擎和实现的分离</code><br>早期的程序员都是研究图形显示的技术开始的，总想表达更绚丽的图案，游戏程序变成了代码的集合。<br>许多程序员都是模块见耦合度过高，对于软件的整体稳定性不利。<br>和图形图像打交道的人，整个团队一个人就够了，他不需要去管任何的游戏的逻辑。</p>
+<p>其他还包括，图像处理模块，声音，网络，时钟，文件读写，windows窗口控制，需要和操作系统直接打交道的东西，不管多简单都应该分离。</p>
+<p><code>2, 结对编程</code><br>找个水平差的不太远的程序员和自己配成一对，只有一台计算机，大家选一个人坐在键盘前，另外一个人口述。两个人需要不断的交流，频率不应该低于一分钟一次。整个设计思想是由后面只动口不动手的人主导，而由键盘操作的人实现。由于人的思维速度是快于键盘输入的速度的，那么观看的人有空闲的时间可以用来思考，很容易看出代码和结构的问题。</p>
+<p>潜在问题的代码，在XP极限编程中，被称做代码的<strong>坏味道</strong>。</p>
+<p>好处:</p>
+<blockquote>
+<p>1, 促进参与项目的程序员的自身的提高。水平较低的学习新东西，水平较高的把思路说出来整理思路。<br>2, 参与项目人员互换位置，使得维护繁杂的文档不再那么重要，一旦有人离开，项目不会受到影响。大家的交流更顺畅，关系更融洽。<br>3, 提高工作效率。单独工作遇到问题刷网站，而这种方法是交流解决问题。互相监督和激65励。</p>
+</blockquote>
+<p><code>3, 随时方便地测试</code><br>测试应该从开发者开始，从项目一开始就开始。</p>
+<p><code>4, 尽早发现结构上的问题, 并尽早重构</code></p>
+<p><code>5, 其他</code></p>
+<p>脚本和版本控制。<br>软件开发的素养。</p>
+<h1 id="14-编程和游戏"><a href="#14-编程和游戏" class="headerlink" title="14. 编程和游戏"></a>14. 编程和游戏</h1><p>技术派在挖空心思模拟出更真实，更绚丽的画面；创意派在为自己构思的游戏中的一个绝妙的主意沾沾自喜。<br>而忽略了一些更重要的东西。</p>
+<h2 id="14-1-操作"><a href="#14-1-操作" class="headerlink" title="14.1 操作"></a>14.1 操作</h2><p>任何一个游戏都是玩家和程序之间通过操作设备进行交互产生乐趣。</p>
+<h2 id="14-2-角色设定"><a href="#14-2-角色设定" class="headerlink" title="14.2 角色设定"></a>14.2 角色设定</h2><p>生动的角色，RPG，增加游戏气氛</p>
+<h2 id="14-3-操作技术"><a href="#14-3-操作技术" class="headerlink" title="14.3 操作技术"></a>14.3 操作技术</h2><p><code>3D和2D</code></p>
+<blockquote>
+<ul>
+<li>应该由游戏本身的需要决定。</li>
+<li>3D技术问题是通过一些近似算法而不是数学上严格的方案，得到令人满意的效果。</li>
+<li>2D技术怎样控制和管理不断膨胀的图片数量</li>
+</ul>
+</blockquote>
+<h2 id="14-4-浅谈网络游戏"><a href="#14-4-浅谈网络游戏" class="headerlink" title="14.4 浅谈网络游戏"></a>14.4 浅谈网络游戏</h2><p><code>社会性</code><br>除了传统的游戏它自身的娱乐性之外，还存在一种社会性。<br>因为社会性，就更需要在游戏中设计完备的经济体系，追踪货币的流通，实物的交换，弄清游戏社会中的经济是如何运作的。</p>
+<p>看似不是程序的事情，但非程序的策划很难去做：</p>
+<blockquote>
+<ul>
+<li>大规模的数字采集和统计的工作</li>
+<li>大规模所要求的服务器架构，需要减轻数据库负担，减轻服务器压力，必须在设计上针对硬件水平作出精简。只有熟悉软件架构的人才能去做。</li>
+</ul>
+</blockquote>
+<p><code>平衡性</code></p>
+<blockquote>
+<ul>
+<li>传统游戏中渡过来的方法，多数是依靠经验而不是数学推算来解决，慢慢的会变得不那么有效果。</li>
+<li>程序员有数学和计算机运算工具的能力，可以完善为平衡而更理论化的工具。</li>
+</ul>
+</blockquote>
+<h2 id="14-5-小结"><a href="#14-5-小结" class="headerlink" title="14.5 小结"></a>14.5 小结</h2><p>一个好的游戏程序员和策划之间的界限往往很模糊，所以游戏程序员除了编程方面的修养，各个领域的只是都应该有所涉猎，以提高自身的修养。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>技术问题，固然本源的方法，理论变化不大。但计算机这种偏重工程的实践，一旦实际化到具体上，却有日新月异的变化，想要搞清楚问题，不是朝夕之功，只好借着自己对旧知识的理解去参悟新的知识。</p>
+<h1 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h1><p>记得在初中毕业前夕，我曾经萌发过放弃上重点高中乃至上大学的想法。但是，面对盛怒之后，老泪纵横的父亲，第一次看到父亲的眼泪时，我理解了，理解了一个求知欲如此强烈的人却由于时代的错误，甚至连高中都没有机会去读，在繁忙的工作中，熬夜自学考上大学的人，怎能不对自己的儿子在学业上有更高的期望呢。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/28/doc-computer-graphic-learn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/doc-computer-graphic-learn/" itemprop="url">关于文档学习方法和图形学学习的随想</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T20:59:50+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上篇笔记<a href="http://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/">OpenGL绘制三角形附练习</a>来来回回写了三天，当然，除了学习外，我还去练习了网球，还去参加了一次grasshopper草猛歌会；学习openGL之外，我同时在学习dsa, 看了云风的<code>&lt;&lt;游戏之旅&gt;&gt;</code>， 查阅了OpenGL与图形引擎的相关资料, </p>
+<h2 id="BLOG整理文档学习方法"><a href="#BLOG整理文档学习方法" class="headerlink" title="BLOG整理文档学习方法"></a>BLOG整理文档学习方法</h2><p>从云风的书中偶得一段话，</p>
+<p><code>学习新的技术，翻译一本相关的英语著作可以算是捷径。</code></p>
+<blockquote>
+<ul>
+<li>比囫囵吞枣的读一遍英文原文要有效的多。</li>
+<li>因为有责任感，必须用心搞清楚每一个句子的意思，以免错误而误导阅读你的译作的人们。</li>
+<li>即使对此有所了解，翻译后也能更上一层楼。</li>
+<li>英语水平也会提高。</li>
+</ul>
+</blockquote>
+<p><code>发现产生了一些共鸣。</code><br>其中之一，是之前学习Grasshooper的一段经历，我学grasshopper已经是0.76版本了, NCF那一批人开始学习也是10左右的事情了，那个时候他们组织学运算器的方式也跟这个很相似，就是翻译Help, 所以有了<code>&lt;&lt;grasshopper运算器手册&gt;&gt;</code>一书。不知道是否这种是共通的？还是因为他们中也有程序员，亦或者是因为grasshopper变成了程序爱好者，理解了这种方式？</p>
+<p>之二是石老师推荐学生翻译<code>&lt;&lt;Form Space &amp; Order&gt;&gt;, &lt;&lt;Parten Language&gt;&gt;, &lt;&lt;A New Kind of Science&gt;&gt;</code>等书来学习数字化技术。</p>
+<p>我自己也享受到了这些方法的好处，现在又被云风清晰说出了那种模糊的感觉。便开始尝试在写笔记的时候，结合着文档理解下函数原理，并把它们用心整理好。这也是最近开始写博客来的好处，虽然之前一直用evernote记笔记写日记，但是用一种这是要整理给别人看的心态去做一件事情，效果便也很不同，总之这对于技术学习来说是很好的。</p>
+<h2 id="图形学学习"><a href="#图形学学习" class="headerlink" title="图形学学习"></a>图形学学习</h2><p>另外，这几天在跟着OpenGL的教程学习，开始对OpenGL和图形学有了模糊的认识：</p>
+<blockquote>
+<ul>
+<li>图形学是研究用计算机如果画出一个图像的学科。</li>
+<li>OpenGL教程会教我如何去用封装代码去渲染一个场景，以及背后没展开的图形学原理。</li>
+<li>他的封装性，与我原来想象的能够研究一些与计算几何相关的图形问题算法有较大出入。</li>
+<li>但是学习封装性能够让我先去了解一个大概，以及算法的具体应用性，等到发现其中核心算法的学习路径，开始学习也为时不晚，一是对图形学有了些理解，二是明白各自使用方向，三是dsa的课程也是那些算法实现的前提，四是每天都能够编写C++找到乐趣和问题。</li>
+</ul>
+</blockquote>
+<p>下面是摘自 <span style="color:red"><strong>Milo Yip</strong></span> 叶神在<a href="https://www.zhihu.com/question/24786878" target="_blank" rel="noopener">知乎</a>上的回答，要借鉴这个学习轨迹, 并以此勉励自己：</p>
+<p><code>如何开始用 C++ 写一个光栅化渲染器？</code></p>
+<p><strong>Milo Yip</strong><br>计算机图形学、编程、C++ 等 7 个话题的优秀回答者<br>228 人赞同了该回答<br>@空明流转 开发过高大上的SALVIA， @Yong He 则提到了Larrabee。我来提供另一些观点。</p>
+<p>首先，如果从学习角度出发，不必一开始完全根据现时GPU的架构及概念，来用软件复制一遍。现时的GPU主要是基于三角形光栅化及z-buffer。</p>
+<p>如果我们从图形学的历史进程来学习，可以这样做练习：</p>
+<p>2D部分：</p>
+<blockquote>
+<p>1, 光栅化2D点（就是在二维数组上画点，了解色彩基本原理，并解决影像输出问题）<br>2, 光栅化2D直线（布雷森漢姆直線演算法、吴小林直线算法等）<br>3, 2D直线的剪切算法（见Line clipping）<br>4, 光栅化2D三角形（scan conversion）。避免重复光栅化相邻三角形边界的像素（edge equation）。<br>5, 光栅化简单／复杂多边形<br>3D部分：<br>1, 把顶点从三维世界空间变换至二维屏幕空间，绘画顶点（如银河星系数据），操控摄像机旋转模型。<br>2, 在剪切空间进行3D直线的剪切算法，把顶点连线（如各种三维正多面体）光栅化成wire frame模型<br>3, 以多边形来定义三维模型。使用画家算法来光栅化那些多边形。<br>改为使用深度缓冲。<br>4, 实现简单的纹理映射，先做屏幕空间的插值，然后实现简单的perspective-correct texture mapping。<br>5, 实现简单的顶点光照，使用顶点颜色插值实现Gouraud shading。<br>6, 通过顶点法线插值，实现Phong shading。<br>7, 实现其他贴图技术，如mipmapping（也可试Summed area table）、bilinear/trilinear filtering、bump mapping、normal mapping、environment mapping等。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/28/dsacpp/01-D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1175,740 +2259,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/git-push-credential/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/22/git-push-credential/" itemprop="url">Git Push免密码设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T08:02:48+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="使用-git-credentials保存验证"><a href="#使用-git-credentials保存验证" class="headerlink" title="使用.git-credentials保存验证"></a><strong>使用.git-credentials保存验证</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ touch .git-credentials</span><br><span class="line">$ emacs .git-credentials</span><br><span class="line">https://&#123;timting***&#125;:&#123;********&#125;@github.com</span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ~/.emacs.d/</span><br><span class="line">$ git push -u origin master</span><br><span class="line">Username <span class="keyword">for</span> <span class="string">'https://github.com'</span>:   C-c C-c</span><br></pre></td></tr></table></figure>
-<p><strong>去掉{}</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ emacs ~/.git-credentials</span><br><span class="line">https://timting***:********@github.com</span><br><span class="line">$ git config --global credential.helper store</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">cd</span></span><br><span class="line">$ cat ~/.gitconfig</span><br><span class="line">[user]</span><br><span class="line">	email = timtingwei@hotmail.com</span><br><span class="line">	name = timtingwei</span><br><span class="line">[credential]</span><br><span class="line">	helper = store</span><br></pre></td></tr></table></figure>
-<p>现在push不再需要验证。</p>
-<p><strong>但我不希望用文件保存我的密码</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ls -ld .git-credentials</span><br><span class="line">-rw------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ sudo chmod 200 .git-credentials</span><br><span class="line">[sudo] password <span class="keyword">for</span> tim: </span><br><span class="line">tim@htwt:~$ ls -ld .git-credentials</span><br><span class="line">--w------- 1 tim tim 42 12月 22 15:00 .git-credentials</span><br><span class="line">tim@htwt:~$ git config --global credential.helper store</span><br></pre></td></tr></table></figure>
-<p>重启bash</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">tim@htwt:~/.emacs.d$ git push origin master</span><br><span class="line">fatal: unable to open /home/tim/.git-credentials: Permission denied</span><br></pre></td></tr></table></figure>
-<p>=&gt; 修改权限的方法没用, 别人看不到, git也看不到。</p>
-<p>======</p>
-<h2 id="安全性存疑，因此改用设置cache"><a href="#安全性存疑，因此改用设置cache" class="headerlink" title="安全性存疑，因此改用设置cache"></a><strong>安全性存疑，因此改用设置cache</strong></h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ rm ~/.git-credentials</span><br></pre></td></tr></table></figure>
-<p>通过设置git的cache的话可以让它记住密码之后自己设置一个cache有效时间 这样也一定程度保证了一些安全性。</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper cache</span><br><span class="line">\<span class="comment"># Set git to use the credential memory cache</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git config --global credential.helper <span class="string">'cache --timeout=3600'</span></span><br><span class="line">\<span class="comment"># Set the cache to timeout after 1 hour (setting is in seconds)</span></span><br></pre></td></tr></table></figure>
-<p>======</p>
-<p>refwebsite:<br>[1], <a href="https://www.zhihu.com/question/31836445" target="_blank" rel="noopener">https://www.zhihu.com/question/31836445</a><br>[2], <a href="http://www.jianshu.com/p/f54053afecf2" target="_blank" rel="noopener">http://www.jianshu.com/p/f54053afecf2</a><br>[3], <a href="https://help.github.com/articles/caching-your-github-password-in-git/" target="_blank" rel="noopener">https://help.github.com/articles/caching-your-github-password-in-git/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/22/markdown-delete-line/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/22/markdown-delete-line/" itemprop="url">Markdown删除线</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T07:24:06+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>~~删除一句~~<br><del>删除一句</del></p>
-<p>~~删除<br>多行~~<br><del>删除<br>多行</del></p>
-<p>~~删除包含语法\[mituh’s notes\]\[timtingwei.github.io\]~~<br><del>删除包含语法[mituh’s notes][timtingwei.github.io]</del></p>
-<p>\====<br>不知道还有其他方法否？</p>
-<p>\====<br>refwebsite:<br><a href="https://en.wikipedia.org/wiki/Markdown" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Markdown</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/20/install-openGL-in-ubuntu14-04/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/20/install-openGL-in-ubuntu14-04/" itemprop="url">在ubuntu14.04上建立OpenGL编译环境</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T13:58:49+08:00">
-                2017-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>学习教程<a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">LearnOpenGL-CN</a>前先配置学习环境，对照后面编译时链接的函数库，</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br></pre></td></tr></table></figure>
-<p>需要：</p>
-<blockquote>
-<ul>
-<li>GLEW</li>
-<li>GLFW/GLFW3</li>
-<li>libgl1-mesa</li>
-<li>libglu1-mesa</li>
-</ul>
-</blockquote>
-<p><code>ps: 不是完全明白这里链接库的对应关系</code></p>
-<p>==========</p>
-<p>参考:<a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">Howto_Install_OpenGL_Development_Environment</a></p>
-<p><strong>建立基本编译环境</strong><br>首先不可或缺的，就是編譯器與基本的函式庫，如果系統沒有安裝的話，請依照下面的方式安裝：<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install build-essential</span><br></pre></td></tr></table></figure></p>
-<p><strong>安裝OpenGL Library</strong><br>接下來要把我們會用到的 Library 裝上去，首先安裝 OpenGL Library<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libgl1-mesa-dev</span><br></pre></td></tr></table></figure></p>
-<p><strong>安裝OpenGL Utilities</strong><br>OpenGL Utilities 是一組建構於 OpenGL Library 之上的工具組，提供許多很方便的函式，使 OpenGL 更強大且更容易使用。 接下來我們安裝OpenGL Utilities</p>
-<blockquote>
-<p>在Linux下你需要链接libGL.so库文件，这需要添加-lGL到你的链接器设置中。如果找不到这个库你可能需要安装Mesa，NVidia或AMD的开发包，</p>
-</blockquote>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libglu1-mesa-dev</span><br></pre></td></tr></table></figure>
-<p><strong>安裝GLFW/GLFW3</strong><br>GLFW是一个专门针对OpenGL的C语言库，它提供了一些渲染物体所需的最低限度的接口。它允许用户创建OpenGL上下文，定义窗口参数以及处理用户输入，这正是我们需要的。</p>
-<p>GLFW可以从它官方网站的<a href="http://www.glfw.org/download.html" target="_blank" rel="noopener">下载页</a>上获取。</p>
-<p>参考网站<a href="https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project" target="_blank" rel="noopener">How to build &amp; install GLFW 3 and use it in a Linux project</a><br>解压后,</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install cmake</span><br><span class="line"></span><br><span class="line">$ cmake -G <span class="string">"Unix Makefiles"</span></span><br><span class="line"></span><br><span class="line">$ sudo apt-get build-dep glfw</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree</span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br><span class="line"></span><br><span class="line">Install the project...</span><br><span class="line">-- Install configuration: <span class="string">""</span></span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/include/GLFW/glfw3native.h</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Config.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3ConfigVersion.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/cmake/glfw3/glfw3Targets-noconfig.cmake</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/pkgconfig/glfw3.pc</span><br><span class="line">-- Installing: /usr/<span class="built_in">local</span>/lib/libglfw3.a</span><br></pre></td></tr></table></figure>
-<p><strong>从<a href="http://www.glfw.org/docs/3.0/quick.html" target="_blank" rel="noopener">测试源码网站</a>复制案例代码测试</strong><br>该案例中#include <glfw glfw3.h=""></glfw></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 -c main.cpp</span><br><span class="line"></span><br><span class="line">$ ./main.o</span><br><span class="line">bash: ./main.o: cannot execute binary file: Exec format error  &amp;lt;==执行main.o提示不是二进制可执行文件</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi</span><br><span class="line">/usr/bin/ld: //usr/<span class="built_in">local</span>/lib/libglfw3.a(vulkan.c.o): undefined reference to symbol <span class="string">'dlclose@@GLIBC_2.2.5'</span></span><br><span class="line">//lib/x86_64-linux-gnu/libdl.so.2: error adding symbols: DSO missing from <span class="built_in">command</span> line</span><br><span class="line">collect2: error: ld returned 1 <span class="built_in">exit</span> status</span><br></pre></td></tr></table></figure>
-<p>You may also need to add the linker options -ldl -lXinerama -lXcursor to get it to work correctly if you are getting undefined references to <strong>dlclose</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ main.o -o main.exec -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line"></span><br><span class="line">$ ./main.exec</span><br></pre></td></tr></table></figure>
-<p>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></p>
-<p>执行:</p>
-<p>$ ./main.exec</p>
-<p><del>*<em>安装glut\</em>*</del></p>
-<p><del>```sh<br>sudo apt-get install libglut-dev<br>```</del></p>
-<p><del>沒有libglut-dev可以改用<br>```sh<br>sudo apt-get install freeglut3-dev<br>```</del></p>
-<p><del>設定編譯參數與編譯<br>在這之前，我們需要一個測試範例，example.c</del> <a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">如下</a>：</p>
-<p><del>有了測試範例、基礎編譯環境與各個 OpenGL 相關的函式庫之後，我們所需要做的就是告訴編譯器我們有安裝 OpenGL 函式庫，編譯程式時要連結這些函式庫。</del></p>
-<p><del>gcc example.c -o example.out -lGL -lGLU -lglut<br>因為我們安裝了 OpenGL Utility Toolkit ，它是建立在 OpenGL Utilities 與 OpenGL Library 之上，因此我們可以簡單連結 OpenGL Utility Toolkit 的函式庫就可以達到我們的目地了。下面的編譯參數跟上面的是同樣效果：</del></p>
-<p><del>gcc example.c -o example.out -lglut<br>下面簡單說明一下所使用的 gcc 參數</del></p>
-<p><del>-l<library>  告訴 gcc 去連結指定 Library<br>-o<file>     指定執行檔的輸出名字</file></library></del></p>
-<p><del>執行<br>接下來我們就可以來看看我們的結果，如果看到右圖，代表成功了!~<br>./example.out</del></p>
-<p><strong>编译和链接GLEW</strong></p>
-<p>对于用GCC编译的Linux用户建议使用这个命令行选项-lGLEW -lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi。没有正确链接相应的库会产生 undefined reference(未定义的引用) 这个错误。</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get build-dep glew</span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.</span><br><span class="line"></span><br><span class="line">$ sudo make</span><br><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure>
-<p>==========</p>
-<p><strong>测试教程中的案例代码</strong></p>
-<p>复制 [代码hello_window.cpp][<a href="https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp" target="_blank" rel="noopener">https://github.com/timtingwei/LearnOpenGL/src/1.getting_started/1.1.hello_window/hello_window.cpp</a>]<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ g++ -std=c++11 hello_window.cpp -lGLEW -lGL -lGLU -lglfw3 -lX11 -lXxf86vm -lXrandr -lpthread -lXi -ldl -lXinerama -lXcursor</span><br><span class="line">$ ls</span><br><span class="line">a.out  hello_window.cpp</span><br><span class="line">$ ./a.out</span><br><span class="line">Starting GLFW context, OpenGL 3.3</span><br></pre></td></tr></table></figure></p>
-<p>看到初始化窗口，代表成功。</p>
-<p><strong>编译后窗口透明问题</strong><br>虽然窗口初始化成功, 但不知道我的窗口为什么是透明的, 难道是ubuntu的原因吗？<br>Render部分再加入两行代码<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">glClearColor(<span class="number">0.2f</span>, <span class="number">0.3f</span>, <span class="number">0.3f</span>, <span class="number">1.0f</span>);</span><br><span class="line">glClear(GL_COLOR_BUFFER_BIT);</span><br></pre></td></tr></table></figure></p>
-<p><strong>编译后libGLEW.so.2.1: No such file or directory 问题</strong></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">..</span><br><span class="line">$ ./a.out</span><br><span class="line">./a.out: error <span class="keyword">while</span> loading shared libraries: libGLEW.so.2.1: cannot open shared object file: No such file or directory</span><br></pre></td></tr></table></figure>
-<p>查询<a href="https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew" target="_blank" rel="noopener">stackoverflow libGLEW相关问题</a><br>得到libGLEW在lib64下, 于是便创建软link<br>$ sudo ln -s /usr/lib64/libGLEW.so.2.1 /usr/lib/libGLEW.so.2.1</p>
-<p>==========</p>
-<p>refwebsite:<br><a href="https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/" target="_blank" rel="noopener">https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/</a><br><a href="https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment" target="_blank" rel="noopener">https://wiki.ubuntu-tw.org/index.php?title=Howto_Install_OpenGL_Development_Environment</a><br><a href="https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project" target="_blank" rel="noopener">https://stackoverflow.com/questions/17768008/how-to-build-install-glfw-3-and-use-it-in-a-linux-project</a><br><a href="http://www.glfw.org/docs/3.0/quick.html" target="_blank" rel="noopener">http://www.glfw.org/docs/3.0/quick.html</a><br><a href="https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew" target="_blank" rel="noopener">https://stackoverflow.com/questions/26372359/error-loading-shared-library-glew</a><br><a href="http://www.glfw.org/download.html" target="_blank" rel="noopener">http://www.glfw.org/download.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/20/hexo-in-different-computers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/20/hexo-in-different-computers/" itemprop="url">在不同机器上配置部署hexo</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T10:54:39+08:00">
-                2017-12-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>将学习平台从Windows转移到ubuntu上后，需要重新配置hexo，但和重头配置有所区别。虽然，将Windows的磁盘擦干净前，我已经把数据全转移到移动硬盘上，可以用拷贝的方式在ubuntu上重新部署hexo, 但是这种方法相对手动，且既然用了github pages， 就通过实践github来部署。</p>
-<p>查阅后得到两种比较通用的hexo发布github的方式，</p>
-<blockquote>
-<ol>
-<li>重新create a repo, 将静态文件push上去。</li>
-<li>利用git branch的特性，将静态和部署文件放在一个repo的两个branch中。<br>这里我选择了后者。</li>
-</ol>
-</blockquote>
-<p><strong>检查git：</strong><br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ git --version</span><br><span class="line"></span><br><span class="line">$ sudo apt-get install git-core</span><br></pre></td></tr></table></figure></p>
-<p><strong>安装npm(node package manager):</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line"></span><br><span class="line">$ sudo apt-get install npm</span><br></pre></td></tr></table></figure></p>
-<p><strong>安装node-legacy</strong><br><a href="https://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu" target="_blank" rel="noopener">装node-legacy原因</a><br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install nodejs-legacy</span><br></pre></td></tr></table></figure></p>
-<p><strong>安装nvm</strong><br>nvm和npm一样是node的包的管理工具<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br></pre></td></tr></table></figure></p>
-<p><strong>安装 Node.js</strong></p>
-<blockquote>
-<p>Node.js是一个能够在服务器端运行JavaScript的开放源代码、跨平台JavaScript运行环境。Node.js由Node.js基金会持有和维护，并与Linux基金会有合作关系。Node.js采用Google开发的V8运行代码，使用事件驱动、非阻塞和异步输入输出模型等技术来提高性能，可优化应用程序的传输量和规模。这些技术通常用于数据密集的事实应用程序。<br>visit <a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank" rel="noopener">node.js</a> for more information<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ nvm install 4</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p><strong>安装 hexo</strong><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line">$ npm install hexo -g</span><br></pre></td></tr></table></figure></p>
-<p><strong>配置git</strong></p>
-<p>查看:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ls -al ~/.ssh</span><br><span class="line">ls: cannot access /home/tim/.ssh: No such file or directory</span><br></pre></td></tr></table></figure></p>
-<p>生成:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -b 4096 -C <span class="string">"timtingwei@hotmail.com"</span></span><br></pre></td></tr></table></figure></p>
-<p>确认:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh-agent -s</span><br></pre></td></tr></table></figure></p>
-<p>添加:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh-add ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure></p>
-<p>在github中添加SHH KEY<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ clip &lt; cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure></p>
-<p>并在github setting中添加shh key</p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br><span class="line">Hi timtingwei! You<span class="string">'ve successfully authenticated, but GitHub does not provide shell access.</span></span><br></pre></td></tr></table></figure>
-<p><strong>利用git branch在不同机器上部署hexo</strong><br><a href="https://www.zhihu.com/question/21193762" target="_blank" rel="noopener">CrazyMilk的知乎回答</a></p>
-<blockquote>
-<ol>
-<li>创建repo, timtingwei.github.io;</li>
-<li>创建master和hexo两个分支，hexo用于存放静态文件, master用于部署;</li>
-<li>repo setting 中设置hexo为默认分支;</li>
-<li>git clone git@github.com:timtingwei/timtingwei.github.io.git 拷贝repo;</li>
-<li>npm install hexo、hexo init、npm install 和 npm install hexo-deployer-git –save（此时当前分支应显示为hexo）;如果在不同机器上不需要hexo init;</li>
-<li>修改_config.yml的deploy::branch参数为master;</li>
-<li>依次执行 git add., git commit -m “…”, git push origin hexo 提交相关文件;</li>
-<li>执行hexo g -d 生成并部署到github上</li>
-<li>日常改动:依次7,8.</li>
-</ol>
-</blockquote>
-<p>以上配置完成后, hexo s没反应<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br><span class="line">INFO  Start processing</span><br></pre></td></tr></table></figure></p>
-<p>hexo 3.0把服务器独立成个别模块，必须安装hexo-server才能使用。<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm install hexo-server --save</span><br><span class="line"></span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure></p>
-<p>安装后, 仍旧没有反应。</p>
-<p>考虑用<strong>静态模式</strong>, 服务器只处理public文件夹内的文件，而不处理文件变动。先要执行hexo generate<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br><span class="line">$ hexo server -s</span><br><span class="line">INFO  Start processing</span><br><span class="line">INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.</span><br></pre></td></tr></table></figure></p>
-<p>refweb:<br><a href="https://zh.wikipedia.org/wiki/Node.js" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/Node.js</a><br><a href="http://www.jianshu.com/p/24cb74aeb0a3" target="_blank" rel="noopener">http://www.jianshu.com/p/24cb74aeb0a3</a><br><a href="https://www.zhihu.com/question/21193762" target="_blank" rel="noopener">https://www.zhihu.com/question/21193762</a><br><a href="https://hexo.io/zh-cn/docs/server.html" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/server.html</a><br><a href="https://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu" target="_blank" rel="noopener">https://stackoverflow.com/questions/21168141/cannot-install-packages-using-node-package-manager-in-ubuntu</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/11/23/add-git-bash-to-right-click-menu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/23/add-git-bash-to-right-click-menu/" itemprop="url">添加git bash到右键菜单</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T11:52:34+08:00">
-                2017-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><p>因为.git文件所在的目录如下：</p>
-<blockquote>
-<p>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</p>
-</blockquote>
-<p>当在bash中cd到该目录时：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</span><br><span class="line">bash: syntax error near unexpected token `(&apos;</span><br></pre></td></tr></table></figure></p>
-<p>试图通过右键进入bash</p>
-<h2 id="hack"><a href="#hack" class="headerlink" title="hack:"></a>hack:</h2><blockquote>
-<ol>
-<li>CMD中输入”regedit”</li>
-<li>切换到 HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\Background\shell</li>
-<li>右键点击 “shell” 选择 New &gt; Key. 将KEY命名为 “Bash”</li>
-<li>设置值为 “open in Bash” </li>
-<li>创建一个新的KEY命名为”command”. 设置值为git-bash.exe 路径.</li>
-</ol>
-</blockquote>
-<p>此时在文件夹中右键, 出现Open in bash选项.</p>
-<p>以上为通过注册表添加bash到右键的方法，但还是建议重装git</p>
-<hr>
-<p>reference:<br>[1]: <a href="https://www.zhihu.com/question/48091139" target="_blank" rel="noopener">https://www.zhihu.com/question/48091139</a> @轩辕Rowboat的回答</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1959,7 +2309,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-count">118</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1972,7 +2322,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
