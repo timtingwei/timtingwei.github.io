@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PAT,算法,复数," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1051 复数乘法(15)复数可以写成 (A+Bi) 的常规形式，其中 A 是实部，B 是虚部，i 是虚数单位，满足 i2=−1；也可以写成极坐标下的指数形式 (R×e(Pi))，其中 R 是复数模，P 是辐角，i 是虚数单位，其等价于三角形式 (R(cos(P)+isin(P))。 现给定两个复数的 R 和 P，要求">
+<meta name="keywords" content="PAT,算法,复数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1051 复数乘法(15) - PAT乙级">
+<meta property="og:url" content="https://timtingwei.github.io/2018/08/24/20180824-06/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="1051 复数乘法(15)复数可以写成 (A+Bi) 的常规形式，其中 A 是实部，B 是虚部，i 是虚数单位，满足 i2=−1；也可以写成极坐标下的指数形式 (R×e(Pi))，其中 R 是复数模，P 是辐角，i 是虚数单位，其等价于三角形式 (R(cos(P)+isin(P))。 现给定两个复数的 R 和 P，要求输出两数乘积的常规形式。 输入格式：输入在一行中依次给出两个复数的R1, R2,">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-24T13:21:57.983Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1051 复数乘法(15) - PAT乙级">
+<meta name="twitter:description" content="1051 复数乘法(15)复数可以写成 (A+Bi) 的常规形式，其中 A 是实部，B 是虚部，i 是虚数单位，满足 i2=−1；也可以写成极坐标下的指数形式 (R×e(Pi))，其中 R 是复数模，P 是辐角，i 是虚数单位，其等价于三角形式 (R(cos(P)+isin(P))。 现给定两个复数的 R 和 P，要求输出两数乘积的常规形式。 输入格式：输入在一行中依次给出两个复数的R1, R2,">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/08/24/20180824-06/"/>
+
+
+
+
+
+  <title>1051 复数乘法(15) - PAT乙级 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/24/20180824-06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">1051 复数乘法(15) - PAT乙级</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T21:14:48+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1051-复数乘法-15"><a href="#1051-复数乘法-15" class="headerlink" title="1051 复数乘法(15)"></a>1051 复数乘法(15)</h3><p>复数可以写成 (A+Bi) 的常规形式，其中 A 是实部，B 是虚部，i 是虚数单位，满足 i2=−1；也可以写成极坐标下的指数形式 (R×e(Pi))，其中 R 是复数模，P 是辐角，i 是虚数单位，其等价于三角形式 (R(cos(P)+isin(P))。</p>
+<p>现给定两个复数的 R 和 P，要求输出两数乘积的常规形式。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中依次给出两个复数的R1, R2, P1, P2数字间以空格分隔。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中按照 A+Bi 的格式输出两数乘积的常规形式，实部和虚部均保留 2 位小数。注意：如果 B 是负数，则应该写成 A-|B|i 的形式。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>2.3 3.5 5.2 0.4</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>-8.68-8.23i</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>需要补充(复习)一下复数的运算法则:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(a+ib) + (c+id) = (a+c)+(b+d)i</span><br><span class="line">(a+ib) - (c+id) = (a-c)+(b-d)i</span><br><span class="line"></span><br><span class="line">复数的乘法:</span><br><span class="line">(a+ib) * (c+id) = ac + adi + bci + bdi^2</span><br><span class="line">                = ac + (ad+bc)i - bd</span><br><span class="line">                = (ac-bd) + (ad+bc)i</span><br></pre></td></tr></table></figure></p>
+<p>这题里面给出的三角形式有问题, 给出的公式少了一个括号, 如果按照 <code>R*cos(P) + i*sin(p)</code>进行转换的话, 是有问题的.</p>
+<p>因为正确的公式是 <code>R * (  cos(p) + i*sin(p) )</code>, 带入后可以得到最终的A+Bi</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">double A = r1 * r2 * cos(p1) * cos(p2) - r1 * r2 * sin(p1) * sin(p2);</span><br><span class="line">double B = r1 * r2 * cos(p1) * sin(p2) + r1 * r2 * sin(p1) * cos(p2);</span><br></pre></td></tr></table></figure>
+<p>另外这题要注意的是, 要把<code>-0.00-0.00i ==转换成==&gt; 0.00+0.00i</code><br>如果A实际比0小, 但是很接近0, 不处理的话, 会出现-0.00的情况,<br>同理B是一样的, 但无论是什么情况, B都要带上i</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">double</span> r1, p1, r2, p2;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lf %lf %lf %lf"</span>, &amp;r1, &amp;p1, &amp;r2, &amp;p2);</span><br><span class="line">  <span class="keyword">double</span> A = r1 * r2 * <span class="built_in">cos</span>(p1) * <span class="built_in">cos</span>(p2) - r1 * r2 * <span class="built_in">sin</span>(p1) * <span class="built_in">sin</span>(p2);</span><br><span class="line">  <span class="keyword">double</span> B = r1 * r2 * <span class="built_in">cos</span>(p1) * <span class="built_in">sin</span>(p2) + r1 * r2 * <span class="built_in">sin</span>(p1) * <span class="built_in">cos</span>(p2);</span><br><span class="line">  <span class="comment">// A = -0.0005;</span></span><br><span class="line">  <span class="comment">// B = -0.0005;</span></span><br><span class="line">  <span class="keyword">if</span> (A + <span class="number">0.005</span> &gt;= <span class="number">0</span> &amp;&amp; A &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"0.00"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%.2lf"</span>, A);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (B &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"+%.2lfi\n"</span>, B);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (B + <span class="number">0.005</span> &gt;= <span class="number">0</span> &amp;&amp; B &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"+0.00i\n"</span>);    <span class="comment">// 我并不知道有这种边界条件, 为什么0的时候还有i日</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%.2lfi\n"</span>, B);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PAT/" rel="tag"># PAT</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/复数/" rel="tag"># 复数</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/24/20180824-05/" rel="next" title="1049 数列的片段和(20) - PAT乙级">
+                <i class="fa fa-chevron-left"></i> 1049 数列的片段和(20) - PAT乙级
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/24/20180824-07/" rel="prev" title="48. Rotate Image - LeetCode">
+                48. Rotate Image - LeetCode <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1051-复数乘法-15"><span class="nav-number">1.</span> <span class="nav-text">1051 复数乘法(15)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.</span> <span class="nav-text">输出格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例："><span class="nav-number">1.3.</span> <span class="nav-text">输入样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例："><span class="nav-number">1.4.</span> <span class="nav-text">输出样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solution"><span class="nav-number">1.5.</span> <span class="nav-text">Solution:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

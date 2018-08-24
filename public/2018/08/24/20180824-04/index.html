@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PAT,算法,Hash散列," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1068 万绿丛中一点红(20)对于计算机而言，颜色不过是像素点对应的一个 24 位的数值。现给定一幅分辨率为 M×N 的画，要求你找出万绿丛中的一点红，即有独一无二颜色的那个像素点，并且该点的颜色与其周围 8 个相邻像素的颜色差充分大。 输入格式：输入第一行给出三个正整数，分别是 M 和 N（≤ 1000），即图像的">
+<meta name="keywords" content="PAT,算法,Hash散列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1068 万绿丛中一点红(20) - PAT乙级">
+<meta property="og:url" content="https://timtingwei.github.io/2018/08/24/20180824-04/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="1068 万绿丛中一点红(20)对于计算机而言，颜色不过是像素点对应的一个 24 位的数值。现给定一幅分辨率为 M×N 的画，要求你找出万绿丛中的一点红，即有独一无二颜色的那个像素点，并且该点的颜色与其周围 8 个相邻像素的颜色差充分大。 输入格式：输入第一行给出三个正整数，分别是 M 和 N（≤ 1000），即图像的分辨率；以及 TOL，是所求像素点与相邻点的颜色差阈值，色差超过 TOL 的点才">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-24T13:19:50.723Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1068 万绿丛中一点红(20) - PAT乙级">
+<meta name="twitter:description" content="1068 万绿丛中一点红(20)对于计算机而言，颜色不过是像素点对应的一个 24 位的数值。现给定一幅分辨率为 M×N 的画，要求你找出万绿丛中的一点红，即有独一无二颜色的那个像素点，并且该点的颜色与其周围 8 个相邻像素的颜色差充分大。 输入格式：输入第一行给出三个正整数，分别是 M 和 N（≤ 1000），即图像的分辨率；以及 TOL，是所求像素点与相邻点的颜色差阈值，色差超过 TOL 的点才">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/08/24/20180824-04/"/>
+
+
+
+
+
+  <title>1068 万绿丛中一点红(20) - PAT乙级 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/24/20180824-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">1068 万绿丛中一点红(20) - PAT乙级</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T21:14:41+08:00">
+                2018-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1068-万绿丛中一点红-20"><a href="#1068-万绿丛中一点红-20" class="headerlink" title="1068 万绿丛中一点红(20)"></a>1068 万绿丛中一点红(20)</h3><p>对于计算机而言，颜色不过是像素点对应的一个 24 位的数值。现给定一幅分辨率为 M×N 的画，要求你找出万绿丛中的一点红，即有独一无二颜色的那个像素点，并且该点的颜色与其周围 8 个相邻像素的颜色差充分大。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出三个正整数，分别是 M 和 N（≤ 1000），即图像的分辨率；以及 TOL，是所求像素点与相邻点的颜色差阈值，色差超过 TOL 的点才被考虑。随后 N 行，每行给出 M 个像素的颜色值，范围在 [0,2^24​​) 内。所有同行数字间用空格或 TAB 分开。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中按照 (x, y): color 的格式输出所求像素点的位置以及颜色值，其中位置 x 和 y 分别是该像素在图像矩阵中的列、行编号（从 1 开始编号）。如果这样的点不唯一，则输出 Not Unique；如果这样的点不存在，则输出 Not Exist。</p>
+<h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例 1："></a>输入样例 1：</h4><p>8 6 200<br>0      0       0        0        0          0           0        0<br>65280      65280    65280    16711479 65280    65280    65280    65280<br>16711479 65280    65280    65280    16711680 65280    65280    65280<br>65280      65280    65280    65280    65280    65280    165280   165280<br>65280      65280       16777015 65280    65280    165280   65480    165280<br>16777215 16777215 16777215 16777215 16777215 16777215 16777215 16777215</p>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例 1："></a>输出样例 1：</h4><p>(5, 3): 16711680</p>
+<h4 id="输入样例-2："><a href="#输入样例-2：" class="headerlink" title="输入样例 2："></a>输入样例 2：</h4><p>4 5 2<br>0 0 0 0<br>0 0 3 0<br>0 0 0 0<br>0 5 0 0<br>0 0 0 0</p>
+<h4 id="输出样例-2："><a href="#输出样例-2：" class="headerlink" title="输出样例 2："></a>输出样例 2：</h4><p>Not Unique</p>
+<h4 id="输入样例-3："><a href="#输入样例-3：" class="headerlink" title="输入样例 3："></a>输入样例 3：</h4><p>3 3 5<br>1 2 3<br>3 4 5<br>5 6 7</p>
+<h4 id="输出样例-3："><a href="#输出样例-3：" class="headerlink" title="输出样例 3："></a>输出样例 3：</h4><p>Not Exist</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>这道题本身没什么难度, 特别的是, 由于题目表述含糊, 很多实际的判断条件要根据实际调试得到:</p>
+<p>比如以下,<br>坑点:</p>
+<blockquote>
+<ul>
+<li>1, 充分大不意味着是最大, 只要是满足比TOL就行了。</li>
+<li>2, 需要每个相邻位置满足比TOL大, 不是一个, 也不是总和.</li>
+<li>3, 当只有一个颜色的时候, 只输出它, 不然case5通不过.</li>
+<li>4, 序号是从1开始的, 在最后print时候+1就好了.</li>
+</ul>
+</blockquote>
+<p>我自己发现的一些问题, </p>
+<blockquote>
+<ul>
+<li>1, Hash表来判断是否有颜色重复, 但是有2^24, 表很大。 memset的话超时, 因此不用memset, 让Node的构造函数自己去置cnt为0</li>
+<li>2, c++里面不要用move作为变量名去定义, 会冲突.</li>
+<li>3, struct后的;不要再忘记了。</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> x;</span><br><span class="line">  <span class="keyword">int</span> y;</span><br><span class="line">  <span class="keyword">int</span> color;</span><br><span class="line">  <span class="keyword">int</span> cnt;</span><br><span class="line">&#125;;   <span class="comment">// bug01</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">16777300</span>;     <span class="comment">// pow(2, 24) + 50;  // bug02</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXM = <span class="number">1100</span>;</span><br><span class="line">Node dup_color[MAXN];</span><br><span class="line"><span class="keyword">int</span> a[MAXM][MAXM];</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> grid[<span class="number">9</span>][<span class="number">3</span>] = &#123;&#123;<span class="number">-1</span>, <span class="number">-1</span>&#125;, &#123;<span class="number">-1</span>, <span class="number">0</span>&#125;, &#123;<span class="number">-1</span>, <span class="number">1</span>&#125;,        <span class="comment">// bug03, 不能定义成move</span></span><br><span class="line">                  &#123;<span class="number">0</span> , <span class="number">-1</span>&#125;,          &#123;<span class="number">0</span>, <span class="number">1</span>&#125;,</span><br><span class="line">                  &#123;<span class="number">1</span>,  <span class="number">-1</span>&#125;, &#123;<span class="number">1</span> , <span class="number">0</span>&#125;, &#123;<span class="number">1</span>, <span class="number">1</span>&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> M, N, TOL;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d %d %d"</span>, &amp;M, &amp;N, &amp;TOL);</span><br><span class="line">  <span class="comment">// memset(dup_color, 0, sizeof(dup_color));  // memset导致空间不足case1,2,3..</span></span><br><span class="line">  <span class="comment">// memset(a, 0, sizeof(a));</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; M; j++) &#123;</span><br><span class="line">      <span class="keyword">int</span> id; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;id);</span><br><span class="line">      a[i][j] = id;</span><br><span class="line">      <span class="keyword">if</span> (dup_color[id].cnt == <span class="number">0</span>) &#123;</span><br><span class="line">        dup_color[id].color = id;</span><br><span class="line">        dup_color[id].x = i; dup_color[id].y = j;</span><br><span class="line">      &#125;</span><br><span class="line">      dup_color[id].cnt++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (M == <span class="number">1</span> &amp;&amp; N == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"(1, 1): %d\n"</span>, a[<span class="number">0</span>][<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">vector</span>&lt;Node&gt; v; <span class="built_in">vector</span>&lt;Node&gt; max_v;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAXN; i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (dup_color[i].cnt == <span class="number">1</span>) &#123;</span><br><span class="line">      v.push_back(dup_color[i]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> max_d = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> iv = <span class="number">0</span>; iv &lt; v.size(); iv++) &#123;</span><br><span class="line">    <span class="keyword">int</span> i = v[iv].x, j = v[iv].y, color = v[iv].color;   <span class="comment">// 难道是色彩均超过TOL?</span></span><br><span class="line">    <span class="keyword">int</span> delta = <span class="number">0</span>, ok = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">8</span>; k++) &#123;</span><br><span class="line">      <span class="keyword">int</span> x = i + grid[k][<span class="number">0</span>], y = j + grid[k][<span class="number">1</span>];</span><br><span class="line">      <span class="keyword">if</span> (<span class="number">0</span> &lt;= x &amp;&amp; x &lt; M &amp;&amp; <span class="number">0</span> &lt;= y &amp;&amp; y &lt; N) &#123;</span><br><span class="line">        <span class="keyword">int</span> color_b = a[x][y];</span><br><span class="line">        <span class="keyword">int</span> dd = <span class="built_in">abs</span>(color_b-color);</span><br><span class="line">        <span class="keyword">if</span> (dd &gt; TOL) &#123;                                  <span class="comment">// 单个超过TOL</span></span><br><span class="line">          delta += dd;                          <span class="comment">// bug03:充分大,不是最大</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          ok = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ok &amp;&amp; delta != <span class="number">0</span>) &#123;</span><br><span class="line">      max_v.push_back(v[iv]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (max_v.size() == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"(%d, %d): %d\n"</span>, max_v[<span class="number">0</span>].y+<span class="number">1</span>, max_v[<span class="number">0</span>].x+<span class="number">1</span>, max_v[<span class="number">0</span>].color);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (max_v.size() == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Not Exist\n"</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Not Unique\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PAT/" rel="tag"># PAT</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/Hash散列/" rel="tag"># Hash散列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/24/20180824-03/" rel="next" title="1065 单身狗(25) - PAT乙级">
+                <i class="fa fa-chevron-left"></i> 1065 单身狗(25) - PAT乙级
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/24/20180824-05/" rel="prev" title="1049 数列的片段和(20) - PAT乙级">
+                1049 数列的片段和(20) - PAT乙级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1068-万绿丛中一点红-20"><span class="nav-number">1.</span> <span class="nav-text">1068 万绿丛中一点红(20)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.</span> <span class="nav-text">输出格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-1："><span class="nav-number">1.3.</span> <span class="nav-text">输入样例 1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-1："><span class="nav-number">1.4.</span> <span class="nav-text">输出样例 1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-2："><span class="nav-number">1.5.</span> <span class="nav-text">输入样例 2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-2："><span class="nav-number">1.6.</span> <span class="nav-text">输出样例 2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-3："><span class="nav-number">1.7.</span> <span class="nav-text">输入样例 3：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-3："><span class="nav-number">1.8.</span> <span class="nav-text">输出样例 3：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solution"><span class="nav-number">1.9.</span> <span class="nav-text">Solution:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
