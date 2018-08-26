@@ -35,6 +35,84 @@
     </entry>
     
     <entry>
+      <title><![CDATA[1044 火星数字(20) - PAT乙级]]></title>
+      <url>/2018/08/26/20180826-04/</url>
+      <content type="html"><![CDATA[<h3 id="1044-火星数字-20"><a href="#1044-火星数字-20" class="headerlink" title="1044. 火星数字(20)"></a>1044. 火星数字(20)</h3><p>火星人是以 13 进制计数的：</p>
+<p>地球人的 0 被火星人称为 tret。<br>地球人数字 1 到 12 的火星文分别为：jan, feb, mar, apr, may, jun, jly, aug, sep, oct, nov, dec。<br>火星人将进位以后的 12 个高位数字分别称为：tam, hel, maa, huh, tou, kes, hei, elo, syy, lok, mer, jou。<br>例如地球人的数字 29 翻译成火星文就是 hel mar；而火星文 elo nov 对应地球数字 115。为了方便交流，请你编写程序实现地球和火星数字之间的互译。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出一个正整数 N（&lt;100），随后 N 行，每行给出一个 [0, 169) 区间内的数字 —— 或者是地球文，或者是火星文。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对应输入的每一行，在一行中输出翻译后的另一种语言的数字。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>4<br>29<br>5<br>elo nov<br>tam</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>hel mar<br>may<br>115<br>13</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>先判断读入的string字符串, 首位是否为数字, 来决定是哪种转译方法.</p>
+<p>low, high建立成数组, 用数组建立map散列, 可用于英文和数字之间的转换.<br>对于有两个英文的火星文, 需要用find在string找到” “字符串, 然后分别转译, 按照进制进行转换.</p>
+<p>坑点:</p>
+<blockquote>
+<ul>
+<li>1, 01问题, 低位tret的是可以作为0的, 高位0是tam, 实际上是1, 相应需要减1</li>
+<li>2, 如果是13的话, 低位是0, 转译后不被翻译。case2, 4</li>
+<li>3, 逻辑一定会有疏漏, 要学着自己写测试案例, 如下:<br>写测试函数的技巧<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">8</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">12</span></span><br><span class="line"><span class="comment">13</span></span><br><span class="line"><span class="comment">26</span></span><br><span class="line"><span class="comment">27</span></span><br><span class="line"><span class="comment">tret</span></span><br><span class="line"><span class="comment">jan</span></span><br><span class="line"><span class="comment">hel jan</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">tret</span></span><br><span class="line"><span class="comment">dec</span></span><br><span class="line"><span class="comment">tam</span></span><br><span class="line"><span class="comment">hel</span></span><br><span class="line"><span class="comment">hel jan</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">1</span></span><br><span class="line"><span class="comment">27</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">tret</span></span><br><span class="line"><span class="comment">dec</span></span><br><span class="line"><span class="comment">tam tret</span></span><br><span class="line"><span class="comment">hel tret</span></span><br><span class="line"><span class="comment">hel jan</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">1</span></span><br><span class="line"><span class="comment">27</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>实际代码如下:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; mp_low;</span><br><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">string</span>, <span class="keyword">int</span>&gt; mp_high;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="built_in">string</span> low[] = &#123;<span class="string">"tret"</span>, <span class="string">"jan"</span>, <span class="string">"feb"</span>, <span class="string">"mar"</span>, <span class="string">"apr"</span>, <span class="string">"may"</span>,</span><br><span class="line">                  <span class="string">"jun"</span>, <span class="string">"jly"</span>, <span class="string">"aug"</span>, <span class="string">"sep"</span>, <span class="string">"oct"</span>, <span class="string">"nov"</span>, <span class="string">"dec"</span>&#125;;</span><br><span class="line">  <span class="built_in">string</span> high[] = &#123;<span class="string">"tam"</span>, <span class="string">"hel"</span>, <span class="string">"maa"</span>, <span class="string">"huh"</span>, <span class="string">"tou"</span>, <span class="string">"kes"</span>,</span><br><span class="line">                   <span class="string">"hei"</span>, <span class="string">"elo"</span>, <span class="string">"syy"</span>, <span class="string">"lok"</span>, <span class="string">"mer"</span>, <span class="string">"jou"</span>&#125;;  <span class="comment">// a-1</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">13</span>; i++) &#123;</span><br><span class="line">    mp_low[low[i]] = i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">13</span>; i++) &#123;</span><br><span class="line">    mp_high[high[i<span class="number">-1</span>]] = i;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  getchar();</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    getline(<span class="built_in">cin</span>, s);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isdigit</span>(s[<span class="number">0</span>])) &#123;</span><br><span class="line">      <span class="keyword">int</span> a = stoi(s) / <span class="number">13</span>, b = stoi(s) % <span class="number">13</span>;</span><br><span class="line">      <span class="keyword">if</span> (a == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; low[b] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; high[a<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">if</span> (b != <span class="number">0</span>) &#123;             <span class="comment">// case2, 4</span></span><br><span class="line">          <span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span> &lt;&lt; low[b];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">int</span> pos = s.find(<span class="string">" "</span>);</span><br><span class="line">      <span class="keyword">int</span> ans;</span><br><span class="line">      <span class="keyword">if</span> (pos != <span class="built_in">string</span>::npos) &#123;</span><br><span class="line">        <span class="built_in">string</span> s1 = s.substr(<span class="number">0</span>, <span class="number">3</span>), s2 = s.substr(pos+<span class="number">1</span>, <span class="number">3</span>);</span><br><span class="line">        ans = mp_high[s1] * <span class="number">13</span> + mp_low[s2];</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// ans = mp_low[s];    // eror</span></span><br><span class="line">        <span class="keyword">auto</span> it_low = mp_low.find(s);</span><br><span class="line">        <span class="keyword">if</span> (it_low != mp_low.end()) &#123;</span><br><span class="line">          ans = mp_low[s];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          ans = mp_high[s] * <span class="number">13</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; ans &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// case 2, 4 wrong answer;</span></span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 字符串 </tag>
+            
+            <tag> map </tag>
+            
+            <tag> 进制转换 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1074 宇宙无敌加法器(20) - PAT乙级]]></title>
+      <url>/2018/08/26/20180826-03/</url>
+      <content type="html"><![CDATA[<h3 id="1074-宇宙无敌加法器-20"><a href="#1074-宇宙无敌加法器-20" class="headerlink" title="1074 宇宙无敌加法器(20)"></a>1074 宇宙无敌加法器(20)</h3><p>地球人习惯使用十进制数，并且默认一个数字的每一位都是十进制的。而在 PAT 星人开挂的世界里，每个数字的每一位都是不同进制的，这种神奇的数字称为“PAT数”。每个 PAT 星人都必须熟记各位数字的进制表，例如“……0527”就表示最低位是 7 进制数、第 2 位是 2 进制数、第 3 位是 5 进制数、第 4 位是 10 进制数，等等。每一位的进制 d 或者是 0（表示十进制）、或者是 [2，9] 区间内的整数。理论上这个进制表应该包含无穷多位数字，但从实际应用出发，PAT 星人通常只需要记住前 20 位就够用了，以后各位默认为 10 进制。</p>
+<p>在这样的数字系统中，即使是简单的加法运算也变得不简单。例如对应进制表“0527”，该如何计算“6203 + 415”呢？我们得首先计算最低位：3 + 5 = 8；因为最低位是 7 进制的，所以我们得到 1 和 1 个进位。第 2 位是：0 + 1 + 1（进位）= 2；因为此位是 2 进制的，所以我们得到 0 和 1 个进位。第 3 位是：2 + 4 + 1（进位）= 7；因为此位是 5 进制的，所以我们得到 2 和 1 个进位。第 4 位是：6 + 1（进位）= 7；因为此位是 10 进制的，所以我们就得到 7。最后我们得到：6203 + 415 = 7201。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入首先在第一行给出一个 N 位的进制表（0 &lt; N ≤ 20），以回车结束。 随后两行，每行给出一个不超过 N 位的非负的 PAT 数。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出两个 PAT 数之和。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>30527<br>06203<br>415</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>7201</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>每次循环继承上一次循环的进位, 进行加法运算, 再求余。</p>
+<p>利用栈, 先对后出的特性, 对从右向左计算出的答案打印。<br>要注意的是, </p>
+<blockquote>
+<ul>
+<li>1, 需要把栈中最前的0给去掉</li>
+<li>2, 还要debug结果位0的情况, case5</li>
+<li>3, 实际上最后一位(最左)仍然需要进位, 需要在循环外进行判断, case1, 3</li>
+</ul>
+</blockquote>
+<p>如下:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">// 1, 3wrong</span><br><span class="line">2</span><br><span class="line">5</span><br><span class="line">7</span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">// 5, wrong</span><br><span class="line">2</span><br><span class="line">0</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<p>实际代码如下:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">string</span> T, S1, S2; <span class="built_in">cin</span> &gt;&gt; T &gt;&gt; S1 &gt;&gt; S2;</span><br><span class="line">  <span class="keyword">int</span> n = T.length();</span><br><span class="line">  S1.insert(<span class="number">0</span>, n - S1.length(), <span class="string">'0'</span>);</span><br><span class="line">  S2.insert(<span class="number">0</span>, n - S2.length(), <span class="string">'0'</span>);</span><br><span class="line">  <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stk; <span class="keyword">int</span> more = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = n<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">int</span> b = T[i] == <span class="string">'0'</span> ? <span class="number">10</span> : T[i] - <span class="string">'0'</span>;</span><br><span class="line">    <span class="keyword">int</span> d  = S1[i]-<span class="string">'0'</span> + S2[i]-<span class="string">'0'</span> + more;</span><br><span class="line">    <span class="keyword">int</span> digit = (d) ? (d) % b : <span class="number">0</span>;</span><br><span class="line">    more = d / b;</span><br><span class="line">    stk.push(digit);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (more) stk.push(more);           <span class="comment">// case1, 3</span></span><br><span class="line">  <span class="keyword">int</span> flag = <span class="number">0</span>, flag_z = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (!stk.empty()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!flag) &#123;</span><br><span class="line">      <span class="keyword">if</span> (stk.top() == <span class="number">0</span>) &#123;</span><br><span class="line">        stk.pop();</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        flag = <span class="number">1</span>;</span><br><span class="line">        flag_z = <span class="number">0</span>;                   <span class="comment">// case5, zero</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%d"</span>, stk.top());</span><br><span class="line">      stk.pop();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (flag_z) <span class="built_in">printf</span>(<span class="string">"0"</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> PAT </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 进制转换 </tag>
+            
+            <tag> 栈 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[1056 组合数的和(15) - PAT乙级]]></title>
       <url>/2018/08/26/20180826-02/</url>
       <content type="html"><![CDATA[<h3 id="1056-组合数的和-15"><a href="#1056-组合数的和-15" class="headerlink" title="1056 组合数的和(15)"></a>1056 组合数的和(15)</h3><p>tags: [组合, 算法, PAT]<br>给定 N 个非 0 的个位数字，用其中任意 2 个数字都可以组合成 1 个 2 位的数字。要求所有可能组合出来的 2 位数字的和。例如给定 2、5、8，则可以组合出：25、28、52、58、82、85，它们的和为330。</p>
@@ -2929,6 +3007,73 @@
     
     <entry>
       <title><![CDATA[建筑设备复习]]></title>
+      <url>/2018/06/26/archi-equipment/</url>
+      <content type="html"><![CDATA[<p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
+<h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>引入管, 管道系统, 给水附件, 消防设备, 升压与贮水设备, 给水局部处理设备</p>
+<h2 id="给水方式"><a href="#给水方式" class="headerlink" title="给水方式"></a>给水方式</h2><h1 id="1-3-1-给水系统-p15"><a href="#1-3-1-给水系统-p15" class="headerlink" title="1.3.1 给水系统 p15"></a>1.3.1 给水系统 p15</h1><h2 id="高层建筑给水系统为什么用竖向分区供水"><a href="#高层建筑给水系统为什么用竖向分区供水" class="headerlink" title="高层建筑给水系统为什么用竖向分区供水?"></a>高层建筑给水系统为什么用竖向分区供水?</h2><p>高层建筑用水标准较高, 使用人数较多, 建筑高度大, 功能复杂, 对防震, 防沉降, 防渗漏等要求高。<br>高层建筑若采用同一给水系统供水, 则垂直方向管线过长, 下层管道中的净水压力过大,<br>必然会增大压力损失, 使管道(附近)易漏水, 启用龙头和阀门易产生水锤和噪声, 影响高层供水的安全可靠性, 因此采用竖向分区供水</p>
+<h2 id="a-并联方式"><a href="#a-并联方式" class="headerlink" title="a, 并联方式"></a>a, 并联方式</h2><h3 id="高位水箱并联给水方式"><a href="#高位水箱并联给水方式" class="headerlink" title="高位水箱并联给水方式"></a>高位水箱并联给水方式</h3><p>各区设置水箱, 水泵集中布置在地下层或底层<br>特点:<br>优: 各区独立运行互不干扰/ 能耗小/ 供水可靠/ 水泵集中布置便于管理<br>缺: 水泵型号较多, 投资较大/ 分区水箱占楼层使用面积大</p>
+<h3 id="分区无水箱给水方式"><a href="#分区无水箱给水方式" class="headerlink" title="分区无水箱给水方式"></a>分区无水箱给水方式</h3><p>分区设置变频调速水泵或多台并联水泵, 且集中布置在地下室或底层<br>根据各区用水量调节水泵转速 或 运行后向各区供水<br>特点:<br>优: 供水可靠性强/ 设备集中设置, 便于管理/ 无高位水箱不占上层面积<br>缺: 水泵型号多, 投资大/ 水泵控制调节复杂</p>
+<h2 id="b-串联给水方式"><a href="#b-串联给水方式" class="headerlink" title="b, 串联给水方式"></a>b, 串联给水方式</h2><p>分区设置水箱和水泵, 水泵分散布置<br>自下区水箱抽水供上区用水<br>特点:<br>优: 设备和管道较简单, 投资省, 能耗小<br>缺: 水泵设置在上层, 对防振动和噪声要求高/ 各区水箱增加结构负荷/ 上区供水受下区限制/ 供水可靠性差</p>
+<h2 id="c-减压给水方式"><a href="#c-减压给水方式" class="headerlink" title="c, 减压给水方式"></a>c, 减压给水方式</h2><p>分区设置水箱/ 由设置在地下室或底层的水泵将水加压至最高层水箱/ 上层供下层用水/ 利用水箱减压<br>特点:<br>优: 水泵台数少, 设备管理维护简单<br>缺: 水泵扬程较大/ 运行费用高/ 最高层水箱容积较大, 增加了结构负荷/ 下层供水压力损耗较大, 不够节能 </p>
+<h1 id="2-2-1-自然循环热水供暖系统-p59"><a href="#2-2-1-自然循环热水供暖系统-p59" class="headerlink" title="2.2.1 自然循环热水供暖系统 p59"></a>2.2.1 自然循环热水供暖系统 p59</h1><p>原理:<br>1, 冷水管向系统内充满水<br>2, 锅炉开始加热<br>3, 当水温升高后, 堆高度开始降低, 热水沿供水管上升至散热器<br>4, 在散热器中散热后温度降低<br>5, 沿回水管流回锅炉再加热, 循环往复</p>
+<h1 id="2-2-2-机械循环热水供暖系统-p61"><a href="#2-2-2-机械循环热水供暖系统-p61" class="headerlink" title="2.2.2 机械循环热水供暖系统 p61"></a>2.2.2 机械循环热水供暖系统 p61</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
+<li>1, 因为采用循环水泵为水循环提供动力, 所以循环作用压力大</li>
+<li>2, 系统的作用半径大, 水的流速大, 管径较小, 启动容易, 供暖方式多, 应用广泛</li>
+</ul>
+<h2 id="a-机械供暖与自然供暖的区别"><a href="#a-机械供暖与自然供暖的区别" class="headerlink" title="a, 机械供暖与自然供暖的区别"></a>a, 机械供暖与自然供暖的区别</h2><h3 id="1-循环动力不同"><a href="#1-循环动力不同" class="headerlink" title="1, 循环动力不同:"></a>1, 循环动力不同:</h3><ul>
+<li>机械: 水泵; </li>
+<li>自然: 密度差 <h3 id="2-膨胀水箱的连接点和作用不同"><a href="#2-膨胀水箱的连接点和作用不同" class="headerlink" title="2, 膨胀水箱的连接点和作用不同"></a>2, 膨胀水箱的连接点和作用不同</h3></li>
+<li>机械: 循环水泵入口前的回水管, 作用在于吸收和补充膨胀与收缩的水量, 排气以及起到定压的作用</li>
+<li>自然: 供水立管的最高点, 作用在于吸收系统中热水膨胀体积, 补充水量不足和排气<h3 id="3-排气途径不同"><a href="#3-排气途径不同" class="headerlink" title="3, 排气途径不同"></a>3, 排气途径不同</h3></li>
+<li>机械: 随着水流一起流动</li>
+<li>自然: 逆着水流方向浮升</li>
+</ul>
+<h2 id="b-机械供暖的主要方式-需要仔细看看"><a href="#b-机械供暖的主要方式-需要仔细看看" class="headerlink" title="b, 机械供暖的主要方式(需要仔细看看)"></a>b, 机械供暖的主要方式(需要仔细看看)</h2><h3 id="垂直式"><a href="#垂直式" class="headerlink" title="垂直式"></a>垂直式</h3><p>上供下回<br>下供下回<br>中供式<br>下供上回</p>
+<h3 id="水平式"><a href="#水平式" class="headerlink" title="水平式"></a>水平式</h3><p>水平单管顺流式,<br>单管跨越式</p>
+<h3 id="水平式优点"><a href="#水平式优点" class="headerlink" title="水平式优点"></a>水平式优点</h3><ul>
+<li>1, 安装简单, 穿楼板的立管少, 可逐层安装供暖系统</li>
+<li>2, 顶层不需专设膨胀水箱, 可利用楼梯间.厕所设置, 造价比垂直式低</li>
+</ul>
+<h2 id="水平式问题"><a href="#水平式问题" class="headerlink" title="水平式问题"></a>水平式问题</h2><ul>
+<li>1, 排气, 必须安装气阀</li>
+</ul>
+<h2 id="c-异程式与同程式"><a href="#c-异程式与同程式" class="headerlink" title="c, 异程式与同程式"></a>c, 异程式与同程式</h2><p>异程式: 每根立管都与锅炉.供.回水管组成循环环路, 而通过各根立管的循环环路的长度都是不同的<br>同程式: 增加了回水管长度, 使各分立管的循环环路的长度相等</p>
+<h2 id="同程式优缺点"><a href="#同程式优缺点" class="headerlink" title="同程式优缺点"></a>同程式优缺点</h2><p>优: 有利于环路间的阻力平衡, 热量分配易于达到设计要求,<br>缺: 用的金属管材较多, 施工时地沟深度增加</p>
+<h1 id="3-1-3-高层建筑防火排烟-p115"><a href="#3-1-3-高层建筑防火排烟-p115" class="headerlink" title="3.1.3 高层建筑防火排烟 p115"></a>3.1.3 高层建筑防火排烟 p115</h1><h2 id="a-防火分区和防烟分区"><a href="#a-防火分区和防烟分区" class="headerlink" title="a, 防火分区和防烟分区"></a>a, 防火分区和防烟分区</h2><h3 id="1-防火分区"><a href="#1-防火分区" class="headerlink" title="(1)防火分区"></a>(1)防火分区</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义:"></a>定义:</h4><p>采用防火分隔措施划分的局部区域</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h4><ul>
+<li>1, 可有效防止火灾时火势蔓延和烟气传播</li>
+<li>2, 便于人员疏散和火灾的扑救</li>
+<li>3, 减少火灾的损失<h4 id="要求"><a href="#要求" class="headerlink" title="要求:"></a>要求:</h4></li>
+<li>1, 两个防火分区之间应水平设置 <code>防火墙``防火卷帘``防火门</code>等装置对火势进行阻隔</li>
+<li>2, 每个防火分区最大建筑面积: 一类1000m2, 二类1500m2, 地下室500m2</li>
+<li>3, 高层建筑, 设有火灾自动报警系统和自动灭火系统, 且采用不燃烧或难燃烧材料装修, 地上防火分区&lt;=4000m2, 地下部分 &lt;= 2000m2</li>
+<li>4, 高层建筑与裙房之间设有防火墙等防火分隔设施时, 裙房防火分区 &lt;= 2500m2</li>
+<li>5, 当设有自动喷水灭火系统: 最大面积增加一倍</li>
+</ul>
+<h3 id="2-防烟分区"><a href="#2-防烟分区" class="headerlink" title="(2)防烟分区"></a>(2)防烟分区</h3><h4 id="目的："><a href="#目的：" class="headerlink" title="目的："></a>目的：</h4><p>在火灾发生时候, 将烟气控制在一定范围内</p>
+<h4 id="要求-1"><a href="#要求-1" class="headerlink" title="要求:"></a>要求:</h4><ul>
+<li>1, 防烟分区不应跨越防火分区</li>
+<li>2, 每个防烟分区的建筑面积 &lt;= 500m2</li>
+<li>3, 走道, 净高不超过房间的6.0m, 采用挡烟垂璧, 隔墙突出 &gt;= 0.50的梁划分防烟分区</li>
+</ul>
+<h2 id="b-防-排烟方式"><a href="#b-防-排烟方式" class="headerlink" title="b, 防.排烟方式"></a>b, 防.排烟方式</h2><h3 id="自然排烟"><a href="#自然排烟" class="headerlink" title="自然排烟"></a>自然排烟</h3><p>优: 不需要动力/经济方便<br>缺: 易受到室外风力影响, 火势猛烈时, 火焰可能从开口部位向上蔓延</p>
+<h3 id="机械排烟"><a href="#机械排烟" class="headerlink" title="机械排烟"></a>机械排烟</h3><p>定义:使用排烟风机进行强制排烟<br>优: 不受室外风力影响, 工作可靠<br>缺: 初期投资多</p>
+<h1 id="3-2-4-空气处理设别-p125"><a href="#3-2-4-空气处理设别-p125" class="headerlink" title="3.2.4 空气处理设别 p125"></a>3.2.4 空气处理设别 p125</h1><h2 id="a-空气净化-加热-冷却-加湿-除湿"><a href="#a-空气净化-加热-冷却-加湿-除湿" class="headerlink" title="a, 空气净化, 加热, 冷却, 加湿, 除湿"></a>a, 空气净化, 加热, 冷却, 加湿, 除湿</h2><h2 id="b-装配式空调机组"><a href="#b-装配式空调机组" class="headerlink" title="b, 装配式空调机组"></a>b, 装配式空调机组</h2><h2 id="c-空调制冷设备"><a href="#c-空调制冷设备" class="headerlink" title="c, 空调制冷设备"></a>c, 空调制冷设备</h2><h1 id="4-1-2-建筑电气系统的分类-p144"><a href="#4-1-2-建筑电气系统的分类-p144" class="headerlink" title="4.1.2 建筑电气系统的分类 p144"></a>4.1.2 建筑电气系统的分类 p144</h1><p>组成: 建筑电气系统一般由 用电设备/供配电线路/ 控制和保护装置<br>分类:<br>根据 -&gt; 电能的产生, 分配, 传输和消耗使用,      类 -&gt; 供配电系统/用电系统<br>根据 -&gt; 用电设备的特点和系统中所传递能量的类型, 类 -&gt; 建筑照明系统/建筑动力系统/建筑弱电系统</p>
+<h2 id="a-建筑的供配电系统"><a href="#a-建筑的供配电系统" class="headerlink" title="a, 建筑的供配电系统"></a>a, 建筑的供配电系统</h2><h3 id="电能产生-输送和分配"><a href="#电能产生-输送和分配" class="headerlink" title="电能产生, 输送和分配"></a>电能产生, 输送和分配</h3><h3 id="电路系统的电压和频率"><a href="#电路系统的电压和频率" class="headerlink" title="电路系统的电压和频率"></a>电路系统的电压和频率</h3><h3 id="民用建筑供电系统"><a href="#民用建筑供电系统" class="headerlink" title="民用建筑供电系统"></a>民用建筑供电系统</h3><h3 id="电力负荷的分类"><a href="#电力负荷的分类" class="headerlink" title="电力负荷的分类"></a>电力负荷的分类</h3><h2 id="b-电气照明系统"><a href="#b-电气照明系统" class="headerlink" title="b, 电气照明系统"></a>b, 电气照明系统</h2><h3 id="组成-1"><a href="#组成-1" class="headerlink" title="组成"></a>组成</h3><h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3><h2 id="c-建筑动力系统"><a href="#c-建筑动力系统" class="headerlink" title="c, 建筑动力系统"></a>c, 建筑动力系统</h2><h3 id="电动机种类和应用"><a href="#电动机种类和应用" class="headerlink" title="电动机种类和应用"></a>电动机种类和应用</h3><h3 id="异步电动机的启动"><a href="#异步电动机的启动" class="headerlink" title="异步电动机的启动"></a>异步电动机的启动</h3><h3 id="异步电动机的启动方法"><a href="#异步电动机的启动方法" class="headerlink" title="异步电动机的启动方法"></a>异步电动机的启动方法</h3><h2 id="d-建筑弱点系统"><a href="#d-建筑弱点系统" class="headerlink" title="d, 建筑弱点系统"></a>d, 建筑弱点系统</h2><p>强电: 以安倍为单位<br>弱电: 以毫安为计量单位</p>
+<p>功能: 主要进行信息的传递和交换<br>主要包括: 火灾自动报警, 消防联动系统, 电话通信系统, 建筑广播, 共用电视天线, 有线电视系统, 智能化建筑综合布线和安防系统</p>
+<h1 id="4-4-2-保护接地与保护接零-p188"><a href="#4-4-2-保护接地与保护接零-p188" class="headerlink" title="4.4.2 保护接地与保护接零 p188"></a>4.4.2 保护接地与保护接零 p188</h1><p>保护接地: 电气设备的某部分(设备可导电外壳)用金属导体与大地作良好的电气连接</p>
+<p>保护接零: 电源中性点接地的系统中, 将电气设备不带电的金属部分与零线作良好的接触</p>
+<p>接地体:<br>自然接地体:<br>人工接地体:<br>接地线:<br>接地装置:</p>
+<h2 id="a-接地概述"><a href="#a-接地概述" class="headerlink" title="a, 接地概述"></a>a, 接地概述</h2><h2 id="b-接地类型"><a href="#b-接地类型" class="headerlink" title="b, 接地类型"></a>b, 接地类型</h2><h3 id="工作接地"><a href="#工作接地" class="headerlink" title="工作接地"></a>工作接地</h3><h3 id="保护接地"><a href="#保护接地" class="headerlink" title="保护接地"></a>保护接地</h3><h3 id="保护接零"><a href="#保护接零" class="headerlink" title="保护接零"></a>保护接零</h3><h2 id="c-常见保护接地方式"><a href="#c-常见保护接地方式" class="headerlink" title="c, 常见保护接地方式"></a>c, 常见保护接地方式</h2><h1 id="5-2-火灾自动报警系统-p237"><a href="#5-2-火灾自动报警系统-p237" class="headerlink" title="5.2 火灾自动报警系统 p237"></a>5.2 火灾自动报警系统 p237</h1><h2 id="自动报警系统组成"><a href="#自动报警系统组成" class="headerlink" title="自动报警系统组成"></a>自动报警系统组成</h2><p>触发器, 火灾报警装置, 消防控制设备, 电源</p>
+<h2 id="控制器工作原理"><a href="#控制器工作原理" class="headerlink" title="控制器工作原理"></a>控制器工作原理</h2><p>提供火灾探测器稳定的直流电源, 监视连接的探测器有无故障, 保证探测器长期, 稳定有效, 工作;<br>当火灾探测器探测火情后, 迅速处理, 执行控制</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[建筑设备复习]]></title>
       <url>/2018/06/26/archi-equiptment/</url>
       <content type="html"><![CDATA[<p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
 <h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
@@ -3061,73 +3206,6 @@
 <li>设有水箱的消火栓给水系统</li>
 <li>设有消防水泵和消防水箱的消火栓给水系统</li>
 </ul>
-]]></content>
-      
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[建筑设备复习]]></title>
-      <url>/2018/06/26/archi-equipment/</url>
-      <content type="html"><![CDATA[<p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
-<h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
-<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>引入管, 管道系统, 给水附件, 消防设备, 升压与贮水设备, 给水局部处理设备</p>
-<h2 id="给水方式"><a href="#给水方式" class="headerlink" title="给水方式"></a>给水方式</h2><h1 id="1-3-1-给水系统-p15"><a href="#1-3-1-给水系统-p15" class="headerlink" title="1.3.1 给水系统 p15"></a>1.3.1 给水系统 p15</h1><h2 id="高层建筑给水系统为什么用竖向分区供水"><a href="#高层建筑给水系统为什么用竖向分区供水" class="headerlink" title="高层建筑给水系统为什么用竖向分区供水?"></a>高层建筑给水系统为什么用竖向分区供水?</h2><p>高层建筑用水标准较高, 使用人数较多, 建筑高度大, 功能复杂, 对防震, 防沉降, 防渗漏等要求高。<br>高层建筑若采用同一给水系统供水, 则垂直方向管线过长, 下层管道中的净水压力过大,<br>必然会增大压力损失, 使管道(附近)易漏水, 启用龙头和阀门易产生水锤和噪声, 影响高层供水的安全可靠性, 因此采用竖向分区供水</p>
-<h2 id="a-并联方式"><a href="#a-并联方式" class="headerlink" title="a, 并联方式"></a>a, 并联方式</h2><h3 id="高位水箱并联给水方式"><a href="#高位水箱并联给水方式" class="headerlink" title="高位水箱并联给水方式"></a>高位水箱并联给水方式</h3><p>各区设置水箱, 水泵集中布置在地下层或底层<br>特点:<br>优: 各区独立运行互不干扰/ 能耗小/ 供水可靠/ 水泵集中布置便于管理<br>缺: 水泵型号较多, 投资较大/ 分区水箱占楼层使用面积大</p>
-<h3 id="分区无水箱给水方式"><a href="#分区无水箱给水方式" class="headerlink" title="分区无水箱给水方式"></a>分区无水箱给水方式</h3><p>分区设置变频调速水泵或多台并联水泵, 且集中布置在地下室或底层<br>根据各区用水量调节水泵转速 或 运行后向各区供水<br>特点:<br>优: 供水可靠性强/ 设备集中设置, 便于管理/ 无高位水箱不占上层面积<br>缺: 水泵型号多, 投资大/ 水泵控制调节复杂</p>
-<h2 id="b-串联给水方式"><a href="#b-串联给水方式" class="headerlink" title="b, 串联给水方式"></a>b, 串联给水方式</h2><p>分区设置水箱和水泵, 水泵分散布置<br>自下区水箱抽水供上区用水<br>特点:<br>优: 设备和管道较简单, 投资省, 能耗小<br>缺: 水泵设置在上层, 对防振动和噪声要求高/ 各区水箱增加结构负荷/ 上区供水受下区限制/ 供水可靠性差</p>
-<h2 id="c-减压给水方式"><a href="#c-减压给水方式" class="headerlink" title="c, 减压给水方式"></a>c, 减压给水方式</h2><p>分区设置水箱/ 由设置在地下室或底层的水泵将水加压至最高层水箱/ 上层供下层用水/ 利用水箱减压<br>特点:<br>优: 水泵台数少, 设备管理维护简单<br>缺: 水泵扬程较大/ 运行费用高/ 最高层水箱容积较大, 增加了结构负荷/ 下层供水压力损耗较大, 不够节能 </p>
-<h1 id="2-2-1-自然循环热水供暖系统-p59"><a href="#2-2-1-自然循环热水供暖系统-p59" class="headerlink" title="2.2.1 自然循环热水供暖系统 p59"></a>2.2.1 自然循环热水供暖系统 p59</h1><p>原理:<br>1, 冷水管向系统内充满水<br>2, 锅炉开始加热<br>3, 当水温升高后, 堆高度开始降低, 热水沿供水管上升至散热器<br>4, 在散热器中散热后温度降低<br>5, 沿回水管流回锅炉再加热, 循环往复</p>
-<h1 id="2-2-2-机械循环热水供暖系统-p61"><a href="#2-2-2-机械循环热水供暖系统-p61" class="headerlink" title="2.2.2 机械循环热水供暖系统 p61"></a>2.2.2 机械循环热水供暖系统 p61</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
-<li>1, 因为采用循环水泵为水循环提供动力, 所以循环作用压力大</li>
-<li>2, 系统的作用半径大, 水的流速大, 管径较小, 启动容易, 供暖方式多, 应用广泛</li>
-</ul>
-<h2 id="a-机械供暖与自然供暖的区别"><a href="#a-机械供暖与自然供暖的区别" class="headerlink" title="a, 机械供暖与自然供暖的区别"></a>a, 机械供暖与自然供暖的区别</h2><h3 id="1-循环动力不同"><a href="#1-循环动力不同" class="headerlink" title="1, 循环动力不同:"></a>1, 循环动力不同:</h3><ul>
-<li>机械: 水泵; </li>
-<li>自然: 密度差 <h3 id="2-膨胀水箱的连接点和作用不同"><a href="#2-膨胀水箱的连接点和作用不同" class="headerlink" title="2, 膨胀水箱的连接点和作用不同"></a>2, 膨胀水箱的连接点和作用不同</h3></li>
-<li>机械: 循环水泵入口前的回水管, 作用在于吸收和补充膨胀与收缩的水量, 排气以及起到定压的作用</li>
-<li>自然: 供水立管的最高点, 作用在于吸收系统中热水膨胀体积, 补充水量不足和排气<h3 id="3-排气途径不同"><a href="#3-排气途径不同" class="headerlink" title="3, 排气途径不同"></a>3, 排气途径不同</h3></li>
-<li>机械: 随着水流一起流动</li>
-<li>自然: 逆着水流方向浮升</li>
-</ul>
-<h2 id="b-机械供暖的主要方式-需要仔细看看"><a href="#b-机械供暖的主要方式-需要仔细看看" class="headerlink" title="b, 机械供暖的主要方式(需要仔细看看)"></a>b, 机械供暖的主要方式(需要仔细看看)</h2><h3 id="垂直式"><a href="#垂直式" class="headerlink" title="垂直式"></a>垂直式</h3><p>上供下回<br>下供下回<br>中供式<br>下供上回</p>
-<h3 id="水平式"><a href="#水平式" class="headerlink" title="水平式"></a>水平式</h3><p>水平单管顺流式,<br>单管跨越式</p>
-<h3 id="水平式优点"><a href="#水平式优点" class="headerlink" title="水平式优点"></a>水平式优点</h3><ul>
-<li>1, 安装简单, 穿楼板的立管少, 可逐层安装供暖系统</li>
-<li>2, 顶层不需专设膨胀水箱, 可利用楼梯间.厕所设置, 造价比垂直式低</li>
-</ul>
-<h2 id="水平式问题"><a href="#水平式问题" class="headerlink" title="水平式问题"></a>水平式问题</h2><ul>
-<li>1, 排气, 必须安装气阀</li>
-</ul>
-<h2 id="c-异程式与同程式"><a href="#c-异程式与同程式" class="headerlink" title="c, 异程式与同程式"></a>c, 异程式与同程式</h2><p>异程式: 每根立管都与锅炉.供.回水管组成循环环路, 而通过各根立管的循环环路的长度都是不同的<br>同程式: 增加了回水管长度, 使各分立管的循环环路的长度相等</p>
-<h2 id="同程式优缺点"><a href="#同程式优缺点" class="headerlink" title="同程式优缺点"></a>同程式优缺点</h2><p>优: 有利于环路间的阻力平衡, 热量分配易于达到设计要求,<br>缺: 用的金属管材较多, 施工时地沟深度增加</p>
-<h1 id="3-1-3-高层建筑防火排烟-p115"><a href="#3-1-3-高层建筑防火排烟-p115" class="headerlink" title="3.1.3 高层建筑防火排烟 p115"></a>3.1.3 高层建筑防火排烟 p115</h1><h2 id="a-防火分区和防烟分区"><a href="#a-防火分区和防烟分区" class="headerlink" title="a, 防火分区和防烟分区"></a>a, 防火分区和防烟分区</h2><h3 id="1-防火分区"><a href="#1-防火分区" class="headerlink" title="(1)防火分区"></a>(1)防火分区</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义:"></a>定义:</h4><p>采用防火分隔措施划分的局部区域</p>
-<h4 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h4><ul>
-<li>1, 可有效防止火灾时火势蔓延和烟气传播</li>
-<li>2, 便于人员疏散和火灾的扑救</li>
-<li>3, 减少火灾的损失<h4 id="要求"><a href="#要求" class="headerlink" title="要求:"></a>要求:</h4></li>
-<li>1, 两个防火分区之间应水平设置 <code>防火墙``防火卷帘``防火门</code>等装置对火势进行阻隔</li>
-<li>2, 每个防火分区最大建筑面积: 一类1000m2, 二类1500m2, 地下室500m2</li>
-<li>3, 高层建筑, 设有火灾自动报警系统和自动灭火系统, 且采用不燃烧或难燃烧材料装修, 地上防火分区&lt;=4000m2, 地下部分 &lt;= 2000m2</li>
-<li>4, 高层建筑与裙房之间设有防火墙等防火分隔设施时, 裙房防火分区 &lt;= 2500m2</li>
-<li>5, 当设有自动喷水灭火系统: 最大面积增加一倍</li>
-</ul>
-<h3 id="2-防烟分区"><a href="#2-防烟分区" class="headerlink" title="(2)防烟分区"></a>(2)防烟分区</h3><h4 id="目的："><a href="#目的：" class="headerlink" title="目的："></a>目的：</h4><p>在火灾发生时候, 将烟气控制在一定范围内</p>
-<h4 id="要求-1"><a href="#要求-1" class="headerlink" title="要求:"></a>要求:</h4><ul>
-<li>1, 防烟分区不应跨越防火分区</li>
-<li>2, 每个防烟分区的建筑面积 &lt;= 500m2</li>
-<li>3, 走道, 净高不超过房间的6.0m, 采用挡烟垂璧, 隔墙突出 &gt;= 0.50的梁划分防烟分区</li>
-</ul>
-<h2 id="b-防-排烟方式"><a href="#b-防-排烟方式" class="headerlink" title="b, 防.排烟方式"></a>b, 防.排烟方式</h2><h3 id="自然排烟"><a href="#自然排烟" class="headerlink" title="自然排烟"></a>自然排烟</h3><p>优: 不需要动力/经济方便<br>缺: 易受到室外风力影响, 火势猛烈时, 火焰可能从开口部位向上蔓延</p>
-<h3 id="机械排烟"><a href="#机械排烟" class="headerlink" title="机械排烟"></a>机械排烟</h3><p>定义:使用排烟风机进行强制排烟<br>优: 不受室外风力影响, 工作可靠<br>缺: 初期投资多</p>
-<h1 id="3-2-4-空气处理设别-p125"><a href="#3-2-4-空气处理设别-p125" class="headerlink" title="3.2.4 空气处理设别 p125"></a>3.2.4 空气处理设别 p125</h1><h2 id="a-空气净化-加热-冷却-加湿-除湿"><a href="#a-空气净化-加热-冷却-加湿-除湿" class="headerlink" title="a, 空气净化, 加热, 冷却, 加湿, 除湿"></a>a, 空气净化, 加热, 冷却, 加湿, 除湿</h2><h2 id="b-装配式空调机组"><a href="#b-装配式空调机组" class="headerlink" title="b, 装配式空调机组"></a>b, 装配式空调机组</h2><h2 id="c-空调制冷设备"><a href="#c-空调制冷设备" class="headerlink" title="c, 空调制冷设备"></a>c, 空调制冷设备</h2><h1 id="4-1-2-建筑电气系统的分类-p144"><a href="#4-1-2-建筑电气系统的分类-p144" class="headerlink" title="4.1.2 建筑电气系统的分类 p144"></a>4.1.2 建筑电气系统的分类 p144</h1><p>组成: 建筑电气系统一般由 用电设备/供配电线路/ 控制和保护装置<br>分类:<br>根据 -&gt; 电能的产生, 分配, 传输和消耗使用,      类 -&gt; 供配电系统/用电系统<br>根据 -&gt; 用电设备的特点和系统中所传递能量的类型, 类 -&gt; 建筑照明系统/建筑动力系统/建筑弱电系统</p>
-<h2 id="a-建筑的供配电系统"><a href="#a-建筑的供配电系统" class="headerlink" title="a, 建筑的供配电系统"></a>a, 建筑的供配电系统</h2><h3 id="电能产生-输送和分配"><a href="#电能产生-输送和分配" class="headerlink" title="电能产生, 输送和分配"></a>电能产生, 输送和分配</h3><h3 id="电路系统的电压和频率"><a href="#电路系统的电压和频率" class="headerlink" title="电路系统的电压和频率"></a>电路系统的电压和频率</h3><h3 id="民用建筑供电系统"><a href="#民用建筑供电系统" class="headerlink" title="民用建筑供电系统"></a>民用建筑供电系统</h3><h3 id="电力负荷的分类"><a href="#电力负荷的分类" class="headerlink" title="电力负荷的分类"></a>电力负荷的分类</h3><h2 id="b-电气照明系统"><a href="#b-电气照明系统" class="headerlink" title="b, 电气照明系统"></a>b, 电气照明系统</h2><h3 id="组成-1"><a href="#组成-1" class="headerlink" title="组成"></a>组成</h3><h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3><h2 id="c-建筑动力系统"><a href="#c-建筑动力系统" class="headerlink" title="c, 建筑动力系统"></a>c, 建筑动力系统</h2><h3 id="电动机种类和应用"><a href="#电动机种类和应用" class="headerlink" title="电动机种类和应用"></a>电动机种类和应用</h3><h3 id="异步电动机的启动"><a href="#异步电动机的启动" class="headerlink" title="异步电动机的启动"></a>异步电动机的启动</h3><h3 id="异步电动机的启动方法"><a href="#异步电动机的启动方法" class="headerlink" title="异步电动机的启动方法"></a>异步电动机的启动方法</h3><h2 id="d-建筑弱点系统"><a href="#d-建筑弱点系统" class="headerlink" title="d, 建筑弱点系统"></a>d, 建筑弱点系统</h2><p>强电: 以安倍为单位<br>弱电: 以毫安为计量单位</p>
-<p>功能: 主要进行信息的传递和交换<br>主要包括: 火灾自动报警, 消防联动系统, 电话通信系统, 建筑广播, 共用电视天线, 有线电视系统, 智能化建筑综合布线和安防系统</p>
-<h1 id="4-4-2-保护接地与保护接零-p188"><a href="#4-4-2-保护接地与保护接零-p188" class="headerlink" title="4.4.2 保护接地与保护接零 p188"></a>4.4.2 保护接地与保护接零 p188</h1><p>保护接地: 电气设备的某部分(设备可导电外壳)用金属导体与大地作良好的电气连接</p>
-<p>保护接零: 电源中性点接地的系统中, 将电气设备不带电的金属部分与零线作良好的接触</p>
-<p>接地体:<br>自然接地体:<br>人工接地体:<br>接地线:<br>接地装置:</p>
-<h2 id="a-接地概述"><a href="#a-接地概述" class="headerlink" title="a, 接地概述"></a>a, 接地概述</h2><h2 id="b-接地类型"><a href="#b-接地类型" class="headerlink" title="b, 接地类型"></a>b, 接地类型</h2><h3 id="工作接地"><a href="#工作接地" class="headerlink" title="工作接地"></a>工作接地</h3><h3 id="保护接地"><a href="#保护接地" class="headerlink" title="保护接地"></a>保护接地</h3><h3 id="保护接零"><a href="#保护接零" class="headerlink" title="保护接零"></a>保护接零</h3><h2 id="c-常见保护接地方式"><a href="#c-常见保护接地方式" class="headerlink" title="c, 常见保护接地方式"></a>c, 常见保护接地方式</h2><h1 id="5-2-火灾自动报警系统-p237"><a href="#5-2-火灾自动报警系统-p237" class="headerlink" title="5.2 火灾自动报警系统 p237"></a>5.2 火灾自动报警系统 p237</h1><h2 id="自动报警系统组成"><a href="#自动报警系统组成" class="headerlink" title="自动报警系统组成"></a>自动报警系统组成</h2><p>触发器, 火灾报警装置, 消防控制设备, 电源</p>
-<h2 id="控制器工作原理"><a href="#控制器工作原理" class="headerlink" title="控制器工作原理"></a>控制器工作原理</h2><p>提供火灾探测器稳定的直流电源, 监视连接的探测器有无故障, 保证探测器长期, 稳定有效, 工作;<br>当火灾探测器探测火情后, 迅速处理, 执行控制</p>
 ]]></content>
       
         
