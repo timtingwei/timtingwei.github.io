@@ -229,6 +229,522 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/cpp/cpp-notes-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/cpp/cpp-notes-02/" itemprop="url">C++ Zero To One 0.002</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T13:01:23+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="数组-指针数组-指向指针的指针的数组-…"><a href="#数组-指针数组-指向指针的指针的数组-…" class="headerlink" title="数组, 指针数组, 指向指针的指针的数组, …."></a>数组, 指针数组, 指向指针的指针的数组, ….</h1><p>在逛<a href="http://www.cplusplus.com/forum/beginner/" target="_blank" rel="noopener">Cplusplus Forum - Beginner</a>的时候发现了一个看上去看简单的<a href="http://www.cplusplus.com/forum/beginner/228196/" target="_blank" rel="noopener">问题</a></p>
+<p><strong>How do I receive two numbers from the keyboard, save them in an array of two element?</strong></p>
+<h2 id="第一次尝试"><a href="#第一次尝试" class="headerlink" title="第一次尝试"></a><strong>第一次尝试</strong></h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f0</span><span class="params">()</span> </span>&#123;     <span class="comment">// ERROR: 先存放再输入不会修改数组中的数据</span></span><br><span class="line">  <span class="keyword">int</span> a, b;</span><br><span class="line">  <span class="keyword">int</span> iarr[<span class="number">2</span>] = &#123;a, b&#125;;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;   <span class="comment">// 不合理:先存放, 再输入</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; iarr[<span class="number">0</span>] &lt;&lt; <span class="string">' '</span> &lt;&lt; iarr[<span class="number">1</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="comment">// 4197661 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我想得太简单了。不能在标准输入中, 直接对数据进行修改。</p>
+<h2 id="下面给出的答案"><a href="#下面给出的答案" class="headerlink" title="下面给出的答案"></a><strong>下面给出的答案</strong></h2><p>1,<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> iarr[<span class="number">2</span>] = &#123;&#125;;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; iarr[<span class="number">0</span>] &gt;&gt; iarr[<span class="number">1</span>];     <span class="comment">// 直接输入到数组中</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2,<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a, b;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;     <span class="comment">// 先输入, 再存放</span></span><br><span class="line">  <span class="keyword">int</span> iarr[<span class="number">2</span>] = &#123;a, b&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="但是我仍然考虑我思路实现的可能性？"><a href="#但是我仍然考虑我思路实现的可能性？" class="headerlink" title="但是我仍然考虑我思路实现的可能性？"></a><strong>但是我仍然考虑我思路实现的可能性？</strong></h2><p>对已经放置在数组中的值进行修改的思路如何实现？</p>
+<h3 id="第一个想到的就是指针。"><a href="#第一个想到的就是指针。" class="headerlink" title="第一个想到的就是指针。"></a>第一个想到的就是指针。</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f3</span><span class="params">()</span> </span>&#123;  <span class="comment">// <span class="doctag">BUG:</span> 为什么不能通过数组中保存的指针修改数组??</span></span><br><span class="line">  <span class="keyword">int</span> *pa, *pb;</span><br><span class="line">  <span class="keyword">int</span>* iarr[<span class="number">2</span>] = &#123;pa, pb&#125;;</span><br><span class="line">  <span class="keyword">int</span> tmp_a, tmp_b;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; tmp_a &gt;&gt; tmp_b;        <span class="comment">// 存放到临时变量</span></span><br><span class="line">  pa = &amp;tmp_a; pb = &amp;tmp_b;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*pa = "</span> &lt;&lt; *pa &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;    <span class="comment">// *pa = 1</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *(*iarr) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *(iarr[<span class="number">0</span>]) &lt;&lt; <span class="string">' '</span> &lt;&lt; *(iarr[<span class="number">1</span>]) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ ./a.out</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">*pa = 1</span><br><span class="line">Segmentation fault (core dumped)</span><br></pre></td></tr></table></figure>
+<p>很气, 我得出结论。不能通过数组中保存的指针修改数组。</p>
+<h3 id="数组作为函数形参"><a href="#数组作为函数形参" class="headerlink" title="数组作为函数形参"></a>数组作为函数形参</h3><p>接着, 我想起之前在函数中通过数组改变过值, 便想要实现如下任务：<br><strong>创建一个函数, 输入一个保存指向整数的指针的数组, 修改索引n位置的指针所指向的值, 返回</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">revise_value_int</span><span class="params">(<span class="keyword">int</span>* arr, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 索引为n指向的整数递增1</span></span><br><span class="line">  (*(arr+n)) += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">call_revise</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> iarr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line">  revise_value_int(iarr, <span class="number">2</span>);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"iarr[2] = "</span> &lt;&lt; iarr[<span class="number">2</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">call_revise();</span><br></pre></td></tr></table></figure>
+<p>可以改变。但是仔细一想, 我仅仅只是在数组中存放了整数。</p>
+<h3 id="函数形参为存放指针的数组"><a href="#函数形参为存放指针的数组" class="headerlink" title="函数形参为存放指针的数组"></a>函数形参为存放指针的数组</h3><p>接着，我改变了数组，用于存放指针<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>* pa, *pb, *pc;</span><br><span class="line"><span class="keyword">int</span> ptrArr[] = &#123;pa, pb, pc&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>编译时就出现了错误,.<em>error: invalid conversion from ‘int</em>’ to ‘int’ [-fpermissive]<em><br><strong>因为现在数组保存着的是指向整型的指针, 因此数组的类型应该是 int\</strong></em></p>
+<p>修改<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>* pa, *pb, *pc;</span><br><span class="line"><span class="keyword">int</span>* ptrArr[] = &#123;pa, pb, pc&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>写修改指针所指向整数的函数, 注意, 这个形参类型是<code>int**</code>, <strong>ptrArr是指向指针的指针, 调用数组, 实际上是调用指向数组首元素的指针。</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">revise_value_ptr</span><span class="params">(<span class="keyword">int</span>** ptrArr, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 索引为n的指向的指针所指向的整数递增1</span></span><br><span class="line">  (**(ptrArr+n))+=<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="Segmentation-fault-core-dumped"><a href="#Segmentation-fault-core-dumped" class="headerlink" title="Segmentation fault (core dumped)"></a>Segmentation fault (core dumped)</h3><p>再次编译<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Segmentation fault (core dumped)</span><br></pre></td></tr></table></figure></p>
+<p>出现 Segmentation fault (core dumped) 的原因， 参考[<a href="http://blog.sina.com.cn/s/blog_4b9eab320100uivj.html" target="_blank" rel="noopener">http://blog.sina.com.cn/s/blog_4b9eab320100uivj.html</a>]</p>
+<h4 id="1-内存访问越界"><a href="#1-内存访问越界" class="headerlink" title="1 内存访问越界"></a>1 内存访问越界</h4><p>  a) 由于使用错误的下标，导致数组访问越界</p>
+<p>  b) 搜索字符串时，依靠字符串结束符来判断字符串是否结束，但是字符串没有正常的使用结束符</p>
+<p>  c) 使用strcpy, strcat, sprintf, strcmp, strcasecmp等字符串操作函数，将目标字符串读/写爆。应该使用strncpy, strlcpy, strncat, strlcat, snprintf, strncmp, strncasecmp等函数防止读写越界。</p>
+<h4 id="2-多线程程序使用了线程不安全的函数。"><a href="#2-多线程程序使用了线程不安全的函数。" class="headerlink" title="2 多线程程序使用了线程不安全的函数。"></a>2 多线程程序使用了线程不安全的函数。</h4><h4 id="3-多线程读写的数据未加锁保护。"><a href="#3-多线程读写的数据未加锁保护。" class="headerlink" title="3 多线程读写的数据未加锁保护。"></a>3 多线程读写的数据未加锁保护。</h4><p>对于会被多个线程同时访问的全局数据，应该注意加锁保护，否则很容易造成core dump</p>
+<h4 id="非法指针"><a href="#非法指针" class="headerlink" title="非法指针"></a>非法指针</h4><p>  a) 使用空指针<br>  b) 随意使用指针转换。一个指向一段内存的指针，除非确定这段内存原先就分配为某种结构或类型，或者这种结构或类型的数组，否则不要将它转换为这种结构或类型的指针，而应该将这段内存拷贝到一个这种结构或类型中，再访问这个结构或类型。这是因为如果这段内存的开始地址不是按照这种结构或类型对齐的，那么访问它时就很容易因为bus error而core dump.</p>
+<h4 id="堆栈溢出"><a href="#堆栈溢出" class="headerlink" title="堆栈溢出"></a>堆栈溢出</h4><p>不要使用大的局部变量（因为局部变量都分配在栈上），这样容易造成堆栈溢出，破坏系统的栈和堆结构，导致出现莫名其妙的错误。</p>
+<h3 id="非法指针-1"><a href="#非法指针-1" class="headerlink" title="非法指针"></a>非法指针</h3><p>我的代码是:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>* pa, *pb, *pc;</span><br><span class="line"><span class="keyword">int</span>* ptrArr[] = &#123;pa, pb, pc&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这里我使用了非法的指针, 这个指针没有指向任何</p>
+<p>修改,</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">call_revise</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>, c = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">int</span>* pa = &amp;a, *pb = &amp;b, *pc = &amp;c;</span><br><span class="line">  <span class="keyword">int</span>* ptrArr[] = &#123;pa, pb, pc&#125;;</span><br><span class="line">  another_revise_value_ptr(ptrArr, <span class="number">2</span>);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"**(ptrArr)   = "</span> &lt;&lt; **(ptrArr)   &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">"**(ptrArr+1) = "</span> &lt;&lt; **(ptrArr+<span class="number">1</span>) &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">"**(ptrArr+2) = "</span> &lt;&lt; **(ptrArr+<span class="number">2</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">call_revise()</span><br></pre></td></tr></table></figure>
+<p>编译得到<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">**(ptrArr)   = 1</span><br><span class="line">**(ptrArr+1) = 2</span><br><span class="line">**(ptrArr+2) = 4</span><br></pre></td></tr></table></figure></p>
+<h3 id="解决最开始问题并总结"><a href="#解决最开始问题并总结" class="headerlink" title="解决最开始问题并总结"></a>解决最开始问题并总结</h3><p><strong>修改后的代码</strong><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f4</span><span class="params">()</span> </span>&#123;     <span class="comment">// DE<span class="doctag">BUG:</span> 先存放再输入不会修改数组中的数据</span></span><br><span class="line">  <span class="keyword">int</span> a, b;</span><br><span class="line">  <span class="keyword">int</span>* pa = &amp;a, <span class="keyword">int</span>* pb = &amp;b;     <span class="comment">// 注意: 不要定义空指针</span></span><br><span class="line">  <span class="keyword">int</span>* iarr[<span class="number">2</span>] = &#123;pa, pb&#125;;        <span class="comment">// 注意数组的类型是数组中元素的类型</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;   <span class="comment">// 也能合理:先存放, 再输入</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; **iarr &lt;&lt; <span class="string">' '</span> &lt;&lt; **(iarr+<span class="number">1</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; <span class="comment">// 解引用</span></span><br><span class="line">  <span class="comment">// 4197661 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="不要定义空指针"><a href="#不要定义空指针" class="headerlink" title="不要定义空指针"></a>不要定义空指针</h4><p>如这样<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>* pa;</span><br></pre></td></tr></table></figure></p>
+<p>即使要定义也要<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int *pa = 0;</span><br><span class="line">int *pb = nullptr;</span><br></pre></td></tr></table></figure></p>
+<p>尽量让指针指向某个对象<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *pa = &amp;a;</span><br></pre></td></tr></table></figure></p>
+<h4 id="数组的类型"><a href="#数组的类型" class="headerlink" title="数组的类型"></a>数组的类型</h4><p>数组的类型是数组中元素的类型<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>* iarr[<span class="number">2</span>] = &#123;pa, pb&#125;;        <span class="comment">// 类型为 int*</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="解引用数组"><a href="#解引用数组" class="headerlink" title="解引用数组"></a>解引用数组</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span>* iarr[<span class="number">2</span>] = &#123;pa, pb&#125;;        <span class="comment">// 如果数组这样定义</span></span><br><span class="line">iarr;                           <span class="comment">// iarr是指向数组首个元素的指针</span></span><br><span class="line">*iarr;                          <span class="comment">// 因为pa是指针, 所以解引用数组头指针, 得到pa地址</span></span><br><span class="line">**iarr;                         <span class="comment">// 再次解引用得到pa指向的int</span></span><br></pre></td></tr></table></figure>
+<p>标准输出它们得到<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">iarr = 0x7ffed5caa560</span><br><span class="line">*iarr = 0x7ffed5caa548</span><br><span class="line">**iarr = 1</span><br></pre></td></tr></table></figure></p>
+<h2 id="更多的尝试"><a href="#更多的尝试" class="headerlink" title="更多的尝试"></a><strong>更多的尝试</strong></h2><h3 id="数组中存放对象"><a href="#数组中存放对象" class="headerlink" title="数组中存放对象"></a>数组中存放对象</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Name</span> &#123;</span></span><br><span class="line">  <span class="keyword">char</span>* _c; <span class="keyword">int</span> _length; <span class="keyword">int</span> _capacity;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  Name(<span class="keyword">char</span>* c, <span class="keyword">int</span> length): _c(c), _length(length) &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">char</span>* <span class="title">getName</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">getLength</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">char</span>* Name&lt;T&gt;::getName() <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> _c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Name&lt;T&gt;::getLength() <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> _length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">class_array</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">char</span> c1[] = &#123;<span class="string">'t'</span>, <span class="string">'i'</span>, <span class="string">'m'</span>&#125;;</span><br><span class="line">  <span class="keyword">char</span> c2[] = &#123;<span class="string">'h'</span>, <span class="string">'u'</span>&#125;;</span><br><span class="line">  <span class="keyword">int</span> length1 = <span class="number">3</span>, length2 = <span class="number">2</span>;</span><br><span class="line">  Name&lt;<span class="keyword">int</span>&gt; name1(c1, length1), name2(c2, length2);</span><br><span class="line">  Name&lt;<span class="keyword">int</span>&gt; nArr[] = &#123;name1, name2&#125;;</span><br><span class="line">  <span class="keyword">int</span> size = <span class="number">2</span>;</span><br><span class="line">  print_instance_data_in_array(nArr, size);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">char</span> c[] = &#123;<span class="string">'t'</span>, <span class="string">'i'</span>, <span class="string">'m'</span>&#125;;</span><br><span class="line">  <span class="keyword">int</span> length = <span class="number">3</span>;</span><br><span class="line">  Name&lt;<span class="keyword">int</span>&gt; n(c, length);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_instance_data_in_array</span><span class="params">(Name&lt;<span class="keyword">int</span>&gt;* nArr, <span class="keyword">int</span> size)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Name = "</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; nArr[i].getLength(); j++) &#123;</span><br><span class="line">      <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *((nArr[i].getName())+j);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">Name = tim</span><br><span class="line">Name = hu</span><br></pre></td></tr></table></figure>
+<p>面向对象可以让我从无尽的指针中抽身出来, 关注相互之间的联系。</p>
+<h3 id="数组中存放长度不同的数组"><a href="#数组中存放长度不同的数组" class="headerlink" title="数组中存放长度不同的数组"></a>数组中存放长度不同的数组</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f_array</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">3</span>, b = <span class="number">5</span>, c = <span class="number">7</span>;</span><br><span class="line">  <span class="keyword">int</span>* pa = &amp;a, *pb = &amp;b, *pc = &amp;c;</span><br><span class="line">  <span class="keyword">int</span> _size_pa = <span class="number">1</span>, _size_pb = <span class="number">1</span>, _size_pc = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span>* pArr1[] = &#123;pa&#125;;    <span class="comment">// pArr1数组存放pa, pb指针</span></span><br><span class="line">  <span class="keyword">int</span> _size_pArr1 = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span>* pArr2[] = &#123;pa, pb, pc&#125;;    <span class="comment">// pArr2数组存放pa, pb, pc指针</span></span><br><span class="line">  <span class="keyword">int</span> _size_pArr2 = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">int</span>* pArr3[] = &#123;pa, pc&#125;;</span><br><span class="line">  <span class="keyword">int</span> _size_pArr3 = <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">int</span> size_pArr[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>&#125;;</span><br><span class="line">  <span class="keyword">int</span>** ppArr[] = &#123;pArr1, pArr2, pArr3&#125;;   <span class="comment">// ppArr存放3个指针数组</span></span><br><span class="line">  <span class="keyword">int</span> _size_ppArr = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">int</span> size_ppArr[] = &#123;<span class="number">3</span>&#125;;</span><br><span class="line">  <span class="keyword">int</span>* size_arr[] = &#123;size_ppArr, size_pArr&#125;;</span><br><span class="line">  <span class="comment">// convert_size_structor(size_arr);</span></span><br><span class="line">  print_arr_b(ppArr);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_arr_b</span><span class="params">(<span class="keyword">int</span>*** ppArr)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 解引用并打印ppArr数组中依次数组中的pa, pb, pc</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"a0 = "</span> &lt;&lt; ***ppArr&lt;&lt; <span class="string">" in pArr1[0]"</span> &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">"b0 = "</span> &lt;&lt; **(*(ppArr+<span class="number">1</span>)+<span class="number">1</span>)&lt;&lt; <span class="string">" in pArr2[1]"</span> &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="string">"c0 = "</span> &lt;&lt; **(*(ppArr+<span class="number">2</span>)+<span class="number">1</span>)&lt;&lt; <span class="string">" in pArr3[1]"</span> &lt;&lt; <span class="string">'\n'</span></span><br><span class="line">            &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于简单的数组, 打印储存不同长度数组的数组, 需要更多的数据结构知识, 而且不同的算法还有好坏, 可见数据结构的重要性. 这部分的打印实现, 留作日后我数据结构解引用后的小试牛刀。</p>
+<h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a><strong>感想</strong></h2><p>即使从一个很小很简单的问题入手, 也能对自己有所提高, 计算机科学没有简单, 复杂是由简单构成的, 计算机科学承认复杂, 计算机科学尝试破译复杂。</p>
+<h1 id="常量成员函数"><a href="#常量成员函数" class="headerlink" title="常量成员函数"></a>常量成员函数</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> x = <span class="number">0</span>;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> c = <span class="number">5</span>;</span><br><span class="line">  MyClass(<span class="keyword">int</span> v) :x(v) &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">const</span> <span class="keyword">int</span>&amp; <span class="title">get</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> x;&#125;   <span class="comment">// 常量成员函数在是否为常量上可以重载</span></span><br><span class="line">  <span class="function"><span class="keyword">int</span>&amp; <span class="title">get</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> --x;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="声明时引用符号总最靠近变量名"><a href="#声明时引用符号总最靠近变量名" class="headerlink" title="声明时引用符号总最靠近变量名"></a>声明时引用符号总最靠近变量名</h2><h2 id="为什么可以对a-get-赋值"><a href="#为什么可以对a-get-赋值" class="headerlink" title="为什么可以对a.get()赋值"></a>为什么可以对a.get()赋值</h2><p>get()返回的是引用, 引用可作为左值, 且如果非常量引用的话,  该值可以被修改。</p>
+<h2 id="在是否为成员函数上重载后如何匹配"><a href="#在是否为成员函数上重载后如何匹配" class="headerlink" title="在是否为成员函数上重载后如何匹配?"></a>在是否为成员函数上重载后如何匹配?</h2><p>成员函数在是否为常量函数上可以重载。如果对象实例化成const类型, 则匹配常量成员函数。</p>
+<h2 id="const-int-amp-get-const-return-x-为什么返回类型需要const"><a href="#const-int-amp-get-const-return-x-为什么返回类型需要const" class="headerlink" title="const int&amp; get() const {return x;} 为什么返回类型需要const?"></a>const int&amp; get() const {return x;} 为什么返回类型需要const?</h2><p>常量函数返回数据成员, 编译器会将数据成员声明成const类型;</p>
+<h2 id="什么是数据成员"><a href="#什么是数据成员" class="headerlink" title="什么是数据成员?"></a>什么是数据成员?</h2><p>MyClass类public中定义新成员测试是否为数据成员。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//..</span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">5</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span>&amp; get() <span class="keyword">const</span> &#123;<span class="keyword">return</span> --a;&#125;    <span class="comment">// 错误：改变a的值,</span></span><br></pre></td></tr></table></figure>
+<p>改变a的值无法通过编译, a为数据成员。</p>
+<p>在class中声明的, 无论是私有的还是公有的数据, 都是成员数据。如果在常量函数中返回, 会常量函数会被声明成const类型。</p>
+<h1 id="template基础用法"><a href="#template基础用法" class="headerlink" title="template基础用法"></a>template基础用法</h1><h2 id="typename-T-和-class-T的区别"><a href="#typename-T-和-class-T的区别" class="headerlink" title="typename T 和 class T的区别"></a>typename T 和 class T的区别</h2><p>在模板参数列表中, typename和class没有什么不同。 但每个参数类型前必须加上typename 或者 class</p>
+<p><code>&lt;&lt;C++ Primer 5th&gt;&gt; P580 模板与泛型编程</code></p>
+<h2 id="特殊化模板"><a href="#特殊化模板" class="headerlink" title="特殊化模板"></a>特殊化模板</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mycontainer</span> &#123;</span></span><br><span class="line">  T element;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  mycontainer(<span class="keyword">const</span> T e) : element(e) &#123;&#125;</span><br><span class="line">  <span class="function">T <span class="title">increase</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> ++element;&#125;    <span class="comment">// 递增element</span></span><br><span class="line">  <span class="function">T <span class="title">getElement</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> element;&#125;   <span class="comment">// 返回element数据</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>对char类型, 有特定的方法uppercase()大写化字母<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">mycontainer</span>&lt;char&gt; &#123;</span></span><br><span class="line">  <span class="keyword">char</span> element;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  mycontainer(<span class="keyword">const</span> <span class="keyword">char</span> e): element(e) &#123;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">char</span> <span class="title">increase</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> ++element;&#125;    <span class="comment">// 递增char</span></span><br><span class="line">  <span class="function"><span class="keyword">char</span> <span class="title">getElement</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> element;&#125;   <span class="comment">// 返回element数据</span></span><br><span class="line">  <span class="function"><span class="keyword">char</span> <span class="title">uppercase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (element &lt;= <span class="string">'z'</span> &amp;&amp; element &gt;= <span class="string">'a'</span>) &#123;   <span class="comment">// 是小写字母</span></span><br><span class="line">      element += <span class="string">'A'</span> - <span class="string">'a'</span>; <span class="keyword">return</span> element;</span><br><span class="line">    &#125;  <span class="comment">// 返回元素</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"element "</span> &lt;&lt; element &lt;&lt; <span class="string">"is not lower"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> element;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>格式如下<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">mycontainer</span> &#123;</span>...&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;&gt; <span class="class"><span class="keyword">class</span> <span class="title">mycontainer</span>&lt;char&gt; &#123;</span>...&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/cpp/cpp-notes-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/cpp/cpp-notes-01/" itemprop="url">C++ Zero To One 0.001</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T06:45:50+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>接下来, 准备archive每天实际编程中遇到的C++问题，解决问题的过程， 以及得到的结果。以此来熟悉C++的各种特性。</p>
+<p>这样做或许会造成知识点离散, 因此, 后续有必要有选择的，对某些特性进行深入剖析。先破破的来吧，以致于我不会从一个细节陷阱中出来，又陷入另一个。</p>
+<h2 id="右移，左移"><a href="#右移，左移" class="headerlink" title="右移，左移"></a>右移，左移</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">_capacity &gt;&gt;= 1;     // _capacity *= 0.5;</span><br><span class="line">_capacity &lt;&lt;= 1;     // _capacity *= 2;</span><br></pre></td></tr></table></figure>
+<h2 id="new-delete"><a href="#new-delete" class="headerlink" title="new delete"></a>new delete</h2><p>要先new一个新的, 才能delete旧的<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::shrunk() &#123;</span><br><span class="line">  <span class="keyword">if</span> (_size &gt; (_capacity/<span class="number">2</span>)) <span class="keyword">return</span>;   <span class="comment">// 规模大于1/2不必缩容</span></span><br><span class="line">  _capacity = <span class="built_in">std</span>::max(_capacity, DEAFAULT_CAPACITY);</span><br><span class="line">  <span class="comment">// 储存一份旧元素, 创建新的数据空间</span></span><br><span class="line">  T* old_elem = _elem; _elem = <span class="keyword">new</span> T[_capacity &gt;&gt;= <span class="number">1</span>];</span><br><span class="line">  <span class="keyword">for</span> (Rank r = <span class="number">0</span>; r &lt; _size; r++) &#123;</span><br><span class="line">    _elem[r] = old_elem[r];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 删除旧元素的内存空间</span></span><br><span class="line">  <span class="keyword">delete</span> [] old_elem;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>new分配空间<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">copyFrom</span><span class="params">(T* tarr, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">    _elem = <span class="keyword">new</span> T[_capacity = <span class="number">2</span>*(hi - lo)];</span><br><span class="line">    _size = hi - lo;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*tarr = "</span> &lt;&lt; tarr[<span class="number">1</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*_elem = "</span> &lt;&lt; *_elem &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// for (int i = 0; i &lt; _size; i++) &#123;*(_elem+i) = tarr[i];&#125;</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">copyFrom</span><span class="params">(T* tarr, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    _size = hi - lo;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*tarr = "</span> &lt;&lt; tarr[<span class="number">1</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"*_elem = "</span> &lt;&lt; *_elem &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// for (int i = 0; i &lt; _size; i++) &#123;*(_elem+i) = tarr[i];&#125;</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>为什么一定要为_elem分配空间? 内存回收问题。 在C++ Primer中具体学习</p>
+<h2 id="同一if语句-同一行中的后置递增"><a href="#同一if语句-同一行中的后置递增" class="headerlink" title="同一if语句, 同一行中的后置递增"></a>同一if语句, 同一行中的后置递增</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"---- test in same if statement----"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> arr[] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">  <span class="comment">// 在同if, for, while中, 对某一变量i后置递增, i前后不变</span></span><br><span class="line">  <span class="keyword">if</span> (equal(i++, arr[i])) <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"equal\n"</span></span><br><span class="line">                                    &lt;&lt; <span class="string">"now i = "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同一if, for, while语句中, 后置递增返回当前值<br>同一行, 不同语句, 当然会让值产生变化</p>
+<h2 id="重载后置-操作符号"><a href="#重载后置-操作符号" class="headerlink" title="重载后置++操作符号"></a>重载后置++操作符号</h2><p>前置递增 operator++()<br>后置递增, 以前置递增为基础 operator++(int i)<br>increment_and_decrement_operators.cpp</p>
+<p>递增运算符重载的返回类型:<br><code>为什么返回*_elem 而不是 *this??</code><br>递减运算符重载函数的返回类型是int&amp;<br>*this的类型为Vector<int>, 而*_elem 的类型是int</int></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T&amp; Vector&lt;T&gt;::<span class="keyword">operator</span>--() &#123;          <span class="comment">// 重载前置--操作符</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++)</span><br><span class="line">    _elem[i]--;                    <span class="comment">// 对每个元素-1</span></span><br><span class="line">  <span class="keyword">return</span> *_elem;                    <span class="comment">// 返回当前 *this or *_elem</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T* Vector&lt;T&gt;::<span class="keyword">operator</span>--(<span class="keyword">int</span> i) &#123;          <span class="comment">// 重载后置--操作符</span></span><br><span class="line">  T* e = _elem;</span><br><span class="line">  --*<span class="keyword">this</span>;                         <span class="comment">// 调用前置递减</span></span><br><span class="line">  <span class="keyword">return</span> e;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>&lt;&lt;C++ Primer 5th&gt;&gt; P502, P421</code></p>
+<h2 id="函数指针-和-函数对象"><a href="#函数指针-和-函数对象" class="headerlink" title="函数指针 和 函数对象"></a>函数指针 和 函数对象</h2><p>对无序向量的遍历操作中, 统一对各个元素分别实施visit操作</p>
+<p><strong>函数指针</strong>, 只读或者<span style="color:red"><strong>局部性修改</strong></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(<span class="keyword">void</span> (*visit)(T&amp;))      <span class="comment">// 函数指针</span></span><br><span class="line">  &#123;<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_elem[i]);&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>函数对象</strong>, 可<span style="color:red"><strong>全局性修改</strong></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; &lt;<span class="keyword">template</span> VST&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(VST &amp; visit) &#123;        <span class="comment">// 函数对象</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) visit(_elem[i];)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a><span style="color:red"><strong>函数指针</strong></span></h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getLarger</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; i1, <span class="keyword">const</span> <span class="keyword">int</span>&amp; i2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> i1 &lt; i2 ? i2: i1;            <span class="comment">// 返回两者较大</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="声明定义"><a href="#声明定义" class="headerlink" title="声明定义"></a>声明定义</h4><p>声明和定义分离:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> (*pf1)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;);</span><br><span class="line"></span><br><span class="line">pf1 = getLarget;</span><br><span class="line">pf1 = &amp;getLarget;       <span class="comment">// 等价,</span></span><br></pre></td></tr></table></figure></p>
+<p>个人认为&amp;表达出pf1是个指针的语义明确点。</p>
+<p>声明并定义:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> (*pf1)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;) = &amp;getLarger;</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><p>使用<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i_pf1 = (*pf1)(<span class="number">3</span>, <span class="number">5</span>);</span><br><span class="line"><span class="keyword">int</span> i_pf1_2 = (pf1)(<span class="number">3</span>, <span class="number">5</span>);           <span class="comment">// 等价</span></span><br><span class="line"><span class="keyword">int</span> i_pf1_3 = getLarget(<span class="number">3</span>, <span class="number">5</span>);       <span class="comment">// 等价 调用原函数</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="赋值-指向新的函数"><a href="#赋值-指向新的函数" class="headerlink" title="赋值, 指向新的函数?"></a>赋值, 指向新的函数?</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compareInt</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; i1, <span class="keyword">const</span> <span class="keyword">int</span>&amp; i2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> i1 &lt; i2 ? <span class="literal">true</span> : <span class="literal">false</span>;      <span class="comment">// i1 &lt; i2, 返回true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明并定义</span></span><br><span class="line"><span class="keyword">bool</span> (*pf)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;) = &amp;compareInt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 赋nullptr:指针没有指向任何一个函数</span></span><br><span class="line">pf = <span class="number">0</span>;</span><br><span class="line">pf = getLarger;     <span class="comment">// error: pf已经被声明成bool(*)(const int&amp;, const int&amp;)</span></span><br><span class="line">pf = increment;     <span class="comment">// error: 同上</span></span><br></pre></td></tr></table></figure>
+<p>能重新指向一个nullptr或0, 但是不能指向一个与声明类型不同的新函数地址。</p>
+<p><code>但如果是一个类型相同的函数, 便可以重新指向该函数。</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">otherCompare</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp; i1, <span class="keyword">const</span> <span class="keyword">int</span>&amp;)</span> </span>&#123;<span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br><span class="line"></span><br><span class="line">pf = otherCompare;</span><br></pre></td></tr></table></figure>
+<h4 id="重载函数的指针"><a href="#重载函数的指针" class="headerlink" title="重载函数的指针"></a>重载函数的指针</h4><p>函数指针 指向重载函数, 需要在声明时, 形参列表和返回类型需要完全匹配</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ff</span><span class="params">(<span class="keyword">int</span>*)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ff</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重载</span></span><br><span class="line"><span class="keyword">void</span> (*pff1)(<span class="keyword">int</span> *) = &amp;ff;      <span class="comment">// pff1指向ff的 void (int*)版本</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> (*pff2)(<span class="keyword">int</span>) = &amp;ff;        <span class="comment">// Error</span></span><br><span class="line"><span class="keyword">int</span> (*pff3)(<span class="keyword">unsigned</span>) = &amp;ff;    <span class="comment">// Error</span></span><br></pre></td></tr></table></figure>
+<h4 id="函数指针作为形参-调用函数指针"><a href="#函数指针作为形参-调用函数指针" class="headerlink" title="函数指针作为形参(调用函数指针)"></a>函数指针作为形参(调用函数指针)</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 第三个参数是函数指针类型</span></span><br><span class="line">void useBigger(const int&amp;, const int&amp;, bool (*pf)(const int&amp;, const int&amp;));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用时, 传入指向compareInt的指针</span></span><br><span class="line">useBigger(i1, i2, &amp;compareInt);</span><br></pre></td></tr></table></figure>
+<p>可以用别名的方法简化定义</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">decltype</span><span class="params">(compareInt)</span> *FuncP2</span>;    <span class="comment">// FuncP2是指向函数的指针类型</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">decltype</span><span class="params">(compareInt)</span> Func</span>;       <span class="comment">// decltype()返回函数类型, Func是函数类型</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">useBigger</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;, FuncP2)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">useBigger</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;, Func2)</span></span>;   <span class="comment">// 编译器将Func2函数类型自动转换为了函数的指针类型</span></span><br></pre></td></tr></table></figure>
+<h4 id="返回指向函数的指针"><a href="#返回指向函数的指针" class="headerlink" title="返回指向函数的指针"></a>返回指向函数的指针</h4><p>一般, 别名</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> PF = <span class="keyword">bool</span>(*)(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;);      <span class="comment">// PF是函数的指针类型</span></span><br><span class="line"><span class="keyword">using</span> F = <span class="keyword">bool</span>(<span class="keyword">const</span> <span class="keyword">int</span>&amp;, <span class="keyword">const</span> <span class="keyword">int</span>&amp;);          <span class="comment">// F是指针类型</span></span><br><span class="line"></span><br><span class="line"><span class="function">PF <span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span></span>;          <span class="comment">// 返回函数的指针类型</span></span><br><span class="line"><span class="function">F *<span class="title">f1</span><span class="params">(<span class="keyword">int</span>)</span></span>;          <span class="comment">// 显式f1返回的是一个指针类型</span></span><br><span class="line"><span class="function">F <span class="title">f2</span><span class="params">(<span class="keyword">int</span>)</span></span>;           <span class="comment">// Error:F是函数类型, 无法返回一个函数</span></span><br></pre></td></tr></table></figure>
+<p>尾置<br><figure class="highlight"><table><tr><td class="code"><pre><span class="line">auto f1(int) -&gt; int(*)(int*, int)</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数对象"><a href="#函数对象" class="headerlink" title="函数对象"></a><span style="color:red"><strong>函数对象</strong></span></h3><h4 id="重载"><a href="#重载" class="headerlink" title="重载()"></a>重载()</h4><p>说明这个对象, 他可以当作函数来使用。因此需要重载”()”</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 定义一个函数对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sum</span>&#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">int</span> iarr[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">      sum += iarr[i];</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="使用这个函数对象"><a href="#使用这个函数对象" class="headerlink" title="使用这个函数对象"></a>使用这个函数对象</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">Sum s;</span><br><span class="line"><span class="keyword">int</span> iarr[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> n = <span class="number">6</span>;</span><br><span class="line">s(iarr, n);      <span class="comment">// sum = 21</span></span><br></pre></td></tr></table></figure>
+<h4 id="作为其他函数的参数"><a href="#作为其他函数的参数" class="headerlink" title="作为其他函数的参数"></a>作为其他函数的参数</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 函数对象作为另一个函数的形参</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> CLS&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(CLS &amp; c)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> iarr[] = &#123;<span class="number">3</span>, <span class="number">6</span>, <span class="number">9</span>&#125;;</span><br><span class="line">  <span class="keyword">int</span> n = <span class="number">3</span>;</span><br><span class="line">  c(iarr, n);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用</span></span><br><span class="line">Sum s1;</span><br><span class="line">f(s1);       <span class="comment">// sum = 18</span></span><br></pre></td></tr></table></figure>
+<h4 id="回顾一下数据结构中的用法"><a href="#回顾一下数据结构中的用法" class="headerlink" title="回顾一下数据结构中的用法"></a>回顾一下数据结构中的用法</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">template</span> &lt;<span class="keyword">typename</span> VST&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::traverse(VST visit) &#123;</span><br><span class="line">  <span class="comment">// 对每个元素执行visit操作</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _size; i++) &#123;visit(_elem[i]);&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为什么不能用引用类型?</span></span><br><span class="line"><span class="comment">// no known conversion for argument 1 from ‘Increase&lt;int&gt;’ to ‘Increase&lt;int&gt;&amp;’</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* my error test</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void increase(Vector&lt;T&gt; V) &#123;</span></span><br><span class="line"><span class="comment">  V.traverse(Increase(T&amp; e));</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">increase</span><span class="params">(Vector&lt;T&gt; V)</span> </span>&#123;</span><br><span class="line">  V.traverse(Increase&lt;T&gt;());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为什么不用实例化, 带入参数便可直接调用??</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/02-C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/10/dsacpp/02-C/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-C</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:09:15+08:00">
+                2018-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="无序向量"><a href="#无序向量" class="headerlink" title="无序向量"></a>无序向量</h1><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span> &#123;</span>&#125;;    <span class="comment">// template定义方式</span></span><br></pre></td></tr></table></figure>
+<p>模板和模板, 模板和类之间可以互相组合。意味着数据结构之间也可以互相组合</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Vector</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinTree</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="class"><span class="keyword">class</span> <span class="title">Tree</span> &#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ..</span></span><br><span class="line">  Vector&lt;<span class="keyword">int</span>&gt; myVector;    <span class="comment">// Right</span></span><br><span class="line"></span><br><span class="line">  Vector&lt;<span class="keyword">float</span>&gt; myfVector;</span><br><span class="line"></span><br><span class="line">  Vector&lt;BinTree&gt; binForest;       <span class="comment">// Combine with other class;</span></span><br><span class="line">  Vector&lt;Tree&lt;<span class="keyword">int</span>&gt;&gt; binForest;     <span class="comment">// Combine with template;</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>无序向量: 没有顺序, 甚至不可能排成顺序。</p>
+<h2 id="元素访问-寻秩访问"><a href="#元素访问-寻秩访问" class="headerlink" title="元素访问(寻秩访问)"></a>元素访问(寻秩访问)</h2><p>v.get(r), v.put(e)</p>
+<p>A[r]</p>
+<p>重载下标运算符”[]”<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 寻秩访问</span></span><br><span class="line"><span class="comment">/* // my test</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">T&amp; Vector&lt;T&gt;::operator[](std::size_t n) &#123;    // 这个类 Vector&lt;T&gt;</span></span><br><span class="line"><span class="comment">  assert(n &lt; _size);</span></span><br><span class="line"><span class="comment">  return _elem[n];</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T&amp; Vector&lt;T&gt;::<span class="keyword">operator</span>[](Rank r) <span class="keyword">const</span> &#123;   <span class="comment">// 不改变数据成员, 定义成常量成员函数</span></span><br><span class="line">  <span class="comment">// 在vector内部, 定义了秩的类型, 统一用Rank</span></span><br><span class="line">  assert(r &lt; _size);   <span class="comment">// 对下标秩进行溢出检测</span></span><br><span class="line">  <span class="keyword">return</span> _elem[r];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>左值, 右值, <code>引用??</code><br>引用类型可作为左值。</p>
+<p>寻秩访问</p>
+<p>代码健壮性简化</p>
+<ul>
+<li>assert 断言, <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cassert&gt;</span></span></span><br><span class="line">assert(r &lt; _size);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 插入</span></span><br><span class="line"><span class="comment">/* my test</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::insert(const Rank r, const int value) &#123;</span></span><br><span class="line"><span class="comment">  // 检查移动后是否需要扩容</span></span><br><span class="line"><span class="comment">  if (++_size &gt; _capacity) expand();</span></span><br><span class="line"><span class="comment">  // 将秩为r后的所有元素后移一位</span></span><br><span class="line"><span class="comment">  for (Rank i = _size-2; i &gt;= r; i--) &#123;     // 为了不覆盖数据, 从尾部开始移动</span></span><br><span class="line"><span class="comment">    _elem[i+1] = _elem[i];     // 向后移动一位</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // 在r秩位置上填入要插入的值</span></span><br><span class="line"><span class="comment">  _elem[r] = value;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">void</span> Vector&lt;T&gt;::insert(<span class="keyword">const</span> Rank r, T <span class="keyword">const</span> &amp;e) &#123;</span><br><span class="line">  <span class="comment">// value不应该是某一中特点的类型, 而应该利用template的特性</span></span><br><span class="line">  assert(<span class="number">0</span>&lt;= r &amp;&amp; r &lt; _size);</span><br><span class="line">  expand();  <span class="comment">// 若有必要扩容  结合expand()中, _size &lt; _capacity的定义</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = _size; i &gt; r; i--)  <span class="comment">// 习惯把改变后的值的索引设置成i</span></span><br><span class="line">    _elem[i] = _elem[i<span class="number">-1</span>];     <span class="comment">// 后继元素顺次后移一个单元</span></span><br><span class="line">  _elem[r] = e; _size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Template中泛型T的作用,<br>模板类中函数的互相搭配,<br>插入元素对vector操作的顺序<br>对_capacity和_size的影响。</p>
+<h2 id="删除算法"><a href="#删除算法" class="headerlink" title="删除算法"></a>删除算法</h2><p>自前向后的迁移操作<br>缩容</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 删除操作</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::del(const Rank lo, const Rank hi) &#123;</span></span><br><span class="line"><span class="comment">  for (Rank i = lo; i &lt; _size; i++) &#123;</span></span><br><span class="line"><span class="comment">    // 清空区间元素</span></span><br><span class="line"><span class="comment">    if (i &lt; hi) &#123; _elem[i] = 0;</span></span><br><span class="line"><span class="comment">    &#125; else &#123;</span></span><br><span class="line"><span class="comment">      // 将元素整体前移</span></span><br><span class="line"><span class="comment">      _elem[i - (hi-lo)] = _elem[i];</span></span><br><span class="line"><span class="comment">      // 前移后元素清空</span></span><br><span class="line"><span class="comment">       _elem[i] = 0;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // 缩短规模和空间容量</span></span><br><span class="line"><span class="comment">  _size -= hi-lo; _capacity -= hi-lo;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::del(Rank lo, Rank hi) &#123;</span><br><span class="line">  <span class="comment">// 处理退化情况</span></span><br><span class="line">  <span class="keyword">if</span> (lo == hi) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span> length = hi - lo;</span><br><span class="line">  <span class="comment">// 自前向后的迁移操作</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; _size) &#123;</span><br><span class="line">    <span class="keyword">if</span> (hi &lt; _capacity) &#123;_elem[lo++] = _elem[hi++];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;_elem[lo++] = <span class="number">0</span>;&#125;   <span class="comment">// 处理hi++超出_capacityg容量的情况</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 更新规模或者缩容</span></span><br><span class="line">  _size -= length;</span><br><span class="line">  shrunk();</span><br><span class="line">  <span class="comment">// 返回被删除元素的数目</span></span><br><span class="line">  <span class="keyword">return</span> hi-lo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>1, 规模仍旧不变? 删除一段区间, 这里可以不改变规模, 相当于后面留空?</code> 改进成改变size的版本用于shrunk<br><code>2 , _elem[hi++]能够被一直索引到?</code> 超过_capacity时, 返回未定义的值<br><code>3, _elem[hi++]为什么不清空?</code>把_capacity的剩余空间对应元素赋值给它的方法清空<br><code>4, 看出移动操作过程中, 变量的同步性</code><br><code>5, 缩容不光光是改变_capacity的值, 仍旧要释放空间</code></p>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><p>无序向量： T为可判等, 重载 “==”或者”!=”<br>有序向量： T为可比较，重载 “&lt;” 或  “&gt;”</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 查找</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">int Vector&lt;T&gt;::find(Rank lo, Rank hi, T const &amp;e) const &#123;</span></span><br><span class="line"><span class="comment">  // 查找e在区间[lo,hi)内</span></span><br><span class="line"><span class="comment">  // 从右往左查找</span></span><br><span class="line"><span class="comment">  while (hi &gt;= lo) &#123;</span></span><br><span class="line"><span class="comment">    if (_elem[hi] == e) &#123;return hi;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    hi--;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">  // 没有在while循环中返回, 不存在匹配元素</span></span><br><span class="line"><span class="comment">  return -1;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Rank Vector&lt;T&gt;::find(Rank lo, Rank hi, T <span class="keyword">const</span> &amp;e) <span class="keyword">const</span> &#123;</span><br><span class="line">  <span class="comment">// O(hi - lo) = O(n), 在命中多个元素时可返回秩最大者</span></span><br><span class="line">  <span class="keyword">while</span> (lo &lt; hi-- &amp;&amp; e != _elem[hi]) &#123;&#125;   <span class="comment">// 逆向查找</span></span><br><span class="line">  <span class="keyword">return</span> hi;   <span class="comment">// hi &lt; lo失败; 否则hi即命中元素的秩</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>利用while本身的条件语句；后置递增的特性</code><br><code>返回hi?</code> 将判断是否成功, 交给<code>上层的调用者</code>;以及成功后被<code>上层算法</code>进一步利用</p>
+<p>最好情况 O(1), 最坏情况O(n)<br>输入敏感(input-sensitive): 最好情况和最坏情况相差悬殊的算法。</p>
+<h2 id="删除单元素"><a href="#删除单元素" class="headerlink" title="删除单元素"></a>删除单元素</h2><p><code>视为区间操作的特例</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 删除单个元素</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::remove(Rank r) &#123;</span></span><br><span class="line"><span class="comment">  // 单元素的删除操作, 视为区间操作的特例 [r, r+1)</span></span><br><span class="line"><span class="comment">  remove(r, r+1);</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;     <span class="comment">// 删除向量中秩为r的元素, 0 &lt;= r &lt; size</span></span><br><span class="line">T&amp; Vector&lt;T&gt;::remove(Rank r) &#123;  <span class="comment">// O(n-r)</span></span><br><span class="line">  T&amp; <span class="keyword">old_t</span> = _elem[r];    <span class="comment">// 备份被删除的元素</span></span><br><span class="line">  remove(r, r+<span class="number">1</span>);         <span class="comment">// 调用区间删除算法</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">old_t</span>;           <span class="comment">// 返回被删除元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>颠倒考虑</code></p>
+<p>复杂度分析:<br>每次循环的耗时正比于删除区间的后缀长度 O(n-hi)<br>循环的次数等于区间宽度 O(hi-lo)<br>总体 O(n^2) 复杂度</p>
+<p>right, but not fast!!</p>
+<h2 id="唯一化"><a href="#唯一化" class="headerlink" title="唯一化"></a>唯一化</h2><p><code>实现</code></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 唯一化</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void Vector&lt;T&gt;::deduplicate(Rank lo, Rank hi) &#123;</span></span><br><span class="line"><span class="comment">  // 对向量中的元素遍历,</span></span><br><span class="line"><span class="comment">  for (Rank i = lo; i &lt; hi; i++) &#123;</span></span><br><span class="line"><span class="comment">    // find右往左查, 返回lo-1代表失败</span></span><br><span class="line"><span class="comment">    // 删除当前元素, 不再对后续元素查找</span></span><br><span class="line"><span class="comment">    if (find(lo, i, _elem[i]) != lo-1) &#123;remove(i); break;&#125;</span></span><br><span class="line"><span class="comment">    if (find(i+1, hi, _elem[i]) != i) &#123; remove(i);&#125;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">int</span> Vector&lt;T&gt;::deduplicate() &#123;</span><br><span class="line">  <span class="keyword">int</span> old_size = _size;</span><br><span class="line">  Rank i = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; _size) &#123;</span><br><span class="line">    find(<span class="number">0</span>, i, _elem[i]) &lt; <span class="number">0</span> ?</span><br><span class="line">                             i++  <span class="comment">// 小于0说明无雷同, 继续查找</span></span><br><span class="line">                             : remove(i);    <span class="comment">// 删除雷同者(至多一个?!)</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span>  old_size - _size;      <span class="comment">// 返回规模的变化量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>记录规模?</code> 考虑返回值怎么设计，这里我估计会在更高级的接口中用到<br><code>从1开始?</code> 因为要在当前i的前缀中查找<br><code>至多一个?</code> 删除至多一个, 实际不一定至多一个<br><code>为什么不需要改变_size和_capacity大小?</code> 说明remove为更底层的操作, 在底层操作中, 定义底层的数据成员的修改, 这样做的话, 在更高级的操作中, 可以不去管这些细节。也是封装调用的好处。</p>
+<p><code>**正确性证明**</code>：<br><strong>不变性</strong>: 对于当前元素V[i]的前缀V[0, i)中, 各元素彼此互异<br>初始时, i = 1, 两个元素成立,…</p>
+<p><strong>单调性</strong>:<br>1)前缀单调非降, 后缀减少, 且前缀迟早增至_size;   // 与1)结合<br>2)后缀单调下降, _size迟早减至0;     // 2)更容易把握</p>
+<p>故算法必然终止, 至多迭代O(n)轮</p>
+<p><code>复杂度</code></p>
+<p>主要来自find() 和 remove();<br>find()从右向左针对前缀, remove()从左向右针对后缀, 因此每次while循环不超过O(n);<br>while循环会进行n次,<br>总体复杂度为 O(n^2)</p>
+<p><code>练习三种优化方案（未完成）</code></p>
+<p>1, 仿照uniquify()高效版本的思路.<br>元素移动的次数可以降至O(n), 但比较次数依然是O(n^2); 而且破坏稳定性<br>2, 先对需要删除的重复元素标记, 然后统一删除.<br>稳定性保持, 但因查找长度更长, 从而导致更多的对比操作<br>3, V.sort().uniquify(): 简明实现最优的O(nlogn)</p>
+<h2 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h2><p>visit</p>
+<p><a href="https://timtingwei.github.io/2018/01/10/cpp/cpp-notes-01/">关于函数指针和函数对象的笔记</a><br>函数指针机制 ?? </p>
+<p>函数对象机制 ??</p>
+<p>两种方法优劣</p>
+<p>实例: 将向量中所有的元素统一加一<br>重载操作符 “++”<br>重载操作符 “()”</p>
+<p>练习更为复杂的遍历</p>
+<h3 id="减1"><a href="#减1" class="headerlink" title="减1"></a>减1</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 遍历运用函数对象机制，对各个元素减1</span></span><br><span class="line"><span class="comment">/* my test code</span></span><br><span class="line"><span class="comment">// 单个T类型元素减1的类</span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">Vector&lt;T&gt;::struct Decrease &#123;</span></span><br><span class="line"><span class="comment">  virtual void operator() &#123;T &amp;e--;&#125;     // 重载()操作, 类对象当作函数来用</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">template &lt;typename T&gt;</span></span><br><span class="line"><span class="comment">void decrease(Vector&lt;T&gt;&amp; V) &#123;</span></span><br><span class="line"><span class="comment">  V.traverse(Decrease&lt;T&gt;());</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">// 泛型模板在调用的时候都要带&lt;type&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decrease</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T &amp;e)</span> </span>&#123;e--;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrease</span><span class="params">(Vector&lt;T&gt; &amp; V)</span> </span>&#123;</span><br><span class="line">  V.traverse(Decrease&lt;T&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="为什么不是Vector-struct-Decrease"><a href="#为什么不是Vector-struct-Decrease" class="headerlink" title="为什么不是Vector::struct Decrease?"></a>为什么不是Vector<t>::struct Decrease?</t></h4><p>// Decrease对象, 不需要声明在vector类内, 这是借用函数对象作为traverse的参数, traverse声明在类内, 这个参数的类型是VST, 即函数对象。</p>
+<h4 id="为什么需要virtual"><a href="#为什么需要virtual" class="headerlink" title="为什么需要virtual"></a>为什么需要virtual</h4><h4 id="void-operator-T-amp-e"><a href="#void-operator-T-amp-e" class="headerlink" title="void operator()(T &amp;e)?"></a>void operator()(T &amp;e)?</h4><p>// 第一个括号是代表重载运算符是(), 第二个是该重载函数的参数列表</p>
+<h4 id="三个函数之间的关系"><a href="#三个函数之间的关系" class="headerlink" title="三个函数之间的关系?"></a>三个函数之间的关系?</h4><p>Decrease<t>(T&amp;)函数对象, Vector<t>::traverse(VST&amp;)遍历函数, decrease(Vector<t>)</t></t></t></p>
+<p>// 在类的外部定义decrease函数, 它具有泛型T, 参数为Vector<t>&amp; 类型<br>// decrease()函数内部, 实例V调用traverse方法, 通过多次调用这个函数对象去遍历所有元素</t></p>
+<h4 id="为什么需要函数对象"><a href="#为什么需要函数对象" class="headerlink" title="为什么需要函数对象?"></a>为什么需要函数对象?</h4><h4 id="本质问题-为什么需要函数对象or-函数指针-为什么不直接调用函数呢"><a href="#本质问题-为什么需要函数对象or-函数指针-为什么不直接调用函数呢" class="headerlink" title="本质问题: 为什么需要函数对象or 函数指针,  为什么不直接调用函数呢?"></a>本质问题: 为什么需要函数对象or 函数指针,  为什么不直接调用函数呢?</h4><p>将遍历traverse作为一种统一的接口, 具体的操作让其他的函数对象来完成, 这样子的接口相对清晰。</p>
+<h3 id="加倍"><a href="#加倍" class="headerlink" title="加倍"></a>加倍</h3><p>Double(T &amp;e)</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Double_value</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T&amp; e)</span> </span>&#123;e *= <span class="number">2</span>;&#125;   <span class="comment">// 函数对象对元素翻倍</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">double_value</span><span class="params">(Vector&lt;T&gt;&amp; V)</span> </span>&#123;</span><br><span class="line">  V.traverse(Double_value&lt;T&gt;());      <span class="comment">// 函数对象作为遍历函数的参数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="求和"><a href="#求和" class="headerlink" title="求和"></a>求和</h3><h4 id="函数中传入指针"><a href="#函数中传入指针" class="headerlink" title="函数中传入指针"></a>函数中传入指针</h4><p>Sum(T&amp; e, T* sumPtr)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// 用于traverse的求和函数对象</span><br><span class="line">template &lt;typename T&gt;</span><br><span class="line">struct Sum &#123;</span><br><span class="line">  virtual void operator()(const T&amp; e, T* sumPtr) &#123;(*sumPtr) += e;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">template &lt;typename T&gt; template &lt;typename VST&gt;</span><br><span class="line">T&amp; Vector&lt;T&gt;::traverse(VST visit, T* e) &#123;</span><br><span class="line">  // 重载traverse(), 对Sum对象函数传入保存求和结果的指针</span><br><span class="line">  for (int i = 1; i &lt; _size; i++) visit(_elem[i], e);   // 从第二个值开始累加</span><br><span class="line">  return *e;       // 返回求和结果</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Sum()函数对象中传入的参数, 在traverse的visit中定义好的, 因此需要重载traverse函数, 让它传入一个保存求和结果的指针。</strong></p>
+<p>前面都没什么问题,<br>实际调用的函数, 第一次我是这样写的, 返回的结果正确无误。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sum_ptr</span><span class="params">(Vector&lt;T&gt;&amp; V)</span> </span>&#123;</span><br><span class="line">  T* sumPtr = &amp;(V[<span class="number">0</span>]);        <span class="comment">// 别定义空指针, 该指针指向向量首位</span></span><br><span class="line">  T sum = V.traverse(Sum&lt;T&gt;(), sumPtr);     <span class="comment">// 调用并赋值</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但print_vector()之后<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">-- --------print_vector--------- --</span><br><span class="line">_size = 3</span><br><span class="line">_capacity = 10</span><br><span class="line">0:52                 ==&gt; _elem的首位被修改, 原本应该是10</span><br><span class="line">1:24</span><br><span class="line">2:18</span><br><span class="line">3:0</span><br><span class="line">4:0</span><br><span class="line">5:0</span><br><span class="line">6:0</span><br><span class="line">7:0</span><br><span class="line">8:0</span><br><span class="line">9:0</span><br></pre></td></tr></table></figure></p>
+<p>因为Sum函数对象中, 会通过解引用指针, 不小心修改了V[0]的值!!!</p>
+<p>于是我便做了如下修改:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sum_ptr</span><span class="params">(Vector&lt;T&gt;&amp; V)</span> </span>&#123;</span><br><span class="line">  T sum_init = V[<span class="number">0</span>];              <span class="comment">// 创建一个副本, 避免通过指针修改V[0]</span></span><br><span class="line">  T* sumPtr = &amp;(sum_init);        <span class="comment">// 别定义空指针, 该指针指向副本</span></span><br><span class="line">  T sum = V.traverse(Sum&lt;T&gt;(), sumPtr);     <span class="comment">// 调用并赋值</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">-- --------print_vector--------- --</span><br><span class="line">_size = 3</span><br><span class="line">_capacity = 10</span><br><span class="line">0:10</span><br><span class="line">1:24</span><br><span class="line">2:18</span><br><span class="line">3:0</span><br><span class="line">4:0</span><br><span class="line">5:0</span><br><span class="line">6:0</span><br><span class="line">7:0</span><br><span class="line">8:0</span><br><span class="line">9:0</span><br></pre></td></tr></table></figure>
+<h5 id="重载函数什么时候用virtual"><a href="#重载函数什么时候用virtual" class="headerlink" title="重载函数什么时候用virtual?"></a>重载函数什么时候用virtual?</h5><h4 id="类内static存放"><a href="#类内static存放" class="headerlink" title="类内static存放"></a>类内static存放</h4><p>static sumStc<br>静态数据成员在类内部声明, 外部定义, 作用相当于全局变量。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 通过类内static求和的函数对象</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Sum_static</span> &#123;</span></span><br><span class="line">  <span class="keyword">static</span> T <span class="keyword">sum_t</span>;     <span class="comment">// 内部声明存放求和结果的static变量</span></span><br><span class="line">  <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span><span class="params">(T&amp; e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">sum_t</span> += e; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"revise static sum_t, sum_t = "</span></span><br><span class="line">                          &lt;&lt; <span class="keyword">sum_t</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;    <span class="comment">// 当心全局变量出错</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">T Sum_static&lt;T&gt;::<span class="keyword">sum_t</span> = <span class="number">0</span>;   <span class="comment">// 外部定义静态数据成员</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sum_static</span><span class="params">(Vector&lt;T&gt; V)</span> </span>&#123;</span><br><span class="line">  Sum_static&lt;T&gt; sumstc;           <span class="comment">// 实例化模板别忘记&lt;type&gt;</span></span><br><span class="line">  V.traverse(Sum_static&lt;T&gt;());</span><br><span class="line">  T sum = sumstc.<span class="keyword">sum_t</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"in sum_static, sum = "</span> &lt;&lt; sum &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于static, 我的相关练习<a href="https://github.com/timtingwei/cppd/blob/master/tmp/static.cpp" target="_blank" rel="noopener">source code</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/02-B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1574,451 +2090,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/28/doc-computer-graphic-learn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/doc-computer-graphic-learn/" itemprop="url">关于文档学习方法和图形学学习的随想</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T20:59:50+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上篇笔记<a href="http://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/">OpenGL绘制三角形附练习</a>来来回回写了三天，当然，除了学习外，我还去练习了网球，还去参加了一次grasshopper草猛歌会；学习openGL之外，我同时在学习dsa, 看了云风的<code>&lt;&lt;游戏之旅&gt;&gt;</code>， 查阅了OpenGL与图形引擎的相关资料, </p>
-<h2 id="BLOG整理文档学习方法"><a href="#BLOG整理文档学习方法" class="headerlink" title="BLOG整理文档学习方法"></a>BLOG整理文档学习方法</h2><p>从云风的书中偶得一段话，</p>
-<p><code>学习新的技术，翻译一本相关的英语著作可以算是捷径。</code></p>
-<blockquote>
-<ul>
-<li>比囫囵吞枣的读一遍英文原文要有效的多。</li>
-<li>因为有责任感，必须用心搞清楚每一个句子的意思，以免错误而误导阅读你的译作的人们。</li>
-<li>即使对此有所了解，翻译后也能更上一层楼。</li>
-<li>英语水平也会提高。</li>
-</ul>
-</blockquote>
-<p><code>发现产生了一些共鸣。</code><br>其中之一，是之前学习Grasshooper的一段经历，我学grasshopper已经是0.76版本了, NCF那一批人开始学习也是10左右的事情了，那个时候他们组织学运算器的方式也跟这个很相似，就是翻译Help, 所以有了<code>&lt;&lt;grasshopper运算器手册&gt;&gt;</code>一书。不知道是否这种是共通的？还是因为他们中也有程序员，亦或者是因为grasshopper变成了程序爱好者，理解了这种方式？</p>
-<p>之二是石老师推荐学生翻译<code>&lt;&lt;Form Space &amp; Order&gt;&gt;, &lt;&lt;Parten Language&gt;&gt;, &lt;&lt;A New Kind of Science&gt;&gt;</code>等书来学习数字化技术。</p>
-<p>我自己也享受到了这些方法的好处，现在又被云风清晰说出了那种模糊的感觉。便开始尝试在写笔记的时候，结合着文档理解下函数原理，并把它们用心整理好。这也是最近开始写博客来的好处，虽然之前一直用evernote记笔记写日记，但是用一种这是要整理给别人看的心态去做一件事情，效果便也很不同，总之这对于技术学习来说是很好的。</p>
-<h2 id="图形学学习"><a href="#图形学学习" class="headerlink" title="图形学学习"></a>图形学学习</h2><p>另外，这几天在跟着OpenGL的教程学习，开始对OpenGL和图形学有了模糊的认识：</p>
-<blockquote>
-<ul>
-<li>图形学是研究用计算机如果画出一个图像的学科。</li>
-<li>OpenGL教程会教我如何去用封装代码去渲染一个场景，以及背后没展开的图形学原理。</li>
-<li>他的封装性，与我原来想象的能够研究一些与计算几何相关的图形问题算法有较大出入。</li>
-<li>但是学习封装性能够让我先去了解一个大概，以及算法的具体应用性，等到发现其中核心算法的学习路径，开始学习也为时不晚，一是对图形学有了些理解，二是明白各自使用方向，三是dsa的课程也是那些算法实现的前提，四是每天都能够编写C++找到乐趣和问题。</li>
-</ul>
-</blockquote>
-<p>下面是摘自 <span style="color:red"><strong>Milo Yip</strong></span> 叶神在<a href="https://www.zhihu.com/question/24786878" target="_blank" rel="noopener">知乎</a>上的回答，要借鉴这个学习轨迹, 并以此勉励自己：</p>
-<p><code>如何开始用 C++ 写一个光栅化渲染器？</code></p>
-<p><strong>Milo Yip</strong><br>计算机图形学、编程、C++ 等 7 个话题的优秀回答者<br>228 人赞同了该回答<br>@空明流转 开发过高大上的SALVIA， @Yong He 则提到了Larrabee。我来提供另一些观点。</p>
-<p>首先，如果从学习角度出发，不必一开始完全根据现时GPU的架构及概念，来用软件复制一遍。现时的GPU主要是基于三角形光栅化及z-buffer。</p>
-<p>如果我们从图形学的历史进程来学习，可以这样做练习：</p>
-<p>2D部分：</p>
-<blockquote>
-<p>1, 光栅化2D点（就是在二维数组上画点，了解色彩基本原理，并解决影像输出问题）<br>2, 光栅化2D直线（布雷森漢姆直線演算法、吴小林直线算法等）<br>3, 2D直线的剪切算法（见Line clipping）<br>4, 光栅化2D三角形（scan conversion）。避免重复光栅化相邻三角形边界的像素（edge equation）。<br>5, 光栅化简单／复杂多边形<br>3D部分：<br>1, 把顶点从三维世界空间变换至二维屏幕空间，绘画顶点（如银河星系数据），操控摄像机旋转模型。<br>2, 在剪切空间进行3D直线的剪切算法，把顶点连线（如各种三维正多面体）光栅化成wire frame模型<br>3, 以多边形来定义三维模型。使用画家算法来光栅化那些多边形。<br>改为使用深度缓冲。<br>4, 实现简单的纹理映射，先做屏幕空间的插值，然后实现简单的perspective-correct texture mapping。<br>5, 实现简单的顶点光照，使用顶点颜色插值实现Gouraud shading。<br>6, 通过顶点法线插值，实现Phong shading。<br>7, 实现其他贴图技术，如mipmapping（也可试Summed area table）、bilinear/trilinear filtering、bump mapping、normal mapping、environment mapping等。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/28/dsacpp/01-D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/dsacpp/01-D/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-D</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T11:14:53+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><span style="color:blue"><em>我把邓老师课上对自己有需要的笔记写下来，并在看完视频后补充教材和课后习题的内容.</em></span></p>
-<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><p>运用DSA</p>
-<p>算法分析的两个任务</p>
-<blockquote>
-<ul>
-<li>正确性(不变性 * 单调性)</li>
-<li>复杂度增长速度表格</li>
-</ul>
-</blockquote>
-<p>C++等高级语言的基本指令，等效于常数条RAM的基本指令；渐进意义下，相当<br>  分支转向：goto   // 算法灵魂；出于结构考虑，被隐藏<br>  迭代循环:for(), while()..   // 本质上 “if+goto”<br>  调用+递归                   // 本质上也是 “goto”</p>
-<p>复杂度分析方法:</p>
-<blockquote>
-<ol>
-<li>迭代: 级数求和</li>
-<li>递归: 递归跟踪 + 递推方程<br>猜测 + 验证</li>
-</ol>
-</blockquote>
-<h1 id="级数"><a href="#级数" class="headerlink" title="级数"></a>级数</h1><h2 id="算术级数：与末项平方同阶"><a href="#算术级数：与末项平方同阶" class="headerlink" title="算术级数：与末项平方同阶"></a>算术级数：与<strong>末项平方</strong>同阶</h2><h2 id="幂方级数：比幂次高出一阶"><a href="#幂方级数：比幂次高出一阶" class="headerlink" title="幂方级数：比幂次高出一阶"></a>幂方级数：比幂次高出一阶</h2><h2 id="几何级数（a-gt-1）-与末项同阶"><a href="#几何级数（a-gt-1）-与末项同阶" class="headerlink" title="几何级数（a &gt; 1）:与末项同阶"></a>几何级数（a &gt; 1）:与末项同阶</h2><h2 id="收敛级数-O-1"><a href="#收敛级数-O-1" class="headerlink" title="收敛级数:O(1)"></a>收敛级数:O(1)</h2><h2 id="未必收敛，但长度有限"><a href="#未必收敛，但长度有限" class="headerlink" title="未必收敛，但长度有限"></a>未必收敛，但长度有限</h2><p>h(n) = 1 + 1/2 + 1/3 + … + 1/n = O(logn)            // 调和级数<br>log1 + log2 + log3 + … + logn = log(n!) = O(nlogn)  // 对数级数</p>
-<h2 id="推荐书籍"><a href="#推荐书籍" class="headerlink" title="推荐书籍"></a>推荐书籍</h2><p><code>&lt;&lt;Concrete Math&gt;&gt;</code> 具体数学</p>
-<h1 id="循环-vs-级数"><a href="#循环-vs-级数" class="headerlink" title="循环 vs 级数"></a>循环 vs 级数</h1><h2 id="没有耦合的二层循环"><a href="#没有耦合的二层循环" class="headerlink" title="没有耦合的二层循环"></a>没有耦合的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
-<p>算术级数:  n * n = O(n^2)<br>等效：矩形被填充的过程，时间复杂度等于矩形面积。</p>
-<h2 id="耦合的二层循环"><a href="#耦合的二层循环" class="headerlink" title="耦合的二层循环"></a>耦合的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
-<p>算术级数: n(n-1) / 2 = O(n^2)<br>等效：三角形被填充，复杂度等于矩形面积。</p>
-<h2 id="递增不为1的二层循环"><a href="#递增不为1的二层循环" class="headerlink" title="递增不为1的二层循环"></a>递增不为1的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j += <span class="number">2013</span>)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
-<p>算术级数：O(n^2)</p>
-<h2 id="外循环左移一位-加倍"><a href="#外循环左移一位-加倍" class="headerlink" title="外循环左移一位(加倍)"></a>外循环左移一位(加倍)</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i &lt;&lt;= <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">    O1peration(i, j);</span><br></pre></td></tr></table></figure>
-<p>几何级数：O(n)     // ??</p>
-<h2 id="更复杂的实例"><a href="#更复杂的实例" class="headerlink" title="更复杂的实例"></a>更复杂的实例</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;  i; j += j)</span><br><span class="line">    O1peration(i, j);</span><br></pre></td></tr></table></figure>
-<h2 id="习题解析"><a href="#习题解析" class="headerlink" title="习题解析"></a>习题解析</h2><h1 id="取非极端元素、冒泡排序"><a href="#取非极端元素、冒泡排序" class="headerlink" title="取非极端元素、冒泡排序"></a>取非极端元素、冒泡排序</h1><h2 id="取非极端元素"><a href="#取非极端元素" class="headerlink" title="取非极端元素"></a>取非极端元素</h2><p>算法： </p>
-<blockquote>
-<p>1, 从S中取出三个元素{x, y, z}<br>2, 确定并排除其中的最小值和最大值<br>3, 输出剩下的元素z</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ordinaryElements</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 从n &gt;= 3个互异整数中,除最大、最小者以外,任取一个“常规元素”</span></span><br><span class="line">  <span class="comment">// 先比较a,b;再确定c对于(a,b)区间的关系</span></span><br><span class="line">  <span class="keyword">int</span> a = A[<span class="number">0</span>], b = A[<span class="number">1</span>], c = A[<span class="number">2</span>];    <span class="comment">// 从特定单元读取元素O(3)</span></span><br><span class="line">  <span class="comment">// 统一成区间(a, b), 用于c对其判断</span></span><br><span class="line">  <span class="keyword">if</span> (a &lt; b) &#123; &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    swap(&amp;a, &amp;b);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (c &lt; a) <span class="keyword">return</span> a;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (c &gt; b) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">  <span class="comment">// return 输出非极端数O(1)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// =======================================</span></span><br><span class="line">  <span class="comment">// T(n) = O(3) + O(3) + O(1) = O(7) = O(1)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结论:无论输入规模有多大，所需执行该算法的执行时间都不变。</p>
-<h2 id="起泡排序问题"><a href="#起泡排序问题" class="headerlink" title="起泡排序问题"></a>起泡排序问题</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubblesort</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">bool</span> sorted = <span class="literal">false</span>; sorted = !sorted; n--)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n+<span class="number">1</span>; i++) &#123;  <span class="comment">// 自左向右逐对检查[0,n)各相邻元素</span></span><br><span class="line">      <span class="keyword">if</span> (A[i<span class="number">-1</span>] &gt; A[i]) &#123;         <span class="comment">// 若逆序,则</span></span><br><span class="line">        swap(&amp;A[i<span class="number">-1</span>], &amp;A[i]);      <span class="comment">// 令其交换位置</span></span><br><span class="line">        sorted = <span class="literal">false</span>;            <span class="comment">// 消除全局有序标记</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="算法分析-1"><a href="#算法分析-1" class="headerlink" title="算法分析"></a>算法分析</h1><p>不变性：经k轮扫描交换后，最大的k个元素必然就位<br>单调性：经k轮扫描交换后，问题的规模缩减至n-k<br>正确性：经至多k轮扫描后，算法必然终止，且能给出正确答案</p>
-<p>基本且重要的技巧：通过挖掘不变性和单调性，证明算法的正确性</p>
-<h1 id="封底估计-Back-Of-The-Envelope-Calculation"><a href="#封底估计-Back-Of-The-Envelope-Calculation" class="headerlink" title="封底估计 Back-Of-The-Envelope Calculation"></a>封底估计 Back-Of-The-Envelope Calculation</h1><p>不需要工具</p>
-<p>787km 占据整个周长的1/50 =&gt; 整个周长4wkm</p>
-<p>抓住问题的主要方面，简洁得出总体规律</p>
-<p>在复杂度分析中，对象是时间。</p>
-<h1 id="封底估计实例"><a href="#封底估计实例" class="headerlink" title="封底估计实例"></a>封底估计实例</h1><blockquote>
-<ul>
-<li>一天: = 24hr <em> 60min </em> 60sec = 25 * 4000 = 10^5 sec</li>
-<li>一生: = 1世纪 = 100yr <em> 365 = 3 </em> 10^4 = 3 * 10^9 sec</li>
-<li>“50年” = 1.6 * 10^9 sec</li>
-<li>三生三世: 300yr = 10^10 = (1 googel)^(1/10) sec</li>
-<li>宇宙大爆炸至今: 10^21 = 10^(10^10)^2 sec<br>三生三世是10^10s<br>三生三世中的一天，相当于在一天中的1s<br>整个宇宙中的三生三世，就是在三生三世中的0.1s</li>
-</ul>
-</blockquote>
-<p>1亿 = 10^9</p>
-<p>复杂度和浮点运算能力flops相除，能得到某算法的时间。</p>
-<p>人口普查 n = 10^9<br>\=====================<br>普通PC 1Ghz 10^9 flops<br>Bullesort: O(n^2) ==&gt; (10^9)^2 = 10^18 </p>
-<p>时间: 10^18 / 10^9  = 10^9<br>3<em>10^9 = 100yr, 10^9 = 30年<br>\=====================<br>普通PC  10^9 flops<br>Mergesort: O(n\</em>logn) =&gt; (10^9)*log(10^9) = 30 * 10^9</p>
-<p>时间; 30 * 10^9 / 10^9 = 30s<br>\=====================<br>天河1A 10^15 flops<br>Bullesort:</p>
-<p>时间:20min: 10^3s<br>\=====================</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/27/gitignore-invalid/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/27/gitignore-invalid/" itemprop="url">gitignore-invalid</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T08:55:27+08:00">
-                2017-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2069,7 +2140,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">131</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2082,7 +2153,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
