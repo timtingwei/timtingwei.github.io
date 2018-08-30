@@ -229,6 +229,451 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/28/doc-computer-graphic-learn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/doc-computer-graphic-learn/" itemprop="url">关于文档学习方法和图形学学习的随想</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T20:59:50+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上篇笔记<a href="http://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/">OpenGL绘制三角形附练习</a>来来回回写了三天，当然，除了学习外，我还去练习了网球，还去参加了一次grasshopper草猛歌会；学习openGL之外，我同时在学习dsa, 看了云风的<code>&lt;&lt;游戏之旅&gt;&gt;</code>， 查阅了OpenGL与图形引擎的相关资料, </p>
+<h2 id="BLOG整理文档学习方法"><a href="#BLOG整理文档学习方法" class="headerlink" title="BLOG整理文档学习方法"></a>BLOG整理文档学习方法</h2><p>从云风的书中偶得一段话，</p>
+<p><code>学习新的技术，翻译一本相关的英语著作可以算是捷径。</code></p>
+<blockquote>
+<ul>
+<li>比囫囵吞枣的读一遍英文原文要有效的多。</li>
+<li>因为有责任感，必须用心搞清楚每一个句子的意思，以免错误而误导阅读你的译作的人们。</li>
+<li>即使对此有所了解，翻译后也能更上一层楼。</li>
+<li>英语水平也会提高。</li>
+</ul>
+</blockquote>
+<p><code>发现产生了一些共鸣。</code><br>其中之一，是之前学习Grasshooper的一段经历，我学grasshopper已经是0.76版本了, NCF那一批人开始学习也是10左右的事情了，那个时候他们组织学运算器的方式也跟这个很相似，就是翻译Help, 所以有了<code>&lt;&lt;grasshopper运算器手册&gt;&gt;</code>一书。不知道是否这种是共通的？还是因为他们中也有程序员，亦或者是因为grasshopper变成了程序爱好者，理解了这种方式？</p>
+<p>之二是石老师推荐学生翻译<code>&lt;&lt;Form Space &amp; Order&gt;&gt;, &lt;&lt;Parten Language&gt;&gt;, &lt;&lt;A New Kind of Science&gt;&gt;</code>等书来学习数字化技术。</p>
+<p>我自己也享受到了这些方法的好处，现在又被云风清晰说出了那种模糊的感觉。便开始尝试在写笔记的时候，结合着文档理解下函数原理，并把它们用心整理好。这也是最近开始写博客来的好处，虽然之前一直用evernote记笔记写日记，但是用一种这是要整理给别人看的心态去做一件事情，效果便也很不同，总之这对于技术学习来说是很好的。</p>
+<h2 id="图形学学习"><a href="#图形学学习" class="headerlink" title="图形学学习"></a>图形学学习</h2><p>另外，这几天在跟着OpenGL的教程学习，开始对OpenGL和图形学有了模糊的认识：</p>
+<blockquote>
+<ul>
+<li>图形学是研究用计算机如果画出一个图像的学科。</li>
+<li>OpenGL教程会教我如何去用封装代码去渲染一个场景，以及背后没展开的图形学原理。</li>
+<li>他的封装性，与我原来想象的能够研究一些与计算几何相关的图形问题算法有较大出入。</li>
+<li>但是学习封装性能够让我先去了解一个大概，以及算法的具体应用性，等到发现其中核心算法的学习路径，开始学习也为时不晚，一是对图形学有了些理解，二是明白各自使用方向，三是dsa的课程也是那些算法实现的前提，四是每天都能够编写C++找到乐趣和问题。</li>
+</ul>
+</blockquote>
+<p>下面是摘自 <span style="color:red"><strong>Milo Yip</strong></span> 叶神在<a href="https://www.zhihu.com/question/24786878" target="_blank" rel="noopener">知乎</a>上的回答，要借鉴这个学习轨迹, 并以此勉励自己：</p>
+<p><code>如何开始用 C++ 写一个光栅化渲染器？</code></p>
+<p><strong>Milo Yip</strong><br>计算机图形学、编程、C++ 等 7 个话题的优秀回答者<br>228 人赞同了该回答<br>@空明流转 开发过高大上的SALVIA， @Yong He 则提到了Larrabee。我来提供另一些观点。</p>
+<p>首先，如果从学习角度出发，不必一开始完全根据现时GPU的架构及概念，来用软件复制一遍。现时的GPU主要是基于三角形光栅化及z-buffer。</p>
+<p>如果我们从图形学的历史进程来学习，可以这样做练习：</p>
+<p>2D部分：</p>
+<blockquote>
+<p>1, 光栅化2D点（就是在二维数组上画点，了解色彩基本原理，并解决影像输出问题）<br>2, 光栅化2D直线（布雷森漢姆直線演算法、吴小林直线算法等）<br>3, 2D直线的剪切算法（见Line clipping）<br>4, 光栅化2D三角形（scan conversion）。避免重复光栅化相邻三角形边界的像素（edge equation）。<br>5, 光栅化简单／复杂多边形<br>3D部分：<br>1, 把顶点从三维世界空间变换至二维屏幕空间，绘画顶点（如银河星系数据），操控摄像机旋转模型。<br>2, 在剪切空间进行3D直线的剪切算法，把顶点连线（如各种三维正多面体）光栅化成wire frame模型<br>3, 以多边形来定义三维模型。使用画家算法来光栅化那些多边形。<br>改为使用深度缓冲。<br>4, 实现简单的纹理映射，先做屏幕空间的插值，然后实现简单的perspective-correct texture mapping。<br>5, 实现简单的顶点光照，使用顶点颜色插值实现Gouraud shading。<br>6, 通过顶点法线插值，实现Phong shading。<br>7, 实现其他贴图技术，如mipmapping（也可试Summed area table）、bilinear/trilinear filtering、bump mapping、normal mapping、environment mapping等。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/28/dsacpp/01-D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/28/dsacpp/01-D/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-D</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T11:14:53+08:00">
+                2017-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><span style="color:blue"><em>我把邓老师课上对自己有需要的笔记写下来，并在看完视频后补充教材和课后习题的内容.</em></span></p>
+<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><p>运用DSA</p>
+<p>算法分析的两个任务</p>
+<blockquote>
+<ul>
+<li>正确性(不变性 * 单调性)</li>
+<li>复杂度增长速度表格</li>
+</ul>
+</blockquote>
+<p>C++等高级语言的基本指令，等效于常数条RAM的基本指令；渐进意义下，相当<br>  分支转向：goto   // 算法灵魂；出于结构考虑，被隐藏<br>  迭代循环:for(), while()..   // 本质上 “if+goto”<br>  调用+递归                   // 本质上也是 “goto”</p>
+<p>复杂度分析方法:</p>
+<blockquote>
+<ol>
+<li>迭代: 级数求和</li>
+<li>递归: 递归跟踪 + 递推方程<br>猜测 + 验证</li>
+</ol>
+</blockquote>
+<h1 id="级数"><a href="#级数" class="headerlink" title="级数"></a>级数</h1><h2 id="算术级数：与末项平方同阶"><a href="#算术级数：与末项平方同阶" class="headerlink" title="算术级数：与末项平方同阶"></a>算术级数：与<strong>末项平方</strong>同阶</h2><h2 id="幂方级数：比幂次高出一阶"><a href="#幂方级数：比幂次高出一阶" class="headerlink" title="幂方级数：比幂次高出一阶"></a>幂方级数：比幂次高出一阶</h2><h2 id="几何级数（a-gt-1）-与末项同阶"><a href="#几何级数（a-gt-1）-与末项同阶" class="headerlink" title="几何级数（a &gt; 1）:与末项同阶"></a>几何级数（a &gt; 1）:与末项同阶</h2><h2 id="收敛级数-O-1"><a href="#收敛级数-O-1" class="headerlink" title="收敛级数:O(1)"></a>收敛级数:O(1)</h2><h2 id="未必收敛，但长度有限"><a href="#未必收敛，但长度有限" class="headerlink" title="未必收敛，但长度有限"></a>未必收敛，但长度有限</h2><p>h(n) = 1 + 1/2 + 1/3 + … + 1/n = O(logn)            // 调和级数<br>log1 + log2 + log3 + … + logn = log(n!) = O(nlogn)  // 对数级数</p>
+<h2 id="推荐书籍"><a href="#推荐书籍" class="headerlink" title="推荐书籍"></a>推荐书籍</h2><p><code>&lt;&lt;Concrete Math&gt;&gt;</code> 具体数学</p>
+<h1 id="循环-vs-级数"><a href="#循环-vs-级数" class="headerlink" title="循环 vs 级数"></a>循环 vs 级数</h1><h2 id="没有耦合的二层循环"><a href="#没有耦合的二层循环" class="headerlink" title="没有耦合的二层循环"></a>没有耦合的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
+<p>算术级数:  n * n = O(n^2)<br>等效：矩形被填充的过程，时间复杂度等于矩形面积。</p>
+<h2 id="耦合的二层循环"><a href="#耦合的二层循环" class="headerlink" title="耦合的二层循环"></a>耦合的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
+<p>算术级数: n(n-1) / 2 = O(n^2)<br>等效：三角形被填充，复杂度等于矩形面积。</p>
+<h2 id="递增不为1的二层循环"><a href="#递增不为1的二层循环" class="headerlink" title="递增不为1的二层循环"></a>递增不为1的二层循环</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j += <span class="number">2013</span>)</span><br><span class="line">    O1Operation(i, j);</span><br></pre></td></tr></table></figure>
+<p>算术级数：O(n^2)</p>
+<h2 id="外循环左移一位-加倍"><a href="#外循环左移一位-加倍" class="headerlink" title="外循环左移一位(加倍)"></a>外循环左移一位(加倍)</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; i &lt;&lt;= <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; i; j++)</span><br><span class="line">    O1peration(i, j);</span><br></pre></td></tr></table></figure>
+<p>几何级数：O(n)     // ??</p>
+<h2 id="更复杂的实例"><a href="#更复杂的实例" class="headerlink" title="更复杂的实例"></a>更复杂的实例</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n; i++)</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;  i; j += j)</span><br><span class="line">    O1peration(i, j);</span><br></pre></td></tr></table></figure>
+<h2 id="习题解析"><a href="#习题解析" class="headerlink" title="习题解析"></a>习题解析</h2><h1 id="取非极端元素、冒泡排序"><a href="#取非极端元素、冒泡排序" class="headerlink" title="取非极端元素、冒泡排序"></a>取非极端元素、冒泡排序</h1><h2 id="取非极端元素"><a href="#取非极端元素" class="headerlink" title="取非极端元素"></a>取非极端元素</h2><p>算法： </p>
+<blockquote>
+<p>1, 从S中取出三个元素{x, y, z}<br>2, 确定并排除其中的最小值和最大值<br>3, 输出剩下的元素z</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ordinaryElements</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 从n &gt;= 3个互异整数中,除最大、最小者以外,任取一个“常规元素”</span></span><br><span class="line">  <span class="comment">// 先比较a,b;再确定c对于(a,b)区间的关系</span></span><br><span class="line">  <span class="keyword">int</span> a = A[<span class="number">0</span>], b = A[<span class="number">1</span>], c = A[<span class="number">2</span>];    <span class="comment">// 从特定单元读取元素O(3)</span></span><br><span class="line">  <span class="comment">// 统一成区间(a, b), 用于c对其判断</span></span><br><span class="line">  <span class="keyword">if</span> (a &lt; b) &#123; &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    swap(&amp;a, &amp;b);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (c &lt; a) <span class="keyword">return</span> a;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (c &gt; b) <span class="keyword">return</span> b;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">  <span class="comment">// return 输出非极端数O(1)</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// =======================================</span></span><br><span class="line">  <span class="comment">// T(n) = O(3) + O(3) + O(1) = O(7) = O(1)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结论:无论输入规模有多大，所需执行该算法的执行时间都不变。</p>
+<h2 id="起泡排序问题"><a href="#起泡排序问题" class="headerlink" title="起泡排序问题"></a>起泡排序问题</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubblesort</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">bool</span> sorted = <span class="literal">false</span>; sorted = !sorted; n--)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n+<span class="number">1</span>; i++) &#123;  <span class="comment">// 自左向右逐对检查[0,n)各相邻元素</span></span><br><span class="line">      <span class="keyword">if</span> (A[i<span class="number">-1</span>] &gt; A[i]) &#123;         <span class="comment">// 若逆序,则</span></span><br><span class="line">        swap(&amp;A[i<span class="number">-1</span>], &amp;A[i]);      <span class="comment">// 令其交换位置</span></span><br><span class="line">        sorted = <span class="literal">false</span>;            <span class="comment">// 消除全局有序标记</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="算法分析-1"><a href="#算法分析-1" class="headerlink" title="算法分析"></a>算法分析</h1><p>不变性：经k轮扫描交换后，最大的k个元素必然就位<br>单调性：经k轮扫描交换后，问题的规模缩减至n-k<br>正确性：经至多k轮扫描后，算法必然终止，且能给出正确答案</p>
+<p>基本且重要的技巧：通过挖掘不变性和单调性，证明算法的正确性</p>
+<h1 id="封底估计-Back-Of-The-Envelope-Calculation"><a href="#封底估计-Back-Of-The-Envelope-Calculation" class="headerlink" title="封底估计 Back-Of-The-Envelope Calculation"></a>封底估计 Back-Of-The-Envelope Calculation</h1><p>不需要工具</p>
+<p>787km 占据整个周长的1/50 =&gt; 整个周长4wkm</p>
+<p>抓住问题的主要方面，简洁得出总体规律</p>
+<p>在复杂度分析中，对象是时间。</p>
+<h1 id="封底估计实例"><a href="#封底估计实例" class="headerlink" title="封底估计实例"></a>封底估计实例</h1><blockquote>
+<ul>
+<li>一天: = 24hr <em> 60min </em> 60sec = 25 * 4000 = 10^5 sec</li>
+<li>一生: = 1世纪 = 100yr <em> 365 = 3 </em> 10^4 = 3 * 10^9 sec</li>
+<li>“50年” = 1.6 * 10^9 sec</li>
+<li>三生三世: 300yr = 10^10 = (1 googel)^(1/10) sec</li>
+<li>宇宙大爆炸至今: 10^21 = 10^(10^10)^2 sec<br>三生三世是10^10s<br>三生三世中的一天，相当于在一天中的1s<br>整个宇宙中的三生三世，就是在三生三世中的0.1s</li>
+</ul>
+</blockquote>
+<p>1亿 = 10^9</p>
+<p>复杂度和浮点运算能力flops相除，能得到某算法的时间。</p>
+<p>人口普查 n = 10^9<br>\=====================<br>普通PC 1Ghz 10^9 flops<br>Bullesort: O(n^2) ==&gt; (10^9)^2 = 10^18 </p>
+<p>时间: 10^18 / 10^9  = 10^9<br>3<em>10^9 = 100yr, 10^9 = 30年<br>\=====================<br>普通PC  10^9 flops<br>Mergesort: O(n\</em>logn) =&gt; (10^9)*log(10^9) = 30 * 10^9</p>
+<p>时间; 30 * 10^9 / 10^9 = 30s<br>\=====================<br>天河1A 10^15 flops<br>Bullesort:</p>
+<p>时间:20min: 10^3s<br>\=====================</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/27/gitignore-invalid/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/27/gitignore-invalid/" itemprop="url">gitignore-invalid</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T08:55:27+08:00">
+                2017-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/12/25/hello-triangle-three-execises/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1477,434 +1922,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/11/23/add-git-bash-to-right-click-menu/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/23/add-git-bash-to-right-click-menu/" itemprop="url">添加git bash到右键菜单</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T11:52:34+08:00">
-                2017-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><p>因为.git文件所在的目录如下：</p>
-<blockquote>
-<p>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</p>
-</blockquote>
-<p>当在bash中cd到该目录时：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cd C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\d3d</span><br><span class="line">bash: syntax error near unexpected token `(&apos;</span><br></pre></td></tr></table></figure></p>
-<p>试图通过右键进入bash</p>
-<h2 id="hack"><a href="#hack" class="headerlink" title="hack:"></a>hack:</h2><blockquote>
-<ol>
-<li>CMD中输入”regedit”</li>
-<li>切换到 HKEY_CURRENT_USER\SOFTWARE\Classes\Directory\Background\shell</li>
-<li>右键点击 “shell” 选择 New &gt; Key. 将KEY命名为 “Bash”</li>
-<li>设置值为 “open in Bash” </li>
-<li>创建一个新的KEY命名为”command”. 设置值为git-bash.exe 路径.</li>
-</ol>
-</blockquote>
-<p>此时在文件夹中右键, 出现Open in bash选项.</p>
-<p>以上为通过注册表添加bash到右键的方法，但还是建议重装git</p>
-<hr>
-<p>reference:<br>[1]: <a href="https://www.zhihu.com/question/48091139" target="_blank" rel="noopener">https://www.zhihu.com/question/48091139</a> @轩辕Rowboat的回答</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/11/23/hexo-random-symbol/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/23/hexo-random-symbol/" itemprop="url">hexo博客中文乱码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T09:52:42+08:00">
-                2017-11-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="issue"><a href="#issue" class="headerlink" title="issue:"></a>issue:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
-<p>此时<a href="http://localhost:4000/" target="_blank" rel="noopener">localhost</a>中出现如下中文乱码, 英文部分正常。</p>
-<blockquote>
-<p>��Ȼ���(depth buffer)</p>
-</blockquote>
-<p>此时_config.yml中:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">language: zh-Hans</span><br></pre></td></tr></table></figure>
-<h2 id="hack"><a href="#hack" class="headerlink" title="hack:"></a>hack:</h2><blockquote>
-<ol>
-<li>Notepad++打开出现中文的*.md, 此时右下角为ANSI格式.</li>
-<li>格式-&gt;转为UFT-8编码格式</li>
-<li>保存</li>
-<li>$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</li>
-</ol>
-</blockquote>
-<p>此时<a href="http://localhost:4000/" target="_blank" rel="noopener">localhost</a>中</p>
-<blockquote>
-<p>深度缓存(depth buffer)</p>
-</blockquote>
-<h2 id="issue-1"><a href="#issue-1" class="headerlink" title="issue++:"></a>issue++:</h2><blockquote>
-<ul>
-<li>批量转化post中的md文件</li>
-<li>自动生成UTF-8格式的md文件</li>
-</ul>
-</blockquote>
-<hr>
-<p>reference:<br>[1]: </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2017/11/22/d3d-preparation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/22/d3d-preparation/" itemprop="url">DirectX9.0 notes 1.3 预备知识</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T21:55:41+08:00">
-                2017-11-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="深度缓存-depth-buffer"><a href="#深度缓存-depth-buffer" class="headerlink" title="深度缓存(depth buffer)"></a>深度缓存(depth buffer)</h3><blockquote>
-<p>定义: 一个含有特定像素的深度信息而不含图像数据的表面。<br>  用于计算每个像素而定深度值并进行深度测试: 让处于同一位置的不同像素进行竞争，选出应写入该位置的像素。距离摄像机最近的像素获胜。<br>  深度缓存格式决定深度测试精度, 精度度 16位&lt;24位&lt;32位, 一般选择24位满足效果</p>
-<ul>
-<li>D3DFMT_D32         32位深度缓存</li>
-<li>D3DFMT_D23S8       24位深度缓存, 其中8位保留供模板缓存(stencil buffer)[1]使用</li>
-<li>D3DFMT_D24X8       24位深度缓存</li>
-<li>D3DFMT_D16         16位深度缓存</li>
-</ul>
-</blockquote>
-<h3 id="顶点运算-Vertex-Processing"><a href="#顶点运算-Vertex-Processing" class="headerlink" title="顶点运算(Vertex Processing)"></a>顶点运算(Vertex Processing)</h3><blockquote>
-<ul>
-<li>软件顶点运算(software vertex process)</li>
-<li>硬件顶点运算(harfware …)</li>
-</ul>
-</blockquote>
-<p>软件顶点运算 <strong> 总是会被支持 </strong> , 硬件只有得到图形卡的支持才可使用。</p>
-<p>优先考虑硬件顶点运算方式，理由：</p>
-<blockquote>
-<ol>
-<li>使用的硬件可能有加速功能</li>
-<li>可以不占用CPU， CPU可被解放出来进行其他运算</li>
-</ol>
-</blockquote>
-<h3 id="设备性能-Device-Capabilities"><a href="#设备性能-Device-Capabilities" class="headerlink" title="设备性能(Device Capabilities)"></a>设备性能(Device Capabilities)</h3><p>DeCaps 表示”Device Capabilities”<br>D3DCAP9::DevCaps的D3DDEVCAPS_HWTYRANSFORMANDLIGHT 可用来表示设备是否支持变换和光照的硬件计算。<br>多查阅D3DCAP9相关的SDK文档, 继续研究一下Directt3D所提供能够设备性能的完整列表。</p>
-<p>[1] : 18章论述</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1955,7 +1972,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">131</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1968,7 +1985,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
