@@ -3,6 +3,126 @@
   
     
     <entry>
+      <title><![CDATA[125. Valid Palindrome - LeetCode]]></title>
+      <url>/2018/08/31/20180831-04/</url>
+      <content type="html"><![CDATA[<h3 id="125-Valid-Palindrome"><a href="#125-Valid-Palindrome" class="headerlink" title="125. Valid Palindrome"></a>125. Valid Palindrome</h3><p>Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.</p>
+<p>Note: For the purpose of this problem, we define empty string as valid palindrome.</p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><p>Input: “A man, a plan, a canal: Panama”<br>Output: true</p>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><p>Input: “race a car”<br>Output: false</p>
+<h4 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h4><p>过滤成回文串去计算, 需要O(n)的空间复杂度<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:O(n), Space:O(n)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isPalindrome</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s.length() == <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="built_in">string</span> t;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">char</span> c : s) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">isdigit</span>(c) || <span class="built_in">isalpha</span>(c)) &#123;</span><br><span class="line">        t += <span class="built_in">tolower</span>(c);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> n = t.length();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= n/<span class="number">2</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (t[i] != t[n<span class="number">-1</span>-i]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>用two pointers的方法, 在原地进行判断,</p>
+<p>注意点:</p>
+<blockquote>
+<ul>
+<li>数字和字母, 可以用isalnum()这个函数..</li>
+<li>注意还要ignore case, 因此使用tolower在判断前。</li>
+</ul>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:O(n), Space:O(1)</span></span><br><span class="line"><span class="comment">// two pointers, in-place</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span>  <span class="title">isPalindrome</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = s.length() - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; j) &#123;</span><br><span class="line">      <span class="keyword">while</span> (<span class="built_in">isalnum</span>(s[i]) == <span class="literal">false</span> &amp;&amp; i &lt; j) i++;</span><br><span class="line">      <span class="keyword">while</span> (<span class="built_in">isalnum</span>(s[j]) == <span class="literal">false</span> &amp;&amp; i &lt; j) j--;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">tolower</span>(s[i]) != <span class="built_in">tolower</span>(s[j])) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      i++;</span><br><span class="line">      j--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 字符串 </tag>
+            
+            <tag> two pointers </tag>
+            
+            <tag> 回文 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[242. Valid Anagram - LeetCode]]></title>
+      <url>/2018/08/31/20180831-03/</url>
+      <content type="html"><![CDATA[<h3 id="242-Valid-Anagram"><a href="#242-Valid-Anagram" class="headerlink" title="242. Valid Anagram"></a>242. Valid Anagram</h3><p>Given two strings s and t , write a function to determine if t is an anagram of s.</p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><p>Input: s = “anagram”, t = “nagaram”<br>Output: true</p>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><p>Input: s = “rat”, t = “car”<br>Output: false</p>
+<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>You may assume the string contains only lowercase alphabets.</p>
+<h4 id="Follow-up"><a href="#Follow-up" class="headerlink" title="Follow up:"></a>Follow up:</h4><p>What if the inputs contain unicode characters? How would you adapt your solution to such case?</p>
+<h4 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h4><p>使用sort<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s.length() != t.length()) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sort(s.begin(), s.end());</span><br><span class="line">    sort(t.begin(), t.end());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (s[i] != t[i]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>简化版本<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    sort(s.begin(), s.end());</span><br><span class="line">    sort(t.begin(), t.end());</span><br><span class="line">    <span class="keyword">if</span> (s == t) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>建立Hash表, key是char, 对应该字符出现的次数. 一个字符串加一个字符串减。<br>这里使用散列表实现的<code>unodered_map</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s.length() != t.length()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; counts;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      counts[s[i]]++;</span><br><span class="line">      counts[t[i]]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> count : counts) &#123;</span><br><span class="line">      <span class="keyword">if</span> (count.second) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Solution3"><a href="#Solution3" class="headerlink" title="Solution3"></a>Solution3</h4><p>用ascii码作为key值, 不用map容器用数组<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s.length() != t.length()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">int</span> counts[<span class="number">26</span>];</span><br><span class="line">    <span class="built_in">memset</span>(counts, <span class="number">0</span>, <span class="keyword">sizeof</span>(counts));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      counts[s[i] - <span class="string">'a'</span>]++;</span><br><span class="line">      counts[t[i] - <span class="string">'a'</span>]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (counts[i]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 字符串 </tag>
+            
+            <tag> Hash散列 </tag>
+            
+            <tag> 排序 </tag>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[387. First Unique Character in a String - LeetCode]]></title>
+      <url>/2018/08/31/20180831-02/</url>
+      <content type="html"><![CDATA[<h3 id="387-First-Unique-Character-in-a-String"><a href="#387-First-Unique-Character-in-a-String" class="headerlink" title="387. First Unique Character in a String"></a>387. First Unique Character in a String</h3><p>Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1.</p>
+<h4 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h4><p>s = “leetcode”<br>return 0.</p>
+<p>s = “loveleetcode”,<br>return 2.</p>
+<h4 id="Note-You-may-assume-the-string-contain-only-lowercase-letters"><a href="#Note-You-may-assume-the-string-contain-only-lowercase-letters" class="headerlink" title="Note: You may assume the string contain only lowercase letters."></a>Note: You may assume the string contain only lowercase letters.</h4><h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>因为不到最后无法得知出现是否重复, 于是建立一个Hash表,大小为26个lower字母, 存放每个字符出现的次数.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:O(n), Space:O(1)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">firstUniqChar</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cnt[<span class="number">30</span>];</span><br><span class="line">    <span class="built_in">memset</span>(cnt, <span class="number">0</span>, <span class="keyword">sizeof</span>(cnt));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      cnt[s[i] - <span class="string">'a'</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (cnt[s[i] - <span class="string">'a'</span>] == <span class="number">1</span>) <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> Hash散列 </tag>
+            
+            <tag> LeetCode </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[7. Reverse Integer - LeetCode]]></title>
+      <url>/2018/08/31/20180831-01/</url>
+      <content type="html"><![CDATA[<h3 id="7-Reverse-Integer"><a href="#7-Reverse-Integer" class="headerlink" title="7. Reverse Integer"></a>7. Reverse Integer</h3><p>Given a 32-bit signed integer, reverse digits of an integer.</p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><p>Input: 123<br>Output: 321</p>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><p>Input: -123<br>Output: -321</p>
+<h4 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3:"></a>Example 3:</h4><p>Input: 120<br>Output: 21</p>
+<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>不需要重新写大整数类</p>
+<blockquote>
+<ul>
+<li>1, 位数*10代表着升位。</li>
+<li>2, 可通过乘10再除以10是否相等来判断是否溢出</li>
+</ul>
+</blockquote>
+<p>AC的解法:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>, judge = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x) &#123;</span><br><span class="line">      judge = result * <span class="number">10</span>;</span><br><span class="line">      <span class="keyword">if</span> (judge / <span class="number">10</span> != result) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      result = judge;</span><br><span class="line">      result += x % <span class="number">10</span>;</span><br><span class="line">      x /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>之前错误百出的解法:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="built_in">pow</span>(<span class="number">-2</span>, <span class="number">31</span>) || x &gt; <span class="built_in">pow</span>(<span class="number">2</span>, <span class="number">31</span>) - <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums;</span><br><span class="line">    <span class="keyword">while</span> (x) &#123;</span><br><span class="line">      nums.push_back(x % <span class="number">10</span>);</span><br><span class="line">      x /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>, n = nums.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">      <span class="keyword">int</span> d = <span class="built_in">pow</span>(<span class="number">10</span>, i) * nums[n<span class="number">-1</span>-i];</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"d = %d\n"</span>, d);</span><br><span class="line">      <span class="keyword">if</span> (d % <span class="number">10</span> == <span class="number">0</span> || d == <span class="number">1</span> || d == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((ans &gt; <span class="built_in">pow</span>(<span class="number">2</span>, <span class="number">31</span>) - <span class="number">1</span> - d) || (ans &lt; <span class="built_in">pow</span>(<span class="number">-2</span>, <span class="number">31</span>) - d))</span><br><span class="line">          <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        ans += d;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// if (ans &lt; pow(-2, 31) || ans &gt; pow(2, 31) - 1) return 0;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> LeetCode </tag>
+            
+            <tag> Integer </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[1079 延迟的回文数(20) - PAT乙级]]></title>
       <url>/2018/08/30/20180830-03/</url>
       <content type="html"><![CDATA[<h3 id="1079-延迟的回文数-20"><a href="#1079-延迟的回文数-20" class="headerlink" title="1079 延迟的回文数(20)"></a>1079 延迟的回文数(20)</h3><p>非回文数也可以通过一系列操作变出回文数。首先将该数字逆转，再将逆转数与该数相加，如果和还不是一个回文数，就重复这个逆转再相加的操作，直到一个回文数出现。如果一个非回文数可以变出回文数，就称这个数为延迟的回文数。（定义翻译自 <a href="https://en.wikipedia.org/wiki/Palindromic_number" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Palindromic_number</a> ）</p>
@@ -27,9 +147,9 @@
             
             <tag> 字符串 </tag>
             
-            <tag> 大整数 </tag>
-            
             <tag> 回文 </tag>
+            
+            <tag> 大整数 </tag>
             
         </tags>
         
