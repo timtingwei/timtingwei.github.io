@@ -229,6 +229,526 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1020/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/PAT-basic-1020/" itemprop="url">1020. 月饼 (25)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:01:33+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1020-月饼-25-（25-point-s-）"><a href="#1020-月饼-25-（25-point-s-）" class="headerlink" title="1020 月饼 (25)（25 point(s)）"></a>1020 月饼 (25)（25 point(s)）</h2><p>月饼是中国人在中秋佳节时吃的一种传统食品，不同地区有许多不同风味的月饼。现给定所有种类月饼的库存量、总售价、以及市场的最大需求量，请你计算可以获得的最大收益是多少。</p>
+<p>注意：销售时允许取出一部分库存。样例给出的情形是这样的：假如我们有3种月饼，其库存量分别为18、15、10万吨，总售价分别为75、72、45亿元。如果市场的最大需求量只有20万吨，那么我们最大收益策略应该是卖出全部15万吨第2种月饼、以及5万吨第3种月饼，获得 72 + 45/2 = 94.5（亿元）。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>每个输入包含1个测试用例。每个测试用例先给出一个不超过1000的正整数N表示月饼的种类数、以及不超过500（以万吨为单位）的正整数D表示市场最大需求量。随后一行给出N个正数表示每种月饼的库存量（以万吨为单位）；最后一行给出N个正数表示每种月饼的总售价（以亿元为单位）。数字间以空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>对每组测试用例，在一行中输出最大收益，以亿元为单位并精确到小数点后2位。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>3 20<br>18 15 10<br>75 72 45<br>输出样例：</p>
+<p>94.50</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>计算各种月饼每吨的售价, 优先每吨售价最高的月饼填满需求, 剩下的用售价次高的填满<br>采用优先队列, dq放每个月饼结点, 价格越高结点会被排在更前面</p>
+<p><span style="color:red">注意一下测试点3(case 3)通不过的情况, 如果都供应完了, 还没达到市场需求的情况, 按当前供应量来计算价格</span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Cake</span> &#123;</span></span><br><span class="line">  <span class="keyword">double</span> num, tot;</span><br><span class="line">  <span class="keyword">double</span> each_d;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span> <span class="params">(<span class="keyword">const</span> Cake c1, <span class="keyword">const</span> Cake c2)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c1.each_d &lt;= c2.each_d;     <span class="comment">// 每吨的价格越高权重越高</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">vector</span>&lt;Cake&gt; cakes;</span><br><span class="line">priority_queue&lt;Cake, <span class="built_in">vector</span>&lt;Cake&gt;, cmp &gt; dq;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, D;   <span class="comment">// 种类数和市场需求</span></span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N &gt;&gt; D;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    Cake tmp_c;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; tmp_c.num;</span><br><span class="line">    cakes.push_back(tmp_c);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; cakes[i].tot;</span><br><span class="line">    cakes[i].each_d = cakes[i].tot / cakes[i].num;</span><br><span class="line">    dq.push(cakes[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">double</span> ans = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> now_d = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    <span class="comment">// debug case3: 如果都供应完了, 还没达到市场需求的情况</span></span><br><span class="line">    <span class="keyword">if</span> (dq.empty()) <span class="keyword">break</span>;</span><br><span class="line">    Cake cmax = dq.top();</span><br><span class="line">    <span class="keyword">if</span> (D - now_d &gt;= cmax.num) &#123;   <span class="comment">// 如果需求量比当前最有优价格的供货量大</span></span><br><span class="line">      now_d += cmax.num;</span><br><span class="line">      ans += cmax.each_d * cmax.num;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;    <span class="comment">// 只需要提供一部分</span></span><br><span class="line">      ans += (D - now_d) * cmax.each_d;</span><br><span class="line">      now_d = D;    <span class="comment">// 供应部分后, 满足市场需求</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    dq.pop();   <span class="comment">// 队首月饼供应完毕</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%.2lf\n"</span>, ans);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1019/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/PAT-basic-1019/" itemprop="url">1019. 数字黑洞（20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T00:46:17+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1019-数字黑洞-20"><a href="#1019-数字黑洞-20" class="headerlink" title="1019 数字黑洞 (20)"></a>1019 数字黑洞 (20)</h2><p>给定任一个各位数字不完全相同的4位正整数，如果我们先把4个数字按非递增排序，再按非递减排序，然后用第1个数字减第2个数字，将得到一个新的数字。一直重复这样做，我们很快会停在有“数字黑洞”之称的6174，这个神奇的数字也叫Kaprekar常数。</p>
+<p>例如，我们从6767开始，将得到</p>
+<p>7766 - 6677 = 1089\ 9810 - 0189 = 9621\ 9621 - 1269 = 8352\ 8532 - 2358 = 6174\ 7641 - 1467 = 6174\ … …</p>
+<p>现给定任意4位正整数，请编写程序演示到达黑洞的过程。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入给出一个(0, 10000)区间内的正整数N。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>如果N的4位数字全相等，则在一行内输出“N - N = 0000”；否则将计算的每一步在一行内输出，直到6174作为差出现，输出格式见样例。注意每个数字按4位数格式输出。</p>
+<h2 id="输入样例1："><a href="#输入样例1：" class="headerlink" title="输入样例1："></a>输入样例1：</h2><p>6767</p>
+<h2 id="输出样例1："><a href="#输出样例1：" class="headerlink" title="输出样例1："></a>输出样例1：</h2><p>7766 - 6677 = 1089<br>9810 - 0189 = 9621<br>9621 - 1269 = 8352<br>8532 - 2358 = 6174</p>
+<h2 id="输入样例2："><a href="#输入样例2：" class="headerlink" title="输入样例2："></a>输入样例2：</h2><p>2222</p>
+<h2 id="输出样例2："><a href="#输出样例2：" class="headerlink" title="输出样例2："></a>输出样例2：</h2><p>2222 - 2222 = 0000</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>思路:<br>模拟, 需要递减sort, 再递增排序<br>字符串转整数用于计算, 整数转字符串用于判断和表示<br>后来才记起来c++有 std::stoi/stol/stoll函数..<br>以及c++11新出的std::to_string()函数;</p>
+<p><span style="color:red">最近刷题总是拿捏不好什么时候用c, 什么时候用c++, 这个问题还需要做题和看更多代码来得出一些心得。</span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp_str1</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> a, <span class="keyword">const</span> <span class="keyword">char</span> b)</span> </span>&#123; <span class="keyword">return</span> a &gt;= b;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp_str2</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> a, <span class="keyword">const</span> <span class="keyword">char</span> b)</span> </span>&#123; <span class="keyword">return</span> a &lt;= b;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">convert_int</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 从(末尾*10+前一位)*10</span></span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">1</span>, ans = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">string</span>::iterator p = s.end()<span class="number">-1</span>; p &gt;= s.begin(); p--) &#123;</span><br><span class="line">    ans += (*p - <span class="string">'0'</span>) * i;</span><br><span class="line">    i *= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// cout &lt;&lt; ans &lt;&lt; "\n";</span></span><br><span class="line">  <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">convert_str</span><span class="params">(<span class="keyword">int</span> h)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 转成4位字符串,</span></span><br><span class="line">  <span class="function"><span class="built_in">string</span> <span class="title">ans_s</span><span class="params">(<span class="number">4</span>, <span class="string">'0'</span>)</span></span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">3</span>;</span><br><span class="line">  <span class="keyword">while</span> (h) &#123;</span><br><span class="line">    ans_s[i--] = h % <span class="number">10</span> + <span class="string">'0'</span>;</span><br><span class="line">    h /= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> ans_s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s1;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; s1;</span><br><span class="line">  s1 = convert_str(convert_int(s1));   <span class="comment">// debug: 0~999需要处理</span></span><br><span class="line">  <span class="built_in">string</span> s2 = s1;</span><br><span class="line">  sort(s1.begin(), s1.end(), cmp_str1);</span><br><span class="line">  sort(s2.begin(), s2.end(), cmp_str2);</span><br><span class="line">  <span class="keyword">if</span> (s1 == s2) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; <span class="string">" - "</span> &lt;&lt; s1 &lt;&lt; <span class="string">" = 0000"</span> &lt;&lt; <span class="string">"\n"</span>; <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">while</span> (s1 != <span class="string">"6174"</span>) &#123;</span><br><span class="line">    s2 = s1;</span><br><span class="line">    sort(s1.begin(), s1.end(), cmp_str1);</span><br><span class="line">    sort(s2.begin(), s2.end(), cmp_str2);</span><br><span class="line">    <span class="keyword">int</span> d = convert_int(s1) - convert_int(s2);</span><br><span class="line">    <span class="built_in">string</span> tmp = convert_str(d);               <span class="comment">// debug:按照四位格式输出</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; <span class="string">" - "</span> &lt;&lt; s2 &lt;&lt; <span class="string">" = "</span> &lt;&lt; tmp &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">    s1 = tmp;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/31/PAT-basic-1017/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/31/PAT-basic-1017/" itemprop="url">1017. A除以B（20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-31T00:16:36+08:00">
+                2018-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1017-A除以B-20"><a href="#1017-A除以B-20" class="headerlink" title="1017. A除以B (20)"></a>1017. A除以B (20)</h2><p>本题要求计算A/B，其中A是不超过1000位的正整数，B是1位正整数。你需要输出商数Q和余数R，<br>使得A = B * Q + R成立。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在1行中依次给出A和B，中间以1空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在1行中依次输出Q和R，中间以1空格分隔。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>123456789050987654321 7</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>17636684150141093474 3</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>思路:<br>  1, 用数组储存大整数, 模拟大整数除以1位数<br>  2, 更省空间和减少循环次数的做法: 用C++字符串读取, 模拟手动除法, 首位整数 / B, 如果得到不是0就输出, 余数*10+下一位; </p>
+<p><span stype="color:red"><br>2优点在于,<br>边计算边输出;<br>首个索引与循环分开计算, 减少在循环内的判断;<br>对边界条件的定义处理在一个if语句中;<br>用string可以减少指针带来的诸多问题<br></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> bs[<span class="number">1050</span>];</span><br><span class="line"><span class="keyword">int</span> ans[<span class="number">1050</span>];</span><br><span class="line"><span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> b, q = <span class="number">0</span>, r = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s %d"</span>, bs, &amp;b);</span><br><span class="line">  <span class="keyword">int</span> len = <span class="built_in">strlen</span>(bs);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> x = r * <span class="number">10</span> + bs[i] - <span class="string">'0'</span>;</span><br><span class="line">    q = x / b;</span><br><span class="line">    r = x % b;</span><br><span class="line">    <span class="keyword">if</span> (i == <span class="number">0</span> &amp;&amp; q == <span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">    ans[cnt++] = q;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cnt == <span class="number">0</span> &amp;&amp; ans[<span class="number">0</span>] == <span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">"0"</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cnt; i++) &#123; <span class="built_in">printf</span>(<span class="string">"%d"</span>, ans[i]); &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">" %d\n"</span>, r);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改后的代码:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> a; <span class="keyword">int</span> b;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;</span><br><span class="line">  <span class="keyword">int</span> len = a.length();</span><br><span class="line">  <span class="keyword">int</span> f = (a[<span class="number">0</span>] - <span class="string">'0'</span>) / b;</span><br><span class="line">  <span class="keyword">if</span> ((f != <span class="number">0</span> &amp;&amp; len &gt; <span class="number">1</span>)|| len == <span class="number">1</span>)</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f;</span><br><span class="line">  <span class="keyword">int</span> temp = (a[<span class="number">0</span>] - <span class="string">'0'</span>) % b;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">    f = (temp * <span class="number">10</span> + a[i] - <span class="string">'0'</span>) / b;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; f;</span><br><span class="line">    temp = (temp * <span class="number">10</span> + a[i] - <span class="string">'0'</span>) % b;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span> &lt;&lt; temp &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/30/PAT-basic-1018/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/30/PAT-basic-1018/" itemprop="url">1018. 锤子剪刀布 (20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T22:38:38+08:00">
+                2018-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem:"></a>Problem:</h2><p>大家应该都会玩“锤子剪刀布”的游戏：两人同时给出手势，胜负规则如图所示：现给出两人的交锋记录，请统计双方的胜、平、负次数，并且给出双方分别出什么手势的胜算最大。</p>
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input:"></a>Input:</h2><p>输入第1行给出正整数N（&lt;=105），即双方交锋的次数。随后N行，每行给出一次交锋的信息，即甲、乙双方同时给出的的手势。C代表“锤子”、J代表“剪刀”、B代表“布”，第1个字母代表甲方，第2个代表乙方，中间有1个空格。</p>
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output:"></a>Output:</h2><p>输出第1、2行分别给出甲、乙的胜、平、负次数，数字间以1个空格分隔。第3行给出两个字母，分别代表甲、乙获胜次数最多的手势，中间有1个空格。如果解不唯一，则输出按字母序最小的解。</p>
+<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h2><p>10<br>C J<br>J B<br>C B<br>B B<br>B C<br>C C<br>C B<br>J B<br>B C<br>J J</p>
+<h2 id="Sample-output"><a href="#Sample-output" class="headerlink" title="Sample output:"></a>Sample output:</h2><p>5 3 2<br>2 3 5<br>B B</p>
+<h2 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h2><p>虽然考虑到了9中组合, 但写的时候思路不清晰, 甚至没有把胜出时候的手势放入数组.<br>冗杂在于<br>1, 一开始想把它放进一个struct, 但实际上只拥有六个整型, 为什么不放到数组里?<br>2, getMax函数纠结了好久, 实际有更为简单的方法</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">score</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> w = <span class="number">0</span>, f = <span class="number">0</span>, e = <span class="number">0</span>;    <span class="comment">// 胜负平</span></span><br><span class="line">  <span class="keyword">int</span> C = <span class="number">0</span>, J = <span class="number">0</span>, B = <span class="number">0</span>;    <span class="comment">// 胜的时候出的手势</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; x;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> motion[<span class="number">4</span>] = <span class="string">"BCJ"</span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">getMax</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// a,b,c谁最大, 返回0,1,2; 并列返回字典序列</span></span><br><span class="line">  x.clear();</span><br><span class="line">  <span class="keyword">int</span> m;</span><br><span class="line">  m = max(a, b); m = max(m, c);</span><br><span class="line">  <span class="keyword">if</span> (m == a) x.push_back(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> (m == b) x.push_back(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">if</span> (m == c) x.push_back(<span class="number">2</span>);</span><br><span class="line">  sort(x.begin(), x.end());</span><br><span class="line">  <span class="keyword">return</span> motion[x[<span class="number">0</span>]];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> a[<span class="number">2</span>], b[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  score jia, yi;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;T) == <span class="number">1</span> &amp;&amp; T) &#123;</span><br><span class="line">    <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">      <span class="built_in">scanf</span>(<span class="string">"%s %s"</span>, a, b);</span><br><span class="line">      <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'J'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; jia.f++; yi.w++; yi.C++; &#125;  <span class="comment">// 乙胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; jia.w++; yi.f++; jia.J++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'C'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.w++; yi.f++; jia.C++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; yi.w++; jia.f++; yi.B++; &#125;  <span class="comment">// yi胜</span></span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a[<span class="number">0</span>] == <span class="string">'B'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'B'</span>) &#123; jia.e++; yi.e++; &#125;    <span class="comment">// 平局</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'J'</span>) &#123; jia.f++; yi.w++; yi.J++; &#125;  <span class="comment">// yi胜</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (b[<span class="number">0</span>] == <span class="string">'C'</span>) &#123; yi.f++; jia.w++; jia.B++; &#125;  <span class="comment">// jia胜</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, jia.w, jia.e, jia.f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, yi.w, yi.e, yi.f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, getMax(jia.B, jia.C, jia.J));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, getMax(yi.B, yi.C, yi.J));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h2><p>将字符转换为整数进行计算<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">00  平   10 甲   20 乙</span><br><span class="line">01  乙   11 平   21 甲</span><br><span class="line">02  甲   12 乙   22 平</span><br></pre></td></tr></table></figure></p>
+<p>可以发现, -2, 1时, 甲胜;  -1, 2时, 甲负<br>甲乙胜负可以转换, 平局可以通过总局数得到, 因此只需要记录甲的胜负</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; s_c_i = &#123;&#125;;    <span class="comment">// 将字符转换成整数, 用于索引和计算</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> str[<span class="number">4</span>] = <span class="string">"BCJ"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  <span class="keyword">int</span> jia[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;, yi[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;T) == <span class="number">1</span> &amp;&amp; T) &#123;</span><br><span class="line">    s_c_i[<span class="string">'J'</span>] = <span class="number">0</span>, s_c_i[<span class="string">'C'</span>] = <span class="number">1</span>, s_c_i[<span class="string">'B'</span>] = <span class="number">2</span>;  <span class="comment">// 将字符转换成整数用于计算</span></span><br><span class="line">    <span class="keyword">int</span> w = <span class="number">0</span>, f = <span class="number">0</span>, ct = T;                        <span class="comment">// 甲胜利, 失败, 总局数</span></span><br><span class="line">    <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">      <span class="keyword">char</span> sa, sb;</span><br><span class="line">      <span class="built_in">cin</span> &gt;&gt; sa &gt;&gt; sb;</span><br><span class="line">      <span class="keyword">int</span> d = s_c_i[sa] - s_c_i[sb];</span><br><span class="line">      <span class="keyword">if</span> (d == <span class="number">-2</span> || d == <span class="number">1</span>) &#123;    <span class="comment">// 甲胜</span></span><br><span class="line">        w++; jia[s_c_i[sa]]++;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (d == <span class="number">-1</span> || d == <span class="number">2</span>) &#123;   <span class="comment">// 甲负, 乙胜</span></span><br><span class="line">        f++; yi[s_c_i[sb]]++;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, w, ct-w-f, f);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, f, ct-w-f, w);</span><br><span class="line">    <span class="keyword">int</span> jiamax = (jia[<span class="number">0</span>] &gt;= jia[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    jiamax = (jia[jiamax] &gt;= jia[<span class="number">2</span>]) ? jiamax : <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> yimax = (yi[<span class="number">0</span>] &gt;= yi[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    yimax = (yi[yimax] &gt;= yi[<span class="number">2</span>]) ? yimax : <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, str[jiamax]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, str[yimax]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution 3:"></a>Solution 3:</h2><p><span style="color:red"><br>只记录甲的胜负, 计算出乙胜负平; 六种排列组合; 三个计数器放在数组中, 用 ?:判断哪个位置计数最高<br>能用数组解决的不用struct的, 能用原子类型解决的不用数组;<br></span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> str[<span class="number">4</span>] = &#123;<span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'J'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> T;</span><br><span class="line">  <span class="keyword">int</span> win = <span class="number">0</span>, fail = <span class="number">0</span>;   <span class="comment">// 只记录甲的胜负</span></span><br><span class="line">  <span class="keyword">int</span> winjia[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;, winyi[<span class="number">3</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; T;</span><br><span class="line">  <span class="keyword">int</span> ct = T;</span><br><span class="line">  <span class="keyword">while</span> (T--) &#123;</span><br><span class="line">    <span class="keyword">char</span> a, b;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a &gt;&gt; b;</span><br><span class="line">    <span class="comment">// 六种排列组合</span></span><br><span class="line">    <span class="keyword">if</span> (a == <span class="string">'B'</span> &amp;&amp; b == <span class="string">'C'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">0</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'B'</span> &amp;&amp; b == <span class="string">'J'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">2</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'C'</span> &amp;&amp; b == <span class="string">'B'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">0</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'C'</span> &amp;&amp; b == <span class="string">'J'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">1</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'J'</span> &amp;&amp; b == <span class="string">'B'</span>) &#123;</span><br><span class="line">      win++; winjia[<span class="number">2</span>]++;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="string">'J'</span> &amp;&amp; b == <span class="string">'C'</span>) &#123;</span><br><span class="line">      fail++; winyi[<span class="number">1</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, win, ct-win-fail, fail);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d %d %d\n"</span>, fail, ct-win-fail, win);</span><br><span class="line">  <span class="keyword">int</span> jiamax = (winjia[<span class="number">0</span>] &gt;= winjia[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  jiamax = (winjia[jiamax] &gt;= winjia[<span class="number">2</span>]) ? jiamax : <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">int</span> yimax = (winyi[<span class="number">0</span>] &gt;= winyi[<span class="number">1</span>]) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  yimax = (winyi[yimax] &gt;= winyi[<span class="number">2</span>]) ? yimax : <span class="number">2</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%c"</span>, str[jiamax]);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">" %c\n"</span>, str[yimax]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/30/algorithm-learning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1367,256 +1887,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/26/archi-equiptment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/26/archi-equiptment/" itemprop="url">建筑设备复习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-26T18:45:12+08:00">
-                2018-06-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
-<h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
-<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>引入管, 管道系统, 给水附件, 消防设备, 升压与贮水设备, 给水局部处理设备</p>
-<h2 id="给水方式"><a href="#给水方式" class="headerlink" title="给水方式"></a>给水方式</h2><p>直接给水方式/ 设有水箱的给水方式/ 设水泵的给水方式/ 设贮水池, 水泵, 水箱的给水方式/ 分区给水方式/ 气压给水方式/<br>在初步确定给水方式时, 对层高不超过3.5m的民用建筑, 所需的压力可估算: 1层100kpa, 2层120kpa, 3层以上每增加一层, 增加40kpa</p>
-<h1 id="1-3-1-给水系统-p15"><a href="#1-3-1-给水系统-p15" class="headerlink" title="1.3.1 给水系统 p15"></a>1.3.1 给水系统 p15</h1><h2 id="高层建筑给水系统为什么用竖向分区供水"><a href="#高层建筑给水系统为什么用竖向分区供水" class="headerlink" title="高层建筑给水系统为什么用竖向分区供水?"></a>高层建筑给水系统为什么用竖向分区供水?</h2><p>高层建筑用水标准较高, 使用人数较多, 建筑高度大, 功能复杂, 对防震, 防沉降, 防渗漏等要求高。<br>高层建筑若采用同一给水系统供水, 则垂直方向管线过长, 下层管道中的净水压力过大,<br>必然会增大压力损失, 使管道(附近)易漏水, 启用龙头和阀门易产生水锤和噪声, 影响高层供水的安全可靠性, 因此采用竖向分区供水</p>
-<h2 id="a-并联方式"><a href="#a-并联方式" class="headerlink" title="a, 并联方式"></a>a, 并联方式</h2><h3 id="高位水箱并联给水方式"><a href="#高位水箱并联给水方式" class="headerlink" title="高位水箱并联给水方式"></a>高位水箱并联给水方式</h3><p>各区设置水箱, 水泵集中布置在地下层或底层<br>特点:<br>优: 各区独立运行互不干扰/ 能耗小/ 供水可靠/ 水泵集中布置便于管理<br>缺: 水泵型号较多, 投资较大/ 分区水箱占楼层使用面积大</p>
-<h3 id="分区无水箱给水方式"><a href="#分区无水箱给水方式" class="headerlink" title="分区无水箱给水方式"></a>分区无水箱给水方式</h3><p>分区设置变频调速水泵或多台并联水泵, 且集中布置在地下室或底层<br>根据各区用水量调节水泵转速 或 运行后向各区供水<br>特点:<br>优: 供水可靠性强/ 设备集中设置, 便于管理/ 无高位水箱不占上层面积<br>缺: 水泵型号多, 投资大/ 水泵控制调节复杂</p>
-<h2 id="b-串联给水方式"><a href="#b-串联给水方式" class="headerlink" title="b, 串联给水方式"></a>b, 串联给水方式</h2><p>分区设置水箱和水泵, 水泵分散布置<br>自下区水箱抽水供上区用水<br>特点:<br>优: 设备和管道较简单, 投资省, 能耗小<br>缺: 水泵设置在上层, 对防振动和噪声要求高/ 各区水箱增加结构负荷/ 上区供水受下区限制/ 供水可靠性差</p>
-<h2 id="c-减压给水方式"><a href="#c-减压给水方式" class="headerlink" title="c, 减压给水方式"></a>c, 减压给水方式</h2><p>分区设置水箱/ 由设置在地下室或底层的水泵将水加压至最高层水箱/ 上层供下层用水/ 利用水箱减压<br>特点:<br>优: 水泵台数少, 设备管理维护简单<br>缺: 水泵扬程较大/ 运行费用高/ 最高层水箱容积较大, 增加了结构负荷/ 下层供水压力损耗较大, 不够节能 </p>
-<h1 id="2-2-1-自然循环热水供暖系统-p59"><a href="#2-2-1-自然循环热水供暖系统-p59" class="headerlink" title="2.2.1 自然循环热水供暖系统 p59"></a>2.2.1 自然循环热水供暖系统 p59</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理:"></a>原理:</h2><p>1, 冷水管向系统内充满水<br>2, 锅炉开始加热<br>3, 当水温升高后, 堆高度开始降低, 热水沿供水管上升至散热器<br>4, 在散热器中散热后温度降低<br>5, 沿回水管流回锅炉再加热, 循环往复</p>
-<h2 id="供暖系统的任务是什么"><a href="#供暖系统的任务是什么" class="headerlink" title="供暖系统的任务是什么?"></a>供暖系统的任务是什么?</h2><p>为了满足生活, 生产的要求, 营造舒适的生活环境或者一定的生产环境, 维持一定的室内温度, 必须不断地向室内提供一定数量的热量以弥补其散失的热量</p>
-<h1 id="2-2-2-机械循环热水供暖系统-p61"><a href="#2-2-2-机械循环热水供暖系统-p61" class="headerlink" title="2.2.2 机械循环热水供暖系统 p61"></a>2.2.2 机械循环热水供暖系统 p61</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
-<li>1, 因为采用循环水泵为水循环提供动力, 所以循环作用压力大</li>
-<li>2, 系统的作用半径大, 水的流速大, 管径较小, 启动容易, 供暖方式多, 应用广泛</li>
-</ul>
-<h2 id="a-机械供暖与自然供暖的区别"><a href="#a-机械供暖与自然供暖的区别" class="headerlink" title="a, 机械供暖与自然供暖的区别"></a>a, 机械供暖与自然供暖的区别</h2><h3 id="1-循环动力不同"><a href="#1-循环动力不同" class="headerlink" title="1, 循环动力不同:"></a>1, 循环动力不同:</h3><ul>
-<li>机械: 水泵; </li>
-<li>自然: 密度差 <h3 id="2-膨胀水箱的连接点和作用不同"><a href="#2-膨胀水箱的连接点和作用不同" class="headerlink" title="2, 膨胀水箱的连接点和作用不同"></a>2, 膨胀水箱的连接点和作用不同</h3></li>
-<li>机械: 循环水泵入口前的回水管, 作用在于吸收和补充膨胀与收缩的水量, 排气以及起到定压的作用</li>
-<li>自然: 供水立管的最高点, 作用在于吸收系统中热水膨胀体积, 补充水量不足和排气<h3 id="3-排气途径不同"><a href="#3-排气途径不同" class="headerlink" title="3, 排气途径不同"></a>3, 排气途径不同</h3></li>
-<li>机械: 随着水流一起流动</li>
-<li>自然: 逆着水流方向浮升</li>
-</ul>
-<h2 id="b-机械供暖的主要方式-需要仔细看看"><a href="#b-机械供暖的主要方式-需要仔细看看" class="headerlink" title="b, 机械供暖的主要方式(需要仔细看看)"></a>b, 机械供暖的主要方式(需要仔细看看)</h2><h3 id="垂直式"><a href="#垂直式" class="headerlink" title="垂直式"></a>垂直式</h3><p>上供下回<br>下供下回<br>中供式<br>下供上回</p>
-<h3 id="水平式"><a href="#水平式" class="headerlink" title="水平式"></a>水平式</h3><p>水平单管顺流式,<br>单管跨越式</p>
-<h3 id="水平式优点"><a href="#水平式优点" class="headerlink" title="水平式优点"></a>水平式优点</h3><ul>
-<li>1, 安装简单, 穿楼板的立管少, 可逐层安装供暖系统</li>
-<li>2, 顶层不需专设膨胀水箱, 可利用楼梯间.厕所设置, 造价比垂直式低</li>
-</ul>
-<h3 id="水平式问题"><a href="#水平式问题" class="headerlink" title="水平式问题"></a>水平式问题</h3><ul>
-<li>1, 排气, 必须安装气阀</li>
-</ul>
-<h2 id="c-异程式与同程式"><a href="#c-异程式与同程式" class="headerlink" title="c, 异程式与同程式"></a>c, 异程式与同程式</h2><p>异程式: 每根立管都与锅炉.供.回水管组成循环环路, 而通过各根立管的循环环路的长度都是不同的<br>同程式: 增加了回水管长度, 使各分立管的循环环路的长度相等</p>
-<h3 id="同程式优缺点"><a href="#同程式优缺点" class="headerlink" title="同程式优缺点"></a>同程式优缺点</h3><p>优: 有利于环路间的阻力平衡, 热量分配易于达到设计要求,<br>缺: 用的金属管材较多, 施工时地沟深度增加</p>
-<h2 id="d-供热系统中散热器-膨胀水箱-疏水器的种类及作用有哪些？"><a href="#d-供热系统中散热器-膨胀水箱-疏水器的种类及作用有哪些？" class="headerlink" title="d, 供热系统中散热器, 膨胀水箱, 疏水器的种类及作用有哪些？"></a>d, 供热系统中散热器, 膨胀水箱, 疏水器的种类及作用有哪些？</h2><h3 id="散热器种类"><a href="#散热器种类" class="headerlink" title="散热器种类"></a>散热器种类</h3><p>种类</p>
-<ul>
-<li>1, 铸铁散热器(圆翼型, 长翼型, 柱型)</li>
-<li>2, 钢制散热器(闭式钢率片, 板型, 铁制柱型, 篇管)</li>
-<li>3, 其他材质散热器<br>功能:<br>具体一定温度的热媒所携带的热量是通过散热器不断地传给室内空气和物体的热量通过散热器壁面以对流, 辐射方式传递给室内</li>
-</ul>
-<h3 id="膨胀水箱作用"><a href="#膨胀水箱作用" class="headerlink" title="膨胀水箱作用"></a>膨胀水箱作用</h3><p>用来储存热水供暖系统加热的膨胀水量, 还起着排气作用, 恒定供暖系统的压力</p>
-<h3 id="疏水器种类"><a href="#疏水器种类" class="headerlink" title="疏水器种类"></a>疏水器种类</h3><p>种类</p>
-<ul>
-<li>1, 机械型疏水器(浮筒式, 钟型浮水式, 吊桶式)</li>
-<li>2, 热水型疏水器(脉冲式, 热动力式, 孔板式)</li>
-<li>3, 恒温型疏水器(双金属片式, 波纹管式, 液体膨胀式)<br>作用:<br>自动阻止蒸汽遗漏而且迅速地排出用热设备及管道中的凝水, 同时能排除系统中积留的空气和不凝气体。</li>
-</ul>
-<h1 id="3-1-3-高层建筑防火排烟-p115"><a href="#3-1-3-高层建筑防火排烟-p115" class="headerlink" title="3.1.3 高层建筑防火排烟 p115"></a>3.1.3 高层建筑防火排烟 p115</h1><h2 id="a-防火分区和防烟分区"><a href="#a-防火分区和防烟分区" class="headerlink" title="a, 防火分区和防烟分区"></a>a, 防火分区和防烟分区</h2><h3 id="1-防火分区"><a href="#1-防火分区" class="headerlink" title="(1)防火分区"></a>(1)防火分区</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义:"></a>定义:</h4><p>采用防火分隔措施划分的局部区域</p>
-<h4 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h4><ul>
-<li>1, 可有效防止火灾时火势蔓延和烟气传播</li>
-<li>2, 便于人员疏散和火灾的扑救</li>
-<li>3, 减少火灾的损失<h4 id="要求"><a href="#要求" class="headerlink" title="要求:"></a>要求:</h4></li>
-<li>1, 两个防火分区之间应水平设置 <code>防火墙``防火卷帘``防火门</code>等装置对火势进行阻隔</li>
-<li>2, 每个防火分区最大建筑面积: 一类1000m2, 二类1500m2, 地下室500m2</li>
-<li>3, 高层建筑, 设有火灾自动报警系统和自动灭火系统, 且采用不燃烧或难燃烧材料装修, 地上防火分区&lt;=4000m2, 地下部分 &lt;= 2000m2</li>
-<li>4, 高层建筑与裙房之间设有防火墙等防火分隔设施时, 裙房防火分区 &lt;= 2500m2</li>
-<li>5, 当设有自动喷水灭火系统: 最大面积增加一倍</li>
-</ul>
-<h3 id="2-防烟分区"><a href="#2-防烟分区" class="headerlink" title="(2)防烟分区"></a>(2)防烟分区</h3><h4 id="目的："><a href="#目的：" class="headerlink" title="目的："></a>目的：</h4><p>在火灾发生时候, 将烟气控制在一定范围内</p>
-<h4 id="要求-1"><a href="#要求-1" class="headerlink" title="要求:"></a>要求:</h4><ul>
-<li>1, 防烟分区不应跨越防火分区</li>
-<li>2, 每个防烟分区的建筑面积 &lt;= 500m2</li>
-<li>3, 走道, 净高不超过房间的6.0m, 采用挡烟垂璧, 隔墙突出 &gt;= 0.50的梁划分防烟分区</li>
-</ul>
-<h2 id="b-防-排烟方式"><a href="#b-防-排烟方式" class="headerlink" title="b, 防.排烟方式"></a>b, 防.排烟方式</h2><h3 id="自然排烟"><a href="#自然排烟" class="headerlink" title="自然排烟"></a>自然排烟</h3><p>优: 不需要动力/经济方便<br>缺: 易受到室外风力影响, 火势猛烈时, 火焰可能从开口部位向上蔓延</p>
-<h3 id="机械排烟"><a href="#机械排烟" class="headerlink" title="机械排烟"></a>机械排烟</h3><p>定义:使用排烟风机进行强制排烟<br>优: 不受室外风力影响, 工作可靠<br>缺: 初期投资多</p>
-<h1 id="3-2-4-空气处理设备-p125"><a href="#3-2-4-空气处理设备-p125" class="headerlink" title="3.2.4 空气处理设备 p125"></a>3.2.4 空气处理设备 p125</h1><h2 id="a-空气净化-加热-冷却-加湿-除湿"><a href="#a-空气净化-加热-冷却-加湿-除湿" class="headerlink" title="a, 空气净化, 加热, 冷却, 加湿, 除湿"></a>a, 空气净化, 加热, 冷却, 加湿, 除湿</h2><h3 id="空气过滤器"><a href="#空气过滤器" class="headerlink" title="空气过滤器"></a>空气过滤器</h3><p>粗效过滤器, 中效过滤器, 高效过滤器</p>
-<h3 id="空气加热器"><a href="#空气加热器" class="headerlink" title="空气加热器"></a>空气加热器</h3><p>表面式, 电加热</p>
-<h3 id="空气冷却器"><a href="#空气冷却器" class="headerlink" title="空气冷却器"></a>空气冷却器</h3><p>表面式空气冷却: 结构同表面式空气加热器, 不同的是冷冻水或制冷剂作为冷媒。</p>
-<ul>
-<li>以冷冻水作为冷媒, 水冷式空气冷却器</li>
-<li>以制冷剂作为冷媒, 直接蒸发式空气冷却器<br>喷水室:<h3 id="空气加湿器"><a href="#空气加湿器" class="headerlink" title="空气加湿器"></a>空气加湿器</h3>蒸汽喷管加湿器/电加湿器<h3 id="除湿设备"><a href="#除湿设备" class="headerlink" title="除湿设备"></a>除湿设备</h3>加热通风除湿:将湿度较低的室外空气加热送入室内, 从室内排除同等数量的潮湿空气<br>冷冻除湿: 利用制冷设备, 除掉空气中析出的凝结水, 再将空气温度升高达到除湿目的<br>液体吸湿剂除湿: 将盐水溶液与空气直接接触, 空气中的水分被盐分吸收, 从而到达吸湿目的<br>固体吸湿剂: 空气经过吸湿材料的表面或孔隙, 空气中的水分被吸附, 常用的是硅胶和氯化钙<h3 id="热交换器"><a href="#热交换器" class="headerlink" title="热交换器"></a>热交换器</h3><h2 id="b-装配式空调机组"><a href="#b-装配式空调机组" class="headerlink" title="b, 装配式空调机组"></a>b, 装配式空调机组</h2>将多种空气处理设备及风机, 阀门等制成带箱体的单元段, 根据工程需要组合, 实现多种空气处理要求的设备<h2 id="c-空调制冷设备"><a href="#c-空调制冷设备" class="headerlink" title="c, 空调制冷设备"></a>c, 空调制冷设备</h2></li>
-</ul>
-<h3 id="蒸汽压缩式制冷系统"><a href="#蒸汽压缩式制冷系统" class="headerlink" title="蒸汽压缩式制冷系统"></a>蒸汽压缩式制冷系统</h3><p>组成: 冷压缩机, 冷凝器, 膨胀阀, 蒸发器<br>工作过程: 来自蒸发器的低温低压制冷剂蒸汽被吸入压缩机, 压缩成高温高压制冷剂蒸汽, 进入冷凝器中放出热量, 冷凝程高压液体, 然后经膨胀阀节流降压后变成低温低压液体进入蒸发器, 在蒸发器中液体制冷剂蒸发吸收被冷却介质的热量, 变成低温低压气体再回到压缩机, 进行下一个循环。被冷却介质失去热量, 温度下降, 获得空调的冷媒水或冷风.</p>
-<h3 id="吸收式制冷系统"><a href="#吸收式制冷系统" class="headerlink" title="吸收式制冷系统"></a>吸收式制冷系统</h3><p>组成: 发生器, 冷凝器, 膨胀阀, 蒸发器, 吸收器<br>工作过程: 与蒸汽压缩式一样, 都是利用液体在汽化时要吸收热量来实现制冷, 不同的是, 蒸汽压缩式制冷消耗机械能, 吸收式制冷消耗热能使能量从低温热源转移到高温热源</p>
-<h3 id="制冷剂组"><a href="#制冷剂组" class="headerlink" title="制冷剂组"></a>制冷剂组</h3><p>就是将全部或部分制冷设备组装成一个整体, 直接向用户提供冷凝水。</p>
-<h3 id="循环水冷却系统"><a href="#循环水冷却系统" class="headerlink" title="循环水冷却系统"></a>循环水冷却系统</h3><p>大中型制冷系统冷凝器释放出的热量, 一般采用循环水冷却系统将散热量带走, 以保证制冷机组正常运行</p>
-<h3 id="大温差技术"><a href="#大温差技术" class="headerlink" title="大温差技术"></a>大温差技术</h3><p>空调送风或送水的温差比常规空调系统采用的温差大</p>
-<h1 id="4-1-2-建筑电气系统的分类-p144"><a href="#4-1-2-建筑电气系统的分类-p144" class="headerlink" title="4.1.2 建筑电气系统的分类 p144"></a>4.1.2 建筑电气系统的分类 p144</h1><p>组成: 建筑电气系统一般由 用电设备/供配电线路/ 控制和保护装置<br>分类:<br>根据 -&gt; 电能的产生, 分配, 传输和消耗使用,      类 -&gt; 供配电系统/用电系统<br>根据 -&gt; 用电设备的特点和系统中所传递能量的类型, 类 -&gt; 建筑照明系统/建筑动力系统/建筑弱电系统</p>
-<h2 id="a-建筑的供配电系统"><a href="#a-建筑的供配电系统" class="headerlink" title="a, 建筑的供配电系统"></a>a, 建筑的供配电系统</h2><h3 id="电能产生-输送和分配"><a href="#电能产生-输送和分配" class="headerlink" title="电能产生, 输送和分配"></a>电能产生, 输送和分配</h3><h4 id="1-电能产生-输送和分配"><a href="#1-电能产生-输送和分配" class="headerlink" title="(1)电能产生, 输送和分配"></a>(1)电能产生, 输送和分配</h4><p>电能的产生, 输送, 分配和使用的全过程是同时进行</p>
-<h4 id="2-发电厂"><a href="#2-发电厂" class="headerlink" title="(2)发电厂"></a>(2)发电厂</h4><p>定义: 将各种形式的能量转换为电能的工厂<br>分类: 火力发电厂, 水力, 风力, 原子核能</p>
-<h4 id="3-电能输送"><a href="#3-电能输送" class="headerlink" title="(3)电能输送"></a>(3)电能输送</h4><p>特点: 当发电厂除送电能一定时, 采用的送电电压越高, 线路损耗越低<br>所以, 远距离书店必须采用高压输电线</p>
-<h4 id="4-电能用户"><a href="#4-电能用户" class="headerlink" title="(4)电能用户"></a>(4)电能用户</h4><p>定义: 把电能转化为其他形式能量的设备</p>
-<h3 id="电路系统的电压和频率"><a href="#电路系统的电压和频率" class="headerlink" title="电路系统的电压和频率"></a>电路系统的电压和频率</h3><h4 id="1-电压等级"><a href="#1-电压等级" class="headerlink" title="(1)电压等级"></a>(1)电压等级</h4><p>我国规定交流电网的额定电压等级: 220V, 380V, 3KV, 6KV, 10KV, 3KV,110KV, 220KV<br>1k及以上的电压称为高压, 1kv以下称为低压</p>
-<h4 id="2-各种电压等级的使用范围"><a href="#2-各种电压等级的使用范围" class="headerlink" title="(2)各种电压等级的使用范围"></a>(2)各种电压等级的使用范围</h4><h4 id="3-额定电压和频率"><a href="#3-额定电压和频率" class="headerlink" title="(3)额定电压和频率:"></a>(3)额定电压和频率:</h4><p>使用工频交流电频率为50hz, 线/相电压为380/220V</p>
-<h3 id="民用建筑供电系统"><a href="#民用建筑供电系统" class="headerlink" title="民用建筑供电系统"></a>民用建筑供电系统</h3><p>小范围: 变电室, 6~10kv -&gt; 低压380/220V<br>大型:   高压变电所, 6~10kv -&gt; 经过几路高压配电线将电能分到变电所, 380/220v</p>
-<h3 id="电力负荷的分类"><a href="#电力负荷的分类" class="headerlink" title="电力负荷的分类"></a>电力负荷的分类</h3><p>定义: 根据供电可靠性及中断供电所造成的损失或者影响<br>分类: 一级负荷, 二级负荷, 三级负荷<br>一级负荷: 1, 中断供电将造成人身伤害/2, 中断供电将造成重大影响和重大损失/ 3, 破坏有重大影响的用电单位的正常工作, 或造成秩序混乱<br>二级负荷: </p>
-<ul>
-<li>1, 造成较大影响或损失/2, 将影响重要用电单位的正常工作或造成秩序混乱</li>
-<li>要求: 要用两个独立电源系统供电, 只有一个电源供电时, 必须使用两个回路<br>三级负荷: 可接约定供电<h2 id="b-电气照明系统"><a href="#b-电气照明系统" class="headerlink" title="b, 电气照明系统"></a>b, 电气照明系统</h2>定义: 凡是建筑物内外将电能转换为光能, 以保证人们正常的生活, 生产和工作学习活动, 满足着视力和装饰要求的照明设施<h3 id="组成-1"><a href="#组成-1" class="headerlink" title="组成"></a>组成</h3>电气系统: 电能的产生, 输送, 分配, 控制和消耗使用的整个系统<br>照明系统: 光能的产生, 传播, 分配, 控制和消耗系统<h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3>正常照明, 事故照明, 警卫值班照明, 节日彩灯和装饰照明</li>
-</ul>
-<h2 id="c-建筑动力系统"><a href="#c-建筑动力系统" class="headerlink" title="c, 建筑动力系统"></a>c, 建筑动力系统</h2><h3 id="电动机种类和应用"><a href="#电动机种类和应用" class="headerlink" title="电动机种类和应用"></a>电动机种类和应用</h3><p>交流电动机: 笼式异步电动机/ 绕线转子电动机<br>直流电动机: 串励式/ 并励式/ 复励式</p>
-<p>异步电动机构造简单, 价格便宜, 启动方便, 在建筑动力系统中得到广泛应用.</p>
-<h3 id="异步电动机的启动"><a href="#异步电动机的启动" class="headerlink" title="异步电动机的启动"></a>异步电动机的启动</h3><p>电动机从接通电源开始转动, 到转速增至额定转速的过程</p>
-<h3 id="异步电动机的启动方法"><a href="#异步电动机的启动方法" class="headerlink" title="异步电动机的启动方法"></a>异步电动机的启动方法</h3><p>异步电动机的启动方法由它的结构和其所接的电影容量大小决定</p>
-<h2 id="d-建筑弱电系统"><a href="#d-建筑弱电系统" class="headerlink" title="d, 建筑弱电系统"></a>d, 建筑弱电系统</h2><p>强电: 以安倍为单位<br>弱电: 以毫安为计量单位</p>
-<p>功能: 主要进行信息的传递和交换<br>主要包括: 火灾自动报警, 消防联动系统, 电话通信系统, 建筑广播, 共用电视天线, 有线电视系统, 智能化建筑综合布线和安防系统</p>
-<h1 id="4-4-2-保护接地与保护接零-p188"><a href="#4-4-2-保护接地与保护接零-p188" class="headerlink" title="4.4.2 保护接地与保护接零 p188"></a>4.4.2 保护接地与保护接零 p188</h1><p>保护接地: 电气设备的某部分(设备可导电外壳)用金属导体与大地作良好的电气连接</p>
-<p>保护接零: 电源中性点接地的系统中, 将电气设备不带电的金属部分与零线作良好的接触</p>
-<p>中性线和零线的区别: 发电机, 变压器, 电动机和电器等的绕组中心以及带电源的串联回路中有一点, 此点与外部各接线端间的电压的绝对值均相等, 这一点称为中性点或中点。 当中性点接地时, 该点称为零点. 由中性点引出的导线称为中心线, 由零点引出的导线称为零线</p>
-<p>接地体: 埋入地中并直接与大地接触的金属导体<br>自然接地体: 兼作接地用的直接与大地接触的各种金属构件, 金属井管, 钢筋混凝土建筑物的基础, 金属管道和设备<br>人工接地体: 转为接地埋入地中的圆钢, 角钢<br>接地线: 连接设备接地部分与接地体的金属导线<br>接地装置: 接地体和接地线的总和</p>
-<h2 id="a-接地概述"><a href="#a-接地概述" class="headerlink" title="a, 接地概述"></a>a, 接地概述</h2><h3 id="1-电气接地作用"><a href="#1-电气接地作用" class="headerlink" title="(1) 电气接地作用"></a>(1) 电气接地作用</h3><p>如果电气设备某处绝缘损坏而使外壳带点时, 一旦人触及电气绝缘损坏的外壳, 如果没有接地装置, 利用”并联分流”作用, 接地电流将同时沿着接地体和人体两条通路分流。接地电阻越小, 流经人体的电流也就越小; 如果接地电阻小于某个定值, 流过人体的电流也就小于伤害人体的电流值, 使人体避免触电的危险</p>
-<h3 id="2-接地电阻"><a href="#2-接地电阻" class="headerlink" title="(2)接地电阻"></a>(2)接地电阻</h3><p>指电流从埋入地中的接地体散流到周围土壤时, 接地体与大地远处的电位差与该电流之比, 而不是接地体的表面电阻。</p>
-<h3 id="3-电气”地”或”大地”"><a href="#3-电气”地”或”大地”" class="headerlink" title="(3)电气”地”或”大地”"></a>(3)电气”地”或”大地”</h3><p>接地电流在大地中散逸时, 在各个有不同的电位梯度地方称为电气上的”地”或”大地”</p>
-<h2 id="b-接地类型"><a href="#b-接地类型" class="headerlink" title="b, 接地类型"></a>b, 接地类型</h2><ul>
-<li>工作接地: 电气设备在正常和事故情况下可靠地工作而进行的接地</li>
-<li>保护接地: 在中性点不接地或没有中性线的低压系统中, 将电气设备在正常情况下不带电的金属外壳部分与接地体之间作良好的金属连接</li>
-<li>保护接零: 在电源中性点接地系统中, 将在正常情况下电气设备不带电的金属外壳, 框架等与零线作良好的金属连接</li>
-<li>重复接地: 采用保护接零时, 除系统的中性点工作接地外, 将零线上的一点或多点与地再作金属连接</li>
-<li>屏蔽接地: 为使干扰电场在金属屏蔽层感应所产生的电荷导入带地, 而将金属屏蔽层接地</li>
-<li>专用电气设备的接地: 设备接地</li>
-</ul>
-<h2 id="c-常见保护接地方式"><a href="#c-常见保护接地方式" class="headerlink" title="c, 常见保护接地方式"></a>c, 常见保护接地方式</h2><p>分类: IT, TT, TN<br>IT&amp;TT的设备外露可导电部分经各自的保护线直接接地(保护接地)<br>TN系统的设备外露可导电部分经过公共的保护线与电源中性点直接电气连接(接零保护)</p>
-<h1 id="5-2-火灾自动报警系统-p237"><a href="#5-2-火灾自动报警系统-p237" class="headerlink" title="5.2 火灾自动报警系统 p237"></a>5.2 火灾自动报警系统 p237</h1><h2 id="自动报警系统组成"><a href="#自动报警系统组成" class="headerlink" title="自动报警系统组成"></a>自动报警系统组成</h2><p>触发器, 火灾报警装置, 消防控制设备, 电源</p>
-<h2 id="联动"><a href="#联动" class="headerlink" title="联动"></a>联动</h2><p>火灾自动报警系统必须与消防系统联动控制, 包括了固定灭火装置的联动控制, 防排烟设备的联动控制, 应急与消防疏散指示系统, 火灾应急广播与警报装置, 消防专用电话和消防电梯的联动控制.</p>
-<h2 id="控制器工作原理"><a href="#控制器工作原理" class="headerlink" title="控制器工作原理"></a>控制器工作原理</h2><p>提供火灾探测器稳定的直流电源, 监视连接的探测器有无故障, 保证探测器长期, 稳定有效, 工作;<br>当火灾探测器探测火情后, 迅速处理, 执行控制</p>
-<h1 id="非重点题目"><a href="#非重点题目" class="headerlink" title="非重点题目"></a>非重点题目</h1><h2 id="通气管有哪几种类型"><a href="#通气管有哪几种类型" class="headerlink" title="通气管有哪几种类型"></a>通气管有哪几种类型</h2><p>伸顶通气管, 器具通气管, 环形, 专用通气立管, 主通气立管, 副通气立管, 结合通气管</p>
-<h2 id="在什么条件下设置消防水池"><a href="#在什么条件下设置消防水池" class="headerlink" title="在什么条件下设置消防水池"></a>在什么条件下设置消防水池</h2><ul>
-<li>生产, 生活用水量达到最大时, 市政给水管道, 赴水管或天然水源不能满足室内外消防用水量</li>
-<li>市政给水管道为枝状或只有一条进水管, 且消防用水量之和超过25 L/S</li>
-</ul>
-<h2 id="高层建筑热水供暖系统的方式有哪些-2-2-4"><a href="#高层建筑热水供暖系统的方式有哪些-2-2-4" class="headerlink" title="高层建筑热水供暖系统的方式有哪些? 2.2.4"></a>高层建筑热水供暖系统的方式有哪些? 2.2.4</h2><p>竖向分区式, 双线式供暖系统, 单双管混合式系统</p>
-<h2 id="燃煤锅炉的基本构造有哪些-其工作过程可分为几部分-2-5"><a href="#燃煤锅炉的基本构造有哪些-其工作过程可分为几部分-2-5" class="headerlink" title="燃煤锅炉的基本构造有哪些? 其工作过程可分为几部分? 2.5"></a>燃煤锅炉的基本构造有哪些? 其工作过程可分为几部分? 2.5</h2><h3 id="锅炉基本构造"><a href="#锅炉基本构造" class="headerlink" title="锅炉基本构造"></a>锅炉基本构造</h3><h4 id="气锅-gt-封闭汽水系统"><a href="#气锅-gt-封闭汽水系统" class="headerlink" title="气锅 =&gt; 封闭汽水系统"></a>气锅 =&gt; 封闭汽水系统</h4><p>锅筒, 管束, 水冷壁, 集筒, 下降管</p>
-<h4 id="炉子-gt-燃烧设备"><a href="#炉子-gt-燃烧设备" class="headerlink" title="炉子 =&gt; 燃烧设备"></a>炉子 =&gt; 燃烧设备</h4><p>煤斗, 炉排, 除渣板, 送风装置</p>
-<h3 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h3><p>燃料的燃烧过程, 烟气向水的传热过程和水的受热汽化过程</p>
-<h2 id="建筑内消火栓系统由哪些主要部分组成-建筑内消火栓系统供水方式有几种"><a href="#建筑内消火栓系统由哪些主要部分组成-建筑内消火栓系统供水方式有几种" class="headerlink" title="建筑内消火栓系统由哪些主要部分组成? 建筑内消火栓系统供水方式有几种?"></a>建筑内消火栓系统由哪些主要部分组成? 建筑内消火栓系统供水方式有几种?</h2><p>组成: 消防水源, 消防供水设备, 室内消防给水管道, 室内消火栓<br>方式: </p>
-<ul>
-<li>无加压泵和水箱的消火栓给水系统</li>
-<li>设有水箱的消火栓给水系统</li>
-<li>设有消防水泵和消防水箱的消火栓给水系统</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/26/archi-equipment/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1782,605 +2052,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/25/archi-materials/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/25/archi-materials/" itemprop="url">建筑材料复习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-25T14:14:27+08:00">
-                2018-06-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>单项 多项 判断 简答</p>
-<h1 id="ch1-材料的基本性质"><a href="#ch1-材料的基本性质" class="headerlink" title="ch1 材料的基本性质"></a>ch1 材料的基本性质</h1><h2 id="材料密度-P5"><a href="#材料密度-P5" class="headerlink" title="材料密度 P5"></a>材料密度 P5</h2><p>密度: 材料在绝对密实状态下, 单位体积的质量<br>表观密度: 自然状态下单位体积的质量</p>
-<p>堆积密度: 粉状材料(水泥) 或 粒状材料(砂, 石)在堆积状态下, 单位体积的质量<br>密实度: 材料体积内固体物质所充实的程度<br>孔隙率: 孔隙体积 与 自然状态下的体积之比 百分数<br>空隙率: 散粒材料 空隙体积 与 堆积体积之比</p>
-<h2 id="材料的孔隙特征-P7"><a href="#材料的孔隙特征-P7" class="headerlink" title="材料的孔隙特征 P7"></a>材料的孔隙特征 P7</h2><ul>
-<li>孔隙特征: 孔隙是否封闭及孔隙的粗细</li>
-<li>直接反映材料的致密程度，会影响强度, 吸水性, 抗渗性</li>
-</ul>
-<p>隔声, 绝热, 防潮的各自特征 </p>
-<ul>
-<li>隔声: 孔隙开放 且 粗</li>
-<li>绝热: 孔隙封闭 且 细</li>
-<li>防潮: 孔隙封闭 且 细</li>
-</ul>
-<h1 id="ch2-天然石材"><a href="#ch2-天然石材" class="headerlink" title="ch2 天然石材"></a>ch2 天然石材</h1><h2 id="岩石的基本分类-P19"><a href="#岩石的基本分类-P19" class="headerlink" title="岩石的基本分类 P19"></a>岩石的基本分类 P19</h2><p>火成岩, 沉积岩, 变质岩</p>
-<p>珊瑚属于（沉积岩）</p>
-<h2 id="火成岩的分类-p19"><a href="#火成岩的分类-p19" class="headerlink" title="火成岩的分类 p19"></a>火成岩的分类 p19</h2><p>深成岩, 喷出岩, 火山岩<br>概念看一看</p>
-<h2 id="岩石的物理性能-P20"><a href="#岩石的物理性能-P20" class="headerlink" title="岩石的物理性能 P20"></a>岩石的物理性能 P20</h2><p>大概的密度 2.50-2.70g/cm3</p>
-<h2 id="常用岩石-P22"><a href="#常用岩石-P22" class="headerlink" title="常用岩石 P22"></a>常用岩石 P22</h2><p>仔细看看</p>
-<p>花岗岩</p>
-<ul>
-<li>抗压强度高, 耐久性高, 公认是一种优良的建筑结构及装饰材料, 为许多大型建筑所采用</li>
-<li>材质坚硬, 耐磨性好</li>
-<li>耐酸材料</li>
-<li>室内室外都可以</li>
-</ul>
-<p>大理石</p>
-<ul>
-<li>易被酸性腐蚀</li>
-<li>抛光材料</li>
-<li>不能挂在外面, 地面和..</li>
-</ul>
-<p>砂岩</p>
-<ul>
-<li>质地较软, 不耐酸腐蚀</li>
-</ul>
-<h2 id="石材的加工-P26"><a href="#石材的加工-P26" class="headerlink" title="石材的加工 P26"></a>石材的加工 P26</h2><p>简单看一下</p>
-<h4 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h4><p>毛石 -&gt; 料石及荒料 -&gt; 板材</p>
-<h4 id="概念"><a href="#概念" class="headerlink" title="概念:"></a>概念:</h4><p>毛石: 毛石是在采石场爆破后直接得到的形状不规则的石块<br>石料: 六面体石块, 略经雕琢而成<br>板材: 用致密岩石凿平厚度不大的石材称为板材</p>
-<h1 id="ch3-烧土制品及玻璃"><a href="#ch3-烧土制品及玻璃" class="headerlink" title="ch3 烧土制品及玻璃"></a>ch3 烧土制品及玻璃</h1><h2 id="烧结普通砖-P31"><a href="#烧结普通砖-P31" class="headerlink" title="烧结普通砖 P31"></a>烧结普通砖 P31</h2><p>仔细看一看<br>经采土, 调制, 制坯, 干燥, 焙烧, 冷却 成为烧结普通砖</p>
-<p>标准尺寸 <code>240mm*115mm*53mm</code></p>
-<p>外观+尺寸</p>
-<h2 id="烧结空心砖-和-空心砌块-P36"><a href="#烧结空心砖-和-空心砌块-P36" class="headerlink" title="烧结空心砖 和 空心砌块 P36"></a>烧结空心砖 和 空心砌块 P36</h2><p>仔细看一看<br>烧结空心砖的尺寸: 365mm, 240mm, 115mm<br>空心砌块: 超过烧结空心砖的尺寸</p>
-<p>117.凡是空洞率大于（ B ）的砖称为空心砖。  B.15%<br>118.烧结多孔砖的强度等级按( C )来评定。  C.抗压强度<br>120.(A) 主要用于非承重的填充墙和隔墙。  A.烧结空心砖</p>
-<h2 id="建筑陶瓷-P39"><a href="#建筑陶瓷-P39" class="headerlink" title="建筑陶瓷 P39"></a>建筑陶瓷 P39</h2><p>想象发挥</p>
-<p>122.建筑陶瓷的主要原料是( B )   B.黏土</p>
-<p>124.通常所说的“马赛克”是指（ C ）。  C．陶瓷锦砖</p>
-<h2 id="其他玻璃-P46"><a href="#其他玻璃-P46" class="headerlink" title="其他玻璃 P46"></a>其他玻璃 P46</h2><p>安全玻璃: 钢化玻璃, 夹丝玻璃, 夹层玻璃<br>节能玻璃: 中空玻璃<br>简单看一下: 概念+意义+用途</p>
-<p>123.建筑玻璃中用量最大的是( A )。  A.平板玻璃<br>125.下列关于玻璃的基本知识叙述不正确的一项是（ C ）。 C．玻璃在冲击作用下易破碎，是典型的塑性材料</p>
-<h1 id="ch4-气硬性胶凝材料"><a href="#ch4-气硬性胶凝材料" class="headerlink" title="ch4 气硬性胶凝材料"></a>ch4 气硬性胶凝材料</h1><h2 id="气硬性凝胶材料和水硬性材料的区别-P54"><a href="#气硬性凝胶材料和水硬性材料的区别-P54" class="headerlink" title="气硬性凝胶材料和水硬性材料的区别 P54"></a>气硬性凝胶材料和水硬性材料的区别 P54</h2><p>气硬性:</p>
-<ul>
-<li>1, 只能在空气中硬化, 也只能在空气中保持或提高强度, 如 石灰, 石膏, 水玻璃</li>
-<li>2,  地上或者干燥环境, 不宜用于潮湿环境和水中</li>
-</ul>
-<p>水硬性:</p>
-<ul>
-<li>1, 不仅能在空气中, 而且能更好地在水中硬化, 保持提高强度, 如 水泥</li>
-<li>2, 既适用于地上或干燥环境, 也适用于地下或水中 </li>
-</ul>
-<h1 id="ch5-水泥-P64"><a href="#ch5-水泥-P64" class="headerlink" title="ch5 水泥 P64"></a>ch5 水泥 P64</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类:"></a>分类:</h2><p>硅酸盐水泥和普通硅酸盐水泥</p>
-<h2 id="水泥的生产过程-P65图"><a href="#水泥的生产过程-P65图" class="headerlink" title="水泥的生产过程 P65图"></a>水泥的生产过程 P65图</h2><ul>
-<li>1, 生料的配制和磨细, (石灰岩, 黏土, 铁矿粉)</li>
-<li>2, 生料经煅烧, 使之部分熔融而形成熟料;</li>
-<li>3, 将熟料, 石灰石或者高炉矿渣与适量石膏共同磨细, 即成为硅酸盐水泥</li>
-</ul>
-<h2 id="水泥的物理性能-P67-support"><a href="#水泥的物理性能-P67-support" class="headerlink" title="水泥的物理性能 P67 support::"></a>水泥的物理性能 P67 support::</h2><ul>
-<li>密度和表观密度<br>密度: 决定于熟料的矿物组成, 一般在3.1 ~ 3.2g/cm3之间, 水泥受潮密度降低<br>表观密度: 一般在900-1300kg/m3之间, 紧密状态可达1400-1700kg/m3, 水泥越细表观密度越小</li>
-<li>细度: 越细与水反应的表面积越大, 水化作用既迅速又完全, 凝结速度加快</li>
-<li>凝结时间: 初凝和终凝, 开始失去可塑性和完全失去可塑性</li>
-<li>体积安定性: 水泥在硬化过程中, 体积均匀发生变化的性能</li>
-<li>强度: 抗压和抗折强度, 分为不同的强度等级</li>
-</ul>
-<p>细度:</p>
-<ul>
-<li>62.硅酸盐水泥细度用（ B ）表示。  B．比表面积<br>初凝:</li>
-<li>56.硅酸盐水泥标准规定，初凝时间不得早于（ A ）。  A.45min    </li>
-</ul>
-<h2 id="腐蚀和防止腐蚀的方法-P70"><a href="#腐蚀和防止腐蚀的方法-P70" class="headerlink" title="腐蚀和防止腐蚀的方法 P70"></a>腐蚀和防止腐蚀的方法 P70</h2><p>腐蚀: 软水腐蚀, 一般酸性水腐蚀, 碳酸腐蚀, 硫酸盐腐蚀</p>
-<p>68.水泥石中引起腐蚀的组分主要是（ A ）。  A.氢氧化钙和水化铝酸钙<br>71.海水中的( A ) 对水泥石有腐蚀作用。  A.硫酸盐</p>
-<p>防腐: </p>
-<ul>
-<li>1, 选择适当水泥品种</li>
-<li>2, 尽量提高水泥密实度, 减少渗透作用</li>
-<li>3, 设置耐腐蚀性强, 且不透水的防护层, 如耐酸石材, 沥青</li>
-</ul>
-<h2 id="为什么掺入混合料-p71"><a href="#为什么掺入混合料-p71" class="headerlink" title="为什么掺入混合料 p71"></a>为什么掺入混合料 p71</h2><p>提高产量, 降低成本, 改善水泥性能, 调节水泥强度等级, 扩大使用范围, 保护环境</p>
-<p>69.掺活性混合材料的水泥抗碳化能力差的原因是由于水泥石中(  B ) 的原因。  B.Ca(OH)2含量低<br>70.普通硅酸水泥中掺入少量混合材料的主要作用是( A)   A 扩大其强度等级范围，以利于合理选用</p>
-<h2 id="特种水泥-p75"><a href="#特种水泥-p75" class="headerlink" title="特种水泥 p75"></a>特种水泥 p75</h2><p>快硬水泥<br>白色和彩色水泥<br>膨胀水泥<br>快硬硫铝酸盐水泥</p>
-<h1 id="ch6-混凝土和砂浆"><a href="#ch6-混凝土和砂浆" class="headerlink" title="ch6 混凝土和砂浆"></a>ch6 混凝土和砂浆</h1><h2 id="混凝土配比-p82-图"><a href="#混凝土配比-p82-图" class="headerlink" title="混凝土配比 p82 图"></a>混凝土配比 p82 图</h2><p>石头, 沙子, 水泥浆, 空气<br>水泥约占混凝土总重的10%~15%, 其余均为砂, 石骨料,  砂石比例为1:2, 空气的体积含量1%~3%</p>
-<h2 id="各自作用"><a href="#各自作用" class="headerlink" title="各自作用 ????"></a>各自作用 ????</h2><p>水泥: 胶结作用, 所少沙与石间摩擦的润滑作用<br>骨料: 其功用是构成混凝土骨架, 减少水泥用量和减小混凝土体积收缩<br>空气: ????</p>
-<p>25.普通混凝土是由哪四种基本材料组成，它们各起何作用？<br>答：水、水泥、砂(细骨料)、石子( 粗骨料)是普通混凝土的四种基本组成材料。<br>水和水泥形成水泥浆，在混凝土中赋予拌合混凝土以流动性；<br>粘接粗、细骨料形成整体<br>填充骨料的间隙，提高密实度。<br>砂和石子构成混凝土的骨架，有效抵抗水泥浆的干缩；<br>砂石颗粒逐级填充，形成理想的密实状态，节约水泥浆的用量。</p>
-<h2 id="骨料的颗粒组成-p83"><a href="#骨料的颗粒组成-p83" class="headerlink" title="骨料的颗粒组成 p83"></a>骨料的颗粒组成 p83</h2><p>级配: 指混凝土所用骨料的粗细分级和组成情况</p>
-<p>粗,细颗粒含量适当, 骨料的空隙率较小, 同时颗粒总表面积较小</p>
-<h2 id="和易性-p86"><a href="#和易性-p86" class="headerlink" title="和易性 p86"></a>和易性 p86</h2><p>概念: 在搅拌, 运输, 浇灌过程中易于操作, 能保持均匀而不发生离析的性能</p>
-<p>流动性, 黏聚性, 保水性</p>
-<p>坍落度测定: 分成三层捣实, 提起筒后, 最高点与坍落筒的高差<br>55.坍落度是流动性(亦称稠度)的指标，坍落度值越大，流动性越大。( √ )</p>
-<p>75.减水剂能使混凝土拌和物在不增加水泥用量的条件下，改善和易性，降低( B)  B.泌水性</p>
-<p>89.混凝土拌合物的流动性能够反映（ A ）。  A.混凝土拌合物的稀稠程度及充满模板的能力<br>90.当混凝土拌合物流动性偏小时，应采取( A )办法来调整。  A.保证水灰比不变的情况下，增加水泥浆数量<br>91.在配制混凝土时如拌合物流动性过大，就需要(D)。  D.保持砂率不变，加砂和石子<br>92.当混凝土拌合物流动性偏大时，应采取（ B ）办法来调整。  B.保证砂率不变，增加砂石用量<br>93.混凝土拌合物的保水性能够反映( B )。  B.混凝土拌合物的稳定性<br>93.混凝土拌合物的粘聚性能反映（ C ）   C.混凝土拌合物的均匀性</p>
-<h2 id="混凝土的种类和使用场合"><a href="#混凝土的种类和使用场合" class="headerlink" title="混凝土的种类和使用场合"></a>混凝土的种类和使用场合</h2><p>多孔混凝土: 砌块, 保温套, 隔热层<br>耐热混凝土: 高温环境<br>耐酸混凝土: 酸雨和软水腐蚀的环境</p>
-<h2 id="砂浆分类"><a href="#砂浆分类" class="headerlink" title="砂浆分类"></a>砂浆分类</h2><p>抹面, 防水, 装饰砂浆</p>
-<p>装饰砂浆中有:</p>
-<ul>
-<li>水磨石, 水刷石, 人造大理石</li>
-</ul>
-<p>64.砂浆试件尺寸采用(70.7×70.7×70.7)mm立方体试件。( √ )</p>
-<p>32.根据建筑部位的不同，如何选择抹面砂浆？<br>答：用于砖墙的底层抹灰，多用石灰砂浆；用于板条墙或板条顶棚的底层抹灰多用混合砂浆或石灰砂浆；混凝土墙、梁、柱、顶板等底层抹灰多用混合砂浆、麻刀石灰浆或纸筋石灰浆。<br>在容易碰撞或潮湿的地方，应采用水泥砂浆。如墙裙、踢脚板、地面、雨棚、窗台以及水池、水井等处一般多用1׃2.5的水泥砂浆。</p>
-<h1 id="ch7-金属材料"><a href="#ch7-金属材料" class="headerlink" title="ch7 金属材料"></a>ch7 金属材料</h1><h2 id="拉伸的过程-P109"><a href="#拉伸的过程-P109" class="headerlink" title="拉伸的过程 P109"></a>拉伸的过程 P109</h2><p>弹性阶段 -&gt; 屈服阶段(最低应力:屈服点) -&gt; 强化阶段</p>
-<p>屈服点: 屈服阶段的最低应力<br>屈服强度: 塑性变形为 0.2% 时应力</p>
-<h2 id="冷加工和热加工的概念"><a href="#冷加工和热加工的概念" class="headerlink" title="冷加工和热加工的概念"></a>冷加工和热加工的概念</h2><p>冷: 经过冷拉, 冷拔, 冷轧, 性能发生显著改变, 表现为强度提高, 塑性减小, 变硬变脆<br>热: 对刚才进行加热和冷却的一种处理方法, 改变钢的结构, 消除冷加工内应力, 改善刚才机械性能</p>
-<h2 id="碳素钢-钢材成分"><a href="#碳素钢-钢材成分" class="headerlink" title="碳素钢 钢材成分"></a>碳素钢 钢材成分</h2><p>性能决定于含碳量的多少, 以及硅锰磷硫<br>有害: 磷硫含量多, 影响塑性, 使得钢变脆<br>有用: 硅锰提高, 强度和硬度提高<br>人为调整: 含碳量高, 强度高, 但塑性小, 硬度大, 性脆, 不容易加工</p>
-<h1 id="ch8-木材"><a href="#ch8-木材" class="headerlink" title="ch8 木材"></a>ch8 木材</h1><h2 id="宏观构造"><a href="#宏观构造" class="headerlink" title="宏观构造:"></a>宏观构造:</h2><p>树皮, 木质部和髓心</p>
-<h2 id="吸声材料的分类-p165"><a href="#吸声材料的分类-p165" class="headerlink" title="吸声材料的分类 p165"></a>吸声材料的分类 p165</h2><p>多孔性吸声材料, 薄板振动吸声结构, 共振吸声结构, 穿孔板组合共振吸声结构, 柔性吸声材料</p>
-<h1 id="ch9-涂料"><a href="#ch9-涂料" class="headerlink" title="ch9 涂料"></a>ch9 涂料</h1><h2 id="涂料的种类-p170"><a href="#涂料的种类-p170" class="headerlink" title="涂料的种类 p170"></a>涂料的种类 p170</h2><p>溶剂型, 水溶性, 乳胶漆</p>
-<h2 id="油漆的类型-p180"><a href="#油漆的类型-p180" class="headerlink" title="油漆的类型 p180"></a>油漆的类型 p180</h2><p>天然漆, 调和漆, 清漆, 瓷漆, 喷漆, 夜光油漆, 有机耐高温漆</p>
-<h1 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h1><h2 id="拉伸-p114"><a href="#拉伸-p114" class="headerlink" title="拉伸 p114"></a>拉伸 p114</h2><p><strong>考</strong><br>ch7<br>钢材拉伸的图 P110<br>冷加工的图 P114<br>解读对应过程和点</p>
-<p>0-&gt;a, 弹性阶段<br>a-&gt;b, 屈服阶段, 发生塑性变形, 最低应力点为屈服点<br>b-&gt;c, 强化阶段, 最大应力值为抗拉强度<br>c-&gt;g, 冷加工阶段, 强度提高, 塑性减小<br>颈缩阶段</p>
-<p>屈服强度: 塑性变形为 0.2% 时应力</p>
-<h2 id="石膏-p57"><a href="#石膏-p57" class="headerlink" title="石膏 p57"></a>石膏 p57</h2><p>气硬性: 只能在空气中硬化, 也只能在空气中保持或提高强度<br>性能: 质地轻, 容易加工, 装饰效果较好, 是一种凝结, 硬化快的凝胶材料<br>适用场合: 地上或者干燥环境, 不适用于潮湿环境和水中</p>
-<h2 id="混凝土-p82"><a href="#混凝土-p82" class="headerlink" title="混凝土 p82 ????"></a>混凝土 p82 <code>????</code></h2><p>级配p83: 指混凝土所用骨料的粗细分级和组成情况<br>比例p82: 水泥约占混凝土总重的10%~15%, 其余均为砂, 石骨料,  砂石比例为1:2, 空气的体积含量1%~3%</p>
-<p>影响混凝土强度因素p89: 水泥强度和水灰比, 骨料的质量, 养护条件, 龄期 <code>????</code><br>改善方法: 高标号水泥, 低水灰比, 强制搅拌, 加压震荡提高强度; 采用蒸汽养护, 可加速混凝土强度发展</p>
-<p>84.在原材料一定的情况下，决定混凝土强度的最主要因素是( A ) 。  B.水灰比<br>90.当混凝土拌合物流动性偏小时，应采取( A )办法来调整。  A.保证水灰比不变的情况下，增加水泥浆数量<br>101.混凝土配合比设计中的三个基本参数分别是（ A ）。  A.水灰比、砂率、单位用水量</p>
-<h2 id="水泥-p65"><a href="#水泥-p65" class="headerlink" title="水泥 p65"></a>水泥 p65</h2><p>材料: </p>
-<ul>
-<li>石灰岩, 黏土, 铁矿粉</li>
-</ul>
-<p>影响水泥强度:</p>
-<ul>
-<li>水, 沙子, 水泥砂浆</li>
-<li>硅酸三钙含量多, 粉磨较细的水泥, 强度增长快, 最终强度也高</li>
-<li>56.国标规定硅酸盐水泥的强度等级是以水泥胶砂试件在(C)龄期的强度来评定的。  C. 3d 和28d</li>
-</ul>
-<p><strong>考</strong><br>水化热反应 p69</p>
-<ul>
-<li>放热, 在凝结硬化过程中放出热量, 强度影响<br>影响因素:</li>
-<li>水泥熟料的矿物组成和细度(越细, 与水反应越快)</li>
-<li>水灰比(主要成分, 加水量要大大超过水泥充分水分的用水量)</li>
-<li>温度和湿度(温度升高, 水化速度加快)</li>
-</ul>
-<p><strong>考</strong> 水泥的生产过程 P65图</p>
-<ul>
-<li>1, 生料的配制和磨细, (石灰岩, 黏土, 铁矿粉)</li>
-<li>2, 生料经煅烧, 使之部分熔融而形成熟料;</li>
-<li>3, 将熟料, 石灰石或者高炉矿渣与适量石膏共同磨细, 即成为硅酸盐水泥</li>
-</ul>
-<h2 id="石灰-p55"><a href="#石灰-p55" class="headerlink" title="石灰 p55"></a>石灰 p55</h2><p>水化与熟化的过程的概念？ p5</p>
-<p>熟化: </p>
-<ul>
-<li>生石灰加水生成氢氧化钙</li>
-<li>加水过多温度下降, 熟的速度减慢</li>
-</ul>
-<p>硬化:</p>
-<ul>
-<li>1, 在干燥过程中, 水分蒸发, 氢氧化钙从过饱和溶液中逐渐析出, 形成结晶</li>
-<li>2, CaOH2吸收CO2, 生成不溶解于水的碳酸钙结晶, 并放出水分</li>
-</ul>
-<h1 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h1><p>《建筑材料》期末考试题库1<br>单选题<br>1.木材、玻璃纤雄、矿棉的掏透都是( D )。  D.纤维状构造<br>2.下列各种材料的构造属于纤维状的是( D )。  D.木材<br>3.材料的孔隙状况应属于材料的（ A ）。  A.物理性质<br>4.孔隙按其连通性可以分为（ A ）。  A.连通孔、封闭孔、半连通孔<br>4.材料的密度应属于材料的（ A ）。  A.物理性质<br>5.在材料表观密度的体积构成中包括（ B ）。  B．闭口孔隙体积<br>6.材料的密实体积V，自然体积V0堆积体积V1三者的大小关系是( C )。  C.Vl≥V0≥V<br>7.密度是指材料在( C )下单位体积的质量。  C.绝对密实状态、<br>8.材料在绝对密实状态下，单位体积的质量称为( A)。  A.密度<br>9.材料的( D )是指粉状、颗粒状或纤维状材料在堆积状态下单位体积的质量。  D.堆积密度<br>10.材料的( C )是材料在自然状态下，单位体积的质量。  C.表观密度<br>11.对于某一种材料来说，无论环境怎样变化，其( B )都是一定值。  B.密度<br>12.材料的密度（ρ），表现密度（ρ′）及体积密度（ρо）存在如下关系：（B ）。B．ρ≥ρ′≥ρ<br>13.对于颗粒状外形不规则的坚硬颗粒，如砂或石子，其体积可采用排水法测得，故对此类材料一般采用(B )表示。  B.表观密度<br>14.散粒材料的堆积体积内，颗粒之间的空隙体积所占的比例称为（ B ）。  空隙率<br>15.材料的体积内，孔隙体积所占的比例称为( A )。  A.孔隙率<br>16.质量为 M 的湿砂，吸水率为W，其中干砂的质量为( A)<br>17.增加加气硅砌块的孔隙率，该加气硅砌块的吸水率( A )。  A.增大<br>18.某材料吸水饱和后的质量为25(20)克，烘干到恒重时的质量为20(16)克，则材料的质量吸水率为( A )。  A.25%<br>19.材料吸水后，将使材料的( C )降低。  C.强度和保温性<br>20.在100g吸水率为3%的湿砂中，其中水的质量为( D )。  D.2.9g<br>21.在100g 吸水率为4%的湿砂中，折算为干砂的质量为(D)克。  D. 100/(1 + 0.04)<br>22.材料在吸水饱和状态下，抵抗多次冻融循环，不破坏、强度也不显著降低的性质指的是（ C ）。C.抗冻性<br>23.材料受热时吸收热量，冷却时放出热量的性质称为（ C ）。  C.热容<br>24.材料的厚度加大则材料的导热系数（ C ）  C．不变<br>25.当润湿角≥90°时，此种材料( C )。  C.水与材料间作用力小于水分子间的作用力<br>26.下列概念中，( D )表明材料的耐水性。  D.软化系数<br>27.在冲击、震动荷载作用下，材料可吸收较大的能量产生一定的变形而不破坏的性质称为（  D  ） D.韧性<br>28.下列各组胶凝材料均是气硬性胶凝材料的是（ A ）。  A.石灰、石膏、水玻璃<br>29.石灰的主要成分为(A)。  B. Ca0<br>30.生石灰加水之后水化成熟石灰的过程称为( C)   C.石灰的熟化<br>31.过火石灰产生的原因是由于( B )。  B.缎烧温度过高、缎烧时间过长<br>32.石灰浆的硬化包括干燥硬化、结晶硬化、碳酸花硬化，其中，对硬化增长起主导作用的是（ B ）B.结晶硬化<br>33.石灰在使用前一般要进行陈伏，这是为了（ C ）  C．消除过火石灰的危害<br>34.( A )在空气中凝结硬化是受到干燥、结晶和碳化的作用。  A.石灰浆体<br>35.由于石灰浆体硬化时( C )，以及硬化速度慢等缺点，所以不宜单独使用。  C.体积收缩大</p>
-<p>36.建筑石膏的化学成分是( B )。  B.β型半水石膏<br>37.建筑石膏的主要成分是（ B ）。  B.硫酸钙<br>38.用最最多、用途最广的石膏是( A)。  A.建筑石膏<br>39.建筑石膏凝结硬化时 ，最主要的特点是( D )。  D. 凝结硬化快<br>40.下列关于建筑石膏性质说法有误的一项是( A )。  A.耐水性、抗冻性都非常好</p>
-<p>41.水玻璃在使用时，掺入一定量的Na2SiF6，其目的是为了( C  ) 。  C.促硬<br>42.水玻璃是( C )的水溶液。  C.Na2O·nSi02<br>43.水玻璃在空气中与CO2发生反应，生成的物质是（ A ）。   A.硅胶</p>
-<p>44.素有“建筑工业的粮食”之称的建筑材料的是（ B  ）。  B.水泥<br>45.下列各类水泥，用量最大，应用最为广泛的是（ A  ）。  A．硅酸盐水泥<br>46.酸盐水泥一般适用( B )。  B.一般建筑工程<br>47.硅酸盐水泥适用于(  A  )混凝土工程。  A.快硬高强<br>48.( A )适用于一般土建工程中现浇混凝土及钢筋混凝土结构。  A.硅酸盐水泥<br>49.下列工程中，(A)宜选用硅酸盐水泥。  A.预应力混凝土<br>50.在海工工程中使用的混凝土工程宜优先选用（ A ）硅酸盐水泥。  A．矿渣<br>51.在正常使用条件下的预应力混凝土工程宜优先选用（ D ）水泥。  D．硅酸盐<br>52.在严寒地区水位升降范围内使用的混凝土工程宜优先选用（ D ）硅酸盐水泥。  D．普通<br>53.硅酸盐水化热高的特点决定了硅酸盐水泥不宜用于（ B ）。  B.大体积混凝土工程<br>54.相比较来讲，对于抢修工程或早期强度要求高的工程宜优先选用（ A ）。   A．铝酸盐水泥<br>55.硅酸盐水泥石在温度为 250℃时，水化物开始脱水，水泥石强度下降，因此硅酸盐水泥不宜单独用于( B)。  B.耐热混凝土工程<br>56.硅酸盐水泥标准规定，初凝时间不得早于（ A ）。  A.45min<br>56.国标规定硅酸盐水泥的强度等级是以水泥胶砂试件在(C)龄期的强度来评定的。  C. 3d 和28d<br>56.下列不是废品水泥的一项是（ D ）   D.水泥包装未标注工厂名称<br>57.国家规范中规定，水泥(B)检验不合格时，需按废品处理。  D.初凝时间<br>58.一般情况下，水泥水化反应时的温度不低于（ D  ）。  D．0℃<br>59.硅酸盐水泥的水化速度表现为( A)   A.早期快后期慢<br>60.水泥的水化热指的是( B)   B.水泥在水化过程中放出的热量<br>61.水泥细度指的是( B )。  B.水泥颗粒粗细的程度<br>62.硅酸盐水泥细度用（ B ）表示。  B．比表面积<br>62.用来表示硅酸盐水泥细度的指标是（  B  ）   B．比表面积<br>63.作为水泥混合材料的激发剂，主要是指氢氧化钙和（ A ）。  A．石膏<br>64.国家标准规定，用( A )检验水泥的体积安定性中氧化钙的有害作用。  A.沸煮法<br>64.水泥体积安定性指的是（ C ）。  C.水泥凝结硬化过程中，体积变化是否均匀适当的性质<br>65.体积安定性不良的水泥应作( B )处理。  B.废品<br>66.水泥石体积安定性不良的原因是（ D  ）。<br>A.游离氧化钙过多  B.游离氧化镁过多  C.掺人的石膏过多  D.以上都是<br>67.水泥石体积安定性不良的主要原因之一是（ C）含量过多。  C．CaSO4·2H2O<br>68.水泥石中引起腐蚀的组分主要是（ A ）。  A.氢氧化钙和水化铝酸钙<br>69.掺活性混合材料的水泥抗碳化能力差的原因是由于水泥石中(  B ) 的原因。  B.Ca(OH)2含量低<br>70.普通硅酸水泥中掺入少量混合材料的主要作用是( A)   A 扩大其强度等级范围，以利于合理选用<br>71.海水中的( A ) 对水泥石有腐蚀作用。  A.硫酸盐</p>
-<p>72.配置混凝土时，水泥的选用主要考虑（ B ）。  B．品种和强度等级<br>73.相对来讲，决定混凝土成本的材料是( B)   B.水泥<br>74.混凝土和钢筋可以共同工作，是由于两者具有几乎相等的(  B  )   B.线膨胀系数<br>75.减水剂能使混凝土拌和物在不增加水泥用量的条件下，改善和易性，降低( B)  B.泌水性<br>76.下列关于坍落度说法有误的一项是( B)   B.坍落度是保水性的指标<br>77.混凝土的水灰比是根据( D )要求确定的。  D.( A+C )<br>78.混凝土的强度等级是根据(C)标准值来确定的。  C.立方体抗压强度<br>79.测定混凝土强度的标准试件尺寸为( B )。  B.15×15×15cm<br>80.测定混凝土立方体抗压强度时，立方体试件应养护的时间是(  )  D.28d<br>81.混凝土的抗冻性用抗冻等级(F)来表示，抗冻等级在( A)以土的混凝土简称为抗冻混凝土。 A.F50<br>82.混凝土的抗冻性用抗冻等级 F 来表示，抗冻等级为F8的混凝土表示其( C )。  C.抗冻融循环次数为8次<br>83.配置混凝土时，为了满足耐久性质的要求，应控制的技术指标有( A ) 。  A.最大水灰比<br>83.配置混凝土时，确定砂率主要应考虑的是（   A  ）。   A.混凝土的工作性和节约水泥两个方面<br>84.在原材料一定的情况下，决定混凝土强度的最主要因素是( A ) 。  B.水灰比<br>85.炎热夏季施工的混凝土工程，常采用外加剂是( B )。  B.缓凝剂<br>86.(A )是能够提高混凝土早期强度，并对后期强度无显著影响的外加剂。  A.早强剂<br>87.混凝土的抗冻性用抗冻等级来表示，抗冻等级为F20的混凝土表示其( C)。 C.抗冻融循环次数为 20<br>88．混凝土拌合物在一定的施工条件和环境下，是否易于各种施工工序的操作．以获得均匀密实混凝土的性能称为（ C  ）。  C.和易性<br>89.混凝土拌合物的流动性能够反映（ A ）。  A.混凝土拌合物的稀稠程度及充满模板的能力<br>90.当混凝土拌合物流动性偏小时，应采取( A )办法来调整。  A.保证水灰比不变的情况下，增加水泥浆数量<br>91.在配制混凝土时如拌合物流动性过大，就需要(D)。  D.保持砂率不变，加砂和石子<br>92.当混凝土拌合物流动性偏大时，应采取（ B ）办法来调整。  B.保证砂率不变，增加砂石用量<br>93.混凝土拌合物的保水性能够反映( B )。  B.混凝土拌合物的稳定性<br>93.混凝土拌合物的粘聚性能反映（ C ）   C.混凝土拌合物的均匀性<br>94.混凝土的抗渗性达不到要求，可掺加外加剂（ B ）。  B.松香热聚物<br>95.碱骨料是指含有（ B ）的拌合混凝土用天然骨料。  B.活性二氧化硅<br>96.砂的内部不但含水饱和，其表面还被一层水膜覆裹，颗粒间被水所充盈的状态称为( C )  C.湿润状态<br>96.砂的内部和表层均含水达到饱和状态，而表面的开口孔隙及面层却处于无水状态称为（ D ） D.饱和面干状态<br>97.砂在干燥的环境中自然堆放达到干燥状态往往是（ B ）。  B．气干状态<br>98.砂率指的是（ A ）。  A.每立方米混凝土中砂的质量和砂石的总质量之比<br>98.砂率的高低表示（ A ）。   A.混凝土拌合物中细骨料所占比列的多少<br>99.配置混凝土时，为了满足耐久性质的要求，应控制的技术指标是( A )。  A.最大水灰比<br>100.配合比正常的普通混凝土受压时，最可能发生的破坏形式是( C )  C.水泥石与粗骨料的结合面先发生破坏<br>101.混凝土配合比设计中的三个基本参数分别是（ A ）。  A.水灰比、砂率、单位用水量<br>102.单位用水量在水灰比和水泥用量不变的情况下，能够反映( A )  A.水泥浆量与骨料用量之间的比例关系<br>103.在原材料一定的情况下，影响混凝土耐久性的关键因素是( D )。  D.A+B<br>104.试拌调整混凝土时，发现拌和物的保水性较差，应采用(A) 的措施。  A.增加砂率<br>105.能够显著提高硬化混凝土抗冻耐久性的外加剂是( C )。  C.引气剂<br>107.配置某强度的等级的水泥混合砂浆，已确定水泥用量为145kg/m3，石灰膏用量为( B ) kg/m3。 B.155—205<br>107.在容易碰撞或潮湿的地方抹面时，易选用（  A  ）。   A.水泥砂浆<br>107.所谓的“混凝土的第五组分”指的是（ D ）  D.外加剂<br>16.下列各种混凝土外加剂主要用来调节混凝土凝结时间的是(  A  )  A.早强剂</p>
-<p>108.将砖、石、砌块等粘结成为砌体的砂浆称为（ D ）。  D．砌筑砂浆<br>109.检验砂浆强度时，采用的配合比的个数不应少于（ B ）。  B.3<br>110.用于砌筑潮湿环境以及强度要求较高的砌体时，宜选用（ A ）。  A.水泥砂浆<br>111.砖在使用过程中的盐析现象称为（ A ）。  A.泛霜<br>112.在砂浆中掺人石灰膏，可明显提高砂浆的( C )。  C.保水性<br>113.影响砂浆强度的因素较多，实验证明，当材料质量一定时，砌筑砂浆的强度主要取决于( D)。  D.水泥用量与水泥强度<br>114.抹面砂浆通常可以分为两层或三层进行施工，若采用两层进行施工，省去的一层应为 ( B)  B.中层砂浆<br>115.砂浆的保水性用( B )表示。  B.分层度<br>116.用来表示砂浆流动性的是( A )  A.沉入度</p>
-<p>117.凡是空洞率大于（ B ）的砖称为空心砖。  B.15%<br>118.烧结多孔砖的强度等级按( C )来评定。  C.抗压强度<br>119.烧结多孔砖的强度等级按( C )来评定。  C.抗压强度<br>120.(A) 主要用于非承重的填充墙和隔墙。  A.烧结空心砖<br>121.非承重外墙应优先选用(C)。  C.烧结空心砖<br>122.建筑陶瓷的主要原料是( B )   B.黏土<br>123.建筑玻璃中用量最大的是( A )。  A.平板玻璃<br>124.通常所说的“马赛克”是指（ C ）。  C．陶瓷锦砖<br>125.下列关于玻璃的基本知识叙述不正确的一项是（ C ）。 C．玻璃在冲击作用下易破碎，是典型的塑性材料</p>
-<p>126.低碳钢受拉破环时经历四个阶段，其中第一阶段应是（ B ）。  B．弹性阶段<br>126.低碳钢受拉破环时经历四个阶段，其中最后一个阶段应是（ D ）。  D．颈缩阶段<br>127.用来表征钢材塑性变形能力的指标是（ D  ）。  D．伸长率<br>128.钢材在常温下承受弯曲变形的能力称为（ A ）。  A．冷弯性能<br>129.钢材承受交变荷载反复作用时，可能在最大应力远低于屈服强度的情况下突然破坏，这种破坏称为（ A ）。  A．疲劳破坏<br>130.下列关于钢材性能与含硅量关系说法错误的是（ D ）。  D.若含硅量超过1％时，会增大钢材的可焊性。<br>130.通常用来表示建筑钢材强度的指标是（  A   ）。  A.屈服点和抗拉强度<br>131.经过冷加工强化处理的钢筋性能说法正确的是（ A ）。  A．强度提高，塑性和冲击韧性下降<br>132.严寒地区使用的钢材，应选用( D ) 。  D.脆性临界温度低于环境最低温度的钢材<br>133.钢材随时间延长而表现出强度提高，塑性和冲击韧性下降，这种现象称为( B )。  B.时效<br>134.使钢材的强度、硬度提高，塑性和韧性显著降低，还可以显著加大钢材的冷脆性的合金元素是( C )。  C.磷<br>135.钢材在热加工过程中造成晶体的分离引起钢材断裂，形成热脆现象的元素是( B )。  B.硫<br>136.普通碳素钢按屈服点、质量等级及脱氧方法划分为若干个牌号，随牌号提高，钢材( C )。  C.强度提高，伸长率降低<br>137.Q235-C的钢材，其质量要比Q235 -A的钢材( A )。  A.质量好<br>138.冷加工后的钢材随搁置时间延长而表现出强度提高，塑性和冲击韧性下降的现象称为(B)。 B.自然时效<br>139.下列关于钢材性能与硫元素关系说法错误的是(  )  C.非金属硫化物夹杂于钢中，会提高钢材的各种机械性能<br>140.屈服强度为235MPa，质量等级为A级的沸腾钢牌号为(C )。  C.Q235—A•F<br>141.下列各种钢锭脱氧程度最弱的是( A )。  A.沸腾钢<br>142.钢材锈蚀时，钢材的体积将（ B ）。  B．增大</p>
-<p>143.石油原油经蒸馏等工艺提炼出各种轻质油及润滑油后的残留物再进一步加工得到的沥青是（ A ）。  A.石油沥青<br>144.最直接影响沥青的柔软性、抗裂性及施工难度等性能的组分是（ A ）。  A．油分<br>145.石油沥青中的组分有：油分、树脂、沥青质。(A)含量的多少直接影响沥青的柔软性、抗裂性及施工难度。  A.油分<br>145.决定着沥青的粘结力、黏度、温度稳定性和硬度等性能的组分是（ C ）   C.沥青质<br>146.建筑石油沥青的塑性是用( D)表示的。  D.延度<br>147.建筑石油沥青的黏性是用(A) 表示的。  A.针入度<br>148.建筑石油沥青的牌号愈高，则( A )。  A.黏性愈小<br>149.建筑工程中最常用的主要是( B )。  B.石油沥青和煤沥青<br>150.建筑石油沥青划分不同的标号的依据是( D )，每个标号沥青应保证相应的溶解度、蒸发损失率、蒸发后针人度比、闪点等指标。  D.针入度<br>151.石油沥青的塑性是指( C)  C.石油沥青在外力作用下产生变形而不破坏，除去外力后仍保持变形后的形状不变的性质<br>152．乳化沥青的主要组成为（ A ）。   A．沥青、水、乳化剂<br>153.石油沥青过于黏稠而需要稀释，一般采用( A )。  A.石油产品系统的轻质油<br>154.石油沥青塑性是（ C ）。  C.石油沥青在外力作用下产生变形而不破坏，除去外力后仍保持变形后的形状不变的性质<br>155.道路石油沥青牌号与黏性和塑性关系说法正确的一项是（ A ）。 A．沥青牌号越高，黏性越小，塑性越好<br>156.下列关于建筑石油沥青的相关叙述有误的一项是（ C ）。 C．建筑石油沥青的软化点过高夏季易流淌，过低冬季易硬脆甚至开裂<br>157.下列关于改性沥青相关叙述有误的一项是（ C ）。 C．虽然橡胶的品种不同，掺人的方法也有所不同，但各种橡胶沥青的性能几乎一样</p>
-<p>《建筑材料》期末考试题库2<br>判断题<br>1.材料化学组成的不同是造成其性能各异的主要原因。( √ )<br>1.建筑材料的微观结构主要有晶体、玻璃体和胶体等形式。（ √ ）<br>2.软化系数越大，材料的耐水性能越差。( × )<br>3.软化系数越小，材料的耐水性能越差。( √ )<br>4.材料随含水率的增加，材料的密度不变，导热系数增加。( √ )<br>5.材料随含水率的增加，材料的密度不变，导热系数降低。( × )<br>6.一般来说，材料的亲水性越强，孔隙率越小，连通的毛细孔隙越多，其吸水率越小。( × )<br>7.材料的导热系数与其厚度有关。( × )<br>8.材料的导热系数与其厚度无关。( √ )<br>9.一般情况下，金属材料的导热系数要大于非金属材料。( √ )<br>10.我国相关规范把材料按耐燃性分为非燃烧材料、难燃烧材料和可燃材料。( √ )<br>11.粗大孔主要影响材料的密度、强度等性能；毛细孔主要影响材料的吸水性、抗冻性等性能。( √ )<br>12.跪性是指当外力达到一定限度时，材料发生无先兆的突然破坏，且破坏时无明显变形的性质。( √ )<br>13.塑性是指当外力达到一定限度时，材料发生无先兆的突然破坏，且破坏时无明显变形的性质。( × )<br>14.脆性材料力学性能的特点是抗压强度远小于抗拉强度，破坏时的极限应变值极大。( × )<br>15.材料的开口孔隙率(开口孔隙体积与材料在自然状态下体积之比的百分数)的大小，可根据该材料的质量吸水率来确定。( × )<br>16.材料随含水率的增加，材料的密度不变，导热系数降低。( × )<br>17.钢材的耐久性，主要决定于其抗锈蚀性，而沥青的耐久性则主要取决于其大气稳定性和温度敏感性。(√)<br>22.一般情况下， 大试件的强度往往大于小试件的强度。(  ×  )<br>17.强度试验时，加荷速度越快，所测强度值越低。（ × ）</p>
-<p>18.根据硬化的条件不同分为气硬性胶凝材料和水硬性胶凝材料两类。( √ )<br>18.气硬性胶凝材料是指只能在空气中凝结、硬化，保持和发展强度的胶凝材料。( √ )<br>19.生石灰吸湿性和保水性都非常差，绝对不能作为干燥剂使用。( × )<br>20.生石灰具有强烈的消解能力，水化时需要吸收非常大的热量。( × )<br>21.欠火石灰会引起石灰的后期熟化，抹灰后会造成起鼓和开裂。( × )<br>22.过火石灰会引起石灰的后期熟化，抹灰后会造成起鼓和开裂。( √ )</p>
-<p>23.石膏硬化时体积微膨胀，硬化后孔隙率降低。( × )<br>24.石灰膏在使用前，一般要陈伏两周以上，主要目的是消除过火石灰。( √ )<br>23.陈伏期间，石灰浆表面应敷盖一层水，以隔绝空气，防止石灰浆表面碳化。(  √ )<br>25.石灰膏体的硬化是由于干燥硬化、结晶硬化和碳化硬化作用完成的。( √ )<br>26.石灰膏体的硬化是由于干燥硬化和碳化硬化作用完成的。( × )<br>27.建筑石膏强度不随时间的变化而变化，因此可以长期存放。( × )</p>
-<p>28.水玻璃硬化后有很高的耐酸性能，这是因为硬化后的水玻璃主要化学组成是SiO2。( √ )<br>29.水玻璃的模数和密度对于凝结、硬化速度影响较大。( √ )</p>
-<p>30.体积安定性不合格的水泥可降低强度等级使用。( × )<br>31.体积安定性不合格的水泥为废品水泥，不得使用于工程中。( √ )<br>32.初凝不合格的水泥为不合格品，可降低强度等级使用。( × )<br>33.初凝不和格的水泥为废品，不得在工程中使用。( √ )<br>34.作为水泥混合材料的激发剂，主要指氢氧化钙和石膏。( √ )<br>35.经过反应形成的化合物— 硅酸二钙、硅酸三钙、铝酸三钙、铁铝酸四钙、氢氧化钙，通称为水泥熟料的矿物组成。( × )<br>36.经过反应形成的化合物——硅酸二钙 、硅酸三钙、铝酸三钙、铁铝酸四钙，通称为水泥熟料的矿物组成。( √ )<br>36.水泥熟料的矿物组成有硅酸三钙 、硅酸二钙、铝酸三钙和铁铝酸四钙。( √ )<br>37.硅酸盐水泥与水作用，生成的主要水化产物有：水化硅酸钙与水化铁酸钙凝胶，氢氧化钙、水化铝酸钙和水化硫铝酸钙晶体。( √ )<br>38.影响硅酸盐水泥凝结硬化最主要因素是水灰比，与环境的温度和湿度无关。（ × ）<br>38.通常水花越细，凝结硬化速度越快，强度也越高。( √ )<br>39.生产硅酸盐水泥时，第一步先生产出水泥熟料。( √ )<br>39.掺入到水泥或混凝土中的人工或天然矿物材料称为混合材料。（  √ )<br>40.水泥的水化硬化一般在28d内发展速度较慢，28d后发展速度较快。（ × ）<br>41.水泥放热量大小及速度与水泥熟料的矿物组成和细度没有任何关系。（ × ）<br>42.水泥的抗拉强度较高，一般是抗压强度的10~20倍。( × )<br>43.水泥石中的毛细管、孔隙是引起水泥石腐蚀加剧的内在原因之一。( √ )<br>44.袋装水泥储存3个月后，强度增加约20%~40%。( × )<br>45.当侵蚀作用比较强烈时，应在水泥制品表面加做保护层。（ √ ）<br>46.高铝水泥早期的水化热非常小，因此，施工时环境温度越高越好。（ × ）</p>
-<p>27.从广义上讲，提凝土是以胶凝材料、粗细骨料及其它外掺材料按适当比例拌制、成型、养护、硬化而成的人工石材。( √ )<br>47.混凝土对粗骨料的基本要求是颗粒的总表面积要小和颗粒大小搭配要合理，以达到水泥的节约和逐级填充形成最大的密实度。这两项要求分别用最大粒径和颗粒级配表示。( √ )<br>48.混凝土对砂的基本要求是颗粒的总表面积要小和颗粒大小搭配要合理，以达到水泥的节约和逐级填充形成最大的密实度。这两项要求分别用最大粒径和颗粒级配表示。( × )<br>49.坍落度是流动性(亦称稠度)的指标，坍落度值越大，流动性越小。( × )<br>50.混凝土用的粗骨料，其最大粒径不得超过构件截面最小尺寸的1/4，且不得超过钢筋最小净间距的3/4。( √ )<br>51.混凝土拌合物的工作性包括和易性、粘聚性、保水性三个方面的技术要求。( × )<br>52.混凝土拌合物的工作性包括流动性、粘聚性、保水性三个方面的技术要求。( √ )<br>53.配合比设计的过程是一逐步满足混凝土的强度、工作性、耐久性、节约水泥等设计自标的过程。( √ )<br>54.按胶凝材料不同，可分为特重混凝土、重凝土、轻混凝土、特轻混凝土。( × )<br>55.坍落度是流动性(亦称稠度)的指标，坍落度值越大，流动性越大。( √ )<br>56.在混凝土拌合物流动性不变的前提下，所需水泥浆总体积为最小的砂率称其为合理砂率。( × )<br>57.砂和石子构成混凝土的骨架，在混凝土中赋予拌合混凝土流动性。( × )<br>57.常将人工破碎而成的石子称为碎石，而将天然形成的石子称为卵石。（ √ ）<br>58.水、水泥、砂(细骨料)、石子(粗骨料)是普通混凝土的四种基本组成材料。（ √ ）<br>59.判断砂粗细程度的指标是细度模数，细度模数越小，砂越粗。（ × ）<br>60.影响混凝土拌合物工作性的因素主要有组成材料和环境条件，而与时间无关。（ × ）<br>61.增大混凝土拌合物的水灰比，可降低硬化混凝土的孔隙率，增加水泥与骨料间的粘结力，强度得以提高。(×)<br>28.普通混凝土受压时，最可能发生的破坏形式是骨料先破坏。(  ×  )<br>61.混凝土随着龄期的延续，强度会持续下降。（ × ）</p>
-<p>62.砌筑砂浆掺人石灰膏而制得混合砂浆其目的是改善和易性。( √ )<br>63.砌筑砂浆强度主要取决于水泥强度与水泥用量。( √ )<br>64.砂浆试件尺寸采用(70.7×70.7×70.7)mm立方体试件。( √ )<br>65.砂浆试件尺寸采用(50×50×50)mm立方体试件。( × )<br>66.砂浆的保水性用“分层度”表示。分层度大于30mm的砂浆，容易发生干缩裂缝。( × )<br>67.砂浆的保水性用“分层度”表示。分层度大于30mm的砂浆，容易产生离析，不便于施工。( √ )<br>68.砌筑砂浆强度与水灰比有关。( × )<br>69.砂浆的流动性也叫做稠度，是指在自重或外力作用下流动的性能。( √ )<br>70.砂浆的粘结力与砖石的表面状态、洁净程度、湿润情况及施工养护条件等有关。( √ )<br>71.建筑砂浆是由无机胶凝材料、细骨料和水，有时也掺人某些掺合料组成。（ √ ）<br>29.建筑砂浆根据用途分类，可分为砌筑砂浆、抹面砂浆。(  √ )<br>72.拌合砂浆用水，应选用无有害杂质的洁净水来拌制砂浆。（ √ ）<br>73.当原材料质量一定时，砂浆的强度主要取决于砂子的用量。（ × ）</p>
-<p>74.熔融制品是将适当成分的原料经熔融、成型、冷却而得到的产品。（ √ ）<br>75.小砌块采用自然养护时，必须养护3天方可使用。（ × ）<br>76.烧结多孔砖和烧结空心砖都可做为承重墙体材料。( × )<br>77.空心砖和多孔砖都可做为承重墙体材料。( × )<br>78.烧结空心砖主要用于非承重的填充墙和隔墙。( √ )<br>78.蒸压粉煤灰砖强度非常低，因此不得用于工业与民用建筑的基础、墙体。( × )<br>79.烧结多孔砖因其强度较高，一般用于砌筑六层以下建筑物的承重墙，烧结空心砖主要用于非承重的填充墙和隔墙。( √ )<br>80.泛霜是烧结砖在使用过程中的一种盐析现象。( √ )<br>81.通常釉面砖不宜用于室内。( × )<br>82.加气混凝土砌块最适合用于温度长期高于80℃的建筑部位。( × )</p>
-<p>30.玻璃是以黏土为主要原料，经成型、干燥、蜡烧而得到的产品。(  ×  )</p>
-<p>83.含碳量在2％以下，含有害杂质较少的铁—碳合金称为钢。（ √ ）<br>84.钢材的冲击韧性随温度的降低而增大，并与温度成线性关系。（ × ）<br>85.在大跨度、承受动荷载和冲击荷载的结构中使用碳素钢要比使用低合金高强度结构钢节约钢材20％～30％。（ × ）<br>86.低合金钢适用于经受动荷载的钢结构。〔 √ )<br>87.合金钢中碳元素仍然是与技术性能密切相关的合金几索。〔 √ )<br>88.结构设计时软钢以 EMBED Equation.3  作为设计计算取值的依据。( × )<br>88.结构设计时一般以屈服强度作为强度取值的依据。( √ )<br>89.钢中P的危害主要是冷脆性。( √ )<br>90.钢中S的危害主要是冷脆性。( × )<br>91.钢筋经冷加工时效，可获得强度提高而塑性降低的效果。( √ )<br>92.钢筋经冷加工后，其屈服强度提高而硬度减小。( × )<br>93.钢筋经冷加上时效，可获得强度提高而塑性降低的效果。( √ )<br>94.钢中碳的含量越少则强度越低、塑性越差。( × )<br>95.结构设计时一般以£y作为强度取值的依据。而对屈服现象不明显的中碳和高碳钢(硬钢)，则规定以产生残余变形为原标距长度的0.2%所对应的应力值作为屈服强度，称为条件屈服点，用£0.2表示。(√)<br>96.屈服强度和抗拉强度之比能反映钢材的利用率和结构的安全可靠性。( √ )<br>97.钢号为Q235—A·F中的F代表钢所含合金元素。( × )<br>98.钢号为Q235—A·b的钢其性能好于钢号为Q235—D·b的钢。( × )<br>99.钢筋焊接时，应尽量避免不同国家的进口钢筋之间或进口钢筋与国产钢筋之间的焊接。( √ )<br>100.低合金钢适用于经受动荷载的钢结构。( √ )<br>32.沥青的电绝缘性非常的差。(  ×  )<br>101.道路及建筑沥青的牌号低，其软化点高。( √ )<br>102.沥青的温度敏感性用软化点表示。软化点越高，则温度敏感性越大。( × )<br>103.沥青的温度敏感性用软化点表示。软化点越高，则温度敏感性越小。( √ )<br>104.石油沥青的塑性用延度表示。延度越大，塑性越差。( × )<br>105.石油沥青的塑性用延度表示。延度越大，塑性越好。( √ )<br>106.石油沥青的塑性用针人度表示，针人度越大，塑性越好。（ × ）<br>107.建筑石油沥青针人度小(赫性较大)，软化点较高( 耐热性较好)，但延伸度较小(塑性较小)。( √ )<br>108.通常，道路石油沥青牌号越低，则黏性越小(即针入度越大)，塑性越好(即延度越大)，温度敏感性越大(即软化点越低)。( × )<br>109.石油沥青的粘滞性大小与组分及温度无关。( × )<br>110.黏稠石油沥青的针入度值越小，表明其黏度越小。( × )<br>111.石油沥青的粘滞性大小与组分及温度无关。（ × ）<br>112.闪点是指加热沥青至挥发出的可燃气体和空气的混合物，在规定条件下与火焰接触，初次闪火时的沥青温度。（ √ ）<br>113.由于涂料涂刷后靠其中的液体成分形成涂膜，因此固体含量多少与成膜厚度及涂膜质量无任何关系。（ × ）<br>《建筑材料》期末考试题库3<br>简答题<br>1.材料的密度、体积密度和堆积密度分别指的是什么?<br>答: (1)密度是指材料在绝对密实状态下，单位体积的质量。<br>(2)体积密度是材料在自然状态下，单位体积的质量。<br>(3)材料的堆积密度是指粉状、颗粒状或纤维状材料在堆积状态下单位体积的质量。<br>1.什么是材料的弹性?<br>答：材料的弹性是指材料在外力作用下发生变形，当外力解除后，能完全恢复到变形前形状的性质。这种变形称为弹性变形或可恢复变形。</p>
-<p>2.材料与水有关的性质主要有哪些？<br>答：材料与水有关的性质主要有：材料的亲水性和憎水性以及材料的吸水性、吸湿性、耐水性、抗冻性、抗渗性等。</p>
-<p>3.什么是材料的吸水性，影响材料吸水性的主要因素有哪些？<br>答：材料的吸水性是指材料在水中吸收水分达饱和的能力。<br>影响材料的吸水性的主要因素有材料本身的化学组成、结构和构造状况，尤其是孔隙状况。一般来说，材料的亲水性越强，孔隙率越大，连通的毛细孔隙越多，其极水率越大。</p>
-<p>4.亲水材料与憎水材料各指什么？<br>答：若润湿角θ≤90°，说明材料与水之间的作用力要大于水分子之间的作用力，故材料可被水浸润，称该种材料是亲水的。反之，当润湿角。&gt;90°，说明材料与水之间的作用力要小于水分子之间的作用力，则材料不可被水浸润，称该种材料是憎水的。<br>5.影响材料强度测量值的因素有哪些？<br>答：影响材料强度测量值的因素有：试件的形状和大小；加荷速度；温度；含水状态；表面状况。</p>
-<p>6.石灰主要有哪些用途？<br>答：石灰的用途主要有：<br>①粉刷墙壁和配制石灰砂浆或水泥混合砂浆。<br>②配制灰土和三合土。<br>③生产无熟料水泥、硅酸盐制品和碳化石灰板。</p>
-<p>7.什么是过火石灰？什么是欠火石灰？它们各有何危害？<br>答：当人窑石灰石块度较大，锻烧温度较高时，石灰石块的中心部位达到分解温度时，其表面已超过分解温度，得到的石灰称其为过石灰。若缎烧温度较低，大块石灰石的中心部位不能完全分解，此时称其为欠火石灰。<br>过火石灰熟化十分缓慢，其可能在石灰应用之后熟化，其体积膨胀，造成起鼓开裂，影响工程质量。欠火石灰则降低了石灰的质量，也影响了石灰石的产灰量。</p>
-<p>8.什么是石灰的陈伏？陈伏期间石灰浆表面为什么要敷盖一层水？<br>答：为了消除过火石灰在使用中造成的危害，石灰膏(乳)应在储灰坑中存放半个月以上，然后方可使用。这一过程叫作“陈伏”。<br>陈伏期间，石灰浆表面应敷盖一层水，以隔绝空气，防止石灰浆表面碳化。</p>
-<p>9.什么是石灰的熟化？石灰熟化的特点如何？<br>答：石灰的熟化是指生石灰(CaO)加水之后水化为熟石灰[Ca(OH)2]的过程。<br>石灰熟化的特点：生石灰具有强烈的消解能力，水化时放出大量的热。生石灰水化时体积增大。</p>
-<p>10.什么是石灰的熟化？生石灰熟化的方法有哪两种？<br>答：石灰的熟化是指生石灰(CaO)加水之后水化为熟石灰[Ca(OH)2]的过程。<br>生石灰熟化的方法有淋灰法和化灰法。</p>
-<p>11.什么是水玻璃硅酸盐模数？与水玻璃的性质有何关系？<br>答：水玻璃的模数表示水玻璃中SiO2与碱金属氧化物物质的量之间的比。<br>水玻璃的模数对于凝结、硬化速度影响较大。当模数高时，硅胶容易析出，水玻璃凝结硬化快； 而当模数低时，则凝结、硬化都比较慢。</p>
-<p>12.何谓普通硅酸盐水泥，其与硅酸盐水泥比较其应用性质有何异同？<br>答：凡有硅酸盐水泥熟料、6%~15%混合材料、适量石膏磨细制成的水硬性胶凝材料，称为普通硅酸盐水泥。<br>普通硅酸盐水泥中掺入混合材料的量较少，其矿物组成的比例仍在硅酸盐水泥的范围内，所以其性能应用范围与同强度等级的硅酸盐水泥相近。与硅酸盐水泥比较，早期硬化速度稍慢，强度略低；抗冻性、耐磨性及抗碳化性能稍差；耐腐蚀性稍好，水化热略低。</p>
-<p>13.硅酸盐水泥有哪些特性?<br>答：硅酸盐水泥的特性有：强度高；水化热高；抗冻性好；碱度高、抗碳化能力强；干缩小；耐磨性好；耐腐蚀性差；耐热性差；湿热养护效果差。</p>
-<p>14.水泥的细度指的是什么，水泥的细度对水泥的性质有什么影响？<br>答：水泥的细度是指水泥颗粒粗细的程度。<br>水泥的细度对水泥性质的影响：水泥越细，凝结硬化速度越快，强度（特别是早期强度）越高，收缩也增大。但水泥越细，越易吸收空气中水分而受潮形成絮团，反而会使水泥活性降低。此外，提高水泥的细度要增加粉磨时的能耗，降低粉磨设备的生产率，增加成本。</p>
-<p>15.硅酸盐水泥的凝结时间、初凝时间、终凝时间各指什么？<br>答：硅酸盐水泥的凝结时间：水泥从加水开始到失去流动性，即从可塑状态发展到固体状态所需要的时间。<br>初凝时间：从水泥加水拌和时起到水泥浆开始失去塑性所需要的时间。<br>终凝时间：从水泥加水拌合时起到水泥浆完全失去可塑性，并开始具有强度的时间。</p>
-<p>16.影响硅酸盐系水泥凝结硬化的主要因素有哪些？<br>答：影响硅酸盐系水泥凝结硬化的主要因素：水泥的熟料矿物组成及细度、水灰比、石膏的掺量、环境温度和湿度、龄期和外加剂。</p>
-<p>17.何谓水泥体积安定性？水泥体积安定性不良一般是由哪些原因造成的？<br>答：水泥凝结硬化过程中，体积变化是否均匀适当的性质称为水泥体积安定性。<br>水泥体积安定性不良，一般是由于熟料中所含游离氧化钙、游离氧化镁过多或掺人的石膏过多等原因造成的。</p>
-<p>18.防止水泥石腐蚀的措施有哪些？<br>答：防止水泥石腐蚀的措施：<br>(1)根据环境侵蚀特点，合理选用水泥品种；(2)提高水泥石的密实度；(3)表面加作保护层。</p>
-<p>19.水泥石腐蚀的原因是什么？如何克服水泥石的腐蚀？<br>答：水泥石腐蚀的原因是：<br>引起水泥石腐蚀的外部因素是侵蚀介质。而内在因素一是水泥石中含有易引起腐蚀的组分，即Ca(OH)2和水化铝酸钙；二是水泥石不密实。侵蚀性介质不仅在水泥石表面起作用，而且易于通过毛细管和孔隙进人水泥石内部引起严重破坏。<br>克服腐蚀的措施：合理选择水泥品种，提高水泥石的密实度，表面做保护层。</p>
-<p>20.与硅酸盐水泥相比，矿渣硅酸盐水泥在性能上有哪些不同？其适用如何？<br>答：矿渣硅酸盐水泥的特性：保水性差，泌水性大，耐热性高，耐海水、硫酸盐腐蚀。<br>矿渣硅酸盐水泥适用：耐热混凝土；大体积混凝土；蒸汽养护混凝土；耐海水、软水、硫酸盐腐蚀的混凝土。</p>
-<p>21.混凝土中水泥的选用主要考虑哪些因素？<br>答：水泥的选用，主要考虑的是水泥的品种和强度等级。<br>水泥的品种应根据工程的特点和所处的环境气候条件，特别是应针对工程竣工后可能遇到的环境影响因素进行分析，并考虑当地水泥的供应情况作出选择。</p>
-<p>22.什么是石子的连续级配，采用连续级配的石子对混凝土性能有哪些影响？<br>答：石子的连续级配是指石子的粒径从大到小连续分级，每一级都占适当的比例。<br>连续级配的颗粒大小搭配连续合理，用其配置的混凝土拌合物公正性好，不易发生离析，在工程中应用较多。但其缺点是，当最大粒径较大时，天然形成的连续级配往往与理论最佳值有偏差，且在运输、堆放过程中易发生离析，影响到级配的均匀合理性。</p>
-<p>23.混凝土拌合物的工作性在哪些方面有所体现?<br>答：混凝土拌合物的工作性在搅拌时体现为各种组成材料易于均匀混合，均匀卸出；在运输过程中体现为拌合物不离析，稀稠程度不变化；在浇筑过程中体现为易于浇筑、振实、流满模板；在硬化过程中体现为能保证水泥水化以及水泥石和骨料的良好粘结。</p>
-<p>24.什么是混凝土拌合物的工作性？混凝土拌合物包括哪三个方面的技术要求？<br>答：工作性又称和易性，是指混凝土拌合物在一定的施工条件和环境下，是否易于各种施工工序的操作，以获得均匀密实混凝土的性能。<br>目前普遍认为，它应包括流动性、粘聚性、保水性三个方面的技术要求。</p>
-<p>25.普通混凝土是由哪四种基本材料组成，它们各起何作用？<br>答：水、水泥、砂(细骨料)、石子( 粗骨料)是普通混凝土的四种基本组成材料。<br>水和水泥形成水泥浆，在混凝土中赋予拌合混凝土以流动性；粘接粗、细骨料形成整体；填充骨料的间隙，提高密实度。砂和石子构成混凝土的骨架，有效抵抗水泥浆的干缩；砂石颗粒逐级填充，形成理想的密实状态，节约水泥浆的用量。</p>
-<p>26.混凝土采用减水剂可取得哪些经济、技术效果？<br>答：混凝土采用减水剂取得经济、技术效果：<br>(1)增大流动性；(2)提高强度；(3)节约水泥；(4)改善粘聚性、保水性，提高密实度，改善耐久性，降低和延缓水化热。</p>
-<p>27.什么是混凝土的立方体抗压强度标准值？有何实用意义？<br>答：混凝土立方体抗压强度的标准值是指按标准试验方法测得的立方体抗压强度总体分布中的一个值，强度低于该值的百分率不超过5%(即具有95%的强度保证率)。<br>为便于设计和施工选用混凝土，将混凝土按立方体抗压强度的标准值分成若干等级，即强度等级。混凝土立方体抗压强度是确定混凝土强度等级的依据。</p>
-<p>28.什么是混凝土引气剂？对混凝土的哪些性能有明显改善？改善的机理是什么？<br>答：引气剂是在混凝土搅拌过程中，能引入大量分布均匀的微小气泡，以减少混凝土拌合物泌水离析、改善工作性，并能显著提高硬化混凝土抗冻耐久性的外加剂。<br>引气剂也是一种憎水型表面活性剂，掺人混凝土中后，在搅拌作用下能引人大量直径在20μm以下的微小气泡，吸附在骨料表面或填充于水泥硬化过程中形成的泌水通道中，这些微小气泡从混凝土搅拌一直到硬化都会稳定存在于混凝土中。在混凝土拌合物中，骨料表面的这些气泡会起到滚珠轴承的作用，减小摩擦，增大混凝土拌合物的流动性，同时气泡对水的吸咐作用也使粘聚性、保水性得到改善。在硬化混凝土中，气泡填充于泌水开口孔隙中，会阻隔外界水的渗入。而气泡的弹性，则有利于释放孔隙中水结冰引起的体积膨胀，因而大大提高混凝土的抗冻性、抗渗性等耐久性指标。</p>
-<p>29.提高混凝土耐久性的措施有哪些？<br>答：(1)选择合适品种的水泥；<br>(2)控制混凝土的最大水灰比和最小水泥用量；<br>(3)选用质量良好的骨料，并注意颗粒级配的改善；<br>(4)掺加外加剂；<br>(5)严格控制混凝土施工质量，保证混凝土的均匀、密实。</p>
-<p>30.砂浆的和易性包括哪些含义？各用什么指标表示？<br>答：砂浆的和易性包括流动性和保水性。流动性用“沉入度”表示。保水性用“分层度”表示。<br>31.对抹面砂浆有哪些要求？<br>答：对抹面砂浆要求具有良好的和易性，容易抹成均匀平整的薄层，便于施工。还应有较高的粘结力，砂浆层应能与底面粘结牢固，长期不致开裂或脱落。处于潮湿环境或易受外力作用部位(如地面、墙裙等)，还应具有较高的耐水性和强度。</p>
-<p>32.根据建筑部位的不同，如何选择抹面砂浆？<br>答：用于砖墙的底层抹灰，多用石灰砂浆；用于板条墙或板条顶棚的底层抹灰多用混合砂浆或石灰砂浆；混凝土墙、梁、柱、顶板等底层抹灰多用混合砂浆、麻刀石灰浆或纸筋石灰浆。<br>在容易碰撞或潮湿的地方，应采用水泥砂浆。如墙裙、踢脚板、地面、雨棚、窗台以及水池、水井等处一般多用1׃2.5的水泥砂浆。</p>
-<p>33.为什么工程上常以抗压强度作为砂浆的主要技术指标？<br>答：砂浆在砌体中主要起传递荷载的作用，并经受周围环境介质作用，因此砂浆应具有一定的黏结强度、抗压强度和耐久性。试验证明：砂浆的黏结强度、耐久性均随抗压强度的增大而提高，即它们之间有一定的相关性，而且抗压强度的试验方法较为成熟，测试较为简单准确，所以工程上常以抗压强度作为砂浆的主要技术指标。</p>
-<p>34.烧结普通砖的技术要求有哪几项？<br>答：烧结普通砖的技术要求有：规格；外观质量；强度；泛霜和石灰爆裂。</p>
-<p>35.釉面砖为什么不宜用于室外？<br>答：釉面砖为多孔精陶，坯体吸水率较大，吸水后产生湿涨，而其表面釉面湿涨性很小，用于室外，经常受大气温、湿度影响及日晒雨淋，坯体湿涨应力超过表面釉层的抗拉强度，会造成釉层裂缝、剥落，产生影响建筑物的饰面效果。</p>
-<p>36.低合金结构钢有何特点？采用这种钢有什么技术、经济意义？<br>答：低合金结构钢的特点：强度高、耐磨性好、耐腐蚀性强、耐低温。<br>采用低合金结构钢的技术、经济意义：<br>综合技术性能高，尤其适用于大跨度、承受动荷载和冲击荷载的结构。<br>与使用碳素钢相比，可节约钢材20%—30%，而成本增加并不很高。</p>
-<p>37.低碳钢受拉经历哪四个阶段？结构设计时一般以什么强度作为强度取值的依据？<br>答：低碳钢受拉经历四个阶段：弹性阶段、屈服阶段、强化阶段和颈缩阶段。<br>结构设计时一般以屈服强度作为强度取值的依据。</p>
-<p>38.什么是钢材的屈强比？它在建筑设计中有何实际意义?<br>答：钢材的屈强比，即屈服强度和抗拉强度之比。<br>它能反映钢材的利用率和结构的安全可靠性，屈强比愈小，反映钢材受力超过屈服点工作时的可靠性愈大，因而结构的安全性愈高。但屈强比太小，则反映钢材不能有效地被利用，造成钢材浪费。</p>
-<p>39.建筑钢材有哪些优缺点？<br>答：建筑钢材材质均匀，具有较高的强度、有良好的塑性和韧性、能承受冲击和振动荷载、可焊接或铆接、易于加工和装配，钢结构安全可靠、构建自重小，所以被广泛应用于建筑工程中。但钢材也存在易锈蚀及耐火性差等缺点。</p>
-<p>40.碳元素对钢材性能的影响如何？<br>答：碳元素是决定钢材性质的主要元素。钢材随含碳量的增加，强度和硬度相应提高，而塑性和韧性相应降低。当含量超过1%时，钢材的极限强度开始下降。此外，含碳量过高还会增加钢的冷脆性和时效敏感性，降低抗腐蚀性和可焊性。</p>
-<p>41.石油沥青的组分有哪些?各组分的性能和作用如何？<br>答：石油沥青的组分有：油分、树脂、沥青质。<br>各组分的性能和作用：<br>油分含量的多少直接影响沥青的柔软性、抗裂性及施工难度；中性树脂赋予沥青具有一定的塑性、可流动性和黏结性，其含量增加，沥青的黏结力和延伸性增加；酸性树脂能改善沥青对矿物材料的浸润性，特别是提高了与碳酸盐类岩石的黏附性及增强了沥青的可乳化性；沥青质决定着沥青的黏结力、黏度、温度敏感性和硬度等。沥青质含量增加时，沥青的黏度和粘结力增加，硬度和软化点提高。</p>
-<p>42.矿物填充料为何能够改性沥青？<br>答：矿物填充料掺入沥青中后，能被沥青包裹形成稳定的混合物，由于沥青对矿物填充料的湿润和吸附作用，沥青可能成单分子状排列在矿物颗粒（或纤维）表面，形成结合力牢固的沥青薄膜，具有较高的黏性和耐热性等。因而提高沥青的黏结能力、柔韧性和耐热性，减少了沥青的温度敏感性，并且可以节省沥青。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/20/append-path-on-mac/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/20/append-path-on-mac/" itemprop="url">Mac添加PATH环境变量</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T01:15:47+08:00">
-                2018-06-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用常规方法安装好npm之后,<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ npm --version</span><br><span class="line">bash: npm: commmand not found</span><br></pre></td></tr></table></figure></p>
-<p>以为是没有安装后，换用brewhome<a href="参考 - brewhome官网">https://brew.sh/index_zh-cn.html</a>进行安装<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ brew --version</span><br></pre></td></tr></table></figure></p>
-<p>依旧 command not found</p>
-<p>注意到，warning:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">==&gt; Cleaning up /Library/Caches/Homebrew...</span><br><span class="line">==&gt; Migrating /Library/Caches/Homebrew to /Users/htwt/Library/Caches/Homebrew...</span><br><span class="line">==&gt; Deleting /Library/Caches/Homebrew...</span><br><span class="line">Already up-to-date.</span><br><span class="line">Warning: /usr/<span class="built_in">local</span>/bin is not <span class="keyword">in</span> your PATH.</span><br><span class="line">==&gt; Installation successful!</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ echo $PATH</span><br><span class="line">/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure>
-<p>需要手动添加一个PATH<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ <span class="built_in">export</span> PATH=/usr/<span class="built_in">local</span>/bin:<span class="variable">$PATH</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line">/usr/<span class="built_in">local</span>/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Emacs.app/Contents/MacOS/bin-x86_64-10_9:/Applications/Emacs.app/Contents/MacOS/libexec-x86_64-10_9</span><br></pre></td></tr></table></figure></p>
-<p>现在npm, brew都可以直接用了</p>
-<p>另外一种方法是修改 ~/.bash_profile文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># export local bin</span><br><span class="line">export PATH=/usr/local/bin:$PATH</span><br></pre></td></tr></table></figure>
-<p>接着,<br>$ source ~/.bash_profile</p>
-<p>但接着又出现了新的问题, 每次重启emacs, 重启terminal之后, 都需要 source ~/.bash_profile</p>
-<p>解决方法如下:<br>1, 搞清楚用的是哪个shell,<br>$ echo $SHELL<br>/bin/bash</p>
-<p>2, zsh对应~/.zshrc, bash对应~/.bashrc,<br>添加入source ~/.bash_profile</p>
-<p>这样的话， 在每次打开shell时候都能自动加载了</p>
-<hr>
-<p>ref:</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/20/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/20/hello-world/" itemprop="url">Hello World</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-20T00:15:03+08:00">
-                2018-06-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2426,7 +2102,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">138</span>
+                  <span class="site-state-item-count">142</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

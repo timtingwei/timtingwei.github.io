@@ -229,6 +229,526 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/15/20180815-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/15/20180815-01/" itemprop="url">1047 编程团体赛(20) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T03:53:43+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1047-编程团体赛（20-point-s-）"><a href="#1047-编程团体赛（20-point-s-）" class="headerlink" title="1047 编程团体赛（20 point(s)）"></a>1047 编程团体赛（20 point(s)）</h3><p>编程团体赛的规则为：每个参赛队由若干队员组成；所有队员独立比赛；参赛队的成绩为所有队员的成绩和；成绩最高的队获胜。</p>
+<p>现给定所有队员的比赛成绩，请你编写程序找出冠军队。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出一个正整数 N（≤10^4），即所有参赛队员总数。随后 N 行，每行给出一位队员的成绩，格式为：队伍编号-队员编号 成绩，其中队伍编号为 1 到 1000 的正整数，队员编号为 1 到 10 的正整数，成绩为 0 到 100 的整数。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出冠军队的编号和总成绩，其间以一个空格分隔。注意：题目保证冠军队是唯一的。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>6<br>3-10 99<br>11-5 87<br>102-1 0<br>102-3 100<br>11-9 89<br>3-2 61</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>11 176</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>team作为address地址, f(key) = key; 对字符串根据分隔符求子串</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> scores[<span class="number">1000</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">string</span> s;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="built_in">memset</span>(scores, <span class="number">0</span>, <span class="keyword">sizeof</span>(scores));</span><br><span class="line">  getchar();</span><br><span class="line">  <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    getline(<span class="built_in">cin</span>, s);</span><br><span class="line">    <span class="built_in">string</span> team = s.substr(<span class="number">0</span>, s.find(<span class="string">"-"</span>));</span><br><span class="line">    <span class="built_in">string</span> score = s.substr(s.find(<span class="string">" "</span>)+<span class="number">1</span>, s.length());</span><br><span class="line">    <span class="keyword">int</span> i_team = stoi(team);</span><br><span class="line">    scores[i_team] += stoi(score);</span><br><span class="line">    <span class="keyword">if</span> (scores[i_team] &gt; scores[max]) max = i_team;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; max &lt;&lt; <span class="string">" "</span> &lt;&lt; scores[max] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/14/20180814-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/14/20180814-02/" itemprop="url">1043 输出PATest - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T16:36:07+08:00">
+                2018-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1043-输出PATest（20-point-s-）"><a href="#1043-输出PATest（20-point-s-）" class="headerlink" title="1043 输出PATest（20 point(s)）"></a>1043 输出PATest（20 point(s)）</h3><p>给定一个长度不超过 10^4的、仅由英文字母构成的字符串。请将字符重新调整顺序，按 PATestPATest…. 这样的顺序输出，并忽略其它字符。当然，六种字符的个数不一定是一样多的，若某种字符已经输出完，则余下的字符仍按 PATest 的顺序打印，直到所有字符都被输出。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出一个长度不超过 10^4​的、仅由英文字母构成的非空字符串。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中按题目要求输出排序后的字符串。题目保证输出非空。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>redlesPayBestPATTopTeePHPereatitAPPT</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>PATestPATestPTetPTePePee</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>Hash散列将字符key转化成对应索引, 每出现一次cnt+1, 让散列表中的字符按照顺序循环打印, 每次打印都减少次数, 直到次数为空</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> chars[<span class="number">6</span>] = &#123;<span class="string">'P'</span>, <span class="string">'A'</span>, <span class="string">'T'</span>, <span class="string">'e'</span>, <span class="string">'s'</span>, <span class="string">'t'</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> cnt[<span class="number">6</span>];</span><br><span class="line">  <span class="built_in">memset</span>(cnt, <span class="number">0</span>, <span class="keyword">sizeof</span>(cnt));</span><br><span class="line">  <span class="built_in">string</span> s; <span class="built_in">cin</span> &gt;&gt; s;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">6</span>; j++)</span><br><span class="line">      <span class="keyword">if</span> (s[i] == chars[j]) &#123; cnt[j]++; <span class="keyword">break</span>; &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    if (s[i] == 'P') cnt[0]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 'A') cnt[1]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 'T') cnt[2]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 'e') cnt[3]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 's') cnt[4]++;</span></span><br><span class="line"><span class="comment">    else if (s[i] == 't') cnt[5]++;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">int</span> ok;</span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    ok = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (cnt[i]) &#123;</span><br><span class="line">        ok = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%c"</span>, chars[i]);</span><br><span class="line">        cnt[i]--;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">while</span> (ok);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/14/20180814-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/14/20180814-01/" itemprop="url">1042 字符统计(20) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T16:36:00+08:00">
+                2018-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1042-字符统计（20）（20-point-s-）"><a href="#1042-字符统计（20）（20-point-s-）" class="headerlink" title="1042 字符统计（20）（20 point(s)）"></a>1042 字符统计（20）（20 point(s)）</h3><p>请编写程序，找出一段给定文字中出现最频繁的那个英文字母。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出一个长度不超过 1000 的字符串。字符串由 ASCII 码表中任意可见字符及空格组成，至少包含 1 个英文字母，以回车结束（回车不算在内）。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出出现频率最高的那个英文字母及其出现次数，其间以空格分隔。如果有并列，则输出按字母序最小的那个字母。统计时不区分大小写，输出小写字母。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>This is a simple TEST.  There ARE numbers and other symbols 1&amp;2&amp;3………..</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>e 7</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>将字符的ascii码作为address,  address = key, a[adrr] = cnt(key);<br>用max_p记录出现次数最多字符的ascii码, 打印时, 可以直接转换和索引.</p>
+<p>坑点, case 2, 如果有并列, 输出字典序小的, 判断两个位置最大值是否相等, 且当前i对应字母更小;</p>
+<p>另外我测试了ascii码的分布情况, 所以, 散列表大小开到150左右就ok了<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&apos;a&apos; = 97, &apos;z&apos; = 122, &apos;A&apos; = 65, &apos;Z&apos; = 90</span><br><span class="line">&apos;0&apos; = 48, &apos;9&apos; = 57</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> cnt[<span class="number">200</span>];   <span class="comment">// 假设ascii200位</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">memset</span>(cnt, <span class="number">0</span>, <span class="keyword">sizeof</span>(cnt));</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  getline(<span class="built_in">cin</span>, s);</span><br><span class="line">  <span class="keyword">int</span> max_p = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[i])) &#123;</span><br><span class="line">      <span class="keyword">int</span> ch = <span class="built_in">tolower</span>(s[i]);</span><br><span class="line">      cnt[ch]++;</span><br><span class="line">      <span class="keyword">if</span> (cnt[ch] &gt; cnt[max_p]) max_p = ch;</span><br><span class="line">      <span class="keyword">if</span> (cnt[ch] == cnt[max_p] &amp;&amp; (ch &lt; max_p)) max_p = ch;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%c %d\n"</span>, max_p, cnt[max_p]);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/13/20180813-03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/13/20180813-03/" itemprop="url">1039 到底买不买(20) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-13T06:34:40+08:00">
+                2018-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1039-到底买不买-20-（20-point-s-）"><a href="#1039-到底买不买-20-（20-point-s-）" class="headerlink" title="1039 到底买不买(20)（20 point(s)）"></a>1039 到底买不买(20)（20 point(s)）</h3><p>小红想买些珠子做一串自己喜欢的珠串。卖珠子的摊主有很多串五颜六色的珠串，但是不肯把任何一串拆散了卖。于是小红要你帮忙判断一下，某串珠子里是否包含了全部自己想要的珠子？如果是，那么告诉她有多少多余的珠子；如果不是，那么告诉她缺了多少珠子。</p>
+<p>为方便起见，我们用[0-9]、[a-z]、[A-Z]范围内的字符来表示颜色。例如在图1中，第3串是小红想做的珠串；那么第1串可以买，因为包含了全部她想要的珠子，还多了8颗不需要的珠子；第2串不能买，因为没有黑色珠子，并且少了一颗红色的珠子。</p>
+<p>\ 图 1</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>每个输入包含1个测试用例。每个测试用例分别在2行中先后给出摊主的珠串和小红想做的珠串，两串都不超过1000个珠子。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>如果可以买，则在一行中输出“Yes”以及有多少多余的珠子；如果不可以买，则在一行中输出“No”以及缺了多少珠子。其间以1个空格分隔。</p>
+<h4 id="输入样例1："><a href="#输入样例1：" class="headerlink" title="输入样例1："></a>输入样例1：</h4><p>ppRYYGrrYBR2258<br>YrR8RrY</p>
+<h4 id="输出样例1："><a href="#输出样例1：" class="headerlink" title="输出样例1："></a>输出样例1：</h4><p>Yes 8</p>
+<h4 id="输入样例2："><a href="#输入样例2：" class="headerlink" title="输入样例2："></a>输入样例2：</h4><p>ppRYYGrrYB225<br>YrR8RrY</p>
+<h4 id="输出样例2："><a href="#输出样例2：" class="headerlink" title="输出样例2："></a>输出样例2：</h4><p>No 2</p>
+<h4 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h4><p>注意点:<br>case 1, 2WA: 怎么解决某个珠子需要两课以上问题, 也就是说要把取过的字符给删除?</p>
+<p><span style="color:red">另外, Hash散列的思想, 主要体现在, 一个address对应一个key, 现在要判断的是珠子这个key是否存在, 用find函数完成了判断, 但我认为还是只用了Hash散列的策略，这里没有去设计是否均匀, 解决冲突等问题, find函数的复杂度也应该不是O(1), 但这个策略还是抓住了问题的本质.</span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s, t;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; s &gt;&gt; t;</span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; t.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> pos = s.find(t[i]);</span><br><span class="line">    <span class="keyword">if</span> (pos != <span class="built_in">string</span>::npos) &#123;</span><br><span class="line">      cnt++;</span><br><span class="line">      s.erase(pos, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cnt &gt;= t.length()) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Yes "</span> &lt;&lt; s.length() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"No "</span> &lt;&lt; t.length() - cnt &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>补充常用的两种字符串删除,</p>
+<p>一般要对取字符串进行删除, 无非是删除子串和删除字符(删除子串的特殊情况),</p>
+<p>1, 索引+长度删除, 删子串(也可以删长度为1的子串)<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">string</span> s, t;</span><br><span class="line"></span><br><span class="line"><span class="comment">// erase(int pos, int length);    // 用索引+子串长度删除</span></span><br><span class="line">s = <span class="string">"1aabcd"</span>;</span><br><span class="line">t = <span class="string">"aa"</span>;</span><br><span class="line"><span class="keyword">int</span> pos = s.find(t);</span><br><span class="line">s.erase(pos, t.length());         <span class="comment">// s.erase(pos, 2);</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;                <span class="comment">// 1bcd</span></span><br></pre></td></tr></table></figure></p>
+<p>2, 迭代器删除, 删字符<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// erase(iterator it)             // 用迭代器删除</span></span><br><span class="line">s = <span class="string">"1aabcd"</span>;</span><br><span class="line">t = <span class="string">"b"</span>;</span><br><span class="line">pos = s.find(t);</span><br><span class="line">s.erase(s.begin() + pos);</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;                <span class="comment">// 1aacd</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>过了几天再做这道题的时候, 重新练习了Hash的做法.</p>
+<p>根据老板给出的珠子建立Hash表,<br>遍历小红需要的每颗珠子, 如果这个珠子在表中的, 不处理; 如果不在表中(老板提供的), 计数器+1.<br>最后看这个计数器判空结果, 如果cnt为0代表小红需要的都存在, 只要用老板的珠子数, 减去小红的珠子数就是多的; 如果这个cnt非0, No并输出计数器.</p>
+<p><span style="color:red">其实这个过程是储存和查找的过程, 正适合用Hash的特性来做。</span><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">f(key) = ascii(key)    // 这样建表可以均匀</span><br></pre></td></tr></table></figure></p>
+<p>代码如下<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> give[<span class="number">200</span>];</span><br><span class="line"><span class="keyword">char</span> A[<span class="number">1050</span>];</span><br><span class="line"><span class="keyword">char</span> B[<span class="number">1050</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s %s"</span>, A, B);</span><br><span class="line">  <span class="built_in">memset</span>(give, <span class="number">0</span>, <span class="keyword">sizeof</span>(give));</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(A); i++) &#123;</span><br><span class="line">    give[(<span class="keyword">int</span>)A[i]]++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(B); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!give[(<span class="keyword">int</span>)B[i]]) &#123;</span><br><span class="line">      cnt++;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      give[(<span class="keyword">int</span>)B[i]]--;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (cnt == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Yes %lu\n"</span>, <span class="built_in">strlen</span>(A) - <span class="built_in">strlen</span>(B));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"No %d\n"</span>, cnt);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/13/20180813-02/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1080,546 +1600,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/10/20180810-02/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/10/20180810-02/" itemprop="url">Queue链表实现的注意点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T01:37:56+08:00">
-                2018-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Queue的链表实现"><a href="#Queue的链表实现" class="headerlink" title="Queue的链表实现"></a>Queue<item>的链表实现</item></h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 队列的链表实现</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.NoSuchElementException;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Queue</span>&lt;<span class="title">Item</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Node first;</span><br><span class="line">  <span class="keyword">private</span> Node last;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> N = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    Item item;</span><br><span class="line">    Node next;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> first == <span class="keyword">null</span>;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span>     <span class="title">size</span><span class="params">()</span>    </span>&#123; <span class="keyword">return</span> N; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Item e)</span> </span>&#123;   <span class="comment">// 在尾部添加元素O(1)</span></span><br><span class="line">    Node oldLast = last;</span><br><span class="line">    last = <span class="keyword">new</span> Node();</span><br><span class="line">    last.item = e;</span><br><span class="line">    last.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) first = last;          <span class="comment">// 别忘, 如果为first = null, first指向last引用</span></span><br><span class="line">    <span class="keyword">else</span>           oldLast.next = last;   <span class="comment">// 别忘, 新结点的上一个结点与新结点的链</span></span><br><span class="line">    ++N;                                  <span class="comment">// 别忘, 改变计数</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Item <span class="title">dequeue</span><span class="params">()</span> </span>&#123;        <span class="comment">// 在头部删除</span></span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException(<span class="string">"Queue underflow"</span>);</span><br><span class="line">    Item e = first.item;</span><br><span class="line">    first = first.next;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) last = <span class="keyword">null</span>;          <span class="comment">// 别忘, 删除后链表空, first=first.next=null, last=null;</span></span><br><span class="line">    <span class="comment">// 如果删除之前只有一个结点, 删除之后链表空了</span></span><br><span class="line">    --N;                                 <span class="comment">// 别忘, 改变计数</span></span><br><span class="line">    <span class="keyword">return</span> e;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Queue链表实现的注意点"><a href="#Queue链表实现的注意点" class="headerlink" title="Queue链表实现的注意点"></a>Queue链表实现的注意点</h2><p><span style="color:red"> 注意如下几个: </span><br>enqueue尾部插入</p>
-<blockquote>
-<ul>
-<li>1, 旧尾结点用一个Node保存, last指向新的引用</li>
-<li>2, last结点指向下一个null结点</li>
-<li>3, 判空，if (first == null) first = last;</li>
-<li>4, 非空, 上旧尾结点与新尾结点链接</li>
-</ul>
-</blockquote>
-<p>dequeue头部删除</p>
-<blockquote>
-<ul>
-<li>1, 判空, 抛出异常</li>
-<li>2, 保留返回值, first = first.next;删除结点</li>
-<li>3, 判空, last = null; 若删除前只剩一个结点, first.next为空, </li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/10/20180810/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/10/20180810/" itemprop="url">《算法》第四版 1.3.37 Josephus问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T01:25:34+08:00">
-                2018-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-3-37-Josephus问题"><a href="#1-3-37-Josephus问题" class="headerlink" title="1.3.37 Josephus问题"></a>1.3.37 Josephus问题</h2><h3 id="题目"><a href="#题目" class="headerlink" title="题目:"></a>题目:</h3><p>Josephus问题。在这个古老的问题中, N个身陷绝境的人一致同意通过以下的方式减少生存人数。他们围坐成一圈(位置记为0到N-1)并从第一个人开始报数, 报到M的人会被杀死, 直到最后一个人留下来。传说中Josephus找到了不会被杀死的位置。编写一个Queue的用例Josephus, 从命令行接受N和M并打印出人们被杀死的顺序(这也将显示Josephus在圈中的位置)。</p>
-<h3 id="输入"><a href="#输入" class="headerlink" title="输入:"></a>输入:</h3><p>$ java Josephus 7 2</p>
-<h3 id="输出"><a href="#输出" class="headerlink" title="输出:"></a>输出:</h3><p>1 3 5 0 4 2 6 </p>
-<h3 id="思路"><a href="#思路" class="headerlink" title="思路:"></a>思路:</h3><p>交换不断交换两个队列, 直到所有元素出栈为止</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Josephus</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Scanner read = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> N = read.nextInt();</span><br><span class="line">    <span class="keyword">int</span> M = read.nextInt();</span><br><span class="line">    Queue&lt;Integer&gt; q1 = <span class="keyword">new</span> Queue&lt;Integer&gt;();</span><br><span class="line">    Queue&lt;Integer&gt; q2 = <span class="keyword">new</span> Queue&lt;Integer&gt;();</span><br><span class="line">    <span class="comment">// Queue&lt;Integer&gt; q_ans = new Queue&lt;Integer&gt;();  // 直接打印储存</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123; q1.enqueue(i);&#125;</span><br><span class="line">    <span class="keyword">int</span> num = <span class="number">1</span>, cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (cnt != N) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!q1.isEmpty()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (num != M) &#123; q2.enqueue(q1.dequeue()); num++; &#125;   <span class="comment">// q1队首出队, 进q2队</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">          System.out.print(q1.dequeue() + <span class="string">" "</span>);</span><br><span class="line">          num = <span class="number">1</span>; cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (num != M) &#123; q1.enqueue(q2.dequeue()); num++; &#125;   <span class="comment">// q1队首出队, 进q2队</span></span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">          System.out.print(q2.dequeue() + <span class="string">" "</span>);</span><br><span class="line">          num = <span class="number">1</span>; cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="改进"><a href="#改进" class="headerlink" title="改进:"></a>改进:</h3><p><span style="color:red">但看了书中给出的解答之后, 大为吃惊, 他竟然在<strong>头部出列,同时, 在尾部入列</strong></span></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Josephus</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> N = Integer.parseInt(args[<span class="number">0</span>]);</span><br><span class="line">	<span class="keyword">int</span> M = Integer.parseInt(args[<span class="number">1</span>]);</span><br><span class="line">	Queue&lt;<span class="keyword">int</span>&gt; queue = <span class="keyword">new</span> Queue&lt;<span class="keyword">int</span>&gt; ();</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123; queue.enqueue(i); &#125;</span><br><span class="line">	<span class="keyword">while</span> (!queue.isEmpty()) &#123;</span><br><span class="line">	  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m-<span class="number">1</span>; i++) &#123;</span><br><span class="line">	    queue.enqueue(queue.dequeue());   <span class="comment">// 出列 同时 进列</span></span><br><span class="line">	  &#125;</span><br><span class="line">	  System.out.print(queue.dequeue() + <span class="string">" "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	System.out.println();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Output:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ java Josephus 7 2</span><br><span class="line">1 3 5 0 4 2 6</span><br></pre></td></tr></table></figure></p>
-<p>队列头进尾出的策略, 你理解了多少？</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/09/20180809/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/09/20180809/" itemprop="url">《算法》第四版笔记 创建对象 和 为对象赋值区别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T03:05:24+08:00">
-                2018-08-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/timtingwei/coursera-algorithms-part1/blob/master/ch1/1-3/Stack_debug.java" target="_blank" rel="noopener">Stack(debug版本) - github</a></p>
-<h2 id="问题起因"><a href="#问题起因" class="headerlink" title="问题起因"></a>问题起因</h2><p>在算法1.2 下压堆栈链表实现过程出, 出现了下面一个问题, 又牵扯出一些新旧问题.</p>
-<p>测试函数中的foreach语句不能遍历<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (String t : s) &#123;</span><br><span class="line">  System.out.println(t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在StackIterator类中, 测试hasNext()方法, print出 “in hasNext() false”, 也就是说迭代不会开始<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  System.out.println(<span class="string">"in hasNext()"</span> + (current != <span class="keyword">null</span>));</span><br><span class="line">  <span class="keyword">return</span> current != <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在main函数中, 测试isEmpty(), 这个函数会判断 链表中first指针, 是否为null, 结果打印出 true<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Stack&lt;String&gt; s = <span class="keyword">new</span> Stack&lt;String&gt;();</span><br><span class="line">System.out.println(s.isEmpty());</span><br><span class="line">s.push(<span class="string">"Truing"</span>);</span><br><span class="line">s.push(<span class="string">"Dijkstra"</span>);</span><br><span class="line">s.push(<span class="string">"Kruthun"</span>);</span><br><span class="line">System.out.println(s.isEmpty());</span><br></pre></td></tr></table></figure></p>
-<p>找到问题是出在push()函数<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(Item elem)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 向栈中添加元素</span></span><br><span class="line">  Node oldFirst = first;</span><br><span class="line">  <span class="comment">// Node first = new Node();           // 这样写的逻辑更直观</span></span><br><span class="line">  first = <span class="keyword">new</span> Node();                   <span class="comment">// debug: why? 与上一行的区别</span></span><br><span class="line">  first.next = oldFirst;</span><br><span class="line">  first.item = elem;</span><br><span class="line">  ++N;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><span style="color:red">疑惑, 构造一个对象时, 下面两行代码的区别?</span></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(Item elem)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 向栈中添加元素</span></span><br><span class="line">  Node oldFirst = first;</span><br><span class="line">  <span class="comment">// Node first = new Node();           // bug</span></span><br><span class="line">  first = <span class="keyword">new</span> Node();                   <span class="comment">// ok: why? 与上一行的区别</span></span><br><span class="line">  first.next = oldFirst;</span><br><span class="line">  first.item = elem;</span><br><span class="line">  ++N;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上一行导致, first对象指向null, 而下一行的first != null</p>
-<hr>
-<h2 id="重新在push方法种进行debug后"><a href="#重新在push方法种进行debug后" class="headerlink" title="重新在push方法种进行debug后"></a>重新在push方法种进行debug后</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(Item elem)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 向栈中添加元素</span></span><br><span class="line">  Node oldFirst = first;</span><br><span class="line">  <span class="comment">// Node first = new Node();</span></span><br><span class="line">  first = <span class="keyword">new</span> Node();                   <span class="comment">// debug: why? 与上一行的区别</span></span><br><span class="line">  System.out.println(<span class="string">"first ?= null : "</span> + (first == <span class="keyword">null</span>));</span><br><span class="line">  System.out.println(<span class="string">"oldFirst ?= null : "</span> + (oldFirst == <span class="keyword">null</span>));</span><br><span class="line">  first.next = oldFirst;</span><br><span class="line">  first.item = elem;</span><br><span class="line">  ++N;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>空链表push两次:<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">$ java Stack</span><br><span class="line">first ?= <span class="keyword">null</span> : <span class="keyword">false</span></span><br><span class="line">oldFirst ?= <span class="keyword">null</span> : <span class="keyword">true</span></span><br><span class="line">first ?= <span class="keyword">null</span> : <span class="keyword">false</span></span><br><span class="line">oldFirst ?= <span class="keyword">null</span> : <span class="keyword">false</span></span><br></pre></td></tr></table></figure></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(Item elem)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 向栈中添加元素</span></span><br><span class="line">  Node oldFirst = first;</span><br><span class="line">  Node first = <span class="keyword">new</span> Node();</span><br><span class="line">  <span class="comment">// first = new Node();                   // debug: why? 与上一行的区别</span></span><br><span class="line">  System.out.println(<span class="string">"first ?= null : "</span> + (first == <span class="keyword">null</span>));</span><br><span class="line">  System.out.println(<span class="string">"oldFirst ?= null : "</span> + (oldFirst == <span class="keyword">null</span>));</span><br><span class="line">  first.next = oldFirst;</span><br><span class="line">  first.item = elem;</span><br><span class="line">  ++N;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>空链表push两次:<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">$ java Stack</span><br><span class="line">first ?= <span class="keyword">null</span> : <span class="keyword">false</span></span><br><span class="line">oldFirst ?= <span class="keyword">null</span> : <span class="keyword">true</span></span><br><span class="line">first ?= <span class="keyword">null</span> : <span class="keyword">false</span></span><br><span class="line">oldFirst ?= <span class="keyword">null</span> : <span class="keyword">true</span></span><br></pre></td></tr></table></figure></p>
-<hr>
-<h2 id="问题更进一步"><a href="#问题更进一步" class="headerlink" title="问题更进一步"></a>问题更进一步</h2><p>因此, 这两种写法的区别就在于:<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Node oldFirst = first;       <span class="comment">// oldFirst指向first对象的引用</span></span><br><span class="line">Node first = <span class="keyword">new</span> Node();     <span class="comment">// first对象被重新构造, oldFirst指向null</span></span><br><span class="line">first.next = oldFirst;</span><br></pre></td></tr></table></figure></p>
-<p>此时, 如果oldFirst指向null的话, 将oldFirst作为first的后继, 是不符合我的原意的。</p>
-<p>正确的写法是:<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Node oldFirst = first;     <span class="comment">// 只是用来保存first对象的引用</span></span><br><span class="line">first = <span class="keyword">new</span> Node();        <span class="comment">// first指向新的引用对象</span></span><br><span class="line">first.next = oldFirst;     <span class="comment">// first.next结点对象指向oldFirst的引用</span></span><br></pre></td></tr></table></figure></p>
-<p>但为什么既然<br>oldFirst -&gt; 原来的first对象引用<br>first-&gt;新的对象<br>oldFirst ?-&gt; 新的结点对象     // why?</p>
-<p>如何oldFirst指向新的结点对象的话, 那么对first赋值新的后继, 是永远只能赋值给它自己本身的。。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/07/20180807/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/07/20180807/" itemprop="url">Java中对String对象赋值</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-07T23:40:28+08:00">
-                2018-08-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在学习《算法》的时候, P42中提到<br><code>赋值语句不会创建新的对象, 而只是创建另一个指向某个已经存在的对象的引用</code><br>并且,<br><code>在Java中, 所有的非原始数据类型都是对象, 包括数组</code></p>
-<p>Java中原始的数据类型有: byte，short，int，long，char，float，double和boolean。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">这些基本类型可以分为四组：</span><br><span class="line"></span><br><span class="line">整数 - 包括：byte，short，int和long，用于整数有符号数字。</span><br><span class="line">浮点数 - 包括float和double，表示具有分数精度的数字。</span><br><span class="line">字符 - 包括字符，表示字符集中的符号，如字母和数字。</span><br><span class="line">布尔(Boolean) - 此组包括布尔值，它是表示 true/false 值的特殊类型。</span><br></pre></td></tr></table></figure>
-<hr>
-<p>回到刚才的问题上, 但在练习中出现了如下代码, </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// PrintString_04.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintString_04</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// String string1 = new String("hello");</span></span><br><span class="line">    String string1 = <span class="string">"hello"</span>;</span><br><span class="line">    String string2 = string1;    <span class="comment">// string2是string1的引用?</span></span><br><span class="line">    string2 = <span class="string">"world"</span>;           <span class="comment">// 修改string2, string1为何不发生改变？</span></span><br><span class="line">    StdOut.println(string1);</span><br><span class="line">    StdOut.println(string2);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">String string1 = "hello";</span></span><br><span class="line"><span class="comment">String string2 = string1;    // string2确实是指向string1的引用</span></span><br><span class="line"><span class="comment">string2 = "world";           // 创建新的对象"wolrd", 此时string2指向新对象的引用</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-<p><span style="corlor:red">Java中的String对象不可变, 对对象赋值是指向等号右边对象的引用, 但对String对象赋值时, 等号右边的双引号中的字符串, 实际上是新创建了一个对象, 指向了新对象的引用。</span></p>
-<p>主要困惑我的地方，一开始没看清楚String和42页左下角Counter对象在赋值时候的区别。<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Counter c1 = <span class="keyword">new</span> Counter(<span class="string">"ones"</span>);</span><br><span class="line">c1.increment();</span><br><span class="line">Counter c2 = c1;</span><br><span class="line">c2.increment();</span><br><span class="line">StdOut.println(c1);</span><br></pre></td></tr></table></figure></p>
-<p>那段代码的第三行,<br><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Count c2 = c1;   <span class="comment">// c1是不是创建新的对象的，c2指向的就是c1的地址</span></span><br></pre></td></tr></table></figure></p>
-<p>而<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">string2 = &quot;world&quot;;  // 看似差不多, 实际上&quot;world&quot;是个新对象, string2指向新对象</span><br></pre></td></tr></table></figure></p>
-<p>目前, 因为String的不变性, 我暂时把String理解成和原始数据类型一样来操作, 就可以了.</p>
-<p>ref:<br><a href="https://blog.csdn.net/ilvest/article/details/64904520" target="_blank" rel="noopener">https://blog.csdn.net/ilvest/article/details/64904520</a><br><a href="https://blog.csdn.net/zhangjg_blog/article/details/18319521" target="_blank" rel="noopener">https://blog.csdn.net/zhangjg_blog/article/details/18319521</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1665,7 +1650,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">138</span>
+                  <span class="site-state-item-count">142</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
