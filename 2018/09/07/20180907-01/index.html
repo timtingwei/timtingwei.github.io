@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PAT,算法,分数化简,公约数," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1062 最简分数(20)一个分数一般写成两个整数相除的形式：N/M，其中 M 不为0。最简分数是指分子和分母没有公约数的分数表示形式。 现给定两个不相等的正分数 N1/M1和 N2/M2，要求你按从小到大的顺序列出它们之间分母为 K 的最简分数。 输入格式：输入在一行中按 N/M 的格式给出两个正分数，随后是一个正整">
+<meta name="keywords" content="PAT,算法,分数化简,公约数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1062 最简分数(20) - HDOJ">
+<meta property="og:url" content="https://timtingwei.github.io/2018/09/07/20180907-01/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="1062 最简分数(20)一个分数一般写成两个整数相除的形式：N/M，其中 M 不为0。最简分数是指分子和分母没有公约数的分数表示形式。 现给定两个不相等的正分数 N1/M1和 N2/M2，要求你按从小到大的顺序列出它们之间分母为 K 的最简分数。 输入格式：输入在一行中按 N/M 的格式给出两个正分数，随后是一个正整数分母 K，其间以空格分隔。题目保证给出的所有整数都不超过 1000。 输出格式">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-07T05:03:56.785Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1062 最简分数(20) - HDOJ">
+<meta name="twitter:description" content="1062 最简分数(20)一个分数一般写成两个整数相除的形式：N/M，其中 M 不为0。最简分数是指分子和分母没有公约数的分数表示形式。 现给定两个不相等的正分数 N1/M1和 N2/M2，要求你按从小到大的顺序列出它们之间分母为 K 的最简分数。 输入格式：输入在一行中按 N/M 的格式给出两个正分数，随后是一个正整数分母 K，其间以空格分隔。题目保证给出的所有整数都不超过 1000。 输出格式">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/09/07/20180907-01/"/>
+
+
+
+
+
+  <title>1062 最简分数(20) - HDOJ | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/07/20180907-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">1062 最简分数(20) - HDOJ</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-07T13:03:07+08:00">
+                2018-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1062-最简分数-20"><a href="#1062-最简分数-20" class="headerlink" title="1062 最简分数(20)"></a>1062 最简分数(20)</h3><p>一个分数一般写成两个整数相除的形式：N/M，其中 M 不为0。最简分数是指分子和分母没有公约数的分数表示形式。</p>
+<p>现给定两个不相等的正分数 N1/M1和 N2/M2，要求你按从小到大的顺序列出它们之间分母为 K 的最简分数。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中按 N/M 的格式给出两个正分数，随后是一个正整数分母 K，其间以空格分隔。题目保证给出的所有整数都不超过 1000。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中按 N/M 的格式列出两个给定分数之间分母为 K 的所有最简分数，按从小到大的顺序，其间以 1 个空格分隔。行首尾不得有多余空格。题目保证至少有 1 个输出。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>7/18 13/20 12</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>5/12 7/12</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>先实现分数的四则运算, 在运算中不处理分母为0时, 表示成Inf的情况。<br>单独写一个show()函数用于打印, 进入show()之前分数已经被化简.<br>1, 先处理分母为0的情况, 再处理分子为0的情况,<br>2, 符号单独处理, 分子小于0, 打印”(-“这样分数部分可只运算整数<br>3, 特别要主要的是分子表示既有整数又有分数的情况。</p>
+<p>main函数中, 约分后调用打印函数即可.</p>
+<p>坑点:</p>
+<blockquote>
+<ul>
+<li>如果int不声明成long long 的话, case34凉, 估计是相加会溢出的原因把。</li>
+</ul>
+</blockquote>
+<p><span style="color:red">写四则运算一定要仔细..</span></p>
+<p>实际代码:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Fraction</span> &#123;</span></span><br><span class="line">  <span class="keyword">long</span> <span class="keyword">long</span> up, down;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">gcd</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> a, <span class="keyword">long</span> <span class="keyword">long</span> b)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> !b ? a : gcd(b, a % b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reduction</span><span class="params">(Fraction &amp;f)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!f.down) <span class="keyword">return</span>;  <span class="comment">// Inf</span></span><br><span class="line">  <span class="comment">// if (!f.up) f.down = 1; return;  // 0      // debug01</span></span><br><span class="line">  <span class="keyword">if</span> (!f.up) &#123;</span><br><span class="line">    f.down = <span class="number">1</span>; <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (f.down &lt; <span class="number">0</span>) &#123;   <span class="comment">// down&lt;0</span></span><br><span class="line">    f.up *= <span class="number">-1</span>;</span><br><span class="line">    f.down *= <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">long</span> <span class="keyword">long</span> <span class="keyword">up_t</span> = f.up, g = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (f.up &lt; <span class="number">0</span>) <span class="keyword">up_t</span> = <span class="number">-1</span> * f.up;</span><br><span class="line">  g = gcd(<span class="keyword">up_t</span>, f.down);</span><br><span class="line">  <span class="keyword">if</span> (g &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    f.up /= g;</span><br><span class="line">    f.down /= g;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// g == 1 ok</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">add</span><span class="params">(Fraction a, Fraction b)</span> </span>&#123;</span><br><span class="line">  Fraction f;</span><br><span class="line">  f.up = a.up * b.down + b.up * a.down;</span><br><span class="line">  f.down = a.down * b.down;</span><br><span class="line">  reduction(f);</span><br><span class="line">  <span class="keyword">return</span> f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">minus</span><span class="params">(Fraction a, Fraction b)</span> </span>&#123;</span><br><span class="line">  Fraction f;</span><br><span class="line">  f.up = a.up * b.down - b.up * a.down;</span><br><span class="line">  f.down = a.down * b.down;</span><br><span class="line">  reduction(f);</span><br><span class="line">  <span class="keyword">return</span> f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">multi</span><span class="params">(Fraction a, Fraction b)</span> </span>&#123;</span><br><span class="line">  Fraction f;</span><br><span class="line">  f.up = a.up * b.up;</span><br><span class="line">  f.down = a.down * b.down;</span><br><span class="line">  reduction(f);</span><br><span class="line">  <span class="keyword">return</span> f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Fraction <span class="title">divide</span><span class="params">(Fraction a, Fraction b)</span> </span>&#123;</span><br><span class="line">  Fraction f;</span><br><span class="line">  f.up = a.up * b.down;</span><br><span class="line">  f.down = a.down * b.up;</span><br><span class="line">  reduction(f);</span><br><span class="line">  <span class="keyword">return</span> f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">rabs</span><span class="params">(<span class="keyword">long</span> <span class="keyword">long</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> n &lt; <span class="number">0</span> ? -n : n;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">(Fraction f)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!f.down) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Inf"</span>); <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!f.up) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"0"</span>); <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (f.up &lt; <span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">"(-"</span>);   <span class="comment">// (-</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (f.down == <span class="number">1</span>) &#123;  <span class="comment">// ok-&gt;int</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld"</span>, rabs(f.up));</span><br><span class="line">    <span class="keyword">if</span> (f.up &lt; <span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">")"</span>);   <span class="comment">// )</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (rabs(f.up) &lt; f.down) &#123;     <span class="comment">// no int, attetion</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld/%lld"</span>, rabs(f.up), f.down);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> a = rabs(f.up) / f.down;</span><br><span class="line">    <span class="keyword">long</span> <span class="keyword">long</span> b = rabs(f.up) - a*f.down;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%lld %lld/%lld"</span>, a, b, f.down);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (f.up &lt; <span class="number">0</span>) <span class="built_in">printf</span>(<span class="string">")"</span>);     <span class="comment">// )</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Fraction a, b;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lld/%lld %lld/%lld"</span>, &amp;a.up, &amp;a.down, &amp;b.up, &amp;b.down);</span><br><span class="line">  reduction(a); reduction(b);</span><br><span class="line">  show(a); <span class="built_in">printf</span>(<span class="string">" + "</span>); show(b); <span class="built_in">printf</span>(<span class="string">" = "</span>); show(add(a, b)); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  show(a); <span class="built_in">printf</span>(<span class="string">" - "</span>); show(b); <span class="built_in">printf</span>(<span class="string">" = "</span>); show(minus(a, b)); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  show(a); <span class="built_in">printf</span>(<span class="string">" * "</span>); show(b); <span class="built_in">printf</span>(<span class="string">" = "</span>); show(multi(a, b)); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  show(a); <span class="built_in">printf</span>(<span class="string">" / "</span>); show(b); <span class="built_in">printf</span>(<span class="string">" = "</span>); show(divide(a, b)); <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PAT/" rel="tag"># PAT</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/分数化简/" rel="tag"># 分数化简</a>
+          
+            <a href="/tags/公约数/" rel="tag"># 公约数</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/06/20180906-06/" rel="next" title="2097 Sky数 - HDOJ">
+                <i class="fa fa-chevron-left"></i> 2097 Sky数 - HDOJ
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/07/20180907-02/" rel="prev" title="2548 两军交锋 - HDOJ">
+                2548 两军交锋 - HDOJ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1062-最简分数-20"><span class="nav-number">1.</span> <span class="nav-text">1062 最简分数(20)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.</span> <span class="nav-text">输出格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例："><span class="nav-number">1.3.</span> <span class="nav-text">输入样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例："><span class="nav-number">1.4.</span> <span class="nav-text">输出样例：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solution"><span class="nav-number">1.5.</span> <span class="nav-text">Solution:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
