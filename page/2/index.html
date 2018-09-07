@@ -229,6 +229,140 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/06/20180906-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/06/20180906-04/" itemprop="url">2099 整除的尾数 - HDOJ</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T09:03:24+08:00">
+                2018-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="2099-整除的尾数"><a href="#2099-整除的尾数" class="headerlink" title="2099 整除的尾数"></a>2099 整除的尾数</h3><h4 id="Problem-Description"><a href="#Problem-Description" class="headerlink" title="Problem Description"></a>Problem Description</h4><p>一个整数，只知道前几位，不知道末二位，被另一个整数除尽了，那么该数的末二位该是什么呢？</p>
+<h4 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h4><p>输入数据有若干组，每组数据包含二个整数a，b（0&lt;a&lt;10000, 10&lt;b&lt;100），若遇到0 0则处理结束。</p>
+<h4 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h4><p>对应每组数据，将满足条件的所有尾数在一行内输出，格式见样本输出。同组数据的输出，其每个尾数之间空一格，行末没有空格。</p>
+<h4 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input"></a>Sample Input</h4><p>200 40<br>1992 95<br>0 0</p>
+<h4 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output"></a>Sample Output</h4><p>00 40 80<br>15</p>
+<h4 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h4><p>2007省赛集训队练习赛（2）</p>
+<h4 id="Recommend"><a href="#Recommend" class="headerlink" title="Recommend"></a>Recommend</h4><p>lcy   |   We have carefully selected several similar problems for you:  2098 2096 2091 2081 2017 </p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>找到0~99之间的第一个满足的条件的末尾两个数, 然后用一个等差数列寻找其他符合条件的值, 不用遍历100个数.</p>
+<p>坑点:</p>
+<blockquote>
+<ul>
+<li>debug01把区间扩大成了[0, 100], 这样子的话, 造成100成为尾数, 不可能的。</li>
+</ul>
+</blockquote>
+<p>代码:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a, b, cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (<span class="built_in">scanf</span>(<span class="string">"%d %d"</span>, &amp;a, &amp;b) != EOF &amp;&amp; a &amp;&amp; b) &#123;</span><br><span class="line">    <span class="keyword">int</span> sum = a * <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, find = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> ( ; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> ((sum + i) % b == <span class="number">0</span>) &#123;</span><br><span class="line">        find = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!find) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;   <span class="comment">// find</span></span><br><span class="line">      <span class="keyword">int</span> start = i, k = (<span class="number">99</span>-start) / b;   <span class="comment">// debug01:</span></span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%02d"</span>, start);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i  = <span class="number">0</span>; i &lt; k; i++) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">" %02d"</span>, start + (i+<span class="number">1</span>) * b);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/06/20180906-03/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1411,138 +1545,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/04/20180904-06/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/04/20180904-06/" itemprop="url">1025 反转链表(25) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T10:42:32+08:00">
-                2018-09-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1025-反转链表-25"><a href="#1025-反转链表-25" class="headerlink" title="1025 反转链表(25)"></a>1025 反转链表(25)</h3><p>给定一个常数 K 以及一个单链表 L，请编写程序将 L 中每 K 个结点反转。例如：给定 L 为 1→2→3→4→5→6，K 为 3，则输出应该为 3→2→1→6→5→4；如果 K 为 4，则输出应该为 4→3→2→1→5→6，即最后不到 K 个元素不反转。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>每个输入包含 1 个测试用例。每个测试用例第 1 行给出第 1 个结点的地址、结点总个数正整数 N (≤10^5)、以及正整数 K (≤N)，即要求反转的子链结点的个数。结点的地址是 5 位非负整数，NULL 地址用 −1 表示。</p>
-<p>接下来有 N 行，每行格式为：<br>Address Data Next<br>其中 Address 是结点地址，Data 是该结点保存的整数数据，Next 是下一结点的地址。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对每个测试用例，顺序输出反转后的链表，其上每个结点占一行，格式与输入相同。</p>
-<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>00100 6 4<br>00000 4 99999<br>00100 1 12309<br>68237 6 -1<br>33218 3 00000<br>99999 5 68237<br>12309 2 33218</p>
-<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>00000 4 33218<br>33218 3 12309<br>12309 2 00100<br>00100 1 99999<br>99999 5 68237<br>68237 6 -1</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p><span style="color:red">map+node存放结点, 再按链表顺序添加到vector中, 对vector每个局部进行reverse, 之后打印每个结点信息, 打印之前需要更新next</span></p>
-<p>通过,新链表的总长N和给定结点间隔K, 能求出”链表”如果哪些位置反转.<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size() / K; i++) &#123;</span><br><span class="line">  reverse(v.begin() + i*k, v.begin() + (i+<span class="number">1</span>)*k);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>reverse函数的用法:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;;</span><br><span class="line">reverse(v.begin(), v.begin() + <span class="number">3</span>);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size(); i++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d "</span>, v[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line"><span class="comment">// 3 2 1 4 5 6</span></span><br></pre></td></tr></table></figure></p>
-<p>坑点:<br>1, 如果测试给出多余的结点的话， 新链表的总长不为N了; 我之前认为我用vector存放了node, v.size()是绝对安全的, 是, 明枪易躲, 暗箭难防, 对于这题最重要的reverse会出错; 如果不改好这个, case6通不过.</p>
-<p>2, <code>unordered_map&lt;char*, Node&gt; mp;</code> 将node存入之后, 用字符数组作为键值是无法查找到的。如果要用字符串作为key值的话, map定义时用string不用char*, 暂时就这么理解</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="keyword">char</span> addr[<span class="number">6</span>];</span><br><span class="line">  <span class="keyword">int</span> data;</span><br><span class="line">  <span class="keyword">char</span> next[<span class="number">6</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">char</span> head[<span class="number">6</span>]; <span class="keyword">int</span> N, K;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s %d %d"</span>, head, &amp;N, &amp;K);</span><br><span class="line">  <span class="comment">// unordered_map&lt;char*, Node&gt; mp;             // error, why?</span></span><br><span class="line">  <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>, Node&gt; mp;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    Node node;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%s %d %s"</span>, node.addr, &amp;node.data, node.next);</span><br><span class="line">    mp[node.addr] = node;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">vector</span>&lt;Node&gt; v;</span><br><span class="line">  <span class="keyword">char</span> pNode[<span class="number">6</span>]; <span class="built_in">strcpy</span>(pNode, head);</span><br><span class="line">  <span class="keyword">while</span> (<span class="built_in">strcmp</span>(pNode, <span class="string">"-1"</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">    v.push_back(mp[pNode]);</span><br><span class="line">    <span class="built_in">strcpy</span>(pNode, mp[pNode].next);              <span class="comment">// debug01</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size()/K; i++) &#123;        <span class="comment">// case6</span></span><br><span class="line">    reverse(v.begin()+i*K, v.begin()+i*K+K);    <span class="comment">// 哨兵元素, i从0开始</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (i != v.size()<span class="number">-1</span>) &#123;</span><br><span class="line">      <span class="built_in">strcpy</span>(v[i].next, v[i+<span class="number">1</span>].addr);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">strcpy</span>(v[i].next, <span class="string">"-1"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (flag) <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d %s"</span>, v[i].addr, v[i].data, v[i].next);</span><br><span class="line">    flag = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">case6:</span><br><span class="line">00100 4 2</span><br><span class="line">00100 1 12309</span><br><span class="line">12309 2 23333</span><br><span class="line">77777 7 22222</span><br><span class="line">23333 3 -1</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1593,7 +1595,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">172</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1606,7 +1608,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
