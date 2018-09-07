@@ -229,6 +229,133 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/15/20180815-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/15/20180815-01/" itemprop="url">1047 编程团体赛(20) - PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-15T03:53:43+08:00">
+                2018-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1047-编程团体赛（20-point-s-）"><a href="#1047-编程团体赛（20-point-s-）" class="headerlink" title="1047 编程团体赛（20 point(s)）"></a>1047 编程团体赛（20 point(s)）</h3><p>编程团体赛的规则为：每个参赛队由若干队员组成；所有队员独立比赛；参赛队的成绩为所有队员的成绩和；成绩最高的队获胜。</p>
+<p>现给定所有队员的比赛成绩，请你编写程序找出冠军队。</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出一个正整数 N（≤10^4），即所有参赛队员总数。随后 N 行，每行给出一位队员的成绩，格式为：队伍编号-队员编号 成绩，其中队伍编号为 1 到 1000 的正整数，队员编号为 1 到 10 的正整数，成绩为 0 到 100 的整数。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出冠军队的编号和总成绩，其间以一个空格分隔。注意：题目保证冠军队是唯一的。</p>
+<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>6<br>3-10 99<br>11-5 87<br>102-1 0<br>102-3 100<br>11-9 89<br>3-2 61</p>
+<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>11 176</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>team作为address地址, f(key) = key; 对字符串根据分隔符求子串</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> scores[<span class="number">1000</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">string</span> s;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="built_in">memset</span>(scores, <span class="number">0</span>, <span class="keyword">sizeof</span>(scores));</span><br><span class="line">  getchar();</span><br><span class="line">  <span class="keyword">int</span> max = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    getline(<span class="built_in">cin</span>, s);</span><br><span class="line">    <span class="built_in">string</span> team = s.substr(<span class="number">0</span>, s.find(<span class="string">"-"</span>));</span><br><span class="line">    <span class="built_in">string</span> score = s.substr(s.find(<span class="string">" "</span>)+<span class="number">1</span>, s.length());</span><br><span class="line">    <span class="keyword">int</span> i_team = stoi(team);</span><br><span class="line">    scores[i_team] += stoi(score);</span><br><span class="line">    <span class="keyword">if</span> (scores[i_team] &gt; scores[max]) max = i_team;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; max &lt;&lt; <span class="string">" "</span> &lt;&lt; scores[max] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/14/20180814-02/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1028,7 +1155,7 @@
       
         
           
-            <h3 id="1084-外观数列-（20-point-s-）"><a href="#1084-外观数列-（20-point-s-）" class="headerlink" title="1084 外观数列 （20 point(s)）"></a>1084 外观数列 （20 point(s)）</h3><p>外观数列是指具有以下特点的整数序列：</p>
+            <h3 id="1084-外观数列-20"><a href="#1084-外观数列-20" class="headerlink" title="1084 外观数列(20)"></a>1084 外观数列(20)</h3><p>外观数列是指具有以下特点的整数序列：</p>
 <p>d, d1, d111, d113, d11231, d112213111, …</p>
 <p>它从不等于 1 的数字 d 开始，序列的第 n+1 项是对第 n 项的描述。比如第 2 项表示第 1 项有 1 个 d，所以就是 d1；第 2 项是 1 个 d（对应 d1）和 1 个 1（对应 11），所以第 3 项就是 d111。又比如第 4 项是 d113，其描述就是 1 个 d，2 个 1，1 个 3，所以下一项就是 d11231。当然这个定义对 d = 1 也成立。</p>
 <p>本题要求你推算任意给定数字 d 的外观数列的第 N 项。</p>
@@ -1040,6 +1167,8 @@
 <p>观察后一个s的特点为<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">axbxcxdx...     // x是量, a是字符</span><br></pre></td></tr></table></figure></p>
 <p><span style="color:red">也就是在扫描字符串时, 计算a的量cnt将它转换成字符添在a后面即可, perform独立成方法, 最后统一输出s</span></p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">perform</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> tmp;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt; s.length()) &#123;</span><br><span class="line">    tmp += s[i];</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">1</span>, j = i + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (s[i] == s[j] &amp;&amp; j &lt; s.length()) &#123; cnt++; j++;&#125;</span><br><span class="line">    tmp += cnt + <span class="string">'0'</span>;</span><br><span class="line">    i = j;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s; <span class="keyword">int</span> N;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; s &gt;&gt; N;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N - <span class="number">1</span>; i++) &#123; s = perform(s); &#125;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>用一个i变量作为指针就可以.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s; <span class="keyword">int</span> N; <span class="built_in">cin</span> &gt;&gt; s &gt;&gt; N;</span><br><span class="line">  N--;</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    <span class="built_in">string</span> next_s = <span class="string">""</span>;</span><br><span class="line">    s += <span class="string">" "</span>;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">1</span>, len = s.length();</span><br><span class="line">    <span class="keyword">while</span> (i &lt; len) &#123;</span><br><span class="line">      <span class="keyword">int</span> cnt = <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">while</span> (i &lt; len &amp;&amp; s[i] == s[i<span class="number">-1</span>]) &#123;</span><br><span class="line">        i++;</span><br><span class="line">        cnt++;</span><br><span class="line">      &#125;</span><br><span class="line">      next_s += s[i<span class="number">-1</span>];</span><br><span class="line">      next_s += cnt + <span class="string">'0'</span>;</span><br><span class="line">      i++;</span><br><span class="line">    &#125;</span><br><span class="line">    s = next_s;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -1107,7 +1236,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/12/20180812/" itemprop="url">1081 检查密码(20) - PAT乙级</a></h1>
+                <a class="post-title-link" href="/2018/08/12/20180812/" itemprop="url">1081 检查密码(15) - PAT乙级</a></h1>
         
 
         <div class="post-meta">
@@ -1159,7 +1288,7 @@
       
         
           
-            <h3 id="1081-检查密码（15-point-s-）"><a href="#1081-检查密码（15-point-s-）" class="headerlink" title="1081 检查密码（15 point(s)）"></a>1081 检查密码（15 point(s)）</h3><p>本题要求你帮助某网站的用户注册模块写一个密码合法性检查的小功能。该网站要求用户设置的密码必须由不少于6个字符组成，并且只能有英文字母、数字和小数点 .，还必须既有字母也有数字。</p>
+            <h3 id="1081-检查密码-20"><a href="#1081-检查密码-20" class="headerlink" title="1081 检查密码(20)"></a>1081 检查密码(20)</h3><p>本题要求你帮助某网站的用户注册模块写一个密码合法性检查的小功能。该网站要求用户设置的密码必须由不少于6个字符组成，并且只能有英文字母、数字和小数点 .，还必须既有字母也有数字。</p>
 <h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入第一行给出一个正整数 N（≤ 100），随后 N 行，每行给出一个用户设置的密码，为不超过 80 个字符的非空字符串，以回车结束。</p>
 <h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对每个用户的密码，在一行中输出系统反馈信息，分以下5种：</p>
 <p>如果密码合法，输出Your password is wan mei.；<br>如果密码太短，不论合法与否，都输出Your password is tai duan le.；<br>如果密码长度合法，但存在不合法字符，则输出Your password is tai luan le.；<br>如果密码长度合法，但只有字母没有数字，则输出Your password needs shu zi.；<br>如果密码长度合法，但只有数字没有字母，则输出Your password needs zi mu.。</p>
@@ -1167,6 +1296,8 @@
 <h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>Your password is tai duan le.<br>Your password needs shu zi.<br>Your password needs zi mu.<br>Your password is wan mei.<br>Your password is tai luan le.</p>
 <h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>画树状分析</p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  getchar();</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    getline(<span class="built_in">cin</span>, s);</span><br><span class="line">    <span class="keyword">int</span> alpha = <span class="number">0</span>, digit = <span class="number">0</span>, ch_flag = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">isdigit</span>(s[i]) || <span class="built_in">isalpha</span>(s[i]) || s[i] == <span class="string">'.'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isdigit</span>(s[i])) digit++;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[i])) alpha++;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        ch_flag = <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (s.length() &lt; <span class="number">6</span>) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is tai duan le."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s.length() &gt;= <span class="number">6</span> &amp;&amp; !ch_flag) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is tai luan le."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s.length() &gt;= <span class="number">6</span> &amp;&amp; (alpha != <span class="number">0</span>) &amp;&amp; (digit == <span class="number">0</span>)) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password needs shu zi."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s.length() &gt;= <span class="number">6</span> &amp;&amp; (alpha == <span class="number">0</span>) &amp;&amp; (digit != <span class="number">0</span>)) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password needs zi mu."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is wan mei."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>用isalnum()代替, isalpha() || isdigit()</p>
+<p>第二遍做:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cctype&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">cin</span> &gt;&gt; N; getchar();</span><br><span class="line">  <span class="keyword">while</span> (N--) &#123;</span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    getline(<span class="built_in">cin</span>, s);</span><br><span class="line">    <span class="keyword">if</span> (s.length() &lt; <span class="number">6</span>) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is tai duan le."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> flag_ch = <span class="number">0</span>, have_d = <span class="number">0</span>, have_a = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      <span class="comment">// if (isalpha(s[i]) || isdigit(s[i]) || s[i] == '.') &#123;</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">isalnum</span>(s[i]) || s[i] == <span class="string">'.'</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isdigit</span>(s[i])) have_d = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isalpha</span>(s[i])) have_a = <span class="number">1</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        flag_ch = <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (flag_ch) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is tai luan le."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (have_a &amp;&amp; !have_d) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password needs shu zi."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (have_d &amp;&amp; !have_a) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password needs zi mu."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Your password is wan mei."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -1473,143 +1604,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/10/20180810-02/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/10/20180810-02/" itemprop="url">Queue链表实现的注意点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T01:37:56+08:00">
-                2018-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Queue的链表实现"><a href="#Queue的链表实现" class="headerlink" title="Queue的链表实现"></a>Queue<item>的链表实现</item></h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 队列的链表实现</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.NoSuchElementException;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Queue</span>&lt;<span class="title">Item</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> Node first;</span><br><span class="line">  <span class="keyword">private</span> Node last;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">int</span> N = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line">    Item item;</span><br><span class="line">    Node next;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> first == <span class="keyword">null</span>;&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span>     <span class="title">size</span><span class="params">()</span>    </span>&#123; <span class="keyword">return</span> N; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enqueue</span><span class="params">(Item e)</span> </span>&#123;   <span class="comment">// 在尾部添加元素O(1)</span></span><br><span class="line">    Node oldLast = last;</span><br><span class="line">    last = <span class="keyword">new</span> Node();</span><br><span class="line">    last.item = e;</span><br><span class="line">    last.next = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) first = last;          <span class="comment">// 别忘, 如果为first = null, first指向last引用</span></span><br><span class="line">    <span class="keyword">else</span>           oldLast.next = last;   <span class="comment">// 别忘, 新结点的上一个结点与新结点的链</span></span><br><span class="line">    ++N;                                  <span class="comment">// 别忘, 改变计数</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Item <span class="title">dequeue</span><span class="params">()</span> </span>&#123;        <span class="comment">// 在头部删除</span></span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException(<span class="string">"Queue underflow"</span>);</span><br><span class="line">    Item e = first.item;</span><br><span class="line">    first = first.next;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) last = <span class="keyword">null</span>;          <span class="comment">// 别忘, 删除后链表空, first=first.next=null, last=null;</span></span><br><span class="line">    <span class="comment">// 如果删除之前只有一个结点, 删除之后链表空了</span></span><br><span class="line">    --N;                                 <span class="comment">// 别忘, 改变计数</span></span><br><span class="line">    <span class="keyword">return</span> e;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Queue链表实现的注意点"><a href="#Queue链表实现的注意点" class="headerlink" title="Queue链表实现的注意点"></a>Queue链表实现的注意点</h2><p><span style="color:red"> 注意如下几个: </span><br>enqueue尾部插入</p>
-<blockquote>
-<ul>
-<li>1, 旧尾结点用一个Node保存, last指向新的引用</li>
-<li>2, last结点指向下一个null结点</li>
-<li>3, 判空，if (first == null) first = last;</li>
-<li>4, 非空, 上旧尾结点与新尾结点链接</li>
-</ul>
-</blockquote>
-<p>dequeue头部删除</p>
-<blockquote>
-<ul>
-<li>1, 判空, 抛出异常</li>
-<li>2, 保留返回值, first = first.next;删除结点</li>
-<li>3, 判空, last = null; 若删除前只剩一个结点, first.next为空, </li>
-</ul>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1660,7 +1654,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">172</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1673,7 +1667,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">96</span>
+                  <span class="site-state-item-count">95</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
