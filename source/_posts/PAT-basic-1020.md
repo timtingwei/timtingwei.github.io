@@ -1,10 +1,10 @@
 ---
 title: 1020. 月饼 (25)-PAT乙级
 date: 2018-08-02 01:01:33
-tags: PAT, 算法
+tags: [PAT, 算法, 贪心, 优先队列]
 ---
 
-## 1020 月饼 (25)（25 point(s)）
+## 1020 月饼 (25)
 
 月饼是中国人在中秋佳节时吃的一种传统食品，不同地区有许多不同风味的月饼。现给定所有种类月饼的库存量、总售价、以及市场的最大需求量，请你计算可以获得的最大收益是多少。
 
@@ -85,6 +85,61 @@ int main() {
     dq.pop();   // 队首月饼供应完毕
   }
   printf("%.2lf\n", ans);
+  return 0;
+}
+```
+
+## Solution2:
+
+第二遍做, 优先队列的逻辑更直观, 注意正数和正整数的区别, 要将cnt声明成double, 不然case2过不了
+
+```cpp
+#include <cstdio>
+#include <queue>
+#include <vector>
+using namespace std;
+
+struct food {
+  double scale, each_scale;
+  double cnt;
+};
+
+struct cmp {
+  bool operator() (const food &f1, const food &f2) {
+    return f1.each_scale < f2.each_scale;
+  }
+};
+
+bool db_equal(const double d1, const double d2) {
+  return -0.0005 < d1-d2 && d1-d2 < 0.00005;
+}
+
+int main() {
+  int N;
+  double need; scanf("%d %lf", &N, &need);
+  vector<food> v(N);
+  priority_queue<food, vector<food>, cmp> q;
+  for (int i = 0; i < N; i++) {
+    scanf("%lf", &v[i].cnt);
+  }
+  for (int i = 0; i < N; i++) {
+    scanf("%lf", &v[i].scale);
+    v[i].each_scale = v[i].scale / v[i].cnt;
+    q.push(v[i]);
+  }
+  double profit = 0.0;
+  while (!db_equal(need, 0.0) && !q.empty()) {
+    if (q.top().cnt > need) {
+      profit += q.top().each_scale * need;
+      need = 0;
+    } else {  // <= need
+      profit += q.top().scale;
+      need -= q.top().cnt;
+      q.pop();
+    }
+    if (q.empty()) break;
+  }
+  printf("%.2lf", profit);
   return 0;
 }
 ```

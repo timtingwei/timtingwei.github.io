@@ -229,6 +229,657 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/04/20180904-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/20180904-01/" itemprop="url">1006 Sign In and Sign Out(25) - PAT甲级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T10:42:08+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1006-Sign-In-and-Sign-Out-25"><a href="#1006-Sign-In-and-Sign-Out-25" class="headerlink" title="1006 Sign In and Sign Out(25)"></a>1006 Sign In and Sign Out(25)</h3><p>At the beginning of every day, the first person who signs in the computer room will unlock the door, and the last one who signs out will lock the door. Given the records of signing in’s and out’s, you are supposed to find the ones who have unlocked and locked the door on that day.</p>
+<h4 id="Input-Specification"><a href="#Input-Specification" class="headerlink" title="Input Specification:"></a>Input Specification:</h4><p>Each input file contains one test case. Each case contains the records for one day. The case starts with a positive integer M, which is the total number of records, followed by M lines, each in the format:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ID_number Sign_in_time Sign_out_time</span><br></pre></td></tr></table></figure></p>
+<p>where times are given in the format HH:MM:SS, and ID_number is a string with no more than 15 characters.</p>
+<h4 id="Output-Specification"><a href="#Output-Specification" class="headerlink" title="Output Specification:"></a>Output Specification:</h4><p>For each test case, output in one line the ID numbers of the persons who have unlocked and locked the door on that day. The two ID numbers must be separated by one space.</p>
+<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>It is guaranteed that the records are consistent. That is, the sign in time must be earlier than the sign out time for each person, and there are no two persons sign in or out at the same moment.</p>
+<h4 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h4><p>3<br>CS301111 15:30:28 17:00:10<br>SC3021234 08:00:00 11:25:25<br>CS301133 21:45:00 21:58:40</p>
+<h4 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output:"></a>Sample Output:</h4><p>SC3021234 CS301133</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>时间可以存成字符数组, 用strcmp进行比较, <code>strcmp(time1, time2) &lt; 0</code>, time1比time2早。<br>只要进行一次升序和一次降序, 就可以得出最早和最晚的时间, 对应的id, 因此存在一个struct中.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span> &#123;</span></span><br><span class="line">  <span class="keyword">char</span> id[<span class="number">20</span>];</span><br><span class="line">  <span class="keyword">char</span> in_time[<span class="number">15</span>];</span><br><span class="line">  <span class="keyword">char</span> out_time[<span class="number">15</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp1</span><span class="params">(Node n1, Node n2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">strcmp</span>(n1.in_time, n2.in_time) &lt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp2</span><span class="params">(Node n1, Node n2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">strcmp</span>(n1.out_time, n2.out_time) &gt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;Node&gt; v;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> M; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;M);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M; i++) &#123;</span><br><span class="line">    Node n;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%s %s %s"</span>, n.id, n.in_time, n.out_time);</span><br><span class="line">    v.push_back(n);</span><br><span class="line">  &#125;</span><br><span class="line">  sort(v.begin(), v.end(), cmp1);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%s "</span>, v[<span class="number">0</span>].id);</span><br><span class="line">  sort(v.begin(), v.end(), cmp2);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%s"</span>, v[<span class="number">0</span>].id);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/03/20180903-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/20180903-04/" itemprop="url">1005 Spell It Right(20) - PAT甲级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T09:40:43+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1005-Spell-It-Right-20"><a href="#1005-Spell-It-Right-20" class="headerlink" title="1005 Spell It Right(20)"></a>1005 Spell It Right(20)</h3><p>Given a non-negative integer N, your task is to compute the sum of all the digits of N, and output every digit of the sum in English.</p>
+<h4 id="Input-Specification"><a href="#Input-Specification" class="headerlink" title="Input Specification:"></a>Input Specification:</h4><p>Each input file contains one test case. Each case occupies one line which contains an N (≤10<br>​100<br>​​ ).</p>
+<h4 id="Output-Specification"><a href="#Output-Specification" class="headerlink" title="Output Specification:"></a>Output Specification:</h4><p>For each test case, output in one line the digits of the sum in English words. There must be one space between two consecutive words, but no extra space at the end of a line.</p>
+<h4 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h4><p>12345</p>
+<h4 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output:"></a>Sample Output:</h4><p>one five</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> num[<span class="number">200</span>];</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> dict[<span class="number">10</span>] = &#123;<span class="string">"zero"</span>, <span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>,</span><br><span class="line">                   <span class="string">"five"</span>, <span class="string">"six"</span>, <span class="string">"seven"</span>, <span class="string">"eight"</span>, <span class="string">"nine"</span>&#125;;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%s"</span>, num);</span><br><span class="line">  <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(num); i++) &#123;</span><br><span class="line">    sum += num[i]-<span class="string">'0'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">string</span> s = to_string(sum); <span class="keyword">int</span> flag = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">char</span> ch : s) &#123;</span><br><span class="line">    <span class="keyword">if</span> (flag) <span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; dict[ch - <span class="string">'0'</span>];</span><br><span class="line">    flag = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/03/20180903-03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/20180903-03/" itemprop="url">206. Reverse Linked List - LeetCode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T09:40:22+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="206-Reverse-Linked-List"><a href="#206-Reverse-Linked-List" class="headerlink" title="206. Reverse Linked List"></a>206. Reverse Linked List</h3><p>Reverse a singly linked list.</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h4><p>Input: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL<br>Output: 5-&gt;4-&gt;3-&gt;2-&gt;1-&gt;NULL</p>
+<h4 id="Follow-up"><a href="#Follow-up" class="headerlink" title="Follow up:"></a>Follow up:</h4><p>A linked list can be reversed either iteratively or recursively. Could you implement both?</p>
+<h4 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h4><p>pNext用于移动pNode, pPrev和找到新的链表头,  保存pPrev用于创建新的链接.</p>
+<p>三个变量: 新的链表头reverseHead, 游标结点pNode, 前序结点pPrev,<br>四个操作: 循环内部创建下一结点, 改变游标指向前序结点, 前序结点移动到游标结点, 游标结点移动到下一结点.<br>两个判断: 游标结点非空指针时, 进行循环操作; 游标的下一结点为空指针时, 记录新的链表头<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// basic reverse</span></span><br><span class="line"><span class="comment">// Time:O(n), Space:O(1)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">    ListNode* reverseHead = <span class="literal">nullptr</span>;</span><br><span class="line">    ListNode* pNode = head;</span><br><span class="line">    ListNode* pPrev = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">while</span> (pNode != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      ListNode* pNext = pNode-&gt;next;</span><br><span class="line">      <span class="keyword">if</span> (pNext == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        reverseHead = pNode;</span><br><span class="line">      &#125;</span><br><span class="line">      pNode-&gt;next = pPrev;</span><br><span class="line">      pPrev = pNode;</span><br><span class="line">      pNode = pNext;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> reverseHead;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1-&gt;2-&gt;3-&gt;4-&gt;5;</span><br><span class="line"></span><br><span class="line">当5作为头结点指向4的时, 4仍旧指向5, 可以通过每次保留上一次处理的结点, 从末尾前指向</span><br></pre></td></tr></table></figure>
+<p>几个注意点:</p>
+<blockquote>
+<p>1, 主要在中间过程中, 找出反转后的头结点;<br>2, 在反转结束后, 尾指针指向nullptr;<br>3, 要注意空链表的情况;</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Time:O(n^2), Space:O(1)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">nullptr</span>) <span class="keyword">return</span> head;</span><br><span class="line">    ListNode *pNode = <span class="literal">nullptr</span>, *reverseHead = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">while</span> (pNode != head) &#123;</span><br><span class="line">      ListNode *p = head;</span><br><span class="line">      <span class="keyword">while</span> (p-&gt;next != pNode) &#123;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (pNode != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        pNode-&gt;next = p;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        reverseHead = p;</span><br><span class="line">      &#125;</span><br><span class="line">      pNode = p;</span><br><span class="line">    &#125;</span><br><span class="line">    pNode-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">return</span> reverseHead;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="Solution-Follow-up1"><a href="#Solution-Follow-up1" class="headerlink" title="Solution: Follow up1"></a>Solution: Follow up1</h4><p>从随意位置反转链表, 在该位置后的结点不变。<br>需要保存一个新的头结点, reverseHead; 以及另一结点, nextNode用于, 反转之后的结点拼接。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// follow up1: iteratively</span><br><span class="line">class Solution &#123;</span><br><span class="line"> public:</span><br><span class="line">  ListNode* reverseList(ListNode* head, int k) &#123;</span><br><span class="line">    if (head == nullptr) return head;</span><br><span class="line">    ListNode *pNode = head;</span><br><span class="line">    for (int i = 0; i &lt; k-1; i++) &#123;</span><br><span class="line">      if (pNode-&gt;next == nullptr) return head;</span><br><span class="line">      pNode = pNode-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    ListNode *reverseHead = pNode, *nextNode = pNode-&gt;next;</span><br><span class="line">    while (pNode != head) &#123;</span><br><span class="line">      ListNode *p = head;</span><br><span class="line">      while (p-&gt;next != pNode) &#123;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">      &#125;</span><br><span class="line">      pNode-&gt;next = p;</span><br><span class="line">      pNode = p;</span><br><span class="line">    &#125;</span><br><span class="line">    pNode-&gt;next = nextNode;</span><br><span class="line">    return reverseHead;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>一个测试Sample<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">input:</span><br><span class="line">[1, 2, 3, 4, 5]</span><br><span class="line">int k = 2;</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">[2, 1, 3, 4, 5]</span><br></pre></td></tr></table></figure></p>
+<h4 id="Solution-Follow-up2"><a href="#Solution-Follow-up2" class="headerlink" title="Solution: Follow up2"></a>Solution: Follow up2</h4><p>反转呈现周期性, 但是若不满这个周期, 不会反转链表.</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// follow up2: recursively</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function">ListNode* <span class="title">reverseList</span><span class="params">(ListNode* head, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">nullptr</span> || k &lt;= <span class="number">1</span>) <span class="keyword">return</span> head;</span><br><span class="line"></span><br><span class="line">    ListNode *pNode = head, *reverseHead = <span class="literal">nullptr</span>,</span><br><span class="line">        *lastHead = head, *lastTail = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k<span class="number">-1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (pNode-&gt;next == <span class="literal">nullptr</span>) <span class="keyword">return</span> reverseHead;</span><br><span class="line">        pNode = pNode-&gt;next;</span><br><span class="line">      &#125;</span><br><span class="line">      ListNode *segHead = pNode, *nextNode = pNode-&gt;next;</span><br><span class="line">      <span class="keyword">if</span> (reverseHead == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        reverseHead = segHead;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (lastTail != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        lastTail-&gt;next = segHead;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">while</span> (pNode != lastHead) &#123;</span><br><span class="line">        ListNode *p = lastHead;</span><br><span class="line">        <span class="keyword">while</span> (p-&gt;next != pNode) &#123;</span><br><span class="line">          p = p-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">        pNode-&gt;next = p;</span><br><span class="line">        pNode = p;</span><br><span class="line">      &#125;</span><br><span class="line">      pNode-&gt;next = nextNode;</span><br><span class="line">      lastTail = lastHead;</span><br><span class="line">      lastHead = nextNode;</span><br><span class="line">      pNode = nextNode;</span><br><span class="line">      <span class="keyword">if</span> (lastHead == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> reverseHead;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> reverseHead;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>测试Sample:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/*</span><br><span class="line">input:</span><br><span class="line">[1,2,3,4,5,6,7,8]</span><br><span class="line">3</span><br><span class="line"></span><br><span class="line">[3, 2, 1, 6, 5, 4, 7, 8]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">input:</span><br><span class="line">[1,2,3,4,5,6,7,8]</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line">[2, 1, 4, 3, 6, 5, 8, 7]</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/03/20180903-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/20180903-02/" itemprop="url">19. Remove Nth Node From End of List - LeetCode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T09:40:18+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="19-Remove-Nth-Node-From-End-of-List"><a href="#19-Remove-Nth-Node-From-End-of-List" class="headerlink" title="19. Remove Nth Node From End of List"></a>19. Remove Nth Node From End of List</h3><p>Given a linked list, remove the n-th node from the end of list and return its head.</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h4><p>Given linked list: 1-&gt;2-&gt;3-&gt;4-&gt;5, and n = 2.</p>
+<p>After removing the second node from the end, the linked list becomes 1-&gt;2-&gt;3-&gt;5.</p>
+<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>Given n will always be valid.</p>
+<h4 id="Follow-up"><a href="#Follow-up" class="headerlink" title="Follow up:"></a>Follow up:</h4><p>Could you do this in one pass?</p>
+<h4 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// two-pass, 扫描两遍, 保存前一个结点的方法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function">ListNode* <span class="title">removeNthFromEnd</span><span class="params">(ListNode* head, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">nullptr</span>) <span class="keyword">return</span> head;</span><br><span class="line">    ListNode* prev = head, *p = prev-&gt;next;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (p) &#123;</span><br><span class="line">      prev = prev-&gt;next;</span><br><span class="line">      p = prev-&gt;next;</span><br><span class="line">      size++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    prev = head; p = prev-&gt;next;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size-n<span class="number">-1</span>; i++) &#123;</span><br><span class="line">      prev = prev-&gt;next;</span><br><span class="line">      p = prev-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (prev &amp;&amp; !p) &#123;</span><br><span class="line">      prev = <span class="literal">nullptr</span>;</span><br><span class="line">      <span class="keyword">delete</span>(prev); <span class="keyword">delete</span>(p);</span><br><span class="line">      head = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (prev == head &amp;&amp; size-n == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">delete</span>(prev);</span><br><span class="line">        head = p;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        prev-&gt;next = p-&gt;next;</span><br><span class="line">        <span class="keyword">delete</span>(p);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>一个node先在原地等待, 当p到达n=1的位置时候, cur和p一起移动, 当p移动到最后一个结点时， cur就是要删除的结点。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// one-pass, 更新删除结点的操作</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function">ListNode* <span class="title">removeNthFromEnd</span><span class="params">(ListNode* head, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (head == <span class="literal">nullptr</span> || n == <span class="number">0</span>) <span class="keyword">return</span> head;</span><br><span class="line"></span><br><span class="line">    ListNode *cur = head, *p = head;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; p-&gt;next; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (i &gt;= n<span class="number">-1</span>) cur = cur-&gt;next;</span><br><span class="line">      p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 删除cur结点的操作</span></span><br><span class="line">    <span class="keyword">if</span> (cur-&gt;next != <span class="literal">nullptr</span>) &#123;   <span class="comment">// cur不是尾结点</span></span><br><span class="line">      ListNode *delNode = cur-&gt;next;</span><br><span class="line">      cur-&gt;val = delNode-&gt;val;</span><br><span class="line">      cur-&gt;next = delNode-&gt;next;</span><br><span class="line">      <span class="keyword">delete</span>(delNode);</span><br><span class="line">      delNode = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (cur == head) &#123;     <span class="comment">// cur既是头结点也是尾结点</span></span><br><span class="line">      <span class="keyword">delete</span>(cur);</span><br><span class="line">      cur = <span class="literal">nullptr</span>;</span><br><span class="line">      head = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;                      <span class="comment">// cur是尾结点</span></span><br><span class="line">      p = head;</span><br><span class="line">      <span class="keyword">while</span> (p-&gt;next != cur) &#123;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">      &#125;</span><br><span class="line">      p-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">      <span class="keyword">delete</span>(cur);</span><br><span class="line">      cur = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> head;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>删除链表结点的操作要记得熟练.<br>先讨论不是尾结点, 再讨论既是尾结点也是头结点, 最后讨论尾结点.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/03/20180903-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/20180903-01/" itemprop="url">237. Delete Node in a Linked List - LeetCode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T09:40:15+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="237-Delete-Node-in-a-Linked-List"><a href="#237-Delete-Node-in-a-Linked-List" class="headerlink" title="237. Delete Node in a Linked List"></a>237. Delete Node in a Linked List</h3><p>Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.</p>
+<p>Given linked list – head = [4,5,1,9], which looks like following:<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">4 -&gt; 5 -&gt; 1 -&gt; 9</span><br></pre></td></tr></table></figure></p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: head = [4,5,1,9], node = 5</span><br><span class="line">Output: [4,1,9]</span><br><span class="line">Explanation: You are given the second node with value 5, the linked list</span><br><span class="line">             should become 4 -&gt; 1 -&gt; 9 after calling your function.</span><br></pre></td></tr></table></figure>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Input: head = [4,5,1,9], node = 1</span><br><span class="line">Output: [4,5,9]</span><br><span class="line">Explanation: You are given the third node with value 1, the linked list</span><br><span class="line">             should become 4 -&gt; 5 -&gt; 9 after calling your function.</span><br></pre></td></tr></table></figure>
+<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><blockquote>
+<ul>
+<li>The linked list will have at least two elements.</li>
+<li>All of the nodes’ values will be unique.</li>
+<li>The given node will not be the tail and it will always be a valid node of the linked list.</li>
+<li>Do not return anything from your function.</li>
+</ul>
+</blockquote>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>刚开始的思路是, 用被删除结点前的前一个结点prev, prev-&gt;next = node-&gt;next; 再释放node的内存。</p>
+<p>但因为是单向链表, 只给出一个结点, 因此要删除这个结点就不能找prev结点.</p>
+<p><span sytle="color:red">将下一个结点的值赋给该结点, 该结点指向跳过下一结点, 释放下一个结点。实际上是删除了下一个结点, 但将值赋值给了当前node</span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * struct ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode *next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</span></span><br><span class="line"><span class="comment"> * &#125;;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">(ListNode* node)</span> </span>&#123;</span><br><span class="line">      node-&gt;val = node-&gt;next-&gt;val;</span><br><span class="line">      ListNode* delNode = node-&gt;next;</span><br><span class="line">      node-&gt;next = delNode-&gt;next;</span><br><span class="line">      <span class="keyword">delete</span>(delNode);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/02/20180902-04/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -889,651 +1540,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/31/20180831-03/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/31/20180831-03/" itemprop="url">242. Valid Anagram - LeetCode</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T07:56:30+08:00">
-                2018-08-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="242-Valid-Anagram"><a href="#242-Valid-Anagram" class="headerlink" title="242. Valid Anagram"></a>242. Valid Anagram</h3><p>Given two strings s and t , write a function to determine if t is an anagram of s.</p>
-<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><p>Input: s = “anagram”, t = “nagaram”<br>Output: true</p>
-<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><p>Input: s = “rat”, t = “car”<br>Output: false</p>
-<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>You may assume the string contains only lowercase alphabets.</p>
-<h4 id="Follow-up"><a href="#Follow-up" class="headerlink" title="Follow up:"></a>Follow up:</h4><p>What if the inputs contain unicode characters? How would you adapt your solution to such case?</p>
-<h4 id="Solution1"><a href="#Solution1" class="headerlink" title="Solution1:"></a>Solution1:</h4><p>使用sort<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s.length() != t.length()) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    sort(s.begin(), s.end());</span><br><span class="line">    sort(t.begin(), t.end());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (s[i] != t[i]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>简化版本<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    sort(s.begin(), s.end());</span><br><span class="line">    sort(t.begin(), t.end());</span><br><span class="line">    <span class="keyword">if</span> (s == t) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<h4 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h4><p>建立Hash表, key是char, 对应该字符出现的次数. 一个字符串加一个字符串减。<br>这里使用散列表实现的<code>unodered_map</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s.length() != t.length()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; counts;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      counts[s[i]]++;</span><br><span class="line">      counts[t[i]]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> count : counts) &#123;</span><br><span class="line">      <span class="keyword">if</span> (count.second) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<h4 id="Solution3"><a href="#Solution3" class="headerlink" title="Solution3"></a>Solution3</h4><p>用ascii码作为key值, 不用map容器用数组<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isAnagram</span><span class="params">(<span class="built_in">string</span> s, <span class="built_in">string</span> t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (s.length() != t.length()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">int</span> counts[<span class="number">26</span>];</span><br><span class="line">    <span class="built_in">memset</span>(counts, <span class="number">0</span>, <span class="keyword">sizeof</span>(counts));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      counts[s[i] - <span class="string">'a'</span>]++;</span><br><span class="line">      counts[t[i] - <span class="string">'a'</span>]--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">26</span>; i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (counts[i]) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/31/20180831-02/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/31/20180831-02/" itemprop="url">387. First Unique Character in a String - LeetCode</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T07:56:26+08:00">
-                2018-08-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="387-First-Unique-Character-in-a-String"><a href="#387-First-Unique-Character-in-a-String" class="headerlink" title="387. First Unique Character in a String"></a>387. First Unique Character in a String</h3><p>Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1.</p>
-<h4 id="Examples"><a href="#Examples" class="headerlink" title="Examples:"></a>Examples:</h4><p>s = “leetcode”<br>return 0.</p>
-<p>s = “loveleetcode”,<br>return 2.</p>
-<h4 id="Note-You-may-assume-the-string-contain-only-lowercase-letters"><a href="#Note-You-may-assume-the-string-contain-only-lowercase-letters" class="headerlink" title="Note: You may assume the string contain only lowercase letters."></a>Note: You may assume the string contain only lowercase letters.</h4><h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>因为不到最后无法得知出现是否重复, 于是建立一个Hash表,大小为26个lower字母, 存放每个字符出现的次数.</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Time:O(n), Space:O(1)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">firstUniqChar</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cnt[<span class="number">30</span>];</span><br><span class="line">    <span class="built_in">memset</span>(cnt, <span class="number">0</span>, <span class="keyword">sizeof</span>(cnt));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      cnt[s[i] - <span class="string">'a'</span>]++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (cnt[s[i] - <span class="string">'a'</span>] == <span class="number">1</span>) <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/31/20180831-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/31/20180831-01/" itemprop="url">7. Reverse Integer - LeetCode</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T07:56:22+08:00">
-                2018-08-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="7-Reverse-Integer"><a href="#7-Reverse-Integer" class="headerlink" title="7. Reverse Integer"></a>7. Reverse Integer</h3><p>Given a 32-bit signed integer, reverse digits of an integer.</p>
-<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><p>Input: 123<br>Output: 321</p>
-<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><p>Input: -123<br>Output: -321</p>
-<h4 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3:"></a>Example 3:</h4><p>Input: 120<br>Output: 21</p>
-<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>不需要重新写大整数类</p>
-<blockquote>
-<ul>
-<li>1, 位数*10代表着升位。</li>
-<li>2, 可通过乘10再除以10是否相等来判断是否溢出</li>
-</ul>
-</blockquote>
-<p>AC的解法:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>, judge = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x) &#123;</span><br><span class="line">      judge = result * <span class="number">10</span>;</span><br><span class="line">      <span class="keyword">if</span> (judge / <span class="number">10</span> != result) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      result = judge;</span><br><span class="line">      result += x % <span class="number">10</span>;</span><br><span class="line">      x /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>之前错误百出的解法:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="built_in">pow</span>(<span class="number">-2</span>, <span class="number">31</span>) || x &gt; <span class="built_in">pow</span>(<span class="number">2</span>, <span class="number">31</span>) - <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums;</span><br><span class="line">    <span class="keyword">while</span> (x) &#123;</span><br><span class="line">      nums.push_back(x % <span class="number">10</span>);</span><br><span class="line">      x /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>, n = nums.size();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">      <span class="keyword">int</span> d = <span class="built_in">pow</span>(<span class="number">10</span>, i) * nums[n<span class="number">-1</span>-i];</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"d = %d\n"</span>, d);</span><br><span class="line">      <span class="keyword">if</span> (d % <span class="number">10</span> == <span class="number">0</span> || d == <span class="number">1</span> || d == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((ans &gt; <span class="built_in">pow</span>(<span class="number">2</span>, <span class="number">31</span>) - <span class="number">1</span> - d) || (ans &lt; <span class="built_in">pow</span>(<span class="number">-2</span>, <span class="number">31</span>) - d))</span><br><span class="line">          <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        ans += d;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// if (ans &lt; pow(-2, 31) || ans &gt; pow(2, 31) - 1) return 0;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/30/20180830-03/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/30/20180830-03/" itemprop="url">1079 延迟的回文数(20) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T16:46:53+08:00">
-                2018-08-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1079-延迟的回文数-20"><a href="#1079-延迟的回文数-20" class="headerlink" title="1079 延迟的回文数(20)"></a>1079 延迟的回文数(20)</h3><p>非回文数也可以通过一系列操作变出回文数。首先将该数字逆转，再将逆转数与该数相加，如果和还不是一个回文数，就重复这个逆转再相加的操作，直到一个回文数出现。如果一个非回文数可以变出回文数，就称这个数为延迟的回文数。（定义翻译自 <a href="https://en.wikipedia.org/wiki/Palindromic_number" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Palindromic_number</a> ）</p>
-<p>给定任意一个正整数，本题要求你找到其变出的那个回文数。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在一行中给出一个不超过1000位的正整数。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>对给定的整数，一行一行输出其变出回文数的过程。每行格式如下</p>
-<p>A + B = C<br>其中 A 是原始的数字，B 是 A 的逆转数，C 是它们的和。A 从输入的整数开始。重复操作直到 C 在 10 步以内变成回文数，这时在一行中输出 C is a palindromic number.；或者如果 10 步都没能得到回文数，最后就在一行中输出 Not found in 10 iterations.。</p>
-<h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例 1："></a>输入样例 1：</h4><p>97152</p>
-<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例 1："></a>输出样例 1：</h4><p>97152 + 25179 = 122331<br>122331 + 133221 = 255552<br>255552 is a palindromic number.</p>
-<h4 id="输入样例-2："><a href="#输入样例-2：" class="headerlink" title="输入样例 2："></a>输入样例 2：</h4><p>196</p>
-<h4 id="输出样例-2："><a href="#输出样例-2：" class="headerlink" title="输出样例 2："></a>输出样例 2：</h4><p>196 + 691 = 887<br>887 + 788 = 1675<br>1675 + 5761 = 7436<br>7436 + 6347 = 13783<br>13783 + 38731 = 52514<br>52514 + 41525 = 94039<br>94039 + 93049 = 187088<br>187088 + 880781 = 1067869<br>1067869 + 9687601 = 10755470<br>10755470 + 07455701 = 18211171<br>Not found in 10 iterations.</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>case6需要实现大整数, 构造, 转换(change), 相加(add), 转成字符串(bignToString)</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Bign</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> d[<span class="number">1005</span>];</span><br><span class="line">  <span class="keyword">int</span> len;</span><br><span class="line">  Bign() &#123;</span><br><span class="line">    <span class="built_in">memset</span>(d, <span class="number">0</span>, <span class="keyword">sizeof</span>(d));</span><br><span class="line">    len = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">Bign <span class="title">change</span><span class="params">(<span class="built_in">string</span> str)</span> </span>&#123;</span><br><span class="line">  Bign a;</span><br><span class="line">  a.len = str.length();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.len; i++) &#123;</span><br><span class="line">    a.d[i] = str[a.len<span class="number">-1</span>-i] - <span class="string">'0'</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Bign <span class="title">add</span><span class="params">(Bign a, Bign b)</span> </span>&#123;</span><br><span class="line">  Bign c;</span><br><span class="line">  <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.len || i &lt; b.len; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> temp = a.d[i] + b.d[i] + carry;</span><br><span class="line">    c.d[c.len++] = temp % <span class="number">10</span>;</span><br><span class="line">    carry = temp / <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (carry) &#123;</span><br><span class="line">    c.d[c.len++] = carry;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">bignToString</span><span class="params">(Bign a)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = a.len<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    s += (a.d[i] + <span class="string">'0'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">is_p</span><span class="params">(<span class="built_in">string</span> s)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (s.length() == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">0</span>, j = s.length() - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (i &lt;= j) &#123;</span><br><span class="line">    <span class="keyword">if</span> (s[i] != s[j]) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    i++; j--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> A, B, C;</span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; A;</span><br><span class="line">  <span class="keyword">if</span> (is_p(A)) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; A &lt;&lt; <span class="string">" is a palindromic number."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> find = <span class="number">0</span>, cnt = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (cnt &lt; <span class="number">10</span>) &#123;</span><br><span class="line">    <span class="built_in">string</span> tmp_s = A;</span><br><span class="line">    reverse(tmp_s.begin(), tmp_s.end());</span><br><span class="line">    B.clear(); B = tmp_s;</span><br><span class="line"></span><br><span class="line">    Bign intc = add(change(A), change(B));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// int tmp_c = stoi(A) + stoi(B);        // case6, need to convert to bign</span></span><br><span class="line">    <span class="comment">// C.clear(); C = to_string(tmp_c);</span></span><br><span class="line">    C.clear(); C = bignToString(intc);       <span class="comment">// debug case6</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; A &lt;&lt; <span class="string">" + "</span> &lt;&lt; B &lt;&lt; <span class="string">" = "</span> &lt;&lt; C &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (is_p(C)) &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; C &lt;&lt; <span class="string">" is a palindromic number."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">      find = <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    A.clear(); A = C;</span><br><span class="line">    cnt++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!find) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Not found in 10 iterations."</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/30/20180830-02/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/30/20180830-02/" itemprop="url">1070 结绳(25) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-30T16:46:50+08:00">
-                2018-08-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1070-结绳-25"><a href="#1070-结绳-25" class="headerlink" title="1070 结绳(25)"></a>1070 结绳(25)</h3><p>给定一段一段的绳子，你需要把它们串成一条绳。每次串连的时候，是把两段绳子对折，再如下图所示套接在一起。这样得到的绳子又被当成是另一段绳子，可以再次对折去跟另一段绳子串连。每次串连后，原来两段绳子的长度就会减半。</p>
-<p>rope.jpg</p>
-<p>给定 N 段绳子的长度，你需要找出它们能串成的绳子的最大长度。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>每个输入包含 1 个测试用例。每个测试用例第 1 行给出正整数 N (2≤N≤10^4)；第 2 行给出 N 个正整数，即原始绳段的长度，数字间以空格分隔。所有整数都不超过10^4。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出能够串成的绳子的最大长度。结果向下取整，即取为不超过最大长度的最近整数。</p>
-<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>8<br>10 15 12 3 4 13 1 15</p>
-<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>14</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>主要要弄明白一个问题, 绳子怎么拼能够获得最大长度。</p>
-<p>使得长度越长的绳子, 被折叠的次数越少; 尽可能让长度短的绳子折叠的更多(既然一定需要折叠的话).<span></span></p>
-<p>由于不会在数学上进行证明, 就先写完算法, 然后跟案例数据去匹配验证。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">10050</span>;</span><br><span class="line"><span class="keyword">int</span> a[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, tmp; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;tmp);</span><br><span class="line">    a[i] = tmp;</span><br><span class="line">  &#125;</span><br><span class="line">  sort(a, a+N);</span><br><span class="line">  <span class="keyword">double</span> sum = a[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; i++) &#123;</span><br><span class="line">    sum = (sum + a[i]) / <span class="number">2</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, (<span class="keyword">int</span>)<span class="built_in">floor</span>(sum));</span><br><span class="line">  <span class="comment">// printf("sum = %lf", sum);</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1584,7 +1590,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">172</span>
+                  <span class="site-state-item-count">177</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1597,7 +1603,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

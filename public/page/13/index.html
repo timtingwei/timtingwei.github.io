@@ -229,6 +229,671 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/04/PAT-basic-1033/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/PAT-basic-1033/" itemprop="url">1033. 旧键盘打字(20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T01:45:16+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1033-旧键盘打字-20-（20-point-s-）"><a href="#1033-旧键盘打字-20-（20-point-s-）" class="headerlink" title="1033 旧键盘打字(20)（20 point(s)）"></a>1033 旧键盘打字(20)（20 point(s)）</h2><p>旧键盘上坏了几个键，于是在敲一段文字的时候，对应的字符就不会出现。现在给出应该输入的一段文字、以及坏掉的那些键，打出的结果文字会是怎样？</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在2行中分别给出坏掉的那些键、以及应该输入的文字。<br>其中对应英文字母的坏键以大写给出；<br>每段文字是不超过10^5^个字符的串。<br>可用的字符包括字母[a-z, A-Z]、数字0-9、以及下划线“_”（代表空格）、“,”、“.”、“-”、“+”（代表上档键）。<br>题目保证第2行输入的文字串非空。</p>
+<p>注意：如果上档键坏掉了，那么大写的英文字母无法被打出。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中输出能够被打出的结果文字。如果没有一个字符能被打出，则输出空行。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>7+IE.<br>7_This_is_a_test.</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>_hs_s_a_tst</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>只有打出和打不出两种情况。<br>打不出分成: 数字字符对应, 英文字符 对应 坏键大写, ‘+’导致所有大写字符都打不出.<br>每次输入一个字符去和坏键对比, 打印出ok的字符</p>
+<p>case2 error:</p>
+<p>没有一个字符能被打出的情况<br>abcd<br>abcd</p>
+<p>+<br>+</p>
+<p>+<br>aabb22BSa2</p>
+<p>排除不可用字母 <span style="color:red"> 这是我想到的一个边界情况, 不可用字符需要被当作无效输入跳过的 </span><br>abc<br>a\bsd_\,</p>
+<p>debug case2: 第一行 为空 的情况!! <span style="color:red">怎么也没想到是第一行空, 也就是没有损坏键的情况</span></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">输入如下:</span><br><span class="line"></span><br><span class="line">abcd</span><br><span class="line">输出:</span><br><span class="line">abcd</span><br></pre></td></tr></table></figure>
+<p>code:</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// debug case 2: 可用字符就这么几个 -&gt; 不是这个原因</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">is_ok</span><span class="params">(<span class="keyword">char</span> ch)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> ((<span class="string">'a'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'z'</span>) || (<span class="string">'A'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'Z'</span>)</span><br><span class="line">      || (<span class="string">'0'</span> &lt;= ch &amp;&amp; ch &lt;= <span class="string">'9'</span>)</span><br><span class="line">      || (ch == <span class="string">','</span> || ch == <span class="string">'.'</span> || ch == <span class="string">'-'</span> || ch == <span class="string">'+'</span> || ch == <span class="string">'_'</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> bad, input;</span><br><span class="line">  getline(<span class="built_in">cin</span>, bad); <span class="built_in">cin</span> &gt;&gt; input;  <span class="comment">// debug: 改用空行</span></span><br><span class="line">  <span class="comment">// cin &gt;&gt; bad &gt;&gt; input;           // case2: 通不过的原因, 第一行可能是空行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; input.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> ok = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span> (!is_ok(input[i])) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; bad.length(); j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (input[i] == bad[j]) &#123;ok = <span class="number">0</span>; <span class="keyword">break</span>;&#125;   <span class="comment">// 直接对应相等</span></span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">isalpha</span>(input[i]) &amp;&amp; (<span class="built_in">toupper</span>(input[i]) == bad[j]))  &#123;</span><br><span class="line">        ok = <span class="number">0</span>; <span class="keyword">break</span>;       <span class="comment">// 字符i是字母, 转成大写对应相等</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (bad[j] == <span class="string">'+'</span> &amp;&amp; <span class="built_in">isupper</span>(input[i])) &#123;</span><br><span class="line">        ok = <span class="number">0</span>; <span class="keyword">break</span>;       <span class="comment">// 坏键是+, 对应i是大写</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ok) <span class="built_in">cout</span> &lt;&lt; input[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>我学习了哈希散列之后, 在网上又看到这样的解法:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="built_in">string</span> bad, should;</span><br><span class="line">  getline(<span class="built_in">cin</span>, bad);</span><br><span class="line">  getline(<span class="built_in">cin</span>, should);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; should.length(); i++) &#123;</span><br><span class="line">    <span class="keyword">if</span> (bad.find(<span class="built_in">toupper</span>(should[i])) != <span class="built_in">string</span>::npos) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">isupper</span>(should[i]) &amp;&amp; bad.find(<span class="string">'+'</span>) != <span class="built_in">string</span>::npos) <span class="keyword">continue</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; should[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>分析可得<br>1, 把操作都放在一个string中进行, 没有额外的vector, 减少了很多代码。</p>
+<p>2, string对象, 可以调用find()函数, 如果找到了这个字符, 就返回这个字符的索引, 如果没找到, 返回一个与string::npos相等的值 cout &lt;&lt; string::npos &lt;&lt; endl;   // 18446744073709551615</p>
+<p>3, toupper和isupper的使用, 注意的是, toupper对非字母的字符也能起到作用, 因此可以将对整个字符串进行遍历</p>
+<p>4, Hash散列, 通过查找HashTable中的key值, 判断key是否在列表中, 这里抽象出来, 就是判断某个字符ch, 或者是toupper(ch), 用find()函数判断是不是在这个字符串中, 在的给出相应的操作。</p>
+<p>5, 这道题对不符合条件的进行忽略continue, 不符合的有两种:一种是转换成upper之后能在坏键字符串中找到的, 一种是, 另一种是大写, 但坏键中有”+”上档位键 </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/04/PAT-basic-1032/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/04/PAT-basic-1032/" itemprop="url">1032. 挖掘机技术哪家强(20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T01:40:22+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1032-挖掘机技术哪家强-20"><a href="#1032-挖掘机技术哪家强-20" class="headerlink" title="1032 挖掘机技术哪家强(20)"></a>1032 挖掘机技术哪家强(20)</h2><p>为了用事实说明挖掘机技术到底哪家强，PAT组织了一场挖掘机技能大赛。现请你根据比赛结果统计出技术最强的那个学校。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在第1行给出不超过10^5^的正整数N，即参赛人数。<br>随后N行，每行给出一位参赛者的信息和成绩，<br>包括其所代表的学校的编号（从1开始连续编号）、及其比赛成绩（百分制），中间以空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中给出总得分最高的学校的编号、及其总分，中间以空格分隔。题目保证答案唯一，没有并列。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>6<br>3 65<br>2 80<br>1 100<br>2 70<br>3 40<br>3 0</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>2 150</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>思路: 用数组存各个学校的总分, 计算完成之后, 得出总分最高的索引和总分</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">100050</span>;</span><br><span class="line"><span class="keyword">int</span> scores[MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, max_i = <span class="number">-1</span>, max_score = <span class="number">-1</span>;</span><br><span class="line">  <span class="comment">// memset(scores, 0, sizeof(scores));   // 这句造成编译错误</span></span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> j, tmp_s;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; j &gt;&gt; tmp_s;</span><br><span class="line">    scores[j] += tmp_s;</span><br><span class="line">    <span class="keyword">if</span> (scores[j] &gt; max_score) &#123; max_i = j; max_score = scores[j];&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; max_i &lt;&lt; <span class="string">" "</span> &lt;&lt; max_score &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1027/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/PAT-basic-1027/" itemprop="url">1027. 打印沙漏(20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:14:01+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1027-打印沙漏-20"><a href="#1027-打印沙漏-20" class="headerlink" title="1027 打印沙漏(20)"></a>1027 打印沙漏(20)</h2><p>本题要求你写个程序把给定的符号打印成沙漏的形状。例如给定17个“*”，要求按下列格式打印<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*****</span><br><span class="line"> ***</span><br><span class="line">  *</span><br><span class="line"> ***</span><br><span class="line">*****</span><br></pre></td></tr></table></figure></p>
+<p>所谓“沙漏形状”，是指每行输出奇数个符号；各行符号中心对齐；相邻两行符号数差2；符号数先从大到小顺序递减到1，再从小到大顺序递增；首尾符号数相等。</p>
+<p>给定任意N个符号，不一定能正好组成一个沙漏。要求打印出的沙漏能用掉尽可能多的符号。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在一行给出1个正整数N（&lt;=1000）和一个符号，中间以空格分隔。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>首先打印出由给定符号组成的最大的沙漏形状，最后在一行中输出剩下没用掉的符号数。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>19 *</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">*****</span><br><span class="line"> ***</span><br><span class="line">  *</span><br><span class="line"> ***</span><br><span class="line">*****</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>S(a) = 1, 3, 5,  7, 9,<br>S(b) = 1, 7, 17 …<br>当n的值越过表b的某值时, 对应的星号的一种情况, 例如在[7, 17)都是不算1, 上下各两行.<br>因此只要计算前x项奇数*2+1的总和.</p>
+<p>题中n&lt;=1000,</p>
+<p>(1+n) * (n/2)/2 = 500;<br>x = 31       (实际上我的x是调试出来的 :b)</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 计算前31项奇数之和</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n; <span class="keyword">char</span> ch;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d %c"</span>, &amp;n, &amp;ch);</span><br><span class="line">  <span class="keyword">int</span> i, j = <span class="number">1</span>, sum = <span class="number">1</span>, p;</span><br><span class="line">  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">31</span>; i++) &#123;</span><br><span class="line">    j += <span class="number">2</span>;</span><br><span class="line">    sum += j*<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (sum &gt; n) &#123;p = n - (sum-(j*<span class="number">2</span>)); <span class="keyword">break</span>;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> line = i--;</span><br><span class="line">  <span class="comment">// 上打印line行, 下打印line-1行</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = line; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; line-i; j++) <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1</span>+i*<span class="number">2</span>; j++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= line; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; line-i; j++)  <span class="built_in">printf</span>(<span class="string">" "</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">1</span>+i*<span class="number">2</span>; j++) <span class="built_in">printf</span>(<span class="string">"%c"</span>, ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, p);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1026/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/PAT-basic-1026/" itemprop="url">1026. 程序运行时间（20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:13:58+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1026-程序运行时间-15"><a href="#1026-程序运行时间-15" class="headerlink" title="1026 程序运行时间(15)"></a>1026 程序运行时间(15)</h2><p>要获得一个C语言程序的运行时间，常用的方法是调用头文件time.h，其中提供了clock()函数，可以捕捉从程序开始运行到clock()被调用时所耗费的时间。这个时间单位是clock tick，即“时钟打点”。<br>同时还有一个常数CLK_TCK，给出了机器时钟每秒所走的时钟打点数。<br>于是为了获得一个函数f的运行时间，我们只要</p>
+<p>在调用f之前先调用clock()，获得一个时钟打点数C1；<br>在f执行完成后再调用clock()，获得另一个时钟打点数C2；<br>两次获得的时钟打点数之差(C2-C1)就是f运行所消耗的时钟打点数，<br>再除以常数CLK_TCK，就得到了以秒为单位的运行时间。</p>
+<p>这里不妨简单假设常数CLK_TCK为100。现给定被测函数前后两次获得的时钟打点数，请你给出被测函数运行的时间。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>输入在一行中顺序给出2个整数C1和C2。注意两次获得的时钟打点数肯定不相同，即C1 &lt; C2，并且取值在[0, 10^7^]。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>在一行中输出被测函数运行的时间。运行时间必须按照“hh:mm:ss”（即2位的“时:分:秒”）格式输出；不足1秒的时间四舍五入到秒。</p>
+<h2 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h2><p>123 4577973</p>
+<h2 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h2><p>12:42:59</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>时分秒转换问题</p>
+<p>根据打点数之差, CLK得到秒, 将秒转化为hh:mm:ss, 三次除以60(错误)<br>case 1通不过.</p>
+<p>清晰的思路: 计算得到总共多少秒, hh:总秒数/3600取整, mm:剩余秒数/60取整, ss:剩余秒数四舍五入</p>
+<p><span style="color:red">这种看似简单的题目, 一旦出现没有预计到的问题, 容易东拼西凑的去完成.<br>因此刷题的时候还是先想清楚算法思路, 再开始动手, 更重要的是要注重数据结构, 别一味的铺张代码</span></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;math.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">double</span> c1, c2;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lf %lf"</span>, &amp;c1, &amp;c2);</span><br><span class="line">  <span class="keyword">double</span> c = (c2-c1) / <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> h, m, s;</span><br><span class="line">  h = c/<span class="number">3600</span>;</span><br><span class="line">  c = c-h*<span class="number">3600</span>;</span><br><span class="line">  m = c/<span class="number">60</span>;</span><br><span class="line">  c = c-m*<span class="number">60</span>;</span><br><span class="line">  s = <span class="built_in">floor</span>(c+<span class="number">0.5</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%02d:%02d:%02d\n"</span>, h, m, s);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也贴一下, 之前错误的版本。<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">int</span> tm[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> CT = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">double</span> c1, c2;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%lf %lf"</span>, &amp;c1, &amp;c2);</span><br><span class="line">  <span class="keyword">double</span> s = (c2 - c1) / CT;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; s &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">int</span> hh, mm, ss;</span><br><span class="line">  hh = s/<span class="number">3600</span>;</span><br><span class="line">  mm = (s/<span class="number">3600</span>-hh)*<span class="number">3600</span>/<span class="number">60</span>;</span><br><span class="line">  ss = <span class="built_in">floor</span>(((s/<span class="number">3600</span>-hh)*<span class="number">3600</span>/<span class="number">60</span> - mm) * <span class="number">60</span> + <span class="number">0.5</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%02d:%02d:%02d\n"</span>, hh, mm, ss);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1024/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/02/PAT-basic-1024/" itemprop="url">1024. 科学计数法（20)-PAT乙级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T01:13:50+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1024-科学计数法-20-（20-point-s-）"><a href="#1024-科学计数法-20-（20-point-s-）" class="headerlink" title="1024 科学计数法 (20)（20 point(s)）"></a>1024 科学计数法 (20)（20 point(s)）</h2><p>科学计数法是科学家用来表示很大或很小的数字的一种方便的方法，其满足正则表达式[+-][1-9]”.”[0-9]+E[+-][0-9]+，即数字的整数部分只有1位，小数部分至少有1位，该数字及其指数部分的正负号即使对正数也必定明确给出。</p>
+<p>现以科学计数法的格式给出实数A，请编写程序按普通数字表示法输出A，并保证所有有效位都被保留。</p>
+<h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>每个输入包含1个测试用例，即一个以科学计数法表示的实数A。该数字的存储长度不超过9999字节，且其指数的绝对值不超过9999。</p>
+<h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>对每个测试用例，在一行中按普通数字表示法输出A，并保证所有有效位都被保留，包括末尾的0。</p>
+<h2 id="输入样例1："><a href="#输入样例1：" class="headerlink" title="输入样例1："></a>输入样例1：</h2><p>+1.23400E-03</p>
+<h2 id="输出样例1："><a href="#输出样例1：" class="headerlink" title="输出样例1："></a>输出样例1：</h2><p>0.00123400</p>
+<h2 id="输入样例2："><a href="#输入样例2：" class="headerlink" title="输入样例2："></a>输入样例2：</h2><p>-1.2E+10</p>
+<h2 id="输出样例2："><a href="#输出样例2：" class="headerlink" title="输出样例2："></a>输出样例2：</h2><p>-12000000000</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>(可最后用前面计算出的数值, 配合小数点拼出了一个string, 这种做法十分不满意, 需要重新做一遍)<br>第一个正负号作为输出时, +不输出, -输出负作为开头,<br>把符号和E中间的数组放入字符串<br>E后符号-, 小数点向左移动位置, 整数部分数字个数 in<br>  符号+, 小数点向右移动位置, 小数部分数字个数 fn</p>
+<p>符号后字符串转化成整数, syb_n,</p>
+<p>第二个[+-]决定, back/front, fn/in, 小数点左移/右移</p>
+<p>flag == 0:<br>-1.23E+03   fn=2, syb_n=3, 末尾添1个0<br>-1.230<br>-1.2E+10    fn=1, syb_n=10, back=syb_n-fn=9  push_back 9个0, .右移syb_n</p>
+<p>-1.234E+03  fn=3, syb_n=3，末尾添入0个0 syb_n-fn&gt;0添syb-n个0<br>-1.234</p>
+<p>flag == 1;<br>+17.56E-01  in=2, syb_n=1, 1-2+1=0 不添0, 小数点左移1位  添入几个0 syb_n-in+1 &lt;= 0 不添<br>+17.56E-02  in=2, syb_n=2, 2-2+1=0, 添1个0 小数点左移2位  front=sys_n-in+1, .左移syb_n</p>
+<p>*/</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">char</span> c;</span><br><span class="line">  c = getchar();</span><br><span class="line">  <span class="keyword">if</span> (c == <span class="string">'-'</span>) <span class="built_in">cout</span> &lt;&lt; <span class="string">"-"</span>;</span><br><span class="line">  <span class="built_in">string</span> s;     <span class="comment">// 数组和小数点部分</span></span><br><span class="line">  <span class="keyword">int</span> in = <span class="number">0</span>, fn = <span class="number">0</span>, ok = <span class="number">0</span>;   <span class="comment">// 科学计数法的整数和小数部分个数, 转换标示</span></span><br><span class="line">  <span class="keyword">while</span> ((c = getchar()) &amp;&amp; c != <span class="string">'E'</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="string">'.'</span>) &#123;ok = <span class="number">1</span>; <span class="keyword">continue</span>;&#125;</span><br><span class="line">    s.push_back(c);</span><br><span class="line">    ok ? fn++ : in++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 读第二个正负号</span></span><br><span class="line">  c = getchar();</span><br><span class="line">  <span class="keyword">int</span> flag = (c == <span class="string">'+'</span>) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// 读syb_n字符</span></span><br><span class="line">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; syb_v;</span><br><span class="line">  <span class="keyword">while</span> ((c = getchar()) &amp;&amp; (c != <span class="string">'\n'</span>) &amp;&amp; (c != <span class="string">'\r'</span>)) &#123;</span><br><span class="line">    syb_v.push_back(c - <span class="string">'0'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 计算syb_n</span></span><br><span class="line">  <span class="keyword">int</span> syb_n = <span class="number">0</span>, k = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = syb_v.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    syb_n += k * syb_v[i];</span><br><span class="line">    k *= <span class="number">10</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> front = syb_n-in+<span class="number">1</span>, back = syb_n-fn;</span><br><span class="line">  <span class="keyword">if</span> (flag == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (front &gt; <span class="number">0</span>) <span class="built_in">cout</span> &lt;&lt; <span class="string">"0."</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; front<span class="number">-1</span>; i++) <span class="built_in">cout</span> &lt;&lt; <span class="string">"0"</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; s;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (flag == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (back &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">int</span> len = s.size();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i == len+back) <span class="built_in">cout</span> &lt;&lt; <span class="string">"."</span>;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; s[i];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; s;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; back; i++) <span class="built_in">cout</span> &lt;&lt; <span class="string">"0"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/02/PAT-basic-1020/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -300,7 +965,7 @@
       
         
           
-            <h2 id="1020-月饼-25-（25-point-s-）"><a href="#1020-月饼-25-（25-point-s-）" class="headerlink" title="1020 月饼 (25)（25 point(s)）"></a>1020 月饼 (25)（25 point(s)）</h2><p>月饼是中国人在中秋佳节时吃的一种传统食品，不同地区有许多不同风味的月饼。现给定所有种类月饼的库存量、总售价、以及市场的最大需求量，请你计算可以获得的最大收益是多少。</p>
+            <h2 id="1020-月饼-25"><a href="#1020-月饼-25" class="headerlink" title="1020 月饼 (25)"></a>1020 月饼 (25)</h2><p>月饼是中国人在中秋佳节时吃的一种传统食品，不同地区有许多不同风味的月饼。现给定所有种类月饼的库存量、总售价、以及市场的最大需求量，请你计算可以获得的最大收益是多少。</p>
 <p>注意：销售时允许取出一部分库存。样例给出的情形是这样的：假如我们有3种月饼，其库存量分别为18、15、10万吨，总售价分别为75、72、45亿元。如果市场的最大需求量只有20万吨，那么我们最大收益策略应该是卖出全部15万吨第2种月饼、以及5万吨第3种月饼，获得 72 + 45/2 = 94.5（亿元）。</p>
 <h2 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h2><p>每个输入包含1个测试用例。每个测试用例先给出一个不超过1000的正整数N表示月饼的种类数、以及不超过500（以万吨为单位）的正整数D表示市场最大需求量。随后一行给出N个正数表示每种月饼的库存量（以万吨为单位）；最后一行给出N个正数表示每种月饼的总售价（以亿元为单位）。数字间以空格分隔。</p>
 <h2 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h2><p>对每组测试用例，在一行中输出最大收益，以亿元为单位并精确到小数点后2位。</p>
@@ -309,6 +974,8 @@
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>计算各种月饼每吨的售价, 优先每吨售价最高的月饼填满需求, 剩下的用售价次高的填满<br>采用优先队列, dq放每个月饼结点, 价格越高结点会被排在更前面</p>
 <p><span style="color:red">注意一下测试点3(case 3)通不过的情况, 如果都供应完了, 还没达到市场需求的情况, 按当前供应量来计算价格</span></p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Cake</span> &#123;</span></span><br><span class="line">  <span class="keyword">double</span> num, tot;</span><br><span class="line">  <span class="keyword">double</span> each_d;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span> <span class="params">(<span class="keyword">const</span> Cake c1, <span class="keyword">const</span> Cake c2)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c1.each_d &lt;= c2.each_d;     <span class="comment">// 每吨的价格越高权重越高</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">vector</span>&lt;Cake&gt; cakes;</span><br><span class="line">priority_queue&lt;Cake, <span class="built_in">vector</span>&lt;Cake&gt;, cmp &gt; dq;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N, D;   <span class="comment">// 种类数和市场需求</span></span><br><span class="line">  <span class="built_in">cin</span> &gt;&gt; N &gt;&gt; D;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    Cake tmp_c;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; tmp_c.num;</span><br><span class="line">    cakes.push_back(tmp_c);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; cakes[i].tot;</span><br><span class="line">    cakes[i].each_d = cakes[i].tot / cakes[i].num;</span><br><span class="line">    dq.push(cakes[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">double</span> ans = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> now_d = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    <span class="comment">// debug case3: 如果都供应完了, 还没达到市场需求的情况</span></span><br><span class="line">    <span class="keyword">if</span> (dq.empty()) <span class="keyword">break</span>;</span><br><span class="line">    Cake cmax = dq.top();</span><br><span class="line">    <span class="keyword">if</span> (D - now_d &gt;= cmax.num) &#123;   <span class="comment">// 如果需求量比当前最有优价格的供货量大</span></span><br><span class="line">      now_d += cmax.num;</span><br><span class="line">      ans += cmax.each_d * cmax.num;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;    <span class="comment">// 只需要提供一部分</span></span><br><span class="line">      ans += (D - now_d) * cmax.each_d;</span><br><span class="line">      now_d = D;    <span class="comment">// 供应部分后, 满足市场需求</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    dq.pop();   <span class="comment">// 队首月饼供应完毕</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%.2lf\n"</span>, ans);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Solution2"><a href="#Solution2" class="headerlink" title="Solution2:"></a>Solution2:</h2><p>第二遍做, 优先队列的逻辑更直观, 注意正数和正整数的区别, 要将cnt声明成double, 不然case2过不了</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">food</span> &#123;</span></span><br><span class="line">  <span class="keyword">double</span> scale, each_scale;</span><br><span class="line">  <span class="keyword">double</span> cnt;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> food &amp;f1, <span class="keyword">const</span> food &amp;f2)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> f1.each_scale &lt; f2.each_scale;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">db_equal</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span> d1, <span class="keyword">const</span> <span class="keyword">double</span> d2)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-0.0005</span> &lt; d1-d2 &amp;&amp; d1-d2 &lt; <span class="number">0.00005</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N;</span><br><span class="line">  <span class="keyword">double</span> need; <span class="built_in">scanf</span>(<span class="string">"%d %lf"</span>, &amp;N, &amp;need);</span><br><span class="line">  <span class="built_in">vector</span>&lt;food&gt; v(N);</span><br><span class="line">  priority_queue&lt;food, <span class="built_in">vector</span>&lt;food&gt;, cmp&gt; q;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%lf"</span>, &amp;v[i].cnt);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%lf"</span>, &amp;v[i].scale);</span><br><span class="line">    v[i].each_scale = v[i].scale / v[i].cnt;</span><br><span class="line">    q.push(v[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">double</span> profit = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">while</span> (!db_equal(need, <span class="number">0.0</span>) &amp;&amp; !q.empty()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (q.top().cnt &gt; need) &#123;</span><br><span class="line">      profit += q.top().each_scale * need;</span><br><span class="line">      need = <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  <span class="comment">// &lt;= need</span></span><br><span class="line">      profit += q.top().scale;</span><br><span class="line">      need -= q.top().cnt;</span><br><span class="line">      q.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (q.empty()) <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"%.2lf"</span>, profit);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -881,1249 +1548,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/30/oj-classify/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/30/oj-classify/" itemprop="url">OJ题目分类</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T06:27:49+08:00">
-                2018-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="HDOJ"><a href="#HDOJ" class="headerlink" title="HDOJ:"></a>HDOJ:</h2><p>模拟题, 枚举<br>1002 1004 1013 1015 1017 1020 1022 1029 1031 1033 1034 1035 1036 1037 1039 1042 1047 1048 1049 1050 1057 1062 1063 1064 1070 1073 1075 1082 1083 1084 1088 1106 1107 1113 1117 1119 1128 1129 1144 1148 1157 1161 1170 1172 1177 1197 1200 1201 1202 1205 1209 1212(大数取模) 1216（链表）1218 1219 1225 1228 1229 1230 1234 1235 1236 1237 1239 1250<br>1256 1259 1262 1263 1265 1266 1276 1279 1282 1283 1287 1296 1302 1303 1304 1305 1306 1309 1311 1314<br>复杂模拟</p>
-<p>搜索，递归求解<br>1010 1016 1026 1043(双广) 1044 (BFS+DFS) 1045 1067 1072 1104 1175 1180 1195 1208 1226 1238 1240 1241 1242 1258 1271 1312 1317<br>博奕<br>1079</p>
-<p>动态规划<br>1003 1024 1025 1028 1051 1058 1059 1069 1074 1078 1080 1081 1085 1087 1114 1158 1159 1160 1171 1176 1181 1203 1224 1227 1231 1244 1248 1253 1254 1283 1300</p>
-<p>数学，递推，规律<br>1005 1006 1012 1014 1018 1019 1021 1023 1027 1030 1032 1038 1041 1046 1059 1060 1061 1065 1066 1071(微积分) 1097 1098 1099 1100 1108 1110 1112 1124 1130 1131 1132 1134 1141 1143 1152 1155(物理题) 1163 1165 1178 1194 1196(lowbit) 1210 1214 1200 1221 1223 1249 1261 1267 1273 1290 1291 1292 1294 1297 1313 1316<br>数论<br>1164 1211 1215 1222 1286 1299</p>
-<p>计算几何<br>1086 1115 1147<br>贪心<br>1009 1052 1055 1257</p>
-<p>并查集<br>1198 1213 1232 1272<br>线段树,离散化<br>1199 1255<br>图论<br>最短路相关的问题 1142 1162 1217 1301<br>二分图问题 1054 1068 1150 1151 1281<br>其他<br>1053 (huffman) 1102(MST) 1116（欧拉回路） 1233(MST) 1269（强连通）<br>数据结构<br>1103（堆+模拟）1166（数状树组）1247 1251 1285（Topol） 1298<br>汉诺塔系列<br>1207<br>最近顶点对 1007</p>
-<p>1500 DP<br>1501 DP<br>1502 DP or 记忆化<br>1503 DP<br>1504 模拟<br>1505 DP<br>1506 DP<br>1507 2分匹配<br>1508 记忆化容易点<br>1509 模拟<br>1510 DP<br>1511 搜索可以过<br>1512 左偏树<br>1513 DP<br>1514 DP<br>1515 DFS<br>1516 DP<br>1517 博奕<br>1518 搜索<br>1519 DP（不确定）<br>1520 树状DP<br>1521 数学题，母函数什么的。其实都可以过<br>1522 稳定婚姻<br>1523 DP<br>1524 博弈<br>1525 博弈<br>1526 Maxflow<br>1527 博弈<br>1528 2分匹配<br>1529 简单题<br>1530 最大团<br>1531 差分约束<br>1532 Maxflow 入门题<br>1533 KM Or 最小费用流<br>1534 差分约束<br>1535 差分约束<br>1536 博弈<br>1537 模拟 加置换群的理论 CODE可以短些，其实没必要。。。<br>1538 很有意思的题目。据说是Microsoft亚洲总裁面试的题目<br>1539 搜索<br>1540 线段树<br>1541 树状数组<br>1542 离散，线段树<br>1543 线段树<br>1544 简单的<br>1545 DP <a href="http://acm.hdu.edu.cn/forum/htm_data/18/0608/2050.html" target="_blank" rel="noopener">http://acm.hdu.edu.cn/forum/htm_data/18/0608/2050.html</a><br>1546 搜索<br>1547 模拟<br>1548 模拟<br>1551 2分答案<br>1553<br>1554<br>1555 简单<br>1556 技巧。数学<br>1557 搜索<br>1558 并查 + 线段判交<br>1559 DP<br>1560 减支 + 搜索<br>1561 树状DP<br>1562 暴力 between 1000 and 9999<br>1563 简单<br>1564 博弈。<br>1565 状态DP<br>1566 数学<br>1567 模拟<br>1568 大数<br>1569 最小割<br>1570 数学<br>1571 最段路<br>1572 搜索<br>1573 数学<br>1574 DP<br>1575 2分<br>1576 数论<br>1577 模拟，处理精度<br>1579 记忆化<br>1580 DP<br>1582 搜索<br>1583 模拟<br>1584 搜索<br>1585<br>1586<br>1587 简单题目<br>1591 模拟<br>1592 简单<br>1593 数学<br>1594 数学<br>1595 图论<br>1596 图论<br>1597 图论<br>1598 图论<br>1599 图论</p>
-<p>基础题：1000、1001、1004、1005、1008、1012、1013、1014、1017、1019、1021、1028、1029、1032、1037、1040、1048、1056、1058、1061、1070、1076、1089、1090、1091、1092、1093、1094、1095、1096、1097、1098、1106、1108、1157、1163、1164、1170、1194、1196、1197、1201、1202、1205、1219、1234、1235、1236、1248、1266、1279、1282、1283、1302、1303、1323、1326、1330、1334、1335、1339、1390、1391、1393、1395、1397、1405、1406、1407、1408、1412、1418、1420、1465、1491、1555、1562、1563、1570、1587、1673、1678、1708、1718、1720、1785、1799、1859、1862、1877、1898、1976、1977、1985、1994、2000、2001、2002、2003、2004、2005、2006、2007、2008、2009、2010、2011、2012、2013、2014、2015、2016、2017、2018、2019、2020、2021、2022、2023、2024、2025、2026、2027、2028、2029、2030、2031、2032、2033、2034、2035、2039、2040、2042、2043、2048、2049、2051、2053、2055、2056、2057、2060、2061、2071、2073、2075、2076、2078、2081、2083、2088、2090、2092、2093、2095、2096、2097、2098、2099、2101、2103、2106、2107、2109、2113、2114、2115、2123、2131、2132、2133、2135、2136、2137、2138、2139、2143、2148、2153、2156、2161、2162、2164、2178、2186、2192、2200、2201、2212、2304、2309、2317、2401、2500、2502、2503、2504、2519、2520、2521、2523、2524、2535、2537、2539、2547、2548、2549、2550、2551、2552、2555、2560、2561、2562、2566、2567、2568、2700、2710、</p>
-<p>DP：1003、1024、1029、1069、1074、1087、1114、1159、1160、1171、1176、1203、1231、1257、1260、1284、1421、1789、1978、2059、2084、2159、2191、2544、2571、2602、2709、<br>搜索：1010、1015、1016、1026、1072、1075、1175、1180、1181、1238、1239、1240、1241、1242、1253、1254、1312、1372、1548、1597、1671、1677、1728、1800、1983、2102、2141、2553、2563、2605、2612、2614、1616、2717<br>贪心：1009、1045、1049、1050、1051、1052、1257、1800、2037、2111、2124、2187、2391、2570<br>数学题：1018、1065、1071、1115、1141、1162、1212、1220、1492、1593、1701、1722、1798、1840、1999、2036、2080、2086、2089、2105、2108、2134、2303、2393、2438、2529、2547、2548、2552、2554、2601、2603、2701、<br>递推：1133、1143、1207、1249、1267、1284、1290、1297、1396、1992、1995、1996、2013、2014、2044、2045、2046、2047、2050、2064、2065、2067、2068、2070、2077、2085、2151、2154、2160、2190、2501、2512、2563、2569、2709、2716、<br>字符串：1020、1039、1043、1062、1073、1075、1088、1113、1161、1200、1251、1256、1288、1321、1328、1379、1804、1860、1982、1984、2017、2024、2025、2026、2027、2043、2052、2054、2072、2074、2087、2131、2137、2140、2163、2203、2206、2352、2500、2549、2564、2565、2567、2572、2609、2607、2707、2708、2719、2721、2723、<br>大数：1002、1042、1133、1250、1297、1715、1753、1865、2100、<br>胡搞：1022、1027、1030、1035、1128、1165、1209、1210、1215、1222、1228、1229、1230、1237、1259、1276、1286、1337、1342、1361、1370、1506、1577、1597、1702、1716、1727、1868、1870、1896、1981、1986、1987、1988、1997、1998、1999、2058、2062、2089、2090、2094、2104、2116、2117、2135、2175、2183、2184、2197、2303、2368、2370、2374、2511、2522、2527、2600、2615、2703、2711、2714、2715、2725、<br>博弈：1077、1404、1517、1524、1525、1527、1536、1564、1729、1730、1846、1847、1848、1849、1850、2147、2149、2176、2177、2188<br>母函数：1085、1171、1398、2079、2082、2110、2152、2189、2566、<br>hash：1264、1280、1425、1496、1800、2522、2600、</p>
-<hr>
-<h2 id="POJ"><a href="#POJ" class="headerlink" title="POJ"></a>POJ</h2><p>初期:<br>一.基本算法:<br>     (1)枚举. (poj1753,poj2965)<br>     (2)贪心(poj1328,poj2109,poj2586)<br>     (3)递归和分治法.<br>     (4)递推.<br>     (5)构造法.(poj3295)<br>     (6)模拟法.(poj1068,poj2632,poj1573,poj2993,poj2996)<br>二.图算法:<br>     (1)图的深度优先遍历和广度优先遍历.<br>     (2)最短路径算法(dijkstra,bellman-ford,floyd,heap+dijkstra)<br>        (poj1860,poj3259,poj1062,poj2253,poj1125,poj2240)<br>     (3)最小生成树算法(prim,kruskal)<br>        (poj1789,poj2485,poj1258,poj3026)<br>     (4)拓扑排序 (poj1094)<br>     (5)二分图的最大匹配 (匈牙利算法) (poj3041,poj3020)<br>     (6)最大流的增广路算法(KM算法). (poj1459,poj3436)<br>三.数据结构.<br>     (1)串 (poj1035,poj3080,poj1936)<br>     (2)排序(快排、归并排(与逆序数有关)、堆排) (poj2388,poj2299)<br>     (3)简单并查集的应用.<br>     (4)哈希表和二分查找等高效查找法(数的Hash,串的Hash)<br>        (poj3349,poj3274,POJ2151,poj1840,poj2002,poj2503)<br>     (5)哈夫曼树(poj3253)<br>     (6)堆<br>     (7)trie树(静态建树、动态建树) (poj2513)<br>四.简单搜索<br>     (1)深度优先搜索 (poj2488,poj3083,poj3009,poj1321,poj2251)<br>     (2)广度优先搜索(poj3278,poj1426,poj3126,poj3087.poj3414)<br>     (3)简单搜索技巧和剪枝(poj2531,poj1416,poj2676,1129)<br>五.动态规划<br>     (1)背包问题. (poj1837,poj1276)<br>     (2)型如下表的简单DP(可参考lrj的书 page149):<br>       1.E[j]=opt{D+w(i,j)} (poj3267,poj1836,poj1260,poj2533)<br>       2.E[i,j]=opt{D[i-1,j]+xi,D[i,j-1]+yj,D[i-1][j-1]+zij} (最长公共子序列)<br>         (poj3176,poj1080,poj1159)<br>       3.C[i,j]=w[i,j]+opt{C[i,k-1]+C[k,j]}.(最优二分检索树问题)<br>六.数学<br>     (1)组合数学:<br>        1.加法原理和乘法原理.<br>        2.排列组合.<br>        3.递推关系.<br>          (POJ3252,poj1850,poj1019,poj1942)<br>     (2)数论.<br>        1.素数与整除问题<br>        2.进制位.<br>        3.同余模运算.<br>          (poj2635, poj3292,poj1845,poj2115)<br>     (3)计算方法.<br>        1.二分法求解单调函数相关知识.(poj3273,poj3258,poj1905,poj3122)<br>七.计算几何学.<br>     (1)几何公式.<br>     (2)叉积和点积的运用(如线段相交的判定,点到线段的距离等). (poj2031,poj1039)<br>     (3)多边型的简单算法(求面积)和相关判定(点在多边型内,多边型是否相交)<br>         (poj1408,poj1584)<br>     (4)凸包. (poj2187,poj1113)</p>
-<p>中级:<br>一.基本算法:<br>     (1)C++的标准模版库的应用. (poj3096,poj3007)<br>     (2)较为复杂的模拟题的训练(poj3393,poj1472,poj3371,poj1027,poj2706)<br>二.图算法:<br>     (1)差分约束系统的建立和求解. (poj1201,poj2983)<br>     (2)最小费用最大流(poj2516,poj2516,poj2195)<br>     (3)双连通分量(poj2942)<br>     (4)强连通分支及其缩点.(poj2186)<br>     (5)图的割边和割点(poj3352)<br>     (6)最小割模型、网络流规约(poj3308, )<br>三.数据结构.<br>     (1)线段树. (poj2528,poj2828,poj2777,poj2886,poj2750)<br>     (2)静态二叉检索树. (poj2482,poj2352)<br>     (3)树状树组(poj1195,poj3321)<br>     (4)RMQ. (poj3264,poj3368)<br>     (5)并查集的高级应用. (poj1703,2492)<br>     (6)KMP算法. (poj1961,poj2406)<br>四.搜索<br>     (1)最优化剪枝和可行性剪枝<br>     (2)搜索的技巧和优化 (poj3411,poj1724)<br>     (3)记忆化搜索(poj3373,poj1691)</p>
-<p>五.动态规划<br>     (1)较为复杂的动态规划(如动态规划解特别的施行商问题等)<br>         (poj1191,poj1054,poj3280,poj2029,poj2948,poj1925,poj3034)<br>     (2)记录状态的动态规划. (POJ3254,poj2411,poj1185)<br>     (3)树型动态规划(poj2057,poj1947,poj2486,poj3140)<br>六.数学<br>     (1)组合数学:<br>        1.容斥原理.<br>        2.抽屉原理.<br>        3.置换群与Polya定理(poj1286,poj2409,poj3270,poj1026).<br>        4.递推关系和母函数.<br>    (2)数学.<br>        1.高斯消元法(poj2947,poj1487, poj2065,poj1166,poj1222)<br>        2.概率问题. (poj3071,poj3440)<br>        3.GCD、扩展的欧几里德(中国剩余定理) (poj3101)<br>     (3)计算方法.<br>        1.0/1分数规划. (poj2976)<br>        2.三分法求解单峰(单谷)的极值.<br>        3.矩阵法(poj3150,poj3422,poj3070)<br>        4.迭代逼近(poj3301)<br>     (4)随机化算法(poj3318,poj2454)<br>     (5)杂题.<br>         (poj1870,poj3296,poj3286,poj1095)</p>
-<p>七.计算几何学.<br>        (1)坐标离散化.<br>        (2)扫描线算法(例如求矩形的面积和周长并,常和线段树或堆一起使用).<br>            (poj1765,poj1177,poj1151,poj3277,poj2280,poj3004)<br>        (3)多边形的内核(半平面交)(poj3130,poj3335)<br>        (4)几何工具的综合应用.(poj1819,poj1066,poj2043,poj3227,poj2165,poj3429)</p>
-<p>高级:<br>一.基本算法要求:<br>      (1)代码快速写成,精简但不失风格<br>          (poj2525,poj1684,poj1421,poj1048,poj2050,poj3306)<br>      (2)保证正确性和高效性. poj3434<br>二.图算法:<br>      (1)度限制最小生成树和第K最短路. (poj1639)<br>      (2)最短路,最小生成树,二分图,最大流问题的相关理论(主要是模型建立和求解)<br>         (poj3155, poj2112,poj1966,poj3281,poj1087,poj2289,poj3216,poj2446<br>      (3)最优比率生成树. (poj2728)<br>      (4)最小树形图(poj3164)<br>      (5)次小生成树.<br>      (6)无向图、有向图的最小环<br>三.数据结构.<br>      (1)trie图的建立和应用. (poj2778)<br>      (2)LCA和RMQ问题(LCA(最近公共祖先问题) 有离线算法(并查集+dfs) 和 在线算法<br>          (RMQ+dfs)).(poj1330)<br>      (3)双端队列和它的应用(维护一个单调的队列,常常在动态规划中起到优化状态转移的<br>          目的). (poj2823)<br>      (4)左偏树(可合并堆).<br>      (5)后缀树(非常有用的数据结构,也是赛区考题的热点).<br>         (poj3415,poj3294)<br>四.搜索<br>      (1)较麻烦的搜索题目训练(poj1069,poj3322,poj1475,poj1924,poj2049,poj3426)<br>      (2)广搜的状态优化:利用M进制数存储状态、转化为串用hash表判重、按位压缩存储状态、双向广搜、A<em>算法. (poj1768,poj1184,poj1872,poj1324,poj2046,poj1482)<br>      (3)深搜的优化:尽量用位运算、一定要加剪枝、函数参数尽可能少、层数不易过大、可以考虑双向搜索或者是轮换搜索、IDA</em>算法. (poj3131,poj2870,poj2286)<br>五.动态规划<br>      (1)需要用数据结构优化的动态规划.<br>         (poj2754,poj3378,poj3017)<br>      (2)四边形不等式理论.<br>      (3)较难的状态DP(poj3133)<br>六.数学<br>      (1)组合数学.<br>        1.MoBius反演(poj2888,poj2154)<br>        2.偏序关系理论.<br>      (2)博奕论.<br>        1.极大极小过程(poj3317,poj1085)<br>        2.Nim问题.<br>七.计算几何学.<br>      (1)半平面求交(poj3384,poj2540)<br>      (2)可视图的建立(poj2966)<br>      (3)点集最小圆覆盖.<br>      (4)对踵点(poj2079)<br>      八.综合题.<br>      (poj3109,poj1478,poj1462,poj2729,poj2048,poj3336,poj3315,poj2148,poj1263)</p>
-<p>以及补充<br>Dp状态设计与方程总结</p>
-<p>1.不完全状态记录</p>
-<p><1>青蛙过河问题</1></p>
-<p><2>利用区间dp<br>2.背包类问题</2></p>
-<p><1> 0-1背包，经典问题</1></p>
-<p><2>无限背包，经典问题</2></p>
-<p><3>判定性背包问题</3></p>
-<p><4>带附属关系的背包问题</4></p>
-<p><5> + -1背包问题</5></p>
-<p><6>双背包求最优值</6></p>
-<p><7>构造三角形问题</7></p>
-<p><8>带上下界限制的背包问题(012背包)<br>3.线性的动态规划问题</8></p>
-<p><1>积木游戏问题</1></p>
-<p><2>决斗（判定性问题）</2></p>
-<p><3>圆的最大多边形问题</3></p>
-<p><4>统计单词个数问题</4></p>
-<p><5>棋盘分割</5></p>
-<p><6>日程安排问题</6></p>
-<p><7>最小逼近问题(求出两数之比最接近某数/两数之和等于某数等等)</7></p>
-<p><8>方块消除游戏(某区间可以连续消去求最大效益)</8></p>
-<p><9>资源分配问题</9></p>
-<p><10>数字三角形问题</10></p>
-<p><11>漂亮的打印</11></p>
-<p><12>邮局问题与构造答案</12></p>
-<p><13>最高积木问题</13></p>
-<p><14>两段连续和最大</14></p>
-<p><15>2次幂和问题</15></p>
-<p><16>N个数的最大M段子段和</16></p>
-<p><17>交叉最大数问题<br>4.判定性问题的dp(如判定整除、判定可达性等)   </17></p>
-<p><1>模K问题的dp</1></p>
-<p><2>特殊的模K问题，求最大(最小)模K的数</2></p>
-<p><3>变换数问题<br>5.单调性优化的动态规划</3></p>
-<p><1>1-SUM问题</1></p>
-<p><2>2-SUM问题</2></p>
-<p><3>序列划分问题(单调队列优化)<br>6.剖分问题(多边形剖分/石子合并/圆的剖分/乘积最大)</3></p>
-<p><1>凸多边形的三角剖分问题</1></p>
-<p><2>乘积最大问题</2></p>
-<p><3>多边形游戏(多边形边上是操作符,顶点有权值)</3></p>
-<p><4>石子合并(N^3/N^2/NLogN各种优化)<br>7.贪心的动态规划</4></p>
-<p><1>最优装载问题</1></p>
-<p><2>部分背包问题</2></p>
-<p><3>乘船问题</3></p>
-<p><4>贪心策略</4></p>
-<p><5>双机调度问题Johnson算法<br>8.状态dp</5></p>
-<p><1>牛仔射击问题(博弈类)</1></p>
-<p><2>哈密顿路径的状态dp</2></p>
-<p><3>两支点天平平衡问题</3></p>
-<p><4>一个有向图的最接近二部图<br>9.树型dp</4></p>
-<p><1>完美服务器问题(每个节点有3种状态)</1></p>
-<p><2>小胖守皇宫问题</2></p>
-<p><3>网络收费问题</3></p>
-<p><4>树中漫游问题</4></p>
-<p><5>树上的博弈</5></p>
-<p><6>树的最大独立集问题</6></p>
-<p><7>树的最大平衡值问题</7></p>
-<p><8>构造树的最小环 </8></p>
-<p><a href="http://hi.baidu.com/goodmorning0610/blog/item/562ee61b22bb461c8718bf49.html" target="_blank" rel="noopener">http://hi.baidu.com/goodmorning0610/blog/item/562ee61b22bb461c8718bf49.html</a> </p>
-<p>1、     排序</p>
-<p>1423, 1694, 1723, 1727, 1763, 1788, 1828, 1838, 1840, 2201, 2376, 2377, 2380,<br>1318, 1877, 1928, 1971, 1974, 1990, 2001, 2002, 2092, 2379, </p>
-<p>1002（需要字符处理，排序用快排即可） 1007（稳定的排序） 2159（题意较难懂） 223<br>1 2371（简单排序） 2388（顺序统计算法） 2418（二叉排序树）</p>
-<p>2、    搜索、回溯、遍历</p>
-<p>1022 1111d 1118 1129 1190 1562 1564 1573 1655 2184 2225 2243 2312 2362 2378 238<br>6    1010,1011,1018,1020,1054,1062,1256,1321,1363,1501，1650,1659,1664,1753,2078<br>,2083,2303,2310,2329</p>
-<p>简单：1128, 1166, 1176, 1231, 1256, 1270, 1321, 1543, 1606, 1664, 1731, 1742,<br>1745, 1847, 1915, 1950, 2038, 2157, 2182, 2183, 2381, 2386, 2426,<br>不易：1024, 1054, 1117, 1167, 1708, 1746, 1775, 1878, 1903, 1966, 2046, 2197,<br>2349,<br>推荐：1011, 1190, 1191, 1416, 1579, 1632, 1639, 1659, 1680, 1683, 1691, 1709,<br>1714, 1753, 1771, 1826, 1855, 1856, 1890, 1924, 1935, 1948, 1979, 1980, 2170,<br>2288, 2331, 2339, 2340,1979（和迷宫类似） 1980（对剪枝要求较高）</p>
-<p>3、    历法</p>
-<p>1008 2080 （这种题要小心）</p>
-<p>4、    枚举</p>
-<p>1012，1046， 1387， 1411， 2245， 2326， 2363， 2381，1054（剪枝要求较高），16<br>50 （小数的精度问题）</p>
-<p>5、     数据结构的典型算法</p>
-<p>容易：1182, 1656, 2021, 2023, 2051, 2153, 2227, 2236, 2247, 2352, 2395,<br>不易：1145, 1177, 1195, 1227, 1661, 1834,<br>推荐：1330, 1338, 1451, 1470, 1634, 1689, 1693, 1703, 1724, 1988, 2004, 2010,<br>2119, 2274, 1125(弗洛伊德算法) ，2421（图的最小生成树）</p>
-<p>6、    动态规划</p>
-<p>1037 A decorative fence、</p>
-<p>1050 To the Max、</p>
-<p>1088 滑雪、</p>
-<p>1125 Stockbroker Grapevine、</p>
-<p>1141 Brackets Sequence、</p>
-<p>1159 Palindrome、</p>
-<p>1160 Post Office、</p>
-<p>1163 The Triangle、</p>
-<p>1458 Common Subsequence、</p>
-<p>1579 Function Run Fun、</p>
-<p>1887 Testing the CATCHER、</p>
-<p>1953 World Cup Noise、</p>
-<p>2386 Lake Counting</p>
-<p>7、    贪心</p>
-<p>1042, 1065, 1230, 1323, 1477, 1716, 1784,1328 1755（或用单纯形方法），2054，10<br>17， 1328，1862， 1922 ，2054， 2209， 2313， 2325， 2370。</p>
-<p>8、    模拟</p>
-<p>容易：1006, 1008, 1013, 1016, 1017, 1169, 1298, 1326, 1350, 1363, 1676, 1786,<br>1791, 1835, 1970, 2317, 2325, 2390, </p>
-<p>不易：1012, 1082, 1099, 1114, 1642, 1677, 1684, 1886,1281 1928 2083 2141 2015</p>
-<p>9、     递归</p>
-<p>1664</p>
-<p>10、字符串处理</p>
-<p>1488, 1598, 1686, 1706, 1747, 1748, 1750, 1760, 1782, 1790, 1866, 1888, 1896,<br>1951, 2003, 2121, 2141, 2145, 2159, 2337, 2359, 2372, 2406, 2408, 1016 1051 11<br>26 1318 1572 1917 1936 2039 2083 2136 2271 2317 2330，2121 2403</p>
-<p>11、数论</p>
-<p>1006,1014,1023,1061,1152,1183,1730,2262</p>
-<p>12、几何有关的题目</p>
-<p>凸包：1113, 1228, 1794, 2007, 2187,1113 wall，2187 beauty contest</p>
-<p>容易：1319, 1654, 1673, 1675, 1836, 2074, 2137, 2318,<br>不易：1685, 1687, 1696, 1873, 1901, 2172, 2333,</p>
-<p>13、任意精度运算、数字游戏、高精度计算</p>
-<p>1001 1023 1047 1060 1079 1131 1140 1142 1207 1220 1284 1289 1306 1316 1338 140<br>5 1454 1503 1504 1519 1565 1650 1969 2000 2006 2081 2247 2262 2305 2316 2389 </p>
-<p>1001, 1220, 1405, 1503,1001（高精度乘法） 2413(高精度加法，还有二分查找)</p>
-<p>14、概率统计</p>
-<p>1037,1050</p>
-<p>15、小费用最大流、最大流</p>
-<p>2195 going home，2400 supervisor, supervisee，1087 a plug for UNIX，1149 PIGS，<br>1273 drainage ditches，1274 the perfect stall，1325 machine schedule，1459 pow<br>er network，2239 selecting courses</p>
-<p>16、压缩存储的DP</p>
-<p>1038 bugs integrated inc，1185 炮兵阵地，2430 lazy cow</p>
-<p>17、最长公共子串（LCS）</p>
-<p>1080 human gene functions，1159 palindrome，1458 common subsequence，2192 zipp<br>er</p>
-<p>18、图论及组合数学</p>
-<p>2421 Constructing Roads、</p>
-<p>2369 Permutations、</p>
-<p>2234 Matches Game、</p>
-<p>2243 Knight Moves、</p>
-<p>2249 Binomial Showdown、</p>
-<p>2255 Tree Recovery、</p>
-<p>2084 Game of Connections、</p>
-<p>1906 Three powers、</p>
-<p>1833 排列、</p>
-<p>1850 Code、</p>
-<p>1562 Oil Deposits、</p>
-<p>1496 Word Index、</p>
-<p>1306 Combinations、</p>
-<p>1125 Stockbroker Grapevine、</p>
-<p>1129 Channel Allocation、</p>
-<p>1146 ID Codes、</p>
-<p>1095 Trees Made to Order、找规律</p>
-<p>2247 Humble Numbers、</p>
-<p>2309 BST、</p>
-<p>2346 Lucky tickets、</p>
-<p>2370 Democracy in danger、</p>
-<p>2365 Rope、</p>
-<p>2101 Honey and Milk Land<br>2028 When Can We Meet?、</p>
-<p>2084 Game of Connections、</p>
-<p>1915 Knight Moves、</p>
-<p>1922 Ride to School、</p>
-<p>1941 The Sierpinski Fractal、</p>
-<p>1953 World Cup Noise、</p>
-<p>1958 Strange Towers of Hanoi、</p>
-<p>1969 Count on Canton、</p>
-<p>1806 Manhattan 2025、</p>
-<p>1809 Regetni、</p>
-<p>1844 Sum、</p>
-<p>1870 Bee Breeding、</p>
-<p>1702 Eva\’s Balance、</p>
-<p>1728 A flea on a chessboard、</p>
-<p>1604 Just the Facts、</p>
-<p>1642 Stacking Cubes、</p>
-<p>1656 Counting Black、</p>
-<p>1657 Distance on Chessboard、</p>
-<p>1662 CoIns、</p>
-<p>1663 Number Steps、</p>
-<p>1313 Booklet Printing、</p>
-<p>1316 Self Numbers、</p>
-<p>1320 Street Numbers、</p>
-<p>1323 Game Prediction、</p>
-<p>1338 Ugly Numbers、</p>
-<p>1244 Slots of Fun、</p>
-<p>1250 Tanning Salon、</p>
-<p>1102 LC-Display、</p>
-<p>1147 Binary codes、</p>
-<p>1013 Counterfeit Dollar、</p>
-<p>19、博弈类</p>
-<p>1067 取石子游戏、</p>
-<p>1740 A New Stone Game、</p>
-<p>2234 Matches Game、</p>
-<p>1082 Calendar Game 、</p>
-<p>2348 Euclid\’s Game、</p>
-<p>2413 How many Fibs?、</p>
-<p>2419 Forest</p>
-<p>20、简单、模拟题<br>1001 Exponentiation 、</p>
-<p>1002 487-3279、</p>
-<p>1003 Hangover 、</p>
-<p>1701 Dissatisfying Lift、</p>
-<p>2301 Beat the Spread!、</p>
-<p>2304 Combination Lock、</p>
-<p>2328 Guessing Game、</p>
-<p>2403 Hay Points 、</p>
-<p>2406 Power Strings、</p>
-<p>2339 Rock, Scissors, Paper、</p>
-<p>2350 Above Average、</p>
-<p>2218 Does This Make Me Look Fat?、</p>
-<p>2260 Error Correction、</p>
-<p>2262 Goldbach\’s Conjecture、</p>
-<p>2272 Bullseye、</p>
-<p>2136 Vertical Histogram、</p>
-<p>2174 Decoding Task、</p>
-<p>2183 Bovine Math Geniuses、</p>
-<p>2000 Gold Coins、</p>
-<p>2014 Flow Layout、</p>
-<p>2051 Argus、</p>
-<p>2081 Calendar、</p>
-<p>1918 Ranking List、</p>
-<p>1922 Ride to School、</p>
-<p>1970 The Game、</p>
-<p>1972 Dice Stacking、</p>
-<p>1974 The Happy Worm、</p>
-<p>1978 Hanafuda Shuffle、</p>
-<p>1979 Red and Black、</p>
-<p>1617 Crypto Columns、</p>
-<p>1666 Candy Sharing Game、</p>
-<p>1674 Sorting by Swapping、</p>
-<p>1503 Integer Inquiry、</p>
-<p>1504 Adding Reversed Numbers、</p>
-<p>1528 Perfection、</p>
-<p>1546 Basically Speaking、</p>
-<p>1547 Clay Bully、</p>
-<p>1573 Robot Motion、</p>
-<p>1575 Easier Done Than Said?、</p>
-<p>1581 A Contesting Decision、</p>
-<p>1590 Palindromes、</p>
-<p>1454 Factorial Frequencies、</p>
-<p>1363 Rails、</p>
-<p>1218 THE DRUNK JAILER、</p>
-<p>1281 MANAGER、</p>
-<p>1132 Border、</p>
-<p>1028 Web Navigation、</p>
-<p>21、初等数学</p>
-<p>1003 Hangover、</p>
-<p>1045 Bode Plot、</p>
-<p>1254 Hansel and Grethel、</p>
-<p>1269 Intersecting Lines、</p>
-<p>1401 Factorial、</p>
-<p>1410 Intersection、</p>
-<p>2363 Blocks 、</p>
-<p>2365 Rope、</p>
-<p>2242 The Circumference of the Circle、</p>
-<p>2291 Rotten Ropes、</p>
-<p>2295 A DP Problem、</p>
-<p>2126 Factoring a Polynomial、</p>
-<p>2191 Mersenne Composite Numbers、</p>
-<p>2196 Specialized Four-Digit Numbers、</p>
-<p>1914 Cramer\’s Rule、</p>
-<p>1835 宇航员、</p>
-<p>1799 Yeehaa!、</p>
-<p>1607 Deck、</p>
-<p>1244 Slots of Fun、</p>
-<p>1269 Intersecting Lines、</p>
-<p>1299 Polar Explorer、</p>
-<p>1183 反正切函数的应用、</p>
-<p>22、匹配</p>
-<p>1274, 1422, 1469, 1719, 2060, 2239,</p>
-<p>经典<br>1011（搜索好题）<br>1012（学会打表）<br>1013<br>1019（它体现了很多此类问题的特点）<br>1050（绝对经典的dp）<br>1088（dp好题）<br>1157（花店，经典的dp）<br>1163（怎么经典的dp那么多呀？？？）<br>1328（贪心）<br>1458（最长公共子序列）<br>1647（很好的真题，考临场分析准确和下手迅速）<br>1654（学会多边形面积的三角形求法）<br>1655（一类无根树的dp问题）<br>1804（逆序对）<br>2084（经典组合数学问题）<br>2187（用凸包求最远点对，求出凸包后应该有O(N)的求法，可我就是调不出来）<br>2195（二分图的最佳匹配）<br>2242（计算几何经典）<br>2295（等式处理）<br>2353（dp，但要记录最佳路径）<br>2354（立体解析几何）<br>2362（搜索好题）<br>2410（读懂题是关键）<br>2411（经典dp）</p>
-<p>趣味<br>1067（很难的数学，但仔细研究，是一片广阔的领域）<br>1147（有O(n)的算法，需要思考）<br>1240（直到一棵树的先序和后序遍历，那么有几种中序遍历呢？dp）<br>1426（是数论吗？错，是图论！）<br>1648（别用计算几何，用整点这个特点绕过精度的障碍吧）<br>1833（找规律）<br>1844（貌似dp或是搜索，其实是道有趣的数学题）<br>1922（贪心，哈哈）<br>2231<br>2305（不需要高精度噢）<br>2328（要仔细噢）<br>2356（数论知识）<br>2359（约瑟夫问题变种）<br>2392（有趣的问题）</p>
-<p>很繁的题<br>1001<br>1008<br>1087（构图很烦，还有二分图的最大匹配）<br>1128（USACO）<br>1245<br>1329<br>1550（考的是读题和理解能力）<br>1649（dp）<br>2200（字符串处理+枚举）<br>2358（枚举和避免重复都很烦）<br>2361（仔细仔细再仔细）</p>
-<p>难题<br>1014（数学证明比较难，但有那种想法更重要）<br>1037（比较难的dp）<br>1405（高精度算法也分有等级之分，不断改进吧）<br>2002（不知道有没有比O(n^2*logn)更有的算法？）<br>2054（极难，很强的思考能力）<br>2085（组合数学）<br>2414（dp，但要剪枝）<br>2415（搜索）<br>2423（计算几何+统计）</p>
-<p>多解题<br>1002（可以用排序，也可以用统计的方法）<br>1338（搜索和dp都可以）<br>1664（搜索和dp都练一练吧）<br>2082（这可是我讲的题噢）<br>2352（桶排和二叉树都行）</p>
-<p>Note:<br>1011: 很经典的剪支<br>1014: 难在数学上<br>1017: 严格的数学证明貌似不容易<br>1021: 有点繁,考察对图形进行各种旋转的处理<br>1083: 巧妙的思考角度<br>1150: 分奇偶讨论,lg(n)算法<br>1218: 三行就够了,虽然简单,但也有优劣之别<br>1505: 二分加贪心<br>1654: 做法也许很多吧,本人用有向面积做的<br>1674: 计算圈的个数(算是graph 吧)<br>1700: 数学证明不容易<br>1742: O(m*n)的算法<br>1863: 要耐心地慢慢写…^_^<br>1988: 并查集<br>2051: 堆<br>2078: 不难，但剪支可以做到很好<br>2082::O(n),你想到了吗？<br>2084: 卡特兰数<br>2182: 线段树<br>2195: 最小费用最大流<br>2234: 经典博弈算法<br>2236: 并查集<br>2299: 二分思想<br>2395: Kruskal 最小生成树的拓展<br>2406: KMP<br>2411: 用二进制串来表示状态</p>
-<hr>
-<h2 id="PAT-advanced-level"><a href="#PAT-advanced-level" class="headerlink" title="PAT-advanced level"></a>PAT-advanced level</h2><p>简单题:<br>这类题几乎不需要数据结构、算法基础，主要通过简单的逻辑流程和判断实现。</p>
-<p>1001 A+B<br>1002 多项式相加<br>1005 简单hash<br>1006 选极值<br>1008 模拟电梯<br>1009 多项式乘法<br>1011 选极值<br>1019 数字/字符处理<br>1024 数字/字符处理<br>1027 数字/字符处理，简单hash<br>1031 数字/字符处理<br>1035 简单hash<br>1036 选极值<br>1037 简单模拟<br>1040 数字/字符处理<br>1046 数字/字符处理<br>1050 数字/字符处理<br>1058 数字/字符处理<br>1060 数字/字符处理</p>
-<p>模拟题:<br>这类题也相对简单，需要使用到一些简单的数据结构或者相对复杂的逻辑流程实现。</p>
-<p>1022 倒排索引<br>1023 数字/字符处理<br>1032 链表<br>1049 计算数字中的1<br>1051 模拟栈<br>1052 链表<br>1054 dominant color<br>1056 模拟分组淘汰赛</p>
-<p>排队模拟<br>下面三道模拟题是针对排队模型处理的：</p>
-<p>1014 排队问题<br>1017 排队问题<br>1026 排队问题</p>
-<p>排序模拟<br>这几道模拟题侧重在使用排序方法：</p>
-<p>1012 排序<br>1016 排序，模拟电话账单计算<br>1025 排序<br>1028 排序<br>1029 归并排序<br>1038 递归，排序<br>时间优化</p>
-<p>这几道题需要做好时间优化才能ac。<br>1044 搜索，时间优化<br>1039 倒排索引，hash，时间优化<br>1047 倒排索引，hash，时间优化<br>1055 排序，时间优化</p>
-<p>素数判定<br>1015 素数<br>1059 素数</p>
-<p>图<br>1003 最短路径<br>1018 最短路径<br>1030 最短路径<br>1034 dfs</p>
-<p>搜索<br>1010 二分搜索，优化剪枝<br>1013 并查集/dfs<br>1021 并查集，dfs，图的直径<br>1054 dfs，优化剪枝</p>
-<p>树<br>1004 dfs，树遍历<br>1020 二叉树遍历<br>1043 二叉树遍历</p>
-<p>Hash<br>1041 hash<br>1042 hash<br>1048 hash</p>
-<p>分治<br>1007 最大子连续序列</p>
-<p>贪心<br>1033 贪心</p>
-<p>动态规划<br>1045 DP，最长递增子序列</p>
-<p>树状数组<br>树状数组是一种神奇的数据结构，在1057题中其神奇的效果得到了很好的体现。</p>
-<p>1057 树状数组，模拟栈，二分搜索</p>
-<hr>
-<h2 id="PAT-advanced-level-liuchuo"><a href="#PAT-advanced-level-liuchuo" class="headerlink" title="PAT-advanced level(liuchuo)"></a>PAT-advanced level(liuchuo)</h2><p>PAT甲级真题目录（按题型整理）</p>
-<p>最短路径</p>
-<ol>
-<li>Emergency (25)-PAT甲级真题（Dijkstra算法）</li>
-<li>Public Bike Management (30)-PAT甲级真题（Dijkstra + DFS）</li>
-<li>Travel Plan (30)-PAT甲级真题（Dijkstra + DFS，输出路径，边权）</li>
-<li>All Roads Lead to Rome (30)-PAT甲级真题-Dijkstra + DFS</li>
-<li>Online Map (30)-PAT甲级真题（Dijkstra + DFS）</li>
-</ol>
-<p>树的遍历</p>
-<ol>
-<li>Counting Leaves (30)-PAT甲级真题(bfs,dfs,树的遍历，层序遍历)</li>
-<li>Tree Traversals (25)-PAT甲级真题</li>
-<li>Path of Equal Weight (30)-PAT甲级真题(树的遍历)</li>
-<li>Total Sales of Supply Chain (25)-PAT甲级真题（dfs,bfs,树的遍历）</li>
-<li>Tree Traversals Again (25)-PAT甲级真题</li>
-<li>Highest Price in Supply Chain (25)-PAT甲级真题</li>
-<li>The Largest Generation (25)-PAT甲级真题（bfs,dfs,树的遍历）</li>
-<li>Invert a Binary Tree (25)-PAT甲级真题</li>
-<li>Lowest Price in Supply Chain (25)-PAT甲级真题(dfs,bfs,树的遍历)</li>
-<li>Counting Nodes in a BST (30)-PAT甲级真题（二叉树的遍历，dfs）</li>
-<li>Pre- and Post-order Traversals (30)-PAT甲级真题（前序后序转中序）</li>
-</ol>
-<p>图的遍历</p>
-<ol>
-<li>Battle Over Cities (25)-PAT甲级真题（图的遍历，统计强连通分量的个数，dfs）</li>
-<li>Deepest Root (25)-PAT甲级真题（图的遍历，dfs，连通分量的个数）</li>
-<li>Head of a Gang (30)-PAT甲级真题（图的遍历dfs）</li>
-<li>Gas Station (30)-PAT甲级真题（Dijkstra）</li>
-<li>Forwards on Weibo (30)-PAT甲级真题（图的遍历bfs）</li>
-</ol>
-<p>深度优先搜索</p>
-<ol>
-<li>Integer Factorization (30)-PAT甲级真题（dfs深度优先）</li>
-</ol>
-<p>广度优先搜索</p>
-<ol>
-<li>Acute Stroke (30)-PAT甲级真题（广度优先搜索）</li>
-</ol>
-<p>哈希、散列</p>
-<ol>
-<li>Find Coins (25)-PAT甲级真题(Hash散列)</li>
-<li>String Subtraction (20)-PAT甲级真题（哈希）</li>
-<li>To Buy or Not to Buy (20)-PAT甲级真题</li>
-<li>Broken Keyboard (20)-PAT甲级试题</li>
-</ol>
-<p>动态规划</p>
-<ol>
-<li>Maximum Subsequence Sum (25)-PAT甲级真题（动态规划dp）</li>
-<li>Longest Symmetric String (25)-PAT甲级真题（动态规划）</li>
-<li>Favorite Color Stripe (30)-PAT甲级真题</li>
-<li>Find More Coins (30)-PAT甲级真题（01背包）</li>
-</ol>
-<p>排序</p>
-<ol>
-<li>The Best Rank (25)-PAT甲级真题</li>
-<li>Phone Bills (25)-PAT甲级真题</li>
-<li>PAT Ranking (25)-PAT甲级真题</li>
-<li>List Sorting (25)-PAT甲级真题</li>
-<li>The World’s Richest (25)-PAT甲级真题</li>
-<li>Talent and Virtue (25)-PAT甲级真题</li>
-<li>PAT Judge (25)-PAT甲级真题</li>
-<li>Graduate Admission (30)-PAT甲级真题</li>
-<li>List Grades (25)-PAT甲级真题</li>
-</ol>
-<p>STL的使用</p>
-<ol>
-<li>Digital Library (30)-PAT甲级真题（map映射）</li>
-<li>Course List for Student (25)-PAT甲级真题</li>
-<li>Student List for Course (25)-PAT甲级真题</li>
-<li>The Dominant Color (20)-PAT甲级真题</li>
-<li>Set Similarity (25)-PAT甲级真题</li>
-<li>Speech Patterns (25)-PAT甲级真题（map应用）</li>
-<li>Mars Numbers (20)-PAT甲级真题</li>
-</ol>
-<p>链表处理</p>
-<ol>
-<li>Sharing (25)-PAT甲级真题</li>
-<li>Linked List Sorting (25)-PAT甲级真题</li>
-<li>Reversing Linked List (25)-PAT甲级真题</li>
-<li>Deduplication on a Linked List (25)-PAT甲级真题</li>
-</ol>
-<p>大整数</p>
-<ol>
-<li>Have Fun with Numbers (20)-PAT甲级真题（大整数运算）</li>
-<li>Palindromic Number (25)-PAT甲级真题（大整数相加）</li>
-</ol>
-<p>二叉搜索树</p>
-<ol>
-<li>Is It a Binary Search Tree (25)-PAT甲级真题<br>Complete Binary Search Tree (30)-PAT甲级真题</li>
-<li>Build A Binary Search Tree (30)-PAT甲级真题</li>
-</ol>
-<p>平衡二叉树</p>
-<ol>
-<li>Root of AVL Tree (25)-PAT甲级真题</li>
-</ol>
-<p>堆排序</p>
-<ol>
-<li>Insertion or Heap Sort (25)-PAT甲级真题（堆排序）</li>
-</ol>
-<p>贪心算法</p>
-<ol>
-<li>To Fill or Not to Fill (25)-PAT甲级真题（贪心算法）</li>
-<li>Magic Coupon (25)-PAT甲级真题（贪心算法）</li>
-<li>Recover the Smallest Number (30)-PAT甲级真题（贪心算法）</li>
-<li>Sort with Swap(0,*) (25)-PAT甲级真题（贪心算法）</li>
-<li>Mooncake (25)-PAT甲级真题</li>
-</ol>
-<p>并查集</p>
-<ol>
-<li>Social Clusters (30)-PAT甲级真题（并查集）</li>
-<li>Family Property (25)-PAT甲级真题（并查集）</li>
-<li>Birds in Forest (25)-PAT甲级真题（并查集）</li>
-</ol>
-<p>树状数组</p>
-<ol>
-<li>Stack (30)-PAT甲级真题（树状数组）</li>
-</ol>
-<hr>
-<h2 id="Leetcode"><a href="#Leetcode" class="headerlink" title="Leetcode"></a>Leetcode</h2><p>参考leetcode-cpp</p>
-<h3 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h3><h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>Remove Duplicates from Sorted Array<br>Remove Duplicates from Sorted Array II<br>Longest Consecutive Sequence<br>Two Sum<br>3Sum<br>3Sum Closest<br>4Sum<br>Remove Element<br>Move Zeroes<br>Next Permutation<br>Permutation Sequence<br>Valid Sudoku<br>Trapping Rain Water<br>Rotate Image<br>Plus One<br>Climbing Stairs<br>Set Matrix Zeroes<br>Gas Station<br>Candy<br>Majority Element<br>Rotate Array<br>Contains Duplicate<br>Contains Duplicate II<br>Contains Duplicate III<br>Product of Array Except Self<br>Game of Life<br>Increasing Triplet Subsequence</p>
-<h4 id="单链表"><a href="#单链表" class="headerlink" title="单链表"></a>单链表</h4><p>Reverse Linked List<br>Odd Even Linked List<br>Add Two Numbers<br>Reverse Linked List II<br>Partition List<br>Remove Duplicates from Sorted List<br>Remove Duplicates from Sorted List II<br>Rotate List<br>Remove Nth Node From End of List<br>Swap Nodes in Pairs<br>Reverse Nodes in k-Group<br>Copy List with Random Pointer<br>Linked List Cycle<br>Linked List Cycle II<br>Reorder List<br>LRU Cache<br>Palindrome Linked List</p>
-<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>Valid Palindrome<br>Implement strStr()<br>String to Integer (atoi)<br>Add Binary<br>Longest Palindromic Substring<br>Regular Expression Matching<br>Wildcard Matching<br>Longest Common Prefix<br>Valid Number<br>Integer to Roman<br>Roman to Integer<br>Count and Say<br>Anagrams<br>Valid Anagram<br>Simplify Path<br>Length of Last Word<br>Isomorphic Strings<br>Word Pattern</p>
-<h3 id="栈和队列"><a href="#栈和队列" class="headerlink" title="栈和队列"></a>栈和队列</h3><h4 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h4><p>Min Stack<br>Valid Parentheses<br>Longest Valid Parentheses<br>Largest Rectangle in Histogram<br>Evaluate Reverse Polish Notation<br>Implement Stack using Queues</p>
-<h4 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h4><p>Implement Queue using Stacks</p>
-<h3 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h3><h4 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h4><p>Binary Tree Preorder Traversal<br>Binary Tree Inorder Traversal<br>Binary Tree Postorder Traversal<br>Binary Tree Level Order Traversal<br>Binary Tree Level Order Traversal II<br>Binary Tree Right Side View<br>Invert Binary Tree<br>Binary Search Tree Iterator<br>Binary Tree Zigzag Level Order Traversal<br>Recover Binary Search Tree<br>Same Tree<br>Symmetric Tree<br>Balanced Binary Tree<br>Flatten Binary Tree to Linked List<br>Populating Next Right Pointers in Each Node II</p>
-<h4 id="二叉树的构建"><a href="#二叉树的构建" class="headerlink" title="二叉树的构建"></a>二叉树的构建</h4><p>Construct Binary Tree from Preorder and Inorder Traversal<br>Construct Binary Tree from Inorder and Postorder Traversal</p>
-<h4 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h4><p>Unique Binary Search Trees<br>Unique Binary Search Trees II<br>Validate Binary Search Tree<br>Convert Sorted Array to Binary Search Tree<br>Convert Sorted List to Binary Search Tree<br>LCA of BST<br>Kth Smallest Element in a BST</p>
-<h4 id="二叉树的递归"><a href="#二叉树的递归" class="headerlink" title="二叉树的递归"></a>二叉树的递归</h4><p>Minimum Depth of Binary Tree<br>Maximum Depth of Binary Tree<br>Path Sum<br>Path Sum II<br>Binary Tree Maximum Path Sum<br>Populating Next Right Pointers in Each Node<br>Sum Root to Leaf Numbers<br>LCA of Binary Tree</p>
-<h4 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h4><p>Range Sum Query - Mutable</p>
-<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><p>Insertion Sort List</p>
-<h4 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h4><p>Merge Two Sorted Arrays<br>Merge Two Sorted Lists<br>Merge k Sorted Lists<br>Sort List</p>
-<h4 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h4><p>Sort Colors<br>Kth Largest Element in an Array</p>
-<h4 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h4><p>First Missing Positive</p>
-<h4 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h4><p>H-Index</p>
-<h4 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h4><p>Maximum Gap</p>
-<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>Largest Number</p>
-<h3 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h3><p>Search for a Range<br>Search Insert Position<br>Search in Rotated Sorted Array<br>Search in Rotated Sorted Array II<br>Search a 2D Matrix<br>Search a 2D Matrix II<br>Find Minimum in Rotated Sorted Array<br>Find Minimum in Rotated Sorted Array II<br>Median of Two Sorted Arrays<br>H-Index II</p>
-<h3 id="暴力枚举法"><a href="#暴力枚举法" class="headerlink" title="暴力枚举法"></a>暴力枚举法</h3><p>Subsets<br>Subsets II<br>Permutations<br>Permutations II<br>Combinations<br>Letter Combinations of a Phone Number</p>
-<h3 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h3><p>Word Ladder<br>Word Ladder II<br>Surrounded Regions<br>总结</p>
-<h3 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h3><p>Additive Number<br>Palindrome Partitioning<br>Unique Paths<br>Unique Paths II<br>N-Queens<br>N-Queens II<br>Restore IP Addresses<br>Combination Sum<br>Combination Sum II<br>Combination Sum III<br>Generate Parentheses<br>Sudoku Solver<br>Word Search<br>总结</p>
-<h3 id="分治法"><a href="#分治法" class="headerlink" title="分治法"></a>分治法</h3><p>Pow(x,n)<br>Sqrt(x)</p>
-<h3 id="贪心法"><a href="#贪心法" class="headerlink" title="贪心法"></a>贪心法</h3><p>Jump Game<br>Jump Game II<br>Best Time to Buy and Sell Stock<br>Best Time to Buy and Sell Stock II<br>Longest Substring Without Repeating Characters<br>Container With Most Water<br>Patching Array</p>
-<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p>Triangle<br>Maximum Subarray<br>Maximum Product Subarray<br>Longest Increasing Subsequence<br>Palindrome Partitioning II<br>Maximal Rectangle<br>Best Time to Buy and Sell Stock III<br>Best Time to Buy and Sell Stock IV<br>Best Time to Buy and Sell Stock with Cooldown<br>Interleaving String<br>Scramble String<br>Minimum Path Sum<br>Edit Distance<br>Decode Ways<br>Distinct Subsequences<br>Word Break<br>Word Break II<br>Dungeon Game<br>House Robber<br>House Robber II<br>House Robber III<br>Range Sum Query - Immutable<br>Range Sum Query 2D - Immutable</p>
-<h3 id="图"><a href="#图" class="headerlink" title="图"></a>图</h3><p>Clone Graph</p>
-<h3 id="位操作"><a href="#位操作" class="headerlink" title="位操作"></a>位操作</h3><p>Reverse Bits<br>Repeated DNA Sequences<br>Number of 1 Bits<br>Gray Code<br>Single Number<br>Single Number II<br>Single Number III<br>Power of Two<br>Missing Number<br>Maximum Product of Word Lengths<br>Bitwise AND of Numbers Range<br>Power of Three<br>Rectangle Area</p>
-<h3 id="数论"><a href="#数论" class="headerlink" title="数论"></a>数论</h3><p>Happy Number<br>Ugly Number<br>Ugly Number II<br>Super Ugly Number<br>Fraction to Recurring Decimal<br>Factorial Trailing Zeroes<br>Nim Game</p>
-<h3 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h3><p>Reverse Integer<br>Palindrome Number<br>Insert Interval<br>Merge Intervals<br>Minimum Window Substring<br>Multiply Strings<br>Substring with Concatenation of All Words<br>Pascal’s Triangle<br>Pascal’s Triangle II<br>Spiral Matrix<br>Spiral Matrix II<br>ZigZag Conversion<br>Divide Two Integers<br>Text Justification<br>Max Points on a Line</p>
-<hr>
-<p>ref:<br><a href="http://www.cnblogs.com/kuangbin/archive/2011/07/26/2117153.html" target="_blank" rel="noopener">http://www.cnblogs.com/kuangbin/archive/2011/07/26/2117153.html</a><br><a href="https://www.cnblogs.com/kuangbin/archive/2011/07/29/2120667.html" target="_blank" rel="noopener">https://www.cnblogs.com/kuangbin/archive/2011/07/29/2120667.html</a><br><a href="https://soulmachine.gitbooks.io/algorithm-essentials/content/cpp/linear-list/linked-list/reverse-linked-list.html" target="_blank" rel="noopener">https://soulmachine.gitbooks.io/algorithm-essentials/content/cpp/linear-list/linked-list/reverse-linked-list.html</a><br><a href="https://www.liuchuo.net/archives/2502" target="_blank" rel="noopener">https://www.liuchuo.net/archives/2502</a><br><a href="https://soulmachine.gitbooks.io/algorithm-essentials/content/cpp/" target="_blank" rel="noopener">https://soulmachine.gitbooks.io/algorithm-essentials/content/cpp/</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/29/UVa-136-Ugly-Numbers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/29/UVa-136-Ugly-Numbers/" itemprop="url">UVa 136-Ugly Numbers</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T17:50:01+08:00">
-                2018-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>丑数是指不能被2, 3, 5以外的其他素数整除的数。把丑数从小到大排列起来, 结果如下:<br><code>1,2,3,4,5,6,8,9,10,12,15,...</code><br>求第1500个丑数。</p>
-<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h2><p>There is no input to this program.</p>
-<h2 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output:"></a>Sample Output:</h2><p>The 1500’th ugly number is <number>.</number></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>思路:<br>  1, 按照我原先的思路, 首先想到, 把除235以外的1500个素数给计算出来, 再从5开始判断是否会被其中的某个数整除, <code>1500*1500*1500(n^3);</code><br>  2, 使用优先队列, 用已有的丑数, 生成新的丑数;<br>  已经有丑数x, 计算2x, 3x, 5x, (他们一定不能被除了235外的其他素数整除, 如果能整除, 其他素数就不是素数 )<br>  用优先队列dq存放已生成的丑数, 队首是最小数,<br>  生成新的丑数后队首出dq栈, 判断生成数是否已经在之前出现过(使用set)<br>  没出现过的加入ugly_set, push入dq栈队尾<br>  入完ugly_set栈, 检测数量是不是到了1500   // 这里存在bug1</p>
-<p>bug1: 检测ugly_set数量是1500存在bug, 因为有的丑数还没有去生成新丑数时, 丑数数量已经足够, 但实际上, 这些还没生成的丑数中, 存在比已经生成丑数更小的丑数, 因此直接让他生成1500次, 1500次的pq队首代表第1500个丑数.<br>bug2: The 1500’th ugly number is -1735655424. 需要定义LL</p>
-<p>skill1: priority_queue<int, vector<int="">, cmp&gt; pq来定义优先队列, cmp用结构体重载()来实现<br>skill2: set是一个自带排序的数据结构<br>skill3: 对于set类型的s, s.count(a), 可以判断集合s中是否存在元素a<br>skill4: long long写起来麻烦, 可以 <code>typedef long long LL;</code>定义简写的长整型</int,></p>
-<p><span style="color:red"><strong><br>归纳:<br>新的丑数用旧的数生成, 把旧的丑数, 放在优先队列里, 数越小权重越高.<br>不是用set来计数, 而是用pq出队列的次数来计数ugly number的数量, set只是用来判断生成数是否之前出现过.
-</strong></span></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;     // priority_queue定义在头文件queue中</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="comment">// #include &lt;algorithm&gt;</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">cmp</span> &#123;</span></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> LL a, <span class="keyword">const</span> LL b)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &gt; b;   <span class="comment">// a&gt;b, a的优先级比b小, 返回true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span>&lt;LL&gt; ugly;</span><br><span class="line"><span class="comment">// priority_queue&lt;LL&gt; pq;   // priority_queue&lt;LL&gt; pq; 这样定义数越大优先级越高</span></span><br><span class="line">priority_queue&lt;LL, <span class="built_in">vector</span>&lt;LL&gt;, cmp &gt; pq;</span><br><span class="line"><span class="comment">// priority_queue&lt;LL, vector&lt;LL&gt;, greater&lt;LL&gt; &gt; pq;   // 等价</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> multi[<span class="number">3</span>] = &#123;<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> n = <span class="number">1500</span>;</span><br><span class="line">  pq.push(<span class="number">1</span>); ugly.insert(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; ; i++) &#123;</span><br><span class="line">    LL x = pq.top(); pq.pop();</span><br><span class="line">    <span class="keyword">if</span> (i == n) &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"The 1500'th ugly number is %lld.\n"</span>, x);</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++) &#123;</span><br><span class="line">      LL x2 = x * multi[j];</span><br><span class="line">      <span class="keyword">if</span> (!ugly.count(x2)) &#123; pq.push(x2); ugly.insert(x2);&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 对set进行排序(set已经排序好了, 不需要重排)</span></span><br><span class="line">  <span class="comment">// set&lt;int&gt;::iterator it = ugly.end();</span></span><br><span class="line">  <span class="comment">// printf("The 1500'th ugly number is %d.\n", *(--it));  // 不是用set来计数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/06/git-request-commit-and-merge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/06/git-request-commit-and-merge/" itemprop="url">Git Request 提交, 合并</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T14:35:29+08:00">
-                2018-07-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近和学长<a href="https://github.com/HankDaly" target="_blank" rel="noopener">HankDaly</a>共同contribute一个项目。<br>涉及到三个操作:<br>1, HankDaly从我的github上获取代码<br>2, HankDaly修改代码并提交给我<br>3, 我对代码进行审核合并到项目中</p>
-<h2 id="1-HankDaly从我的github上获取代码-从项目维护者那获取代码"><a href="#1-HankDaly从我的github上获取代码-从项目维护者那获取代码" class="headerlink" title="1, HankDaly从我的github上获取代码(从项目维护者那获取代码)"></a>1, HankDaly从我的github上获取代码(从项目维护者那获取代码)</h2><p>a, 在github上fork项目, timtingwei/cppd  =&gt; HankDaly/cppd<br>b, HankDaly, clone自己的项目到本地<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
-<h2 id="2-HankDaly修改代码并提交给我"><a href="#2-HankDaly修改代码并提交给我" class="headerlink" title="2, HankDaly修改代码并提交给我"></a>2, HankDaly修改代码并提交给我</h2><p>a, 完成修改后, git push origin master 上传本地当前分支代码到远程master分支<br>b, 打开github, 在自己远程仓库的项目中, 找到pull request, 新建一个pull request<br>c, 选择自己要request的分支, 和base分支, 当前默认都为master<br><img src="/images/pull-request-new-requset.png" alt="我拿自己fork HankDaly/test 做的实验"><br>d, 创建这次pull request</p>
-<h2 id="3-我对代码进行审核合并到项目中"><a href="#3-我对代码进行审核合并到项目中" class="headerlink" title="3, 我对代码进行审核合并到项目中"></a>3, 我对代码进行审核合并到项目中</h2><p>在没有冲突的情况下可以直接在github上合并。<br>在冲突情况下必须手动pull下来, diff后修改矛盾, 再merge, pull request会自动消失。</p>
-<p>这里主要做的事情是, 手动在另外一个branch中, 审阅request上来的代码, 再与master合并</p>
-<p>这里我前面在pull的时候, 总没有git checkout -b hank-master</p>
-<p>我所推测的步骤应该是:</p>
-<p>a, 切换到一个专门用于审阅request的分支<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout -b hank-master</span><br></pre></td></tr></table></figure></p>
-<p>b, 在当前分支下, 拉下来学长的push<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git pull https://github.com/HankDaly/cppd.git</span><br></pre></td></tr></table></figure></p>
-<p>没有conflict的话可以直接pull下来。</p>
-<p>如果这里有confilict<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CONFLICT</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure>
-<p>手动将confilict改完, 就是保存一份没有冲突的</p>
-<p>c, 提交对代码的改动<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"merge hank's code"</span></span><br></pre></td></tr></table></figure></p>
-<p>d, 切换到master分支合并代码<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge hank-master</span><br></pre></td></tr></table></figure></p>
-<p>e, 提交到远程<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
-<p>什么时候会出现conflict?<br>我改动的同时, request也改动了相同的代码。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/07/04/archi-structure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/04/archi-structure/" itemprop="url">建筑结构选型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T20:37:57+08:00">
-                2018-07-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>仍然需要补充的内容:<br>排架 图<br>框架 图<br>绘制3例悬挂结构体系的高层建筑立面示意 p139 战略放弃</p>
-<h1 id="名词解释-4-5-简图"><a href="#名词解释-4-5-简图" class="headerlink" title="名词解释 4 * 5 简图"></a>名词解释 4 * 5 简图</h1><h2 id="1-刚架-用力学简图附加说明"><a href="#1-刚架-用力学简图附加说明" class="headerlink" title="1, 刚架(用力学简图附加说明):"></a>1, 刚架(用力学简图附加说明):</h2><p>梁柱之间刚性连接的结构, 适合于单层的体育馆<br><img src="/images/gang-jia.png" alt=""></p>
-<h2 id="2-必考-筒中筒-p135"><a href="#2-必考-筒中筒-p135" class="headerlink" title="2, 必考: 筒中筒 p135"></a>2, 必考: 筒中筒 p135</h2><p>在高层建筑中, 可把电梯间, 楼梯间以及设备井道的墙布置成钢筋混凝土墙, 它既可承受竖向荷载, 又可承受水平力作用。<br>在高层建筑中, 可充分利用建筑物圆周的景观和采光。<br>楼.电梯等服务性用房常位于房屋的中部, 因此由钢筋混凝土组成的楼, 电梯间便成了核心筒(实腹内筒), 外侧的密集的柱子形成空腹外筒<br><img src="/images/tong-zhong-tong.png" alt=""></p>
-<h2 id="3-必考-框架核心筒结构"><a href="#3-必考-框架核心筒结构" class="headerlink" title="3, 必考: 框架核心筒结构:"></a>3, 必考: 框架核心筒结构:</h2><p>筒中筒结构外部柱距较为密集, 常常不能满足建筑设计要求, 有时建筑柱子布距离要满足柱距在4~5m或更大,<br>周边柱不形成筒的工作状态, 筒相当于空间框架的作用, 这种结构称为框架核心筒结构<br><img src="/images/kuang-jia-he-xin-tong.png" alt=""></p>
-<h2 id="框筒-框架核心筒-结构与套筒-筒中筒-比较"><a href="#框筒-框架核心筒-结构与套筒-筒中筒-比较" class="headerlink" title="*, 框筒(框架核心筒)结构与套筒(筒中筒)比较"></a>*, 框筒(框架核心筒)结构与套筒(筒中筒)比较</h2><ul>
-<li>框筒结构柱距8.4m以上       50m * 50m 6根柱子</li>
-<li>套筒结构住距3m以内         50m * 50m 12以上</li>
-<li>框架核心筒比套筒柱子少 </li>
-</ul>
-<h2 id="框筒-框架-筒-区别"><a href="#框筒-框架-筒-区别" class="headerlink" title="*, 框筒 框架+筒 区别"></a>*, 框筒 框架+筒 区别</h2><p>框架-核心筒是结构体系中心一个筒结构，外围是框架<br>就是框架和筒体成的结构<br>框筒一般指是用比较密的柱子，配合深梁或者支撑构成筒体，不管有多少柱子都还是筒，<br>框架核心筒里面的筒即可以是实腹的墙体构成的筒，也可以是这个框筒。</p>
-<h2 id="4-气压式薄膜结构-气胀式"><a href="#4-气压式薄膜结构-气胀式" class="headerlink" title="4, 气压式薄膜结构(气胀式)"></a>4, 气压式薄膜结构(气胀式)</h2><p>也称为气胀式薄膜结构, 在若干充气肋 和 充气被 的密闭空间中保持空气压力, 直接落地承重或者搁置在结构构件上承重<br><img src="/images/qi-ya-shi-bo-mo-jie-gou.png" alt=""></p>
-<p>气承式, 不断的向壳体内鼓风, 在较高的室内气压作用下使其自行撑起, 以承受自重和外荷载的结构.<br><img src="/images/qi-cheng-shi-bo-mo-jie-gou.png" alt=""></p>
-<h2 id="5-剪力墙结构"><a href="#5-剪力墙结构" class="headerlink" title="5, 剪力墙结构"></a>5, 剪力墙结构</h2><p>一般在高层建筑中, 将建筑物外墙和永久性内隔墙布置成钢筋混凝土结构, 既能承受竖向荷载, 又能承受水平力</p>
-<h2 id="6-框支剪力墙-p130"><a href="#6-框支剪力墙-p130" class="headerlink" title="6, 框支剪力墙 p130"></a>6, 框支剪力墙 p130</h2><p>在沿街住宅和商户中, 在底层需要大空间的公共建筑中, 将部分底层剪力墙改成框架柱, 以满足使用要求, 但不利于抗震<br><img src="/images/kuang-zhi-jian-li-qiang.png" alt=""></p>
-<h2 id="8-桁架"><a href="#8-桁架" class="headerlink" title="8, 桁架:"></a>8, 桁架:</h2><p>由杆件通过<code>焊接, 铆接 或 螺栓连接</code> 而成的支撑横梁结构, 杆件主要承受<code>拉力和压力</code>, 可充分发挥材料的作用, 减轻结构自重;<br>材料: 钢, 木 和 混凝土<br><img src="/images/heng-jia-1.png" alt=""></p>
-<p><img src="/images/heng-jia-2.png" alt=""></p>
-<h2 id="9-屋架"><a href="#9-屋架" class="headerlink" title="9, 屋架:"></a>9, 屋架:</h2><p>屋面的结构承重桁架, 由上弦杆和腹杆组成。<br>材料: 钢, 木, 栓<br>式样: 三角形, 梯形, 弧形<br><img src="/images/wu-jia.png" alt=""></p>
-<h2 id="a-刚架"><a href="#a-刚架" class="headerlink" title="a, 刚架:"></a>a, 刚架:</h2><p>梁柱之间刚性连接的结构, 适合于单层的体育馆<br><img src="/images/gang-jia.png" alt=""></p>
-<h2 id="b-排架"><a href="#b-排架" class="headerlink" title="b, 排架:"></a>b, 排架:</h2><p>梁柱之间为铰接的单层结构</p>
-<h2 id="c-框架"><a href="#c-框架" class="headerlink" title="c, 框架:"></a>c, 框架:</h2><p>多层多跨的刚架结构</p>
-<h2 id="d-拱"><a href="#d-拱" class="headerlink" title="d, 拱:"></a>d, 拱:</h2><p>是主要受轴向力为主的结构形式, 形状为弧形<br>结构特点:<br>1, 拱是一种 推力结构, 在竖向的荷载下产生水平推力<br>2, 拱是一种无矩结构, 通过合理拱轴 可以使杆件无弯矩<br>3, 拱可以充分利用材料抗压强度, 断面小, 跨度大</p>
-<p>拱的支座处理:<br>1, 水平推力直接由拉杆承担</p>
-<p>2, 由框架承受</p>
-<p>3, 刚性水平构件承受推力</p>
-<p>4, 由基础承受</p>
-<p><img src="/images/gong.png" alt=""></p>
-<h1 id="画图解释-5-10"><a href="#画图解释-5-10" class="headerlink" title="画图解释 5 * 10"></a>画图解释 5 * 10</h1><h2 id="必考-纽约世贸大厦平面"><a href="#必考-纽约世贸大厦平面" class="headerlink" title="必考: 纽约世贸大厦平面"></a>必考: 纽约世贸大厦平面</h2><ul>
-<li>边长为63m</li>
-<li>平面为方 </li>
-<li>结构形式采用套筒, 实腹外筒和空腹内筒</li>
-<li>上层柱子间距13m, 下层柱柱子采用并柱, 间距大</li>
-<li>网状的轻桁架和主桁架支持地板。桁架相错互相连结。它们与外墙的拱间以及与核心的钢柱焊在一起。</li>
-<li>地板与外墙的拱间通过粘弹阻尼器连在一起，这样来使得建筑内的人不会感觉到震动。<br><img src="/images/nyk-xiersi-plan.png" alt=""></li>
-</ul>
-<h2 id="必考-西尔斯大厦平面"><a href="#必考-西尔斯大厦平面" class="headerlink" title="必考: 西尔斯大厦平面"></a>必考: 西尔斯大厦平面</h2><ul>
-<li>平面为方 </li>
-<li>采用空腹组合筒, 9个筒高低错落</li>
-<li>边长为68.7m, 由9个22.9米见方的正方形组成。</li>
-<li>地上110层，地下一层，框剪结构，采用挤密桩</li>
-<li>50层平面, 90层平面<br><img src="/images/nyk-xiersi-plan.png" alt=""></li>
-</ul>
-<h2 id="壳体结构-分别由母线和旋转轴形成的椭圆壳-双曲壳和锥形壳-轴测图-p47"><a href="#壳体结构-分别由母线和旋转轴形成的椭圆壳-双曲壳和锥形壳-轴测图-p47" class="headerlink" title="壳体结构: 分别由母线和旋转轴形成的椭圆壳, 双曲壳和锥形壳 轴测图 p47"></a>壳体结构: 分别由母线和旋转轴形成的椭圆壳, 双曲壳和锥形壳 轴测图 p47</h2><p><img src="/images/qiao-ti-jie-gou.png" alt=""></p>
-<h2 id="网架-双层双曲交叉索网体系轴测图"><a href="#网架-双层双曲交叉索网体系轴测图" class="headerlink" title="网架: 双层双曲交叉索网体系轴测图"></a>网架: 双层双曲交叉索网体系轴测图</h2><p><img src="/images/wang-jia.png" alt=""></p>
-<h2 id="垂直桁架-绘制高层建筑垂直桁架结构体系的结构示意图-p139"><a href="#垂直桁架-绘制高层建筑垂直桁架结构体系的结构示意图-p139" class="headerlink" title="垂直桁架: 绘制高层建筑垂直桁架结构体系的结构示意图 p139"></a>垂直桁架: 绘制高层建筑垂直桁架结构体系的结构示意图 p139</h2><p>具有很强刚度, 充分利用材料, 把部分框架改为竖向放置的桁架<br><img src="/images/chui-zhi-heng-jia.png" alt=""></p>
-<h2 id="绘制3例悬挂结构体系的高层建筑立面示意-p139"><a href="#绘制3例悬挂结构体系的高层建筑立面示意-p139" class="headerlink" title="绘制3例悬挂结构体系的高层建筑立面示意 p139"></a>绘制3例悬挂结构体系的高层建筑立面示意 p139</h2><h2 id="网壳结构"><a href="#网壳结构" class="headerlink" title="网壳结构"></a>网壳结构</h2><p>肋环型网格: 节点刚性连接, 适用于中.小跨度的穹顶<br><img src="/images/wang-qiao-jie-gou.png" alt=""></p>
-<h1 id="大题-30"><a href="#大题-30" class="headerlink" title="大题 30"></a>大题 30</h1><p>3选1必考</p>
-<h2 id="耶鲁大学冰球馆"><a href="#耶鲁大学冰球馆" class="headerlink" title="耶鲁大学冰球馆"></a>耶鲁大学冰球馆</h2><p>建筑师： 美国建筑师, 沙里宁<br>主要结构: 悬索结构.<br>结构形式分析:上面是拱, 侧边是悬索, 悬索拉在拱和边梁之间。钢索挂在正中一道拱形脊梁和圈梁之上, 场内可容纳3000名观众, 冰球馆的外形像一只古怪的海龟似的结构<br>尺度关系: 在图中表示, 16050, 69500<br>效果图, 剖面图<br><img src="/images/yelu.png" alt=""></p>
-<h2 id="杜勒斯机场"><a href="#杜勒斯机场" class="headerlink" title="杜勒斯机场"></a>杜勒斯机场</h2><p>建筑师: 沙里宁<br>主要结构: 悬索结构<br>结构分析: 候机楼有两层楼巨型钢筋混凝土柱墩, 一排稍高, 一排稍低, 在相对的柱墩子上张挂着40多的钢索, 刚墩上铺屋面板, 钢索中部下垂, 形成自然的凹面曲线屋顶, 柱墩向外倾斜, 屋面向上翘起。具有动势, 很有气派。<br>尺度关系: 矩形平面, 长182.5m, 进深45.6m</p>
-<p>平面(简图,画柱子), 剖面(高度15), 透视<br><img src="/images/dulesi.png" alt=""></p>
-<h2 id="代代木体育馆"><a href="#代代木体育馆" class="headerlink" title="代代木体育馆"></a>代代木体育馆</h2><p>建筑师: 丹下健三<br>主要结构: 柱墩+悬索, 悬索分为主索和侧索<br>结构分析: 代代木竞技场采用高张力缆索为主体的悬索屋顶结构，创造出带有紧张感和灵动感的大型内部空间。其特异的外部形状加之装饰性的表现，可以追溯到作为日本古代原型的神社形式和竖穴式住居，具有原始的想像力。<br>尺度关系: 主跨度为126m，横向索跨度为44m, 高度40m</p>
-<p>平面(示意), 透视+剖面<br><img src="/images/daidaimu.png" alt=""></p>
-<h1 id="刷"><a href="#刷" class="headerlink" title="刷"></a>刷</h1><p>1桁架: 杆件通过 焊接 铆接 螺栓连接 而成的<code>支撑横梁结构</code>, 承受 拉力和压力, 充分发挥材料特性, <code>减轻结构自重</code><br><code>材料: 钢, 木和混凝土</code><br>屋架: 屋面的<code>结构承重</code>桁架结构, 由<code>上弦杆和腹杆</code>组成<br><code>材料: 钢, 木和混凝土</code><br>1刚架: 梁柱之间通过刚性连接而成的结构, <code>适用于单层体育馆</code><br>1排架: 梁柱之间通过铰接而成的结构<br>框架: 多层多跨的刚架结构</p>
-<p>1拱: 主要受轴心力作用的结构, 形状为弧形</p>
-<p>结构特点:<br>推力结构, 在竖向荷载下产生水平推力<br>无弯矩, 通过合理的拱轴, 可以使得杆件无弯矩<br>充分利用材料抗压强度, 断面小, 跨度大</p>
-<p>剪力墙:在高层建筑中, 将建筑物外墙和建筑永久性内隔墙布置成钢筋混凝土结构, <code>既能承受竖向荷载, 又能承受水平荷载</code><br>框支剪力墙: 在高层建筑底层商铺或住宅, 需要底层更多空间时, 将部分剪力墙改成框架柱, 形成框支剪力墙, 避震性不好</p>
-<p>框架核心筒 (框筒): 结构体系中心是一个筒结构, 外围是框架<br>筒中筒    (套筒): 实腹内筒, 空腹外筒</p>
-<p>框筒 框架核心筒的区别<br>框架核心筒外围是框架<br>框架核心筒中的筒, 实腹墙体构成的筒, 也可以是框筒</p>
-<p>气压式薄膜结构: 在若干 充气肋和充气被的作用下，使得结构内部充满压力, 直接落地或搁置在构件上承受外部荷载<br>气承式薄膜结构: 向壳体鼓风使内部充满压力, 在较高的室内压力作用下, 使构件鼓起承受自重荷载.</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/06/26/archi-equiptment/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/26/archi-equiptment/" itemprop="url">建筑设备复习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-26T18:45:12+08:00">
-                2018-06-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><code>1   填空 12 * 2</code><br><code>2-6 简答 5 * 13</code><br><code>7   问答 21</code></p>
-<h1 id="1-1-1-给水系统的分类-组成-供水方式"><a href="#1-1-1-给水系统的分类-组成-供水方式" class="headerlink" title="1.1.1 给水系统的分类, 组成, 供水方式"></a>1.1.1 给水系统的分类, 组成, 供水方式</h1><h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>按其供水对象可分为: 生活给水系统, 生产给水系统, 消防给水系统</p>
-<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>引入管, 管道系统, 给水附件, 消防设备, 升压与贮水设备, 给水局部处理设备</p>
-<h2 id="给水方式"><a href="#给水方式" class="headerlink" title="给水方式"></a>给水方式</h2><p>直接给水方式/ 设有水箱的给水方式/ 设水泵的给水方式/ 设贮水池, 水泵, 水箱的给水方式/ 分区给水方式/ 气压给水方式/<br>在初步确定给水方式时, 对层高不超过3.5m的民用建筑, 所需的压力可估算: 1层100kpa, 2层120kpa, 3层以上每增加一层, 增加40kpa</p>
-<h1 id="1-3-1-给水系统-p15"><a href="#1-3-1-给水系统-p15" class="headerlink" title="1.3.1 给水系统 p15"></a>1.3.1 给水系统 p15</h1><h2 id="高层建筑给水系统为什么用竖向分区供水"><a href="#高层建筑给水系统为什么用竖向分区供水" class="headerlink" title="高层建筑给水系统为什么用竖向分区供水?"></a>高层建筑给水系统为什么用竖向分区供水?</h2><p>高层建筑用水标准较高, 使用人数较多, 建筑高度大, 功能复杂, 对防震, 防沉降, 防渗漏等要求高。<br>高层建筑若采用同一给水系统供水, 则垂直方向管线过长, 下层管道中的净水压力过大,<br>必然会增大压力损失, 使管道(附近)易漏水, 启用龙头和阀门易产生水锤和噪声, 影响高层供水的安全可靠性, 因此采用竖向分区供水</p>
-<h2 id="a-并联方式"><a href="#a-并联方式" class="headerlink" title="a, 并联方式"></a>a, 并联方式</h2><h3 id="高位水箱并联给水方式"><a href="#高位水箱并联给水方式" class="headerlink" title="高位水箱并联给水方式"></a>高位水箱并联给水方式</h3><p>各区设置水箱, 水泵集中布置在地下层或底层<br>特点:<br>优: 各区独立运行互不干扰/ 能耗小/ 供水可靠/ 水泵集中布置便于管理<br>缺: 水泵型号较多, 投资较大/ 分区水箱占楼层使用面积大</p>
-<h3 id="分区无水箱给水方式"><a href="#分区无水箱给水方式" class="headerlink" title="分区无水箱给水方式"></a>分区无水箱给水方式</h3><p>分区设置变频调速水泵或多台并联水泵, 且集中布置在地下室或底层<br>根据各区用水量调节水泵转速 或 运行后向各区供水<br>特点:<br>优: 供水可靠性强/ 设备集中设置, 便于管理/ 无高位水箱不占上层面积<br>缺: 水泵型号多, 投资大/ 水泵控制调节复杂</p>
-<h2 id="b-串联给水方式"><a href="#b-串联给水方式" class="headerlink" title="b, 串联给水方式"></a>b, 串联给水方式</h2><p>分区设置水箱和水泵, 水泵分散布置<br>自下区水箱抽水供上区用水<br>特点:<br>优: 设备和管道较简单, 投资省, 能耗小<br>缺: 水泵设置在上层, 对防振动和噪声要求高/ 各区水箱增加结构负荷/ 上区供水受下区限制/ 供水可靠性差</p>
-<h2 id="c-减压给水方式"><a href="#c-减压给水方式" class="headerlink" title="c, 减压给水方式"></a>c, 减压给水方式</h2><p>分区设置水箱/ 由设置在地下室或底层的水泵将水加压至最高层水箱/ 上层供下层用水/ 利用水箱减压<br>特点:<br>优: 水泵台数少, 设备管理维护简单<br>缺: 水泵扬程较大/ 运行费用高/ 最高层水箱容积较大, 增加了结构负荷/ 下层供水压力损耗较大, 不够节能 </p>
-<h1 id="2-2-1-自然循环热水供暖系统-p59"><a href="#2-2-1-自然循环热水供暖系统-p59" class="headerlink" title="2.2.1 自然循环热水供暖系统 p59"></a>2.2.1 自然循环热水供暖系统 p59</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理:"></a>原理:</h2><p>1, 冷水管向系统内充满水<br>2, 锅炉开始加热<br>3, 当水温升高后, 堆高度开始降低, 热水沿供水管上升至散热器<br>4, 在散热器中散热后温度降低<br>5, 沿回水管流回锅炉再加热, 循环往复</p>
-<h2 id="供暖系统的任务是什么"><a href="#供暖系统的任务是什么" class="headerlink" title="供暖系统的任务是什么?"></a>供暖系统的任务是什么?</h2><p>为了满足生活, 生产的要求, 营造舒适的生活环境或者一定的生产环境, 维持一定的室内温度, 必须不断地向室内提供一定数量的热量以弥补其散失的热量</p>
-<h1 id="2-2-2-机械循环热水供暖系统-p61"><a href="#2-2-2-机械循环热水供暖系统-p61" class="headerlink" title="2.2.2 机械循环热水供暖系统 p61"></a>2.2.2 机械循环热水供暖系统 p61</h1><h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><ul>
-<li>1, 因为采用循环水泵为水循环提供动力, 所以循环作用压力大</li>
-<li>2, 系统的作用半径大, 水的流速大, 管径较小, 启动容易, 供暖方式多, 应用广泛</li>
-</ul>
-<h2 id="a-机械供暖与自然供暖的区别"><a href="#a-机械供暖与自然供暖的区别" class="headerlink" title="a, 机械供暖与自然供暖的区别"></a>a, 机械供暖与自然供暖的区别</h2><h3 id="1-循环动力不同"><a href="#1-循环动力不同" class="headerlink" title="1, 循环动力不同:"></a>1, 循环动力不同:</h3><ul>
-<li>机械: 水泵; </li>
-<li>自然: 密度差 <h3 id="2-膨胀水箱的连接点和作用不同"><a href="#2-膨胀水箱的连接点和作用不同" class="headerlink" title="2, 膨胀水箱的连接点和作用不同"></a>2, 膨胀水箱的连接点和作用不同</h3></li>
-<li>机械: 循环水泵入口前的回水管, 作用在于吸收和补充膨胀与收缩的水量, 排气以及起到定压的作用</li>
-<li>自然: 供水立管的最高点, 作用在于吸收系统中热水膨胀体积, 补充水量不足和排气<h3 id="3-排气途径不同"><a href="#3-排气途径不同" class="headerlink" title="3, 排气途径不同"></a>3, 排气途径不同</h3></li>
-<li>机械: 随着水流一起流动</li>
-<li>自然: 逆着水流方向浮升</li>
-</ul>
-<h2 id="b-机械供暖的主要方式-需要仔细看看"><a href="#b-机械供暖的主要方式-需要仔细看看" class="headerlink" title="b, 机械供暖的主要方式(需要仔细看看)"></a>b, 机械供暖的主要方式(需要仔细看看)</h2><h3 id="垂直式"><a href="#垂直式" class="headerlink" title="垂直式"></a>垂直式</h3><p>上供下回<br>下供下回<br>中供式<br>下供上回</p>
-<h3 id="水平式"><a href="#水平式" class="headerlink" title="水平式"></a>水平式</h3><p>水平单管顺流式,<br>单管跨越式</p>
-<h3 id="水平式优点"><a href="#水平式优点" class="headerlink" title="水平式优点"></a>水平式优点</h3><ul>
-<li>1, 安装简单, 穿楼板的立管少, 可逐层安装供暖系统</li>
-<li>2, 顶层不需专设膨胀水箱, 可利用楼梯间.厕所设置, 造价比垂直式低</li>
-</ul>
-<h3 id="水平式问题"><a href="#水平式问题" class="headerlink" title="水平式问题"></a>水平式问题</h3><ul>
-<li>1, 排气, 必须安装气阀</li>
-</ul>
-<h2 id="c-异程式与同程式"><a href="#c-异程式与同程式" class="headerlink" title="c, 异程式与同程式"></a>c, 异程式与同程式</h2><p>异程式: 每根立管都与锅炉.供.回水管组成循环环路, 而通过各根立管的循环环路的长度都是不同的<br>同程式: 增加了回水管长度, 使各分立管的循环环路的长度相等</p>
-<h3 id="同程式优缺点"><a href="#同程式优缺点" class="headerlink" title="同程式优缺点"></a>同程式优缺点</h3><p>优: 有利于环路间的阻力平衡, 热量分配易于达到设计要求,<br>缺: 用的金属管材较多, 施工时地沟深度增加</p>
-<h2 id="d-供热系统中散热器-膨胀水箱-疏水器的种类及作用有哪些？"><a href="#d-供热系统中散热器-膨胀水箱-疏水器的种类及作用有哪些？" class="headerlink" title="d, 供热系统中散热器, 膨胀水箱, 疏水器的种类及作用有哪些？"></a>d, 供热系统中散热器, 膨胀水箱, 疏水器的种类及作用有哪些？</h2><h3 id="散热器种类"><a href="#散热器种类" class="headerlink" title="散热器种类"></a>散热器种类</h3><p>种类</p>
-<ul>
-<li>1, 铸铁散热器(圆翼型, 长翼型, 柱型)</li>
-<li>2, 钢制散热器(闭式钢率片, 板型, 铁制柱型, 篇管)</li>
-<li>3, 其他材质散热器<br>功能:<br>具体一定温度的热媒所携带的热量是通过散热器不断地传给室内空气和物体的热量通过散热器壁面以对流, 辐射方式传递给室内</li>
-</ul>
-<h3 id="膨胀水箱作用"><a href="#膨胀水箱作用" class="headerlink" title="膨胀水箱作用"></a>膨胀水箱作用</h3><p>用来储存热水供暖系统加热的膨胀水量, 还起着排气作用, 恒定供暖系统的压力</p>
-<h3 id="疏水器种类"><a href="#疏水器种类" class="headerlink" title="疏水器种类"></a>疏水器种类</h3><p>种类</p>
-<ul>
-<li>1, 机械型疏水器(浮筒式, 钟型浮水式, 吊桶式)</li>
-<li>2, 热水型疏水器(脉冲式, 热动力式, 孔板式)</li>
-<li>3, 恒温型疏水器(双金属片式, 波纹管式, 液体膨胀式)<br>作用:<br>自动阻止蒸汽遗漏而且迅速地排出用热设备及管道中的凝水, 同时能排除系统中积留的空气和不凝气体。</li>
-</ul>
-<h1 id="3-1-3-高层建筑防火排烟-p115"><a href="#3-1-3-高层建筑防火排烟-p115" class="headerlink" title="3.1.3 高层建筑防火排烟 p115"></a>3.1.3 高层建筑防火排烟 p115</h1><h2 id="a-防火分区和防烟分区"><a href="#a-防火分区和防烟分区" class="headerlink" title="a, 防火分区和防烟分区"></a>a, 防火分区和防烟分区</h2><h3 id="1-防火分区"><a href="#1-防火分区" class="headerlink" title="(1)防火分区"></a>(1)防火分区</h3><h4 id="定义"><a href="#定义" class="headerlink" title="定义:"></a>定义:</h4><p>采用防火分隔措施划分的局部区域</p>
-<h4 id="优点"><a href="#优点" class="headerlink" title="优点:"></a>优点:</h4><ul>
-<li>1, 可有效防止火灾时火势蔓延和烟气传播</li>
-<li>2, 便于人员疏散和火灾的扑救</li>
-<li>3, 减少火灾的损失<h4 id="要求"><a href="#要求" class="headerlink" title="要求:"></a>要求:</h4></li>
-<li>1, 两个防火分区之间应水平设置 <code>防火墙``防火卷帘``防火门</code>等装置对火势进行阻隔</li>
-<li>2, 每个防火分区最大建筑面积: 一类1000m2, 二类1500m2, 地下室500m2</li>
-<li>3, 高层建筑, 设有火灾自动报警系统和自动灭火系统, 且采用不燃烧或难燃烧材料装修, 地上防火分区&lt;=4000m2, 地下部分 &lt;= 2000m2</li>
-<li>4, 高层建筑与裙房之间设有防火墙等防火分隔设施时, 裙房防火分区 &lt;= 2500m2</li>
-<li>5, 当设有自动喷水灭火系统: 最大面积增加一倍</li>
-</ul>
-<h3 id="2-防烟分区"><a href="#2-防烟分区" class="headerlink" title="(2)防烟分区"></a>(2)防烟分区</h3><h4 id="目的："><a href="#目的：" class="headerlink" title="目的："></a>目的：</h4><p>在火灾发生时候, 将烟气控制在一定范围内</p>
-<h4 id="要求-1"><a href="#要求-1" class="headerlink" title="要求:"></a>要求:</h4><ul>
-<li>1, 防烟分区不应跨越防火分区</li>
-<li>2, 每个防烟分区的建筑面积 &lt;= 500m2</li>
-<li>3, 走道, 净高不超过房间的6.0m, 采用挡烟垂璧, 隔墙突出 &gt;= 0.50的梁划分防烟分区</li>
-</ul>
-<h2 id="b-防-排烟方式"><a href="#b-防-排烟方式" class="headerlink" title="b, 防.排烟方式"></a>b, 防.排烟方式</h2><h3 id="自然排烟"><a href="#自然排烟" class="headerlink" title="自然排烟"></a>自然排烟</h3><p>优: 不需要动力/经济方便<br>缺: 易受到室外风力影响, 火势猛烈时, 火焰可能从开口部位向上蔓延</p>
-<h3 id="机械排烟"><a href="#机械排烟" class="headerlink" title="机械排烟"></a>机械排烟</h3><p>定义:使用排烟风机进行强制排烟<br>优: 不受室外风力影响, 工作可靠<br>缺: 初期投资多</p>
-<h1 id="3-2-4-空气处理设备-p125"><a href="#3-2-4-空气处理设备-p125" class="headerlink" title="3.2.4 空气处理设备 p125"></a>3.2.4 空气处理设备 p125</h1><h2 id="a-空气净化-加热-冷却-加湿-除湿"><a href="#a-空气净化-加热-冷却-加湿-除湿" class="headerlink" title="a, 空气净化, 加热, 冷却, 加湿, 除湿"></a>a, 空气净化, 加热, 冷却, 加湿, 除湿</h2><h3 id="空气过滤器"><a href="#空气过滤器" class="headerlink" title="空气过滤器"></a>空气过滤器</h3><p>粗效过滤器, 中效过滤器, 高效过滤器</p>
-<h3 id="空气加热器"><a href="#空气加热器" class="headerlink" title="空气加热器"></a>空气加热器</h3><p>表面式, 电加热</p>
-<h3 id="空气冷却器"><a href="#空气冷却器" class="headerlink" title="空气冷却器"></a>空气冷却器</h3><p>表面式空气冷却: 结构同表面式空气加热器, 不同的是冷冻水或制冷剂作为冷媒。</p>
-<ul>
-<li>以冷冻水作为冷媒, 水冷式空气冷却器</li>
-<li>以制冷剂作为冷媒, 直接蒸发式空气冷却器<br>喷水室:<h3 id="空气加湿器"><a href="#空气加湿器" class="headerlink" title="空气加湿器"></a>空气加湿器</h3>蒸汽喷管加湿器/电加湿器<h3 id="除湿设备"><a href="#除湿设备" class="headerlink" title="除湿设备"></a>除湿设备</h3>加热通风除湿:将湿度较低的室外空气加热送入室内, 从室内排除同等数量的潮湿空气<br>冷冻除湿: 利用制冷设备, 除掉空气中析出的凝结水, 再将空气温度升高达到除湿目的<br>液体吸湿剂除湿: 将盐水溶液与空气直接接触, 空气中的水分被盐分吸收, 从而到达吸湿目的<br>固体吸湿剂: 空气经过吸湿材料的表面或孔隙, 空气中的水分被吸附, 常用的是硅胶和氯化钙<h3 id="热交换器"><a href="#热交换器" class="headerlink" title="热交换器"></a>热交换器</h3><h2 id="b-装配式空调机组"><a href="#b-装配式空调机组" class="headerlink" title="b, 装配式空调机组"></a>b, 装配式空调机组</h2>将多种空气处理设备及风机, 阀门等制成带箱体的单元段, 根据工程需要组合, 实现多种空气处理要求的设备<h2 id="c-空调制冷设备"><a href="#c-空调制冷设备" class="headerlink" title="c, 空调制冷设备"></a>c, 空调制冷设备</h2></li>
-</ul>
-<h3 id="蒸汽压缩式制冷系统"><a href="#蒸汽压缩式制冷系统" class="headerlink" title="蒸汽压缩式制冷系统"></a>蒸汽压缩式制冷系统</h3><p>组成: 冷压缩机, 冷凝器, 膨胀阀, 蒸发器<br>工作过程: 来自蒸发器的低温低压制冷剂蒸汽被吸入压缩机, 压缩成高温高压制冷剂蒸汽, 进入冷凝器中放出热量, 冷凝程高压液体, 然后经膨胀阀节流降压后变成低温低压液体进入蒸发器, 在蒸发器中液体制冷剂蒸发吸收被冷却介质的热量, 变成低温低压气体再回到压缩机, 进行下一个循环。被冷却介质失去热量, 温度下降, 获得空调的冷媒水或冷风.</p>
-<h3 id="吸收式制冷系统"><a href="#吸收式制冷系统" class="headerlink" title="吸收式制冷系统"></a>吸收式制冷系统</h3><p>组成: 发生器, 冷凝器, 膨胀阀, 蒸发器, 吸收器<br>工作过程: 与蒸汽压缩式一样, 都是利用液体在汽化时要吸收热量来实现制冷, 不同的是, 蒸汽压缩式制冷消耗机械能, 吸收式制冷消耗热能使能量从低温热源转移到高温热源</p>
-<h3 id="制冷剂组"><a href="#制冷剂组" class="headerlink" title="制冷剂组"></a>制冷剂组</h3><p>就是将全部或部分制冷设备组装成一个整体, 直接向用户提供冷凝水。</p>
-<h3 id="循环水冷却系统"><a href="#循环水冷却系统" class="headerlink" title="循环水冷却系统"></a>循环水冷却系统</h3><p>大中型制冷系统冷凝器释放出的热量, 一般采用循环水冷却系统将散热量带走, 以保证制冷机组正常运行</p>
-<h3 id="大温差技术"><a href="#大温差技术" class="headerlink" title="大温差技术"></a>大温差技术</h3><p>空调送风或送水的温差比常规空调系统采用的温差大</p>
-<h1 id="4-1-2-建筑电气系统的分类-p144"><a href="#4-1-2-建筑电气系统的分类-p144" class="headerlink" title="4.1.2 建筑电气系统的分类 p144"></a>4.1.2 建筑电气系统的分类 p144</h1><p>组成: 建筑电气系统一般由 用电设备/供配电线路/ 控制和保护装置<br>分类:<br>根据 -&gt; 电能的产生, 分配, 传输和消耗使用,      类 -&gt; 供配电系统/用电系统<br>根据 -&gt; 用电设备的特点和系统中所传递能量的类型, 类 -&gt; 建筑照明系统/建筑动力系统/建筑弱电系统</p>
-<h2 id="a-建筑的供配电系统"><a href="#a-建筑的供配电系统" class="headerlink" title="a, 建筑的供配电系统"></a>a, 建筑的供配电系统</h2><h3 id="电能产生-输送和分配"><a href="#电能产生-输送和分配" class="headerlink" title="电能产生, 输送和分配"></a>电能产生, 输送和分配</h3><h4 id="1-电能产生-输送和分配"><a href="#1-电能产生-输送和分配" class="headerlink" title="(1)电能产生, 输送和分配"></a>(1)电能产生, 输送和分配</h4><p>电能的产生, 输送, 分配和使用的全过程是同时进行</p>
-<h4 id="2-发电厂"><a href="#2-发电厂" class="headerlink" title="(2)发电厂"></a>(2)发电厂</h4><p>定义: 将各种形式的能量转换为电能的工厂<br>分类: 火力发电厂, 水力, 风力, 原子核能</p>
-<h4 id="3-电能输送"><a href="#3-电能输送" class="headerlink" title="(3)电能输送"></a>(3)电能输送</h4><p>特点: 当发电厂除送电能一定时, 采用的送电电压越高, 线路损耗越低<br>所以, 远距离书店必须采用高压输电线</p>
-<h4 id="4-电能用户"><a href="#4-电能用户" class="headerlink" title="(4)电能用户"></a>(4)电能用户</h4><p>定义: 把电能转化为其他形式能量的设备</p>
-<h3 id="电路系统的电压和频率"><a href="#电路系统的电压和频率" class="headerlink" title="电路系统的电压和频率"></a>电路系统的电压和频率</h3><h4 id="1-电压等级"><a href="#1-电压等级" class="headerlink" title="(1)电压等级"></a>(1)电压等级</h4><p>我国规定交流电网的额定电压等级: 220V, 380V, 3KV, 6KV, 10KV, 3KV,110KV, 220KV<br>1k及以上的电压称为高压, 1kv以下称为低压</p>
-<h4 id="2-各种电压等级的使用范围"><a href="#2-各种电压等级的使用范围" class="headerlink" title="(2)各种电压等级的使用范围"></a>(2)各种电压等级的使用范围</h4><h4 id="3-额定电压和频率"><a href="#3-额定电压和频率" class="headerlink" title="(3)额定电压和频率:"></a>(3)额定电压和频率:</h4><p>使用工频交流电频率为50hz, 线/相电压为380/220V</p>
-<h3 id="民用建筑供电系统"><a href="#民用建筑供电系统" class="headerlink" title="民用建筑供电系统"></a>民用建筑供电系统</h3><p>小范围: 变电室, 6~10kv -&gt; 低压380/220V<br>大型:   高压变电所, 6~10kv -&gt; 经过几路高压配电线将电能分到变电所, 380/220v</p>
-<h3 id="电力负荷的分类"><a href="#电力负荷的分类" class="headerlink" title="电力负荷的分类"></a>电力负荷的分类</h3><p>定义: 根据供电可靠性及中断供电所造成的损失或者影响<br>分类: 一级负荷, 二级负荷, 三级负荷<br>一级负荷: 1, 中断供电将造成人身伤害/2, 中断供电将造成重大影响和重大损失/ 3, 破坏有重大影响的用电单位的正常工作, 或造成秩序混乱<br>二级负荷: </p>
-<ul>
-<li>1, 造成较大影响或损失/2, 将影响重要用电单位的正常工作或造成秩序混乱</li>
-<li>要求: 要用两个独立电源系统供电, 只有一个电源供电时, 必须使用两个回路<br>三级负荷: 可接约定供电<h2 id="b-电气照明系统"><a href="#b-电气照明系统" class="headerlink" title="b, 电气照明系统"></a>b, 电气照明系统</h2>定义: 凡是建筑物内外将电能转换为光能, 以保证人们正常的生活, 生产和工作学习活动, 满足着视力和装饰要求的照明设施<h3 id="组成-1"><a href="#组成-1" class="headerlink" title="组成"></a>组成</h3>电气系统: 电能的产生, 输送, 分配, 控制和消耗使用的整个系统<br>照明系统: 光能的产生, 传播, 分配, 控制和消耗系统<h3 id="分类-1"><a href="#分类-1" class="headerlink" title="分类"></a>分类</h3>正常照明, 事故照明, 警卫值班照明, 节日彩灯和装饰照明</li>
-</ul>
-<h2 id="c-建筑动力系统"><a href="#c-建筑动力系统" class="headerlink" title="c, 建筑动力系统"></a>c, 建筑动力系统</h2><h3 id="电动机种类和应用"><a href="#电动机种类和应用" class="headerlink" title="电动机种类和应用"></a>电动机种类和应用</h3><p>交流电动机: 笼式异步电动机/ 绕线转子电动机<br>直流电动机: 串励式/ 并励式/ 复励式</p>
-<p>异步电动机构造简单, 价格便宜, 启动方便, 在建筑动力系统中得到广泛应用.</p>
-<h3 id="异步电动机的启动"><a href="#异步电动机的启动" class="headerlink" title="异步电动机的启动"></a>异步电动机的启动</h3><p>电动机从接通电源开始转动, 到转速增至额定转速的过程</p>
-<h3 id="异步电动机的启动方法"><a href="#异步电动机的启动方法" class="headerlink" title="异步电动机的启动方法"></a>异步电动机的启动方法</h3><p>异步电动机的启动方法由它的结构和其所接的电影容量大小决定</p>
-<h2 id="d-建筑弱电系统"><a href="#d-建筑弱电系统" class="headerlink" title="d, 建筑弱电系统"></a>d, 建筑弱电系统</h2><p>强电: 以安倍为单位<br>弱电: 以毫安为计量单位</p>
-<p>功能: 主要进行信息的传递和交换<br>主要包括: 火灾自动报警, 消防联动系统, 电话通信系统, 建筑广播, 共用电视天线, 有线电视系统, 智能化建筑综合布线和安防系统</p>
-<h1 id="4-4-2-保护接地与保护接零-p188"><a href="#4-4-2-保护接地与保护接零-p188" class="headerlink" title="4.4.2 保护接地与保护接零 p188"></a>4.4.2 保护接地与保护接零 p188</h1><p>保护接地: 电气设备的某部分(设备可导电外壳)用金属导体与大地作良好的电气连接</p>
-<p>保护接零: 电源中性点接地的系统中, 将电气设备不带电的金属部分与零线作良好的接触</p>
-<p>中性线和零线的区别: 发电机, 变压器, 电动机和电器等的绕组中心以及带电源的串联回路中有一点, 此点与外部各接线端间的电压的绝对值均相等, 这一点称为中性点或中点。 当中性点接地时, 该点称为零点. 由中性点引出的导线称为中心线, 由零点引出的导线称为零线</p>
-<p>接地体: 埋入地中并直接与大地接触的金属导体<br>自然接地体: 兼作接地用的直接与大地接触的各种金属构件, 金属井管, 钢筋混凝土建筑物的基础, 金属管道和设备<br>人工接地体: 转为接地埋入地中的圆钢, 角钢<br>接地线: 连接设备接地部分与接地体的金属导线<br>接地装置: 接地体和接地线的总和</p>
-<h2 id="a-接地概述"><a href="#a-接地概述" class="headerlink" title="a, 接地概述"></a>a, 接地概述</h2><h3 id="1-电气接地作用"><a href="#1-电气接地作用" class="headerlink" title="(1) 电气接地作用"></a>(1) 电气接地作用</h3><p>如果电气设备某处绝缘损坏而使外壳带点时, 一旦人触及电气绝缘损坏的外壳, 如果没有接地装置, 利用”并联分流”作用, 接地电流将同时沿着接地体和人体两条通路分流。接地电阻越小, 流经人体的电流也就越小; 如果接地电阻小于某个定值, 流过人体的电流也就小于伤害人体的电流值, 使人体避免触电的危险</p>
-<h3 id="2-接地电阻"><a href="#2-接地电阻" class="headerlink" title="(2)接地电阻"></a>(2)接地电阻</h3><p>指电流从埋入地中的接地体散流到周围土壤时, 接地体与大地远处的电位差与该电流之比, 而不是接地体的表面电阻。</p>
-<h3 id="3-电气”地”或”大地”"><a href="#3-电气”地”或”大地”" class="headerlink" title="(3)电气”地”或”大地”"></a>(3)电气”地”或”大地”</h3><p>接地电流在大地中散逸时, 在各个有不同的电位梯度地方称为电气上的”地”或”大地”</p>
-<h2 id="b-接地类型"><a href="#b-接地类型" class="headerlink" title="b, 接地类型"></a>b, 接地类型</h2><ul>
-<li>工作接地: 电气设备在正常和事故情况下可靠地工作而进行的接地</li>
-<li>保护接地: 在中性点不接地或没有中性线的低压系统中, 将电气设备在正常情况下不带电的金属外壳部分与接地体之间作良好的金属连接</li>
-<li>保护接零: 在电源中性点接地系统中, 将在正常情况下电气设备不带电的金属外壳, 框架等与零线作良好的金属连接</li>
-<li>重复接地: 采用保护接零时, 除系统的中性点工作接地外, 将零线上的一点或多点与地再作金属连接</li>
-<li>屏蔽接地: 为使干扰电场在金属屏蔽层感应所产生的电荷导入带地, 而将金属屏蔽层接地</li>
-<li>专用电气设备的接地: 设备接地</li>
-</ul>
-<h2 id="c-常见保护接地方式"><a href="#c-常见保护接地方式" class="headerlink" title="c, 常见保护接地方式"></a>c, 常见保护接地方式</h2><p>分类: IT, TT, TN<br>IT&amp;TT的设备外露可导电部分经各自的保护线直接接地(保护接地)<br>TN系统的设备外露可导电部分经过公共的保护线与电源中性点直接电气连接(接零保护)</p>
-<h1 id="5-2-火灾自动报警系统-p237"><a href="#5-2-火灾自动报警系统-p237" class="headerlink" title="5.2 火灾自动报警系统 p237"></a>5.2 火灾自动报警系统 p237</h1><h2 id="自动报警系统组成"><a href="#自动报警系统组成" class="headerlink" title="自动报警系统组成"></a>自动报警系统组成</h2><p>触发器, 火灾报警装置, 消防控制设备, 电源</p>
-<h2 id="联动"><a href="#联动" class="headerlink" title="联动"></a>联动</h2><p>火灾自动报警系统必须与消防系统联动控制, 包括了固定灭火装置的联动控制, 防排烟设备的联动控制, 应急与消防疏散指示系统, 火灾应急广播与警报装置, 消防专用电话和消防电梯的联动控制.</p>
-<h2 id="控制器工作原理"><a href="#控制器工作原理" class="headerlink" title="控制器工作原理"></a>控制器工作原理</h2><p>提供火灾探测器稳定的直流电源, 监视连接的探测器有无故障, 保证探测器长期, 稳定有效, 工作;<br>当火灾探测器探测火情后, 迅速处理, 执行控制</p>
-<h1 id="非重点题目"><a href="#非重点题目" class="headerlink" title="非重点题目"></a>非重点题目</h1><h2 id="通气管有哪几种类型"><a href="#通气管有哪几种类型" class="headerlink" title="通气管有哪几种类型"></a>通气管有哪几种类型</h2><p>伸顶通气管, 器具通气管, 环形, 专用通气立管, 主通气立管, 副通气立管, 结合通气管</p>
-<h2 id="在什么条件下设置消防水池"><a href="#在什么条件下设置消防水池" class="headerlink" title="在什么条件下设置消防水池"></a>在什么条件下设置消防水池</h2><ul>
-<li>生产, 生活用水量达到最大时, 市政给水管道, 赴水管或天然水源不能满足室内外消防用水量</li>
-<li>市政给水管道为枝状或只有一条进水管, 且消防用水量之和超过25 L/S</li>
-</ul>
-<h2 id="高层建筑热水供暖系统的方式有哪些-2-2-4"><a href="#高层建筑热水供暖系统的方式有哪些-2-2-4" class="headerlink" title="高层建筑热水供暖系统的方式有哪些? 2.2.4"></a>高层建筑热水供暖系统的方式有哪些? 2.2.4</h2><p>竖向分区式, 双线式供暖系统, 单双管混合式系统</p>
-<h2 id="燃煤锅炉的基本构造有哪些-其工作过程可分为几部分-2-5"><a href="#燃煤锅炉的基本构造有哪些-其工作过程可分为几部分-2-5" class="headerlink" title="燃煤锅炉的基本构造有哪些? 其工作过程可分为几部分? 2.5"></a>燃煤锅炉的基本构造有哪些? 其工作过程可分为几部分? 2.5</h2><h3 id="锅炉基本构造"><a href="#锅炉基本构造" class="headerlink" title="锅炉基本构造"></a>锅炉基本构造</h3><h4 id="气锅-gt-封闭汽水系统"><a href="#气锅-gt-封闭汽水系统" class="headerlink" title="气锅 =&gt; 封闭汽水系统"></a>气锅 =&gt; 封闭汽水系统</h4><p>锅筒, 管束, 水冷壁, 集筒, 下降管</p>
-<h4 id="炉子-gt-燃烧设备"><a href="#炉子-gt-燃烧设备" class="headerlink" title="炉子 =&gt; 燃烧设备"></a>炉子 =&gt; 燃烧设备</h4><p>煤斗, 炉排, 除渣板, 送风装置</p>
-<h3 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h3><p>燃料的燃烧过程, 烟气向水的传热过程和水的受热汽化过程</p>
-<h2 id="建筑内消火栓系统由哪些主要部分组成-建筑内消火栓系统供水方式有几种"><a href="#建筑内消火栓系统由哪些主要部分组成-建筑内消火栓系统供水方式有几种" class="headerlink" title="建筑内消火栓系统由哪些主要部分组成? 建筑内消火栓系统供水方式有几种?"></a>建筑内消火栓系统由哪些主要部分组成? 建筑内消火栓系统供水方式有几种?</h2><p>组成: 消防水源, 消防供水设备, 室内消防给水管道, 室内消火栓<br>方式: </p>
-<ul>
-<li>无加压泵和水箱的消火栓给水系统</li>
-<li>设有水箱的消火栓给水系统</li>
-<li>设有消防水泵和消防水箱的消火栓给水系统</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2174,7 +1598,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">172</span>
+                  <span class="site-state-item-count">177</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2187,7 +1611,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">95</span>
+                  <span class="site-state-item-count">98</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

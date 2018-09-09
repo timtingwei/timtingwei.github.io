@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="PAT,算法,Hash散列,逻辑题," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1089 狼人杀-简单版(20)以下文字摘自《灵机一动·好玩的数学》：“狼人杀”游戏分为狼人、好人两大阵营。在一局“狼人杀”游戏中，1 号玩家说：“2 号是狼人”，2 号玩家说：“3 号是好人”，3 号玩家说：“4 号是狼人”，4 号玩家说：“5 号是好人”，5 号玩家说：“4 号是好人”。已知这 5 名玩家中有 2 ">
+<meta name="keywords" content="PAT,算法,Hash散列,逻辑题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1089 狼人杀-简单版(20) - PAT乙级">
+<meta property="og:url" content="https://timtingwei.github.io/2018/09/09/20180909-04/index.html">
+<meta property="og:site_name" content="mituh&#39;s notes">
+<meta property="og:description" content="1089 狼人杀-简单版(20)以下文字摘自《灵机一动·好玩的数学》：“狼人杀”游戏分为狼人、好人两大阵营。在一局“狼人杀”游戏中，1 号玩家说：“2 号是狼人”，2 号玩家说：“3 号是好人”，3 号玩家说：“4 号是狼人”，4 号玩家说：“5 号是好人”，5 号玩家说：“4 号是好人”。已知这 5 名玩家中有 2 人扮演狼人角色，有 2 人说的不是实话，有狼人撒谎但并不是所有狼人都在撒谎。扮演">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-09T10:13:40.622Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1089 狼人杀-简单版(20) - PAT乙级">
+<meta name="twitter:description" content="1089 狼人杀-简单版(20)以下文字摘自《灵机一动·好玩的数学》：“狼人杀”游戏分为狼人、好人两大阵营。在一局“狼人杀”游戏中，1 号玩家说：“2 号是狼人”，2 号玩家说：“3 号是好人”，3 号玩家说：“4 号是狼人”，4 号玩家说：“5 号是好人”，5 号玩家说：“4 号是好人”。已知这 5 名玩家中有 2 人扮演狼人角色，有 2 人说的不是实话，有狼人撒谎但并不是所有狼人都在撒谎。扮演">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://timtingwei.github.io/2018/09/09/20180909-04/"/>
+
+
+
+
+
+  <title>1089 狼人杀-简单版(20) - PAT乙级 | mituh's notes</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">mituh's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/09/20180909-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">1089 狼人杀-简单版(20) - PAT乙级</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-09T18:10:46+08:00">
+                2018-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1089-狼人杀-简单版-20"><a href="#1089-狼人杀-简单版-20" class="headerlink" title="1089 狼人杀-简单版(20)"></a>1089 狼人杀-简单版(20)</h3><p>以下文字摘自《灵机一动·好玩的数学》：“狼人杀”游戏分为狼人、好人两大阵营。在一局“狼人杀”游戏中，1 号玩家说：“2 号是狼人”，2 号玩家说：“3 号是好人”，3 号玩家说：“4 号是狼人”，4 号玩家说：“5 号是好人”，5 号玩家说：“4 号是好人”。已知这 5 名玩家中有 2 人扮演狼人角色，有 2 人说的不是实话，有狼人撒谎但并不是所有狼人都在撒谎。扮演狼人角色的是哪两号玩家？</p>
+<p>本题是这个问题的升级版：已知 N 名玩家中有 2 人扮演狼人角色，有 2 人说的不是实话，有狼人撒谎但并不是所有狼人都在撒谎。要求你找出扮演狼人角色的是哪几号玩家？</p>
+<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入在第一行中给出一个正整数 N（5≤N≤100）。随后 N 行，第 i 行给出第 i 号玩家说的话（1≤i≤N），即一个玩家编号，用正号表示好人，负号表示狼人。</p>
+<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>如果有解，在一行中按递增顺序输出 2 个狼人的编号，其间以空格分隔，行首尾不得有多余空格。如果解不唯一，则输出最小序列解 —— 即对于两个序列 A=a[1],…,a[M] 和 B=b[1],…,b[M]，若存在 0≤k&lt;M 使得 a[i]=b[i] （i≤k），且 a[k+1]&lt;b[k+1]，则称序列 A 小于序列 B。若无解则输出 No Solution。</p>
+<h4 id="输入样例-1："><a href="#输入样例-1：" class="headerlink" title="输入样例 1："></a>输入样例 1：</h4><p>5<br>-2<br>+3<br>-4<br>+5<br>+4</p>
+<h4 id="输出样例-1："><a href="#输出样例-1：" class="headerlink" title="输出样例 1："></a>输出样例 1：</h4><p>1 4</p>
+<h4 id="输入样例-2："><a href="#输入样例-2：" class="headerlink" title="输入样例 2："></a>输入样例 2：</h4><p>6<br>+6<br>+3<br>+1<br>-5<br>-2<br>+4</p>
+<h4 id="输出样例-2（解不唯一）："><a href="#输出样例-2（解不唯一）：" class="headerlink" title="输出样例 2（解不唯一）："></a>输出样例 2（解不唯一）：</h4><p>1 5</p>
+<h4 id="输入样例-3："><a href="#输入样例-3：" class="headerlink" title="输入样例 3："></a>输入样例 3：</h4><p>5<br>-2<br>-3<br>-4<br>-5<br>-1</p>
+<h4 id="输出样例-3："><a href="#输出样例-3：" class="headerlink" title="输出样例 3："></a>输出样例 3：</h4><p>No Solution</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>考试是没ac掉的题, 惋惜。自己的逻辑还需要锻炼, 要刷更多的题, 做更多事情, 认识更多人, 看更大的世界.</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">2 人扮演狼人角色，有 2 人说的不是实话，有狼人撒谎但并不是所有狼人都在撒谎</span><br></pre></td></tr></table></figure>
+<p>其实姥姥已经把问题写的很实质简短了, 是我真的太笨没能理解透。</p>
+<p>分析一下, 最关键的是这两个条件:<br><span style="color:red">1, 只有两个狼人, 其他都是好人.</span><br><span style="color:red">2, 只有两个人说了假话, 一个是狼人, 一个是好人, 其他人都说真话.</span></p>
+<p>正确思路是:<br><span style="color:red">枚举两个狼人, 狼人如果确定了, 只要看谁说错了就是在说谎, 看谁说错的过程就是一个查Hash表的过程, 因为每个人都有一种观点talk, 另外, 每一个人都身份根据枚举的狼人建成了Hash表, 是确定的。最后只要判断说假话只有两个人, 并且只有一狼。</span></p>
+<p>能想到枚举的方法, 但在考试的时候, 一直分析不出判断某次枚举成立的条件是什么。实际上回过头来看, 只要同时满足上述两个条件就好了。</p>
+<p>我考试的时候枚举的是说谎的人, 这样枚举应该是条死路.<br>1, 首先, 说谎的人数是不固定的, 后面还需要根据展开的结果重新判断一次说谎人数是不是符合, 而狼人如果确定了, 只要看谁说错了就是在说谎.<br>2, 题目要求的就是狼人, 为什么逻辑还要嵌套一层呢?<br>3, 就需要先根据每个人说的, 得到所有人的身份, 然后确定是不是有两个狼人, 其中一个狼人是说谎的人.. 但问题是如果有些人的身份, 没直接提到怎么办呢? 我想这个应该是我错误的原因吧。</p>
+<p>当然, 除此之外, 我前面的程序里还有很多冗杂的逻辑, 比如, copy一个vector????自己写了函数??? 比如, 自己实现的to_string和stoi不舍得丢, 分析每个人说话的时候, 还用到了string, s[0]看符号??substr提取数字???(经过, <a href="https://github.com/HankDaly" target="_blank" rel="noopener">学长</a>的提醒, 后来改成了读整数, 判断正负…调试的时候, 还出现了溢出的情况, 回过头来想真是可怕, 只能用兵荒马乱来形容…</p>
+<p>我考试时候没能写出的代码:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Talk</span> &#123;</span></span><br><span class="line">  <span class="keyword">int</span> st;</span><br><span class="line">  <span class="keyword">int</span> id;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> N; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;N);</span><br><span class="line">  <span class="built_in">vector</span>&lt;Talk&gt; talk_v(N+<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">int</span> st_arr[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= N; i++) &#123;</span><br><span class="line">    <span class="keyword">int</span> temp = <span class="number">0</span>; <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;temp);</span><br><span class="line">    <span class="keyword">int</span> st = <span class="number">0</span>, id = temp;</span><br><span class="line">    <span class="keyword">if</span> (temp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      st = <span class="number">1</span>; id = <span class="number">-1</span> * temp;</span><br><span class="line">    &#125;</span><br><span class="line">    Talk talk; talk.st = st; talk.id = id;</span><br><span class="line">    talk_v[i] = talk;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> find = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= N<span class="number">-1</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt;= N; j++) &#123;</span><br><span class="line">      <span class="built_in">memset</span>(st_arr, <span class="number">0</span>, <span class="keyword">sizeof</span>(st_arr));</span><br><span class="line"></span><br><span class="line">      st_arr[i] = <span class="number">1</span>; st_arr[j] = <span class="number">1</span>;</span><br><span class="line">      <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; lier_v;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">1</span>; k &lt;= N; k++) &#123;</span><br><span class="line">        <span class="keyword">int</span> id_k = talk_v[k].id, st_k = talk_v[k].st;</span><br><span class="line">        <span class="keyword">if</span> (st_arr[id_k] != st_k) &#123;</span><br><span class="line">          lier_v.push_back(k);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (lier_v.size() == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">2</span>; k++) &#123;</span><br><span class="line">          <span class="keyword">if</span> (lier_v[k] == i || lier_v[k] == j) cnt++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (cnt == <span class="number">1</span>) &#123;</span><br><span class="line">          find = <span class="number">1</span>;</span><br><span class="line">          <span class="built_in">printf</span>(<span class="string">"%d %d\n"</span>, i, j);</span><br><span class="line">          <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (find) <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!find) <span class="built_in">printf</span>(<span class="string">"No Solution\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PAT/" rel="tag"># PAT</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/Hash散列/" rel="tag"># Hash散列</a>
+          
+            <a href="/tags/逻辑题/" rel="tag"># 逻辑题</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/09/20180909-03/" rel="next" title="1088 三人行(20) - PAT乙级">
+                <i class="fa fa-chevron-left"></i> 1088 三人行(20) - PAT乙级
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/09/20180909-05/" rel="prev" title="1090 危险品装箱(25) - PAT乙级">
+                1090 危险品装箱(25) - PAT乙级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">mituh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">177</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">98</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1089-狼人杀-简单版-20"><span class="nav-number">1.</span> <span class="nav-text">1089 狼人杀-简单版(20)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#输入格式："><span class="nav-number">1.1.</span> <span class="nav-text">输入格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出格式："><span class="nav-number">1.2.</span> <span class="nav-text">输出格式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-1："><span class="nav-number">1.3.</span> <span class="nav-text">输入样例 1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-1："><span class="nav-number">1.4.</span> <span class="nav-text">输出样例 1：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-2："><span class="nav-number">1.5.</span> <span class="nav-text">输入样例 2：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-2（解不唯一）："><span class="nav-number">1.6.</span> <span class="nav-text">输出样例 2（解不唯一）：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输入样例-3："><span class="nav-number">1.7.</span> <span class="nav-text">输入样例 3：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出样例-3："><span class="nav-number">1.8.</span> <span class="nav-text">输出样例 3：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Solution"><span class="nav-number">1.9.</span> <span class="nav-text">Solution:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">mituh</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
