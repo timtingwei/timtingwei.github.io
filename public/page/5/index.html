@@ -229,6 +229,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/09/02/20180902-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/02/20180902-01/" itemprop="url">8. String to Integer (atoi) - LeetCode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-02T10:14:04+08:00">
+                2018-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="8-String-to-Integer-atoi"><a href="#8-String-to-Integer-atoi" class="headerlink" title="8. String to Integer (atoi)"></a>8. String to Integer (atoi)</h3><p>Implement atoi which converts a string to an integer.</p>
+<p>The function first discards as many whitespace characters as necessary until the first non-whitespace character is found. Then, starting from this character, takes an optional initial plus or minus sign followed by as many numerical digits as possible, and interprets them as a numerical value.</p>
+<p>The string can contain additional characters after those that form the integral number, which are ignored and have no effect on the behavior of this function.</p>
+<p>If the first sequence of non-whitespace characters in str is not a valid integral number, or if no such sequence exists because either str is empty or it contains only whitespace characters, no conversion is performed.</p>
+<p>If no valid conversion could be performed, a zero value is returned.</p>
+<h4 id="Note"><a href="#Note" class="headerlink" title="Note:"></a>Note:</h4><p>Only the space character ‘ ‘ is considered as whitespace character.<br>Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. If the numerical value is out of the range of representable values, INT_MAX (231 − 1) or INT_MIN (−231) is returned.</p>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1:"></a>Example 1:</h4><p>Input: “42”<br>Output: 42</p>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2:"></a>Example 2:</h4><p>Input: “   -42”<br>Output: -42<br>Explanation: The first non-whitespace character is ‘-‘, which is the minus sign.<br>             Then take as many numerical digits as possible, which gets 42.</p>
+<h4 id="Example-3"><a href="#Example-3" class="headerlink" title="Example 3:"></a>Example 3:</h4><p>Input: “4193 with words”<br>Output: 4193<br>Explanation: Conversion stops at digit ‘3’ as the next character is not a numerical digit.</p>
+<h4 id="Example-4"><a href="#Example-4" class="headerlink" title="Example 4:"></a>Example 4:</h4><p>Input: “words and 987”<br>Output: 0<br>Explanation: The first non-whitespace character is ‘w’, which is not a numerical<br>             digit or a +/- sign. Therefore no valid conversion could be performed.</p>
+<h4 id="Example-5"><a href="#Example-5" class="headerlink" title="Example 5:"></a>Example 5:</h4><p>Input: “-91283472332”<br>Output: -2147483648<br>Explanation: The number “-91283472332” is out of the range of a 32-bit signed integer.<br>             Thefore INT_MIN (−231) is returned.</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>思路:</p>
+<blockquote>
+<ul>
+<li>1, 除去<code>&#39; &#39;</code>, 之前是使用whil循环判断, 可直接用<code>str.find_first_not_of(&#39; &#39;)</code>找到第一个非空字符位置</li>
+<li>2, 用一个flag标记正负, 如果没有+-号, flag缺省为1</li>
+<li>3, ans等于扩大10倍+当前位, 如果溢出就要返回<code>INT_MIN或者INT_MAX</code></li>
+</ul>
+</blockquote>
+<p>错误的几个case<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// case1</span></span><br><span class="line"><span class="comment">Input:</span></span><br><span class="line"><span class="comment">"+-2"</span></span><br><span class="line"><span class="comment">Output:</span></span><br><span class="line"><span class="comment">2</span></span><br><span class="line"><span class="comment">Expected:</span></span><br><span class="line"><span class="comment">0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// case2</span></span><br><span class="line"><span class="comment">Input:</span></span><br><span class="line"><span class="comment">"2147483648"</span></span><br><span class="line"><span class="comment">Output:</span></span><br><span class="line"><span class="comment">-2147483648</span></span><br><span class="line"><span class="comment">Expected:</span></span><br><span class="line"><span class="comment">2147483647</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">// case3</span></span><br><span class="line"><span class="comment">Input:</span></span><br><span class="line"><span class="comment">"-91283472332"</span></span><br><span class="line"><span class="comment">Output:</span></span><br><span class="line"><span class="comment">-1089159116</span></span><br><span class="line"><span class="comment">Expected:</span></span><br><span class="line"><span class="comment">-2147483648</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></p>
+<p>最后的代码:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// Time:O(n), Space:O(1)</span><br><span class="line">class Solution &#123;</span><br><span class="line"> public:</span><br><span class="line">  int myAtoi(string str) &#123;</span><br><span class="line">    long long int ans = 0;                        // case3</span><br><span class="line">    int flag = 1;</span><br><span class="line">    int i = str.find_first_not_of(&apos; &apos;);</span><br><span class="line">    if (str[i] == &apos;-&apos; || str[i] == &apos;+&apos;) &#123;         // case1</span><br><span class="line">      flag = (str[i++] == &apos;-&apos;) ? -1 : 1;</span><br><span class="line">    &#125;</span><br><span class="line">    while (&apos;0&apos; &lt;= str[i] &amp;&amp; str[i] &lt;= &apos;9&apos;) &#123;</span><br><span class="line">      ans = ans*10 + (str[i++] - &apos;0&apos;);</span><br><span class="line">      if (ans * flag &gt;= INT_MAX) return INT_MAX;  // case2</span><br><span class="line">      if (ans * flag &lt;= INT_MIN) return INT_MIN;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans * flag;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/31/20180831-04/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1395,143 +1536,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/08/26/20180826-03/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/26/20180826-03/" itemprop="url">1074 宇宙无敌加法器(20) - PAT乙级</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-26T20:31:05+08:00">
-                2018-08-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="1074-宇宙无敌加法器-20"><a href="#1074-宇宙无敌加法器-20" class="headerlink" title="1074 宇宙无敌加法器(20)"></a>1074 宇宙无敌加法器(20)</h3><p>地球人习惯使用十进制数，并且默认一个数字的每一位都是十进制的。而在 PAT 星人开挂的世界里，每个数字的每一位都是不同进制的，这种神奇的数字称为“PAT数”。每个 PAT 星人都必须熟记各位数字的进制表，例如“……0527”就表示最低位是 7 进制数、第 2 位是 2 进制数、第 3 位是 5 进制数、第 4 位是 10 进制数，等等。每一位的进制 d 或者是 0（表示十进制）、或者是 [2，9] 区间内的整数。理论上这个进制表应该包含无穷多位数字，但从实际应用出发，PAT 星人通常只需要记住前 20 位就够用了，以后各位默认为 10 进制。</p>
-<p>在这样的数字系统中，即使是简单的加法运算也变得不简单。例如对应进制表“0527”，该如何计算“6203 + 415”呢？我们得首先计算最低位：3 + 5 = 8；因为最低位是 7 进制的，所以我们得到 1 和 1 个进位。第 2 位是：0 + 1 + 1（进位）= 2；因为此位是 2 进制的，所以我们得到 0 和 1 个进位。第 3 位是：2 + 4 + 1（进位）= 7；因为此位是 5 进制的，所以我们得到 2 和 1 个进位。第 4 位是：6 + 1（进位）= 7；因为此位是 10 进制的，所以我们就得到 7。最后我们得到：6203 + 415 = 7201。</p>
-<h4 id="输入格式："><a href="#输入格式：" class="headerlink" title="输入格式："></a>输入格式：</h4><p>输入首先在第一行给出一个 N 位的进制表（0 &lt; N ≤ 20），以回车结束。 随后两行，每行给出一个不超过 N 位的非负的 PAT 数。</p>
-<h4 id="输出格式："><a href="#输出格式：" class="headerlink" title="输出格式："></a>输出格式：</h4><p>在一行中输出两个 PAT 数之和。</p>
-<h4 id="输入样例："><a href="#输入样例：" class="headerlink" title="输入样例："></a>输入样例：</h4><p>30527<br>06203<br>415</p>
-<h4 id="输出样例："><a href="#输出样例：" class="headerlink" title="输出样例："></a>输出样例：</h4><p>7201</p>
-<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h4><p>每次循环继承上一次循环的进位, 进行加法运算, 再求余。</p>
-<p>利用栈, 先对后出的特性, 对从右向左计算出的答案打印。<br>要注意的是, </p>
-<blockquote>
-<ul>
-<li>1, 需要把栈中最前的0给去掉</li>
-<li>2, 还要debug结果位0的情况, case5</li>
-<li>3, 实际上最后一位(最左)仍然需要进位, 需要在循环外进行判断, case1, 3</li>
-</ul>
-</blockquote>
-<p>如下:<br><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">// 1, 3wrong</span><br><span class="line">2</span><br><span class="line">5</span><br><span class="line">7</span><br><span class="line">0</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">// 5, wrong</span><br><span class="line">2</span><br><span class="line">0</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
-<p>实际代码如下:<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">string</span> T, S1, S2; <span class="built_in">cin</span> &gt;&gt; T &gt;&gt; S1 &gt;&gt; S2;</span><br><span class="line">  <span class="keyword">int</span> n = T.length();</span><br><span class="line">  S1.insert(<span class="number">0</span>, n - S1.length(), <span class="string">'0'</span>);</span><br><span class="line">  S2.insert(<span class="number">0</span>, n - S2.length(), <span class="string">'0'</span>);</span><br><span class="line">  <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; stk; <span class="keyword">int</span> more = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = n<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">    <span class="keyword">int</span> b = T[i] == <span class="string">'0'</span> ? <span class="number">10</span> : T[i] - <span class="string">'0'</span>;</span><br><span class="line">    <span class="keyword">int</span> d  = S1[i]-<span class="string">'0'</span> + S2[i]-<span class="string">'0'</span> + more;</span><br><span class="line">    <span class="keyword">int</span> digit = (d) ? (d) % b : <span class="number">0</span>;</span><br><span class="line">    more = d / b;</span><br><span class="line">    stk.push(digit);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (more) stk.push(more);           <span class="comment">// case1, 3</span></span><br><span class="line">  <span class="keyword">int</span> flag = <span class="number">0</span>, flag_z = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (!stk.empty()) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!flag) &#123;</span><br><span class="line">      <span class="keyword">if</span> (stk.top() == <span class="number">0</span>) &#123;</span><br><span class="line">        stk.pop();</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        flag = <span class="number">1</span>;</span><br><span class="line">        flag_z = <span class="number">0</span>;                   <span class="comment">// case5, zero</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">"%d"</span>, stk.top());</span><br><span class="line">      stk.pop();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (flag_z) <span class="built_in">printf</span>(<span class="string">"0"</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1582,7 +1586,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">178</span>
+                  <span class="site-state-item-count">179</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
