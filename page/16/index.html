@@ -229,6 +229,126 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/12/dsacpp/02-D2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="mituh">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="mituh's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/12/dsacpp/02-D2/" itemprop="url">邓俊辉<<数据结构>>-公开课-02-D2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-12T17:09:13+08:00">
+                2018-01-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">d2 有序向量: 二分查找</span><br><span class="line"></span><br><span class="line">	Vector::find(e, lo, hi);</span><br><span class="line">	Vector::search(e, lo, hi);</span><br><span class="line"></span><br><span class="line">	操作参数和接口语义类似。</span><br><span class="line">---------------------------------------------------------------------------------</span><br><span class="line"># 统一接口</span><br><span class="line">	&gt;* ADT接口</span><br><span class="line">	======================== source code ==========================</span><br><span class="line">	// ADT接口</span><br><span class="line">	template &lt;typename T&gt;</span><br><span class="line">	Rank Vector&lt;T&gt;::search(T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">		std::srand(std::time(0));</span><br><span class="line">		return (std::rand() % 2) ?</span><br><span class="line">			binSearch(_elem, e, lo, hi)     // 二分查找算法</span><br><span class="line">			: fibSearch(_elem, e, lo, hi);  // fibonacci查找算法</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	template &lt;typename T&gt;</span><br><span class="line">	Rank Vector&lt;T&gt;::binSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">		std::cout &lt;&lt; &quot;calling binSearch.... &quot; &lt;&lt; std::endl;</span><br><span class="line">		return lo;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	template &lt;typename T&gt;</span><br><span class="line">	Rank Vector&lt;T&gt;::fibSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">		std::cout &lt;&lt; &quot;calling fibSearch... &quot; &lt;&lt; std::endl;</span><br><span class="line">		return lo;</span><br><span class="line">	&#125;</span><br><span class="line">	================================================================</span><br><span class="line">	可以设计不同的算法, 根据数据的性质进算法的选择。</span><br><span class="line">---------------------------------------------------------------------------------</span><br><span class="line"># 语义约定</span><br><span class="line"></span><br><span class="line">	约点语义的好处就是, 能够更好的和其他代码配合。</span><br><span class="line">	&gt;* 优点: </span><br><span class="line">		维护自身 V.insert(1 + V.search(e), e)</span><br><span class="line">			即便是失败, 也给出插入新元素的位置。</span><br><span class="line">			若允许重复元素, 则每组也按照其插入的次序排序。</span><br><span class="line">	</span><br><span class="line">	&gt;* 约点:</span><br><span class="line">		有序V[lo, hi), 不大于e的最后元素秩</span><br><span class="line">		-00 &lt; e &lt; V[lo], 返回 lo - 1 (左侧哨兵)</span><br><span class="line">		V[hi] &lt; e &lt; +00, 返回 hi - 1 (末元素, 右哨兵左邻)</span><br><span class="line">---------------------------------------------------------------------------------</span><br><span class="line"># 版本A: 原理</span><br><span class="line"></span><br><span class="line">	&gt;* 减而治之</span><br><span class="line">		待查找区间分成三部分</span><br><span class="line">		S[lo, mi) &lt;= S[mi] &lt;= S(mi, hi)       // S[mi]轴点</span><br><span class="line">	</span><br><span class="line">	&gt;* 三种比较情况</span><br><span class="line">		e &lt; x: 左</span><br><span class="line">		x &lt; e: 右</span><br><span class="line">		e = x: 命中             // 多个解?</span><br><span class="line">	</span><br><span class="line">	&gt;* 二分(折半)策略</span><br><span class="line">		每经过至多两次比较, 或命中, 或将规模缩减一半</span><br><span class="line">----------------------------------------------------------------------------------</span><br><span class="line"># 版本A: 实现</span><br><span class="line"></span><br><span class="line">	&gt;* 我的尝试</span><br><span class="line">		======= source code ======================================</span><br><span class="line">		// 二分查找: 版本A</span><br><span class="line">		/* my test code</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		Rank Vector&lt;T&gt;::binSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">			std::cout &lt;&lt; &quot;calling binSearch.... &quot; &lt;&lt; std::endl;</span><br><span class="line">			if (lo &lt; hi) &#123;   // 区间不存在, 没找到e</span><br><span class="line">				Rank mi = (lo + hi) &gt;&gt; 1;    // 中点秩</span><br><span class="line">				if (elem[mi] == e) return mi;     // 命中, 递归基</span><br><span class="line">				if (e &lt; elem[mi]) &#123;     // 在mid左侧</span><br><span class="line">					return (binSearch(elem, e, lo, mi));</span><br><span class="line">				&#125; else &#123; return binSearch(elem, e, mi + 1, hi);&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			return -1;</span><br><span class="line">		&#125;</span><br><span class="line">		*/</span><br><span class="line">		==========================================================</span><br><span class="line">		</span><br><span class="line">	&gt;* 给出的版本</span><br><span class="line">		==================== source code ========================</span><br><span class="line">		template &lt;typename T&gt;</span><br><span class="line">		Rank Vector&lt;T&gt;::binSearch(T* elem, T const&amp; e, Rank lo, Rank hi) const &#123;</span><br><span class="line">			while (lo &lt; hi) &#123;    // 区间存在</span><br><span class="line">				Rank mi =  (lo + hi) &gt;&gt; 1;        // 取中点</span><br><span class="line">				if      (e &lt; elem[mi]) hi = mi;      // 深入前半段查找</span><br><span class="line">				else if (elem[mi] &lt; e) lo = mi + 1;  // 深入后半段查找</span><br><span class="line">				else                   return mi;    // 在mi命中</span><br><span class="line">			&#125;</span><br><span class="line">		return -1;   // 查找失败</span><br><span class="line">		&#125;</span><br><span class="line">		=========================================================</span><br><span class="line">		</span><br><span class="line">	&gt;* 分析</span><br><span class="line">		1, 将递归变成while loop, 内部对hi, lo进行修改。</span><br><span class="line">		2, while循环通过hi, lo改变, 改变区间。</span><br><span class="line">		3, if...else 和 else...if什么差别？</span><br><span class="line">	</span><br><span class="line">	&gt;* 技巧</span><br><span class="line">		善用 &quot;&lt;&quot; 比较</span><br><span class="line">			因为数据结构画图理解时候, 都是从左向右, 小于号能直观的看出在哪个区间, 不容易出错。</span><br><span class="line">-----------------------------------------------------------------------------------------</span><br><span class="line"># 版本A: 实例与复杂度</span><br><span class="line"></span><br><span class="line">	&gt;* S.search(8, 0, 7): 2 + 1 + 2 = 5, S[4]命中</span><br><span class="line">	&gt;* S.search(3, 0, 7): 1 + 1 + 2 = 4, S[1]失败</span><br><span class="line">	</span><br><span class="line">	&gt;* 线性递归 T(n) = T(n/2) + O(1) = O(logn), 大大由于顺序查找O(n)</span><br><span class="line">	递归跟踪: 轴点总取中点, 递归深度O(logn); 各个递归实例均 O(1)</span><br><span class="line">--------------------------------------------------------------------------------------</span><br><span class="line"># 版本A：查找长度</span><br><span class="line"></span><br><span class="line">	&gt;* 更为精细的评估算法性能:</span><br><span class="line">		考察关键码的比较次数, 查找长度(search length)</span><br><span class="line">	&gt;* 成功与失败的最好, 最坏, 平均角度评估</span><br><span class="line">	&gt;* 这个算法 = O(1.5logn)</span><br><span class="line">		向左节点 + 1, 向右节点 +2</span><br><span class="line">		n = 8</span><br><span class="line">		最好, 29/7 = 4+</span><br><span class="line">		最差, 36/8 = 4.5 = 1.5log28</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/12/cpp/cpp-notes-0004/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1536,141 +1656,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://timtingwei.github.io/2018/01/10/dsacpp/01-F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="mituh">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="mituh's notes">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/10/dsacpp/01-F/" itemprop="url">邓俊辉<<数据结构>>-公开课-01-F</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T00:08:52+08:00">
-                2018-01-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><p>Make it work  \<br>Make it right - 递归<br>Make it fast  - 迭代<br>     – Kent Beck</p>
-<p><code>动态规划</code>: 通过递归找出算法本质，并且给出了初步解，再讲其等效成迭代形式</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">2</span> &gt; n) ? n : fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>work, right, but not fast.</p>
-<h1 id="封底估算"><a href="#封底估算" class="headerlink" title="封底估算"></a>封底估算</h1><p>$^36 = 2^25,  ==&gt; $^43 = 2^30 = (2^10)^3 = 10^9 flo = 1sec<br>$^5 = 10,     ==&gt; $^67 = 10^14 flo = 10^5 sec = 1 day</p>
-<h1 id="递归跟踪"><a href="#递归跟踪" class="headerlink" title="递归跟踪"></a>递归跟踪</h1><p>效率低的原因是递归实例被重复调用。</p>
-<p><code>解决方法A(记忆:memoization)</code><br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_memoization</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> mem_lst[])</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 将已经计算的结果, 制成表备查</span></span><br><span class="line">  <span class="keyword">if</span> (is_exist(mem_lst[n])) &#123;</span><br><span class="line">    <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">2</span> &gt; n) &#123;mem_lst[n] = n;&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      mem_lst[n] = fib_memoization(n<span class="number">-1</span>, mem_lst) +</span><br><span class="line">          fib_memoization(n<span class="number">-2</span>, mem_lst);</span><br><span class="line">      <span class="keyword">return</span> mem_lst[n];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>解决方法B 动态规划</code><br>上楼梯。</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fib_dynamic</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> f = <span class="number">0</span>, g = <span class="number">1</span>;          <span class="comment">// fib(0) = 0; fib(1) = 1;</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="number">0</span> &lt; n--) &#123;</span><br><span class="line">    g = g + f;</span><br><span class="line">    f = g - f;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> g;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>不太能理解, 先放着</p>
-<h1 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h1><p><code>子序列(Subsequence)</code>: 有序列中若干字符，按原相对次序构成</p>
-<p><code>最长公共子序列(Longest common subsequence)</code>，两个序列公共子序列的最长者</p>
-<p>可能有多个，可能有歧义</p>
-<p><code>实现</code></p>
-<p>暂时还实现不了</p>
-<h2 id="动态规划-1"><a href="#动态规划-1" class="headerlink" title="动态规划"></a>动态规划</h2><p>理解了一下，方法上有差异，思想上为自下而上的求解，有那么点在gh中做的时候的思想在里面。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1721,7 +1706,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">178</span>
+                  <span class="site-state-item-count">179</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
